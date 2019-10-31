@@ -1,5 +1,11 @@
 ![slogan.png](https://upload-images.jianshu.io/upload_images/57036-6590e6690f774316.png)
 
+&nbsp;
+
+付费用户加微信进群：myatejx | 知识星球提问：https://t.zsxq.com/VNRZrfa
+
+&nbsp;
+
 # 前言
 
 很高兴见到你！
@@ -10,12 +16,12 @@
 
 并且从读者的反馈来看，近期大部分安卓开发 已跳出舒适圈，开始尝试认识和应用 Jetpack MVVM 到实际的项目开发中。
 
-
-只可惜，关于 Jetpack MVVM，网上多是 东拼西凑、人云亦云、通篇贴代码 的文章，这不仅不能提供完整的视角 来帮助读者 首先明确背景状况，更是给还没入门 Jetpack 的读者 徒添困扰、起到劝退的作用。
-
+只可惜，关于 Jetpack MVVM，网上多是 **东拼西凑、人云亦云、通篇贴代码** 的文章，这不仅不能提供完整的视角 来帮助读者 首先明确背景状况，更是给还没入门 Jetpack 的读者 **徒添困扰**、起到 **劝退** 的作用。
 
 好消息是，这一期，我们带着 **精心打磨的 Jetpack MVVM 最佳实践案例** 来了！
 
+&nbsp;
+&nbsp;
 
 
 |                  是让人 爱不释手 的 交互设计！                   |                     是 连贯 的 用户体验                      |                    唯一可信源 的 统一分发                    |
@@ -28,7 +34,8 @@
 | :----------------------------------------------------------: |
 | ![444.gif](https://upload-images.jianshu.io/upload_images/57036-688f3eafc76cfa27.gif?imageMogr2/auto-orient/strip) |
 
-
+&nbsp;
+&nbsp;
 
 # 项目简介
 
@@ -36,13 +43,13 @@
 
 
 
-在这个的案例中，我将为你展示，Jetpack MVVM 是如何 **蕴繁于简** 地 将原本十分容易出错、一出错就会耽搁半天时间的开发工作，通过 寥寥的几行代码 轻而易举地完成。😉
+在这个案例中，我将为你展示，Jetpack MVVM 是如何 **蕴繁于简** 地 将原本十分容易出错、一出错就会耽搁半天时间的开发工作，通过 寥寥的几行代码 轻而易举地完成。😉
 
+> 👆👆👆 划重点！
 
+&nbsp;
 
 在这个项目中，
-
-
 
 > 我们为 **横、竖屏** 的情况 分别安排了两套 **截然不同的布局**，并且在 [生命周期](https://xiaozhuanlan.com/topic/0213584967)、[重建机制](https://xiaozhuanlan.com/topic/7692814530)、[状态管理](https://xiaozhuanlan.com/topic/7692814530)、[DataBinding](https://xiaozhuanlan.com/topic/9816742350)、[ViewModel](https://xiaozhuanlan.com/topic/6257931840)、[LiveData](https://xiaozhuanlan.com/topic/0168753249) 、[Navigation](https://xiaozhuanlan.com/topic/5860149732) 等知识点的帮助下，通过寥寥几行代码，轻松做到 **在横竖屏两种布局间 无缝地切换，并且不产生任何 预期外的错误**。
 
@@ -56,9 +63,10 @@
 > 我们在 `ui.page ` 、`data.repository`、`bridge.request` 等目录下，分别安排了 视图控制器、[ViewModel](https://xiaozhuanlan.com/topic/6257931840) 、DataRepository 等 内容，从而向你展示，**单向依赖** 的架构设计，是如何通过分层的 数据请求和响应，来 **规避 内存泄漏** 等问题。
 
 
-> 并且，上述目录 所包含的 类中，我们大都 **提供了丰富的注释**，来帮助你理解 骨架代码 为何要如此设计、如此设计能够 **在软件工程的背景下** 避免哪些不可预期的错误。
+> 本项目的代码一律采用 经过 ISO 认证的 标准化工业级语言 Java 来编写。并且，在上述目录 所包含的 类中，我们大都 **提供了丰富的注释**，来帮助你理解 骨架代码 为何要如此设计、如此设计能够 **在软件工程的背景下** 避免哪些不可预期的错误。
 
-
+&nbsp;
+&nbsp;
 
 除了 **在 蕴繁于简 的代码中 掌握 MVVM 最佳实践**，你还可以 从这个开源项目中 获得的内容 包括：
 
@@ -70,7 +78,8 @@
 6. 绝不使用 Dagger，绝不使用奇技淫巧、编写艰深晦涩的代码。
 7. One More Thing：
 
-
+&nbsp;
+&nbsp;
 
 # The One More Thing is：
 
@@ -86,13 +95,14 @@
 
 
 
-好了，这一期的时间 也差不多了，我们以一个 真香警告 做个收尾：
+好了，这一期的分享 也差不多了，让我们以 真香警告 做个收尾：
 
-### 就算 不做 音乐播放器，也请 务必 收藏好该库！
+### 就算不用云音乐听歌，也请务必收藏好该库！
 
 [GitHub 链接：https://github.com/KunMinX/Jetpack-MusicPlayer](https://github.com/KunMinX/Jetpack-MusicPlayer)
 
-
+&nbsp;
+&nbsp;
 
 # Thanks to
 
@@ -110,7 +120,8 @@
 
 项目中使用的 音频素材 来自 [BenSound](https://www.bensound.com/) 提供的 **无版权免费音乐**。
 
-
+&nbsp;
+&nbsp;
 
 # My Pages
 
@@ -121,6 +132,8 @@ Home：[KunMinX 的个人博客](https://www.kunminx.com/)
 Juejin：[KunMinX 在掘金](https://juejin.im/user/58ab0de9ac502e006975d757/posts)
 
 [《重学安卓》 专栏](https://xiaozhuanlan.com/kunminx?rel=kunminx)
+
+付费用户加微信进群：myatejx | 知识星球提问：https://t.zsxq.com/VNRZrfa
 
 [![重学安卓小专栏](https://i.loli.net/2019/06/17/5d067596c2dbf49609.png)](https://xiaozhuanlan.com/kunminx?rel=kunminx)
 
