@@ -124,11 +124,6 @@ public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestM
     }
 
     @Override
-    public void requestAlbumCover(String coverUrl, String musicId) {
-        mController.requestAlbumCover(coverUrl, musicId);
-    }
-
-    @Override
     public void setSeek(int progress) {
         mController.setSeek(progress);
     }

@@ -44,7 +44,12 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         PlayerManager.getInstance().getStartService().observe(this, aBoolean -> {
-            getApplicationContext().startService(new Intent(getApplicationContext(), PlayerService.class));
+            Intent intent = new Intent(getApplicationContext(), PlayerService.class);
+            if (aBoolean) {
+                getApplicationContext().startService(intent);
+            } else {
+                getApplicationContext().stopService(intent);
+            }
         });
 
         mMainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);

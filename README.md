@@ -1,4 +1,4 @@
-![slogan.png](https://upload-images.jianshu.io/upload_images/57036-6590e6690f774316.png)
+![slogan.png](https://upload-images.jianshu.io/upload_images/57036-896e7a8809a9a705.png)
 
 &nbsp;
 
@@ -84,6 +84,8 @@
 
 # Thanks to
 
+[Jetpack-MusicPlayer](https://github.com/KunMinX/Jetpack-MusicPlayer)
+
 [AndroidX](https://developer.android.google.cn/jetpack/androidx)
 
 [Jetpack MVVM](https://developer.android.google.cn/jetpack/)
@@ -111,11 +113,11 @@ Juejin：[KunMinX 在掘金](https://juejin.im/user/58ab0de9ac502e006975d757/pos
 
 [《重学安卓》 专栏](https://xiaozhuanlan.com/kunminx?rel=kunminx)
 
-付费用户加微信进群：myatejx | 知识星球提问：https://t.zsxq.com/VNRZrfa
+付费读者加微信进群：myatejx   知识星球提问：https://t.zsxq.com/VNRZrfa
 
 [![重学安卓小专栏](https://i.loli.net/2019/06/17/5d067596c2dbf49609.png)](https://xiaozhuanlan.com/kunminx?rel=kunminx)
 
-## License
+# License
 
 ```
 Copyright 2018-2019 KunMinX

@@ -32,12 +32,17 @@ import android.widget.RemoteViews;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
-import com.kunminx.player.config.Configs;
 import com.kunminx.player.utils.ImageUtils;
 import com.kunminx.puremusic.MainActivity;
 import com.kunminx.puremusic.data.bean.TestAlbum;
+import com.kunminx.puremusic.data.config.Configs;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.player.helper.PlayerCallHelper;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.FileCallback;
+import com.lzy.okgo.model.Response;
+
+import java.io.File;
 
 /**
  * Create by KunMinX at 19/7/17
@@ -165,7 +170,7 @@ public class PlayerService extends Service {
                 notification.contentView.setImageViewBitmap(com.kunminx.player.R.id.player_album_art, bitmap);
                 notification.bigContentView.setImageViewBitmap(com.kunminx.player.R.id.player_album_art, bitmap);
             } else {
-                PlayerManager.getInstance().requestAlbumCover(testMusic.getCoverImg(), testMusic.getMusicId());
+                requestAlbumCover(testMusic.getCoverImg(), testMusic.getMusicId());
                 notification.contentView.setImageViewResource(com.kunminx.player.R.id.player_album_art, com.kunminx.player.R.drawable.bg_default);
                 notification.bigContentView.setImageViewResource(com.kunminx.player.R.id.player_album_art, com.kunminx.player.R.drawable.bg_default);
             }
@@ -205,6 +210,16 @@ public class PlayerService extends Service {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void requestAlbumCover(String coverUrl, String musicId) {
+        OkGo.<File>get(coverUrl)
+                .execute(new FileCallback(Configs.MUSIC_DOWNLOAD_PATH, musicId + ".jpg") {
+                    @Override
+                    public void onSuccess(Response<File> response) {
+                        startService(new Intent(getApplicationContext(), PlayerService.class));
+                    }
+                });
     }
 
     @Override

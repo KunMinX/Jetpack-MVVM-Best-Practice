@@ -47,7 +47,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation project(':architecture')
-    implementation 'com.kunminx.player:player:1.0.1'
+    implementation 'com.kunminx.player:player:1.0.2'
 
     compileOnly 'androidx.appcompat:appcompat:1.1.0'
     compileOnly 'androidx.constraintlayout:constraintlayout:2.0.0-beta3'
