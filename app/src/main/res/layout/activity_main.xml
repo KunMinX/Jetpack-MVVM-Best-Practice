@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:sothree="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.kunminx.puremusic.bridge.status.MainActivityViewModel" />
+
+    </data>
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/dl"
+        isOpenDrawer="@{vm.openDrawer}"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="-25dp"
+        android:fitsSystemWindows="true">
+
+        <com.sothree.slidinguppanel.SlidingUpPanelLayout
+            android:id="@+id/sliding_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:gravity="bottom"
+            sothree:umanoDragView="@+id/slide_fragment_host"
+            sothree:umanoOverlay="false"
+            sothree:umanoPanelHeight="@dimen/sliding_up_header"
+            sothree:umanoShadowHeight="5dp">
+
+            <fragment
+                android:id="@+id/main_fragment_host"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:defaultNavHost="true"
+                app:navGraph="@navigation/nav_main" />
+
+            <fragment
+                android:id="@+id/slide_fragment_host"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:defaultNavHost="true"
+                app:navGraph="@navigation/nav_slide" />
+
+        </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+
+        <fragment
+            android:id="@+id/drawer_fragment_host"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/nav_drawer" />
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+</layout>

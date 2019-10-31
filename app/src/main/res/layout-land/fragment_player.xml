@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2018-2019 KunMinX
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:playpauseview="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="click"
+            type="com.kunminx.puremusic.ui.page.PlayerFragment.ClickProxy" />
+
+        <variable
+            name="vm"
+            type="com.kunminx.puremusic.bridge.status.PlayerViewModel" />
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/topContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="top">
+
+        <com.kunminx.puremusic.ui.view.ForegroundImageView
+            android:id="@+id/album_art"
+            imageUrl="@{vm.img}"
+            placeHolder="@{vm.placeHolder}"
+            android:layout_width="@dimen/sliding_up_header_land"
+            android:layout_height="@dimen/sliding_up_header_land"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="48dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bg_album_default" />
+
+        <com.kunminx.puremusic.ui.view.LyricView
+            android:id="@+id/lyric_view"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:visibility="gone" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/icon_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="48dp"
+            android:orientation="horizontal">
+
+            <net.steamcrafted.materialiconlib.MaterialIconView
+                android:id="@+id/previous"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="24dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:onClick="@{()->click.previous()}"
+                android:scaleType="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/play_pause"
+                app:layout_constraintTop_toTopOf="parent"
+                app:materialIcon="skip_previous"
+                app:materialIconColor="@android:color/black"
+                app:materialIconSize="28dp" />
+
+            <com.kunminx.puremusic.ui.view.PlayPauseView
+                android:id="@+id/play_pause"
+                isPlaying="@{vm.isPlaying}"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:onClick="@{()->click.togglePlay()}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                playpauseview:drawableColor="@color/white"
+                playpauseview:isCircleDraw="true" />
+
+            <net.steamcrafted.materialiconlib.MaterialIconView
+                android:id="@+id/next"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="24dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:onClick="@{()->click.next()}"
+                android:scaleType="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/play_pause"
+                app:layout_constraintTop_toTopOf="parent"
+                app:materialIcon="skip_next"
+                app:materialIconColor="@android:color/black"
+                app:materialIconSize="28dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <SeekBar
+            android:id="@+id/seek_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/transparent"
+            android:clickable="true"
+            android:focusable="true"
+            android:max="@{vm.maxSeekDuration}"
+            android:minHeight="6dp"
+            android:paddingTop="24dp"
+            android:progress="@{vm.currentSeekPosition}"
+            android:progressDrawable="@drawable/progressbar_color"
+            android:thumb="@null"
+            android:visibility="visible" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

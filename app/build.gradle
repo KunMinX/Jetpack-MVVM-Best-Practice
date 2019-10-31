@@ -1,0 +1,86 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+    defaultConfig {
+        applicationId "com.kunminx.puremusic"
+        minSdkVersion 23
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    implementation project(':architecture')
+    implementation project(':player')
+
+    compileOnly 'androidx.appcompat:appcompat:1.1.0'
+    compileOnly 'androidx.constraintlayout:constraintlayout:2.0.0-beta3'
+    compileOnly 'com.google.android.material:material:1.2.0-alpha01'
+    compileOnly 'androidx.recyclerview:recyclerview:1.1.0-rc01'
+
+    compileOnly "androidx.lifecycle:lifecycle-runtime:2.1.0"
+    compileOnly "androidx.lifecycle:lifecycle-common-java8:2.1.0"
+    compileOnly "androidx.lifecycle:lifecycle-extensions:2.1.0"
+    compileOnly "androidx.lifecycle:lifecycle-viewmodel:2.1.0"
+    compileOnly "androidx.lifecycle:lifecycle-livedata:2.1.0"
+//    compileOnly "androidx.paging:paging-runtime:2.1.0"
+
+    compileOnly 'com.lwjlol.navigation:keep-fragmentstate:0.0.1'
+
+    compileOnly 'io.reactivex.rxjava2:rxjava:2.2.13'
+    compileOnly 'io.reactivex.rxjava2:rxandroid:2.1.1'
+
+    compileOnly 'com.github.bumptech.glide:glide:4.10.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
+
+    compileOnly 'com.yanzhenjie.permission:x:2.0.1'
+
+    compileOnly 'com.lzy.net:okgo:3.0.4'
+    compileOnly 'com.lzy.net:okrx2:2.0.2'
+    compileOnly 'com.lzy.net:okserver:2.0.5'
+
+    compileOnly 'com.google.code.gson:gson:2.8.6'
+
+    compileOnly 'com.danikula:videocache:2.7.1'
+
+    implementation(name: 'slidinguppanel', ext: 'aar')
+    implementation(name: 'materialiconlib', ext: 'aar')
+
+
+}
