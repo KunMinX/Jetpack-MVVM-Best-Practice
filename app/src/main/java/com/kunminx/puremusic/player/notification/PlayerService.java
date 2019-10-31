@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-2019 KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,33 +32,29 @@ import android.widget.RemoteViews;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
-import com.kunminx.architecture.data.usecase.UseCase;
-import com.kunminx.architecture.data.usecase.UseCaseHandler;
-import com.kunminx.architecture.utils.ImageUtils;
+import com.kunminx.player.config.Configs;
+import com.kunminx.player.dto.FreeMusic;
+import com.kunminx.player.dto.MusicAlbum;
+import com.kunminx.player.utils.ImageUtils;
 import com.kunminx.puremusic.MainActivity;
-import com.kunminx.puremusic.R;
-import com.kunminx.puremusic.data.bean.TestAlbum;
-import com.kunminx.puremusic.data.config.Configs;
-import com.kunminx.puremusic.data.usecase.DownloadUseCase;
-import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.player.helper.PlayerCallHelper;
-
-import java.io.File;
+import com.kunminx.puremusic.player.PlayerManager;
 
 /**
  * Create by KunMinX at 19/7/17
  */
 public class PlayerService extends Service {
 
+    private static final String GROUP_ID = "group_001";
+    private static final String CHANNEL_ID = "channel_001";
+
     public static final String NOTIFY_PREVIOUS = "pure_music.kunminx.previous";
     public static final String NOTIFY_CLOSE = "pure_music.kunminx.close";
     public static final String NOTIFY_PAUSE = "pure_music.kunminx.pause";
     public static final String NOTIFY_PLAY = "pure_music.kunminx.play";
     public static final String NOTIFY_NEXT = "pure_music.kunminx.next";
-    private static final String GROUP_ID = "group_001";
-    private static final String CHANNEL_ID = "channel_001";
+
     private PlayerCallHelper mPlayerCallHelper;
-    private DownloadUseCase mDownloadUseCase;
 
 
     @Override
@@ -88,7 +84,7 @@ public class PlayerService extends Service {
             });
         }
 
-        TestAlbum.TestMusic results = PlayerManager.getInstance().getCurrentPlayingMusic();
+        FreeMusic results = PlayerManager.getInstance().getCurrentPlayingMusic();
         if (results == null) {
             stopSelf();
             return START_NOT_STICKY;
@@ -100,18 +96,18 @@ public class PlayerService extends Service {
         return START_NOT_STICKY;
     }
 
-    private void createNotification(TestAlbum.TestMusic testMusic) {
+    private void createNotification(FreeMusic freeMusic) {
         try {
-            String title = testMusic.getTitle();
-            TestAlbum album = PlayerManager.getInstance().getAlbum();
-            String summary = album.getSummary();
+            String title = freeMusic.getTitle();
+            MusicAlbum musicAlbum = PlayerManager.getInstance().getAlbum();
+            String summary = musicAlbum.getSummary();
 
             RemoteViews simpleContentView = new RemoteViews(
-                    getApplicationContext().getPackageName(), R.layout.notify_player_small);
+                    getApplicationContext().getPackageName(), com.kunminx.player.R.layout.notify_player_small);
 
-            RemoteViews expandedView;
+            RemoteViews expandedView = null;
             expandedView = new RemoteViews(
-                    getApplicationContext().getPackageName(), R.layout.notify_player_big);
+                    getApplicationContext().getPackageName(), com.kunminx.player.R.layout.notify_player_big);
 
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.setAction("showPlayer");
@@ -122,18 +118,18 @@ public class PlayerService extends Service {
                 NotificationManager notificationManager = (NotificationManager)
                         getSystemService(Context.NOTIFICATION_SERVICE);
 
-                NotificationChannelGroup playGroup = new NotificationChannelGroup(GROUP_ID, getString(R.string.play));
+                NotificationChannelGroup playGroup = new NotificationChannelGroup(GROUP_ID, getString(com.kunminx.player.R.string.play));
                 notificationManager.createNotificationChannelGroup(playGroup);
 
                 NotificationChannel playChannel = new NotificationChannel(CHANNEL_ID,
-                        getString(R.string.notify_of_play), NotificationManager.IMPORTANCE_DEFAULT);
+                        getString(com.kunminx.player.R.string.notify_of_play), NotificationManager.IMPORTANCE_DEFAULT);
                 playChannel.setGroup(GROUP_ID);
                 notificationManager.createNotificationChannel(playChannel);
             }
 
             Notification notification = new NotificationCompat.Builder(
                     getApplicationContext(), CHANNEL_ID)
-                    .setSmallIcon(R.drawable.ic_player)
+                    .setSmallIcon(com.kunminx.player.R.drawable.ic_player)
                     .setContentIntent(contentIntent)
                     .setOnlyAlertOnce(true)
                     .setContentTitle(title).build();
@@ -144,35 +140,35 @@ public class PlayerService extends Service {
             setListeners(simpleContentView);
             setListeners(expandedView);
 
-            notification.contentView.setViewVisibility(R.id.player_progress_bar, View.GONE);
-            notification.contentView.setViewVisibility(R.id.player_next, View.VISIBLE);
-            notification.contentView.setViewVisibility(R.id.player_previous, View.VISIBLE);
-            notification.bigContentView.setViewVisibility(R.id.player_next, View.VISIBLE);
-            notification.bigContentView.setViewVisibility(R.id.player_previous, View.VISIBLE);
-            notification.bigContentView.setViewVisibility(R.id.player_progress_bar, View.GONE);
+            notification.contentView.setViewVisibility(com.kunminx.player.R.id.player_progress_bar, View.GONE);
+            notification.contentView.setViewVisibility(com.kunminx.player.R.id.player_next, View.VISIBLE);
+            notification.contentView.setViewVisibility(com.kunminx.player.R.id.player_previous, View.VISIBLE);
+            notification.bigContentView.setViewVisibility(com.kunminx.player.R.id.player_next, View.VISIBLE);
+            notification.bigContentView.setViewVisibility(com.kunminx.player.R.id.player_previous, View.VISIBLE);
+            notification.bigContentView.setViewVisibility(com.kunminx.player.R.id.player_progress_bar, View.GONE);
 
             boolean isPaused = PlayerManager.getInstance().isPaused();
-            notification.contentView.setViewVisibility(R.id.player_pause, isPaused ? View.GONE : View.VISIBLE);
-            notification.contentView.setViewVisibility(R.id.player_play, isPaused ? View.VISIBLE : View.GONE);
-            notification.bigContentView.setViewVisibility(R.id.player_pause, isPaused ? View.GONE : View.VISIBLE);
-            notification.bigContentView.setViewVisibility(R.id.player_play, isPaused ? View.VISIBLE : View.GONE);
+            notification.contentView.setViewVisibility(com.kunminx.player.R.id.player_pause, isPaused ? View.GONE : View.VISIBLE);
+            notification.contentView.setViewVisibility(com.kunminx.player.R.id.player_play, isPaused ? View.VISIBLE : View.GONE);
+            notification.bigContentView.setViewVisibility(com.kunminx.player.R.id.player_pause, isPaused ? View.GONE : View.VISIBLE);
+            notification.bigContentView.setViewVisibility(com.kunminx.player.R.id.player_play, isPaused ? View.VISIBLE : View.GONE);
 
-            notification.contentView.setTextViewText(R.id.player_song_name, title);
-            notification.contentView.setTextViewText(R.id.player_author_name, summary);
-            notification.bigContentView.setTextViewText(R.id.player_song_name, title);
-            notification.bigContentView.setTextViewText(R.id.player_author_name, summary);
+            notification.contentView.setTextViewText(com.kunminx.player.R.id.player_song_name, title);
+            notification.contentView.setTextViewText(com.kunminx.player.R.id.player_author_name, summary);
+            notification.bigContentView.setTextViewText(com.kunminx.player.R.id.player_song_name, title);
+            notification.bigContentView.setTextViewText(com.kunminx.player.R.id.player_author_name, summary);
             notification.flags |= Notification.FLAG_ONGOING_EVENT;
 
-            String coverPath = Configs.COVER_PATH + File.separator + testMusic.getMusicId() + ".jpg";
+            String coverPath = Configs.MUSIC_DOWNLOAD_PATH + freeMusic.getMusicId() + ".jpg";
             Bitmap bitmap = ImageUtils.getBitmap(coverPath);
 
             if (bitmap != null) {
-                notification.contentView.setImageViewBitmap(R.id.player_album_art, bitmap);
-                notification.bigContentView.setImageViewBitmap(R.id.player_album_art, bitmap);
+                notification.contentView.setImageViewBitmap(com.kunminx.player.R.id.player_album_art, bitmap);
+                notification.bigContentView.setImageViewBitmap(com.kunminx.player.R.id.player_album_art, bitmap);
             } else {
-                requestAlbumCover(testMusic.getCoverImg(), testMusic.getMusicId());
-                notification.contentView.setImageViewResource(R.id.player_album_art, R.drawable.bg_album_default);
-                notification.bigContentView.setImageViewResource(R.id.player_album_art, R.drawable.bg_album_default);
+                PlayerManager.getInstance().requestAlbumCover(freeMusic.getImg(), freeMusic.getMusicId());
+                notification.contentView.setImageViewResource(com.kunminx.player.R.id.player_album_art, com.kunminx.player.R.drawable.bg_default);
+                notification.bigContentView.setImageViewResource(com.kunminx.player.R.id.player_album_art, com.kunminx.player.R.drawable.bg_default);
             }
 
             startForeground(5, notification);
@@ -190,46 +186,26 @@ public class PlayerService extends Service {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),
                     0, new Intent(NOTIFY_PREVIOUS).setPackage(getPackageName()),
                     PendingIntent.FLAG_UPDATE_CURRENT);
-            view.setOnClickPendingIntent(R.id.player_previous, pendingIntent);
+            view.setOnClickPendingIntent(com.kunminx.player.R.id.player_previous, pendingIntent);
             pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),
                     0, new Intent(NOTIFY_CLOSE).setPackage(getPackageName()),
                     PendingIntent.FLAG_UPDATE_CURRENT);
-            view.setOnClickPendingIntent(R.id.player_close, pendingIntent);
+            view.setOnClickPendingIntent(com.kunminx.player.R.id.player_close, pendingIntent);
             pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),
                     0, new Intent(NOTIFY_PAUSE).setPackage(getPackageName()),
                     PendingIntent.FLAG_UPDATE_CURRENT);
-            view.setOnClickPendingIntent(R.id.player_pause, pendingIntent);
+            view.setOnClickPendingIntent(com.kunminx.player.R.id.player_pause, pendingIntent);
             pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),
                     0, new Intent(NOTIFY_NEXT).setPackage(getPackageName()),
                     PendingIntent.FLAG_UPDATE_CURRENT);
-            view.setOnClickPendingIntent(R.id.player_next, pendingIntent);
+            view.setOnClickPendingIntent(com.kunminx.player.R.id.player_next, pendingIntent);
             pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),
                     0, new Intent(NOTIFY_PLAY).setPackage(getPackageName()),
                     PendingIntent.FLAG_UPDATE_CURRENT);
-            view.setOnClickPendingIntent(R.id.player_play, pendingIntent);
+            view.setOnClickPendingIntent(com.kunminx.player.R.id.player_play, pendingIntent);
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void requestAlbumCover(String coverUrl, String musicId) {
-        if (mDownloadUseCase == null) {
-            mDownloadUseCase = new DownloadUseCase();
-        }
-
-        UseCaseHandler.getInstance().execute(mDownloadUseCase,
-                new DownloadUseCase.RequestValues(coverUrl, musicId + ".jpg"),
-                new UseCase.UseCaseCallback<DownloadUseCase.ResponseValue>() {
-                    @Override
-                    public void onSuccess(DownloadUseCase.ResponseValue response) {
-                        startService(new Intent(getApplicationContext(), PlayerService.class));
-                    }
-
-                    @Override
-                    public void onError() {
-
-                    }
-                });
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-2019 KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import android.animation.IntEvaluator;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -29,10 +30,10 @@ import android.view.animation.Transformation;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
-import com.kunminx.architecture.utils.DisplayUtils;
-import com.kunminx.architecture.utils.ScreenUtils;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.databinding.FragmentPlayerBinding;
+import com.kunminx.architecture.utils.DisplayUtils;
+import com.kunminx.architecture.utils.ScreenUtils;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 /**
@@ -43,6 +44,8 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
     private FragmentPlayerBinding mBinding;
     private SlidingUpPanelLayout mSlidingUpPanelLayout;
 
+    private Drawable albumImageDrawable;
+
     private int titleEndTranslationX;
     private int artistEndTranslationX;
     private int artistNormalEndTranslationY;
@@ -50,16 +53,22 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
     private int contentNormalEndTranslationY;
     private int contentFullEndTranslationY;
 
-    private int modeStartX;
+    private int lyricLineHeight;
+    private int lyricFullHeight;
+    private int lyricLineStartTranslationY;
+    private int lyricLineEndTranslationY;
+    private int lyricFullTranslationY;
+
+    private int markStartX;
     private int previousStartX;
     private int playPauseStartX;
     private int nextStartX;
-    private int playQueueStartX;
+    private int playqueueStartX;
     private int playPauseEndX;
     private int previousEndX;
-    private int modeEndX;
+    private int markEndX;
     private int nextEndX;
-    private int playQueueEndX;
+    private int playqueueEndX;
     private int iconContainerStartY;
     private int iconContainerEndY;
 
@@ -88,7 +97,8 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
         playPauseDrawableColor = Color.BLACK;
         nowPlayingCardColor = Color.WHITE;
         caculateTitleAndArtist();
-        calculateIcons();
+        caculateIcons();
+        caculateLyricView();
         mBinding.playPause.setDrawableColor(playPauseDrawableColor);
     }
 
@@ -106,24 +116,26 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
         mBinding.title.setTranslationX(floatEvaluator.evaluate(slideOffset, 0, titleEndTranslationX));
         mBinding.artist.setTranslationX(floatEvaluator.evaluate(slideOffset, 0, artistEndTranslationX));
         mBinding.artist.setTranslationY(floatEvaluator.evaluate(slideOffset, 0, artistNormalEndTranslationY));
-        mBinding.summary.setTranslationY(floatEvaluator.evaluate(slideOffset, 0, contentNormalEndTranslationY));
+        mBinding.content.setTranslationY(floatEvaluator.evaluate(slideOffset, 0, contentNormalEndTranslationY));
 
         //aniamte icons
         mBinding.playPause.setX(intEvaluator.evaluate(slideOffset, playPauseStartX, playPauseEndX));
         mBinding.playPause.setCircleAlpah(intEvaluator.evaluate(slideOffset, 0, 255));
         mBinding.playPause.setDrawableColor((int) colorEvaluator.evaluate(slideOffset, playPauseDrawableColor, nowPlayingCardColor));
         mBinding.previous.setX(intEvaluator.evaluate(slideOffset, previousStartX, previousEndX));
-        mBinding.mode.setX(intEvaluator.evaluate(slideOffset, modeStartX, modeEndX));
+        mBinding.mark.setX(intEvaluator.evaluate(slideOffset, markStartX, markEndX));
         mBinding.next.setX(intEvaluator.evaluate(slideOffset, nextStartX, nextEndX));
-        mBinding.icPlayList.setX(intEvaluator.evaluate(slideOffset, playQueueStartX, playQueueEndX));
-        mBinding.mode.setAlpha(floatEvaluator.evaluate(slideOffset, 0, 1));
+        mBinding.icPlayList.setX(intEvaluator.evaluate(slideOffset, playqueueStartX, playqueueEndX));
+        mBinding.mark.setAlpha(floatEvaluator.evaluate(slideOffset, 0, 1));
         mBinding.previous.setAlpha(floatEvaluator.evaluate(slideOffset, 0, 1));
         mBinding.iconContainer.setY(intEvaluator.evaluate(slideOffset, iconContainerStartY, iconContainerEndY));
 
-        CoordinatorLayout.LayoutParams params1 = (CoordinatorLayout.LayoutParams) mBinding.summary.getLayoutParams();
+        CoordinatorLayout.LayoutParams params1 = (CoordinatorLayout.LayoutParams) mBinding.content.getLayoutParams();
         params1.height = intEvaluator.evaluate(slideOffset, DisplayUtils.dp2px(55), DisplayUtils.dp2px(60));
-        mBinding.summary.setLayoutParams(params1);
+        mBinding.content.setLayoutParams(params1);
 
+        //animate lyric view
+        mBinding.lyricView.setTranslationY(lyricLineStartTranslationY - (lyricLineStartTranslationY - lyricLineEndTranslationY) * slideOffset);
     }
 
     @Override
@@ -133,8 +145,8 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
             if (mBinding.songProgressNormal.getVisibility() != View.INVISIBLE) {
                 mBinding.songProgressNormal.setVisibility(View.INVISIBLE);
             }
-            if (mBinding.mode.getVisibility() != View.VISIBLE) {
-                mBinding.mode.setVisibility(View.VISIBLE);
+            if (mBinding.mark.getVisibility() != View.VISIBLE) {
+                mBinding.mark.setVisibility(View.VISIBLE);
             }
             if (mBinding.previous.getVisibility() != View.VISIBLE) {
                 mBinding.previous.setVisibility(View.VISIBLE);
@@ -148,7 +160,7 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
         if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
             mStatus = Status.EXPANDED;
             toolbarSlideIn(panel.getContext());
-            mBinding.mode.setClickable(true);
+            mBinding.mark.setClickable(true);
             mBinding.previous.setClickable(true);
             mBinding.topContainer.setOnClickListener(v -> {
                 if (mStatus == Status.EXPANDED) {
@@ -164,8 +176,8 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
             if (mBinding.songProgressNormal.getVisibility() != View.VISIBLE) {
                 mBinding.songProgressNormal.setVisibility(View.VISIBLE);
             }
-            if (mBinding.mode.getVisibility() != View.GONE) {
-                mBinding.mode.setVisibility(View.GONE);
+            if (mBinding.mark.getVisibility() != View.GONE) {
+                mBinding.mark.setVisibility(View.GONE);
             }
             if (mBinding.previous.getVisibility() != View.GONE) {
                 mBinding.previous.setVisibility(View.GONE);
@@ -178,6 +190,9 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
         } else if (newState == SlidingUpPanelLayout.PanelState.DRAGGING) {
             if (mBinding.customToolbar.getVisibility() != View.INVISIBLE) {
                 mBinding.customToolbar.setVisibility(View.INVISIBLE);
+            }
+            if (mBinding.lyricView.getVisibility() != View.VISIBLE) {
+                mBinding.lyricView.setVisibility(View.VISIBLE);
             }
         }
 
@@ -212,21 +227,38 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
         }
     }
 
-    private void calculateIcons() {
-        modeStartX = mBinding.mode.getLeft();
+    private void caculateIcons() {
+        markStartX = mBinding.mark.getLeft();
         previousStartX = mBinding.previous.getLeft();
         playPauseStartX = mBinding.playPause.getLeft();
         nextStartX = mBinding.next.getLeft();
-        playQueueStartX = mBinding.icPlayList.getLeft();
+        playqueueStartX = mBinding.icPlayList.getLeft();
         int size = DisplayUtils.dp2px(36);
         int gap = (screenWidth - 5 * (size)) / 6;
         playPauseEndX = (screenWidth / 2) - (size / 2);
         previousEndX = playPauseEndX - gap - size;
-        modeEndX = previousEndX - gap - size;
+        markEndX = previousEndX - gap - size;
         nextEndX = playPauseEndX + gap + size;
-        playQueueEndX = nextEndX + gap + size;
+        playqueueEndX = nextEndX + gap + size;
         iconContainerStartY = mBinding.iconContainer.getTop();
         iconContainerEndY = screenHeight - 3 * mBinding.iconContainer.getHeight() - mBinding.seekBottom.getHeight();
+    }
+
+    private void caculateLyricView() {
+        int lyricFullMarginTop = mBinding.customToolbar.getTop()
+                + mBinding.customToolbar.getHeight() + DisplayUtils.dp2px(32);
+
+        int lyricFullMarginBottom = mBinding.iconContainer.getBottom()
+                + mBinding.iconContainer.getHeight() + DisplayUtils.dp2px(32);
+
+        lyricLineHeight = DisplayUtils.dp2px(32);
+        lyricFullHeight = screenHeight - lyricFullMarginTop - lyricFullMarginBottom;
+
+        lyricLineStartTranslationY = screenHeight;
+        int gapBetweenArtistAndLyric = iconContainerEndY - contentNormalEndTranslationY - mBinding.content.getHeight();
+        lyricLineEndTranslationY = iconContainerEndY - gapBetweenArtistAndLyric / 2 - lyricLineHeight / 2;
+        lyricFullTranslationY = mBinding.customToolbar.getTop()
+                + mBinding.customToolbar.getHeight() + DisplayUtils.dp2px(32);
     }
 
     private void toolbarSlideIn(Context context) {
@@ -253,16 +285,51 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
     }
 
     private void animateToFullscreen() {
+        //album art fullscreen
+        albumImageDrawable = mBinding.albumArt.getDrawable();
+
         //animate title and artist
         Animation contentAnimation = new Animation() {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
-                mBinding.summary.setTranslationY(contentNormalEndTranslationY - (contentNormalEndTranslationY - contentFullEndTranslationY) * interpolatedTime);
+                mBinding.content.setTranslationY(contentNormalEndTranslationY - (contentNormalEndTranslationY - contentFullEndTranslationY) * interpolatedTime);
                 mBinding.artist.setTranslationY(artistNormalEndTranslationY - (artistNormalEndTranslationY - artistFullEndTranslationY) * interpolatedTime);
             }
         };
         contentAnimation.setDuration(150);
         mBinding.artist.startAnimation(contentAnimation);
+
+        //animate lyric
+        Animation lyricAnimation = new Animation() {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                CoordinatorLayout.LayoutParams lyricLayout = (CoordinatorLayout.LayoutParams) mBinding.lyricView.getLayoutParams();
+                lyricLayout.height = (int) (lyricLineHeight + (lyricFullHeight - lyricLineHeight) * interpolatedTime);
+                mBinding.lyricView.setLayoutParams(lyricLayout);
+                mBinding.lyricView.setTranslationY(lyricLineEndTranslationY - (lyricLineEndTranslationY - lyricFullTranslationY) * interpolatedTime);
+            }
+        };
+        lyricAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mBinding.lyricView.setHighLightTextColor(Color.BLACK);
+                mBinding.lyricView.setPlayable(true);
+                mBinding.lyricView.setTouchable(true);
+                mBinding.lyricView.setOnClickListener(v -> animateToNormal());
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        lyricAnimation.setDuration(150);
+        mBinding.lyricView.startAnimation(lyricAnimation);
 
         mStatus = Status.FULLSCREEN;
     }
@@ -272,18 +339,56 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
         CoordinatorLayout.LayoutParams imageLayout = (CoordinatorLayout.LayoutParams) mBinding.albumArt.getLayoutParams();
         imageLayout.height = screenWidth;
         imageLayout.width = screenWidth;
+//        mBinding.albumArt.setImageDrawable(albumImageDrawable);
         mBinding.albumArt.setLayoutParams(imageLayout);
+//        mBinding.albumArt.setForeground(
+//                ScrimUtil.makeCubicGradientScrimDrawable(nowPlayingCardColor,
+//                        8, Gravity.CENTER_HORIZONTAL));
 
         //animate title and artist
         Animation contentAnimation = new Animation() {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
-                mBinding.summary.setTranslationY(contentFullEndTranslationY + (contentNormalEndTranslationY - contentFullEndTranslationY) * interpolatedTime);
+                mBinding.content.setTranslationY(contentFullEndTranslationY + (contentNormalEndTranslationY - contentFullEndTranslationY) * interpolatedTime);
                 mBinding.artist.setTranslationY(artistFullEndTranslationY + (artistNormalEndTranslationY - artistFullEndTranslationY) * interpolatedTime);
             }
         };
         contentAnimation.setDuration(300);
         mBinding.artist.startAnimation(contentAnimation);
+
+        //adjust lyricview
+        Animation lyricAnimation = new Animation() {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mBinding.lyricView.getLayoutParams();
+                layoutParams.height = (int) (lyricFullHeight - (lyricFullHeight - lyricLineHeight) * interpolatedTime);
+                mBinding.lyricView.setLayoutParams(layoutParams);
+                mBinding.lyricView.setTranslationY(lyricFullTranslationY + (lyricLineEndTranslationY - lyricFullTranslationY) * interpolatedTime);
+            }
+        };
+        lyricAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mBinding.lyricView.setPlayable(false);
+                mBinding.lyricView.setHighLightTextColor(mBinding.lyricView.getDefaultColor());
+                mBinding.lyricView.setTouchable(false);
+                mBinding.lyricView.setClickable(false);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        lyricAnimation.setDuration(300);
+        mBinding.lyricView.setPlayable(false);
+        mBinding.lyricView.startAnimation(lyricAnimation);
+
 
         mStatus = Status.EXPANDED;
     }

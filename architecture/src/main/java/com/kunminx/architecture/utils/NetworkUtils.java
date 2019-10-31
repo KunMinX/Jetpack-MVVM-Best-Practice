@@ -1,3 +1,19 @@
+/*
+ * Copyright 2018-2019 KunMinX
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.kunminx.architecture.utils;
 
 import android.annotation.SuppressLint;
@@ -44,6 +60,16 @@ public final class NetworkUtils {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
+    public enum NetworkType {
+        NETWORK_ETHERNET,
+        NETWORK_WIFI,
+        NETWORK_4G,
+        NETWORK_3G,
+        NETWORK_2G,
+        NETWORK_UNKNOWN,
+        NETWORK_NO
+    }
+
     /**
      * Open the settings of wireless.
      */
@@ -88,8 +114,7 @@ public final class NetworkUtils {
     @RequiresPermission(INTERNET)
     public static boolean isAvailableByPing(String ip) {
         if (ip == null || ip.length() <= 0) {
-            // default ping ip
-            ip = "223.5.5.5";
+            ip = "223.5.5.5";// default ping ip
         }
         ShellUtils.CommandResult result = ShellUtils.execCmd(String.format("ping -c 1 %s", ip), false);
         boolean ret = result.result == 0;
@@ -102,9 +127,14 @@ public final class NetworkUtils {
         return ret;
     }
 
+
     @RequiresPermission(INTERNET)
     public static void isAvailableByDns(String ip) {
 
+    }
+
+    public interface Callback {
+        void call(boolean isSuccess);
     }
 
     /**
@@ -116,9 +146,7 @@ public final class NetworkUtils {
         try {
             TelephonyManager tm =
                     (TelephonyManager) Utils.getApp().getSystemService(Context.TELEPHONY_SERVICE);
-            if (tm == null) {
-                return false;
-            }
+            if (tm == null) return false;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 return tm.isDataEnabled();
             }
@@ -147,9 +175,7 @@ public final class NetworkUtils {
         try {
             TelephonyManager tm =
                     (TelephonyManager) Utils.getApp().getSystemService(Context.TELEPHONY_SERVICE);
-            if (tm == null) {
-                return false;
-            }
+            if (tm == null) return false;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 tm.setDataEnabled(enabled);
                 return false;
@@ -204,9 +230,7 @@ public final class NetworkUtils {
     public static boolean getWifiEnabled() {
         @SuppressLint("WifiManagerLeak")
         WifiManager manager = (WifiManager) Utils.getApp().getSystemService(WIFI_SERVICE);
-        if (manager == null) {
-            return false;
-        }
+        if (manager == null) return false;
         return manager.isWifiEnabled();
     }
 
@@ -220,12 +244,8 @@ public final class NetworkUtils {
     public static void setWifiEnabled(final boolean enabled) {
         @SuppressLint("WifiManagerLeak")
         WifiManager manager = (WifiManager) Utils.getApp().getSystemService(WIFI_SERVICE);
-        if (manager == null) {
-            return;
-        }
-        if (enabled == manager.isWifiEnabled()) {
-            return;
-        }
+        if (manager == null) return;
+        if (enabled == manager.isWifiEnabled()) return;
         manager.setWifiEnabled(enabled);
     }
 
@@ -239,9 +259,7 @@ public final class NetworkUtils {
     public static boolean isWifiConnected() {
         ConnectivityManager cm =
                 (ConnectivityManager) Utils.getApp().getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (cm == null) {
-            return false;
-        }
+        if (cm == null) return false;
         NetworkInfo ni = cm.getActiveNetworkInfo();
         return ni != null && ni.getType() == ConnectivityManager.TYPE_WIFI;
     }
@@ -266,9 +284,7 @@ public final class NetworkUtils {
     public static String getNetworkOperatorName() {
         TelephonyManager tm =
                 (TelephonyManager) Utils.getApp().getSystemService(Context.TELEPHONY_SERVICE);
-        if (tm == null) {
-            return "";
-        }
+        if (tm == null) return "";
         return tm.getNetworkOperatorName();
     }
 
@@ -324,9 +340,9 @@ public final class NetworkUtils {
 
                     default:
                         String subtypeName = info.getSubtypeName();
-                        if ("TD-SCDMA".equalsIgnoreCase(subtypeName)
-                                || "WCDMA".equalsIgnoreCase(subtypeName)
-                                || "CDMA2000".equalsIgnoreCase(subtypeName)) {
+                        if (subtypeName.equalsIgnoreCase("TD-SCDMA")
+                                || subtypeName.equalsIgnoreCase("WCDMA")
+                                || subtypeName.equalsIgnoreCase("CDMA2000")) {
                             return NetworkType.NETWORK_3G;
                         }
                 }
@@ -346,17 +362,11 @@ public final class NetworkUtils {
     private static boolean isEthernet() {
         final ConnectivityManager cm =
                 (ConnectivityManager) Utils.getApp().getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (cm == null) {
-            return false;
-        }
+        if (cm == null) return false;
         final NetworkInfo info = cm.getNetworkInfo(ConnectivityManager.TYPE_ETHERNET);
-        if (info == null) {
-            return false;
-        }
+        if (info == null) return false;
         NetworkInfo.State state = info.getState();
-        if (null == state) {
-            return false;
-        }
+        if (null == state) return false;
         return state == NetworkInfo.State.CONNECTED || state == NetworkInfo.State.CONNECTING;
     }
 
@@ -364,9 +374,7 @@ public final class NetworkUtils {
     private static NetworkInfo getActiveNetworkInfo() {
         ConnectivityManager cm =
                 (ConnectivityManager) Utils.getApp().getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (cm == null) {
-            return null;
-        }
+        if (cm == null) return null;
         return cm.getActiveNetworkInfo();
     }
 
@@ -385,9 +393,7 @@ public final class NetworkUtils {
             while (nis.hasMoreElements()) {
                 NetworkInterface ni = nis.nextElement();
                 // To prevent phone of xiaomi return "10.0.2.15"
-                if (!ni.isUp() || ni.isLoopback()) {
-                    continue;
-                }
+                if (!ni.isUp() || ni.isLoopback()) continue;
                 Enumeration<InetAddress> addresses = ni.getInetAddresses();
                 while (addresses.hasMoreElements()) {
                     adds.addFirst(addresses.nextElement());
@@ -398,9 +404,7 @@ public final class NetworkUtils {
                     String hostAddress = add.getHostAddress();
                     boolean isIPv4 = hostAddress.indexOf(':') < 0;
                     if (useIPv4) {
-                        if (isIPv4) {
-                            return hostAddress;
-                        }
+                        if (isIPv4) return hostAddress;
                     } else {
                         if (!isIPv4) {
                             int index = hostAddress.indexOf('%');
@@ -428,9 +432,7 @@ public final class NetworkUtils {
             LinkedList<InetAddress> adds = new LinkedList<>();
             while (nis.hasMoreElements()) {
                 NetworkInterface ni = nis.nextElement();
-                if (!ni.isUp() || ni.isLoopback()) {
-                    continue;
-                }
+                if (!ni.isUp() || ni.isLoopback()) continue;
                 List<InterfaceAddress> ias = ni.getInterfaceAddresses();
                 for (int i = 0, size = ias.size(); i < size; i++) {
                     InterfaceAddress ia = ias.get(i);
@@ -474,9 +476,7 @@ public final class NetworkUtils {
     public static String getIpAddressByWifi() {
         @SuppressLint("WifiManagerLeak")
         WifiManager wm = (WifiManager) Utils.getApp().getSystemService(Context.WIFI_SERVICE);
-        if (wm == null) {
-            return "";
-        }
+        if (wm == null) return "";
         return Formatter.formatIpAddress(wm.getDhcpInfo().ipAddress);
     }
 
@@ -489,9 +489,7 @@ public final class NetworkUtils {
     public static String getGatewayByWifi() {
         @SuppressLint("WifiManagerLeak")
         WifiManager wm = (WifiManager) Utils.getApp().getSystemService(Context.WIFI_SERVICE);
-        if (wm == null) {
-            return "";
-        }
+        if (wm == null) return "";
         return Formatter.formatIpAddress(wm.getDhcpInfo().gateway);
     }
 
@@ -504,9 +502,7 @@ public final class NetworkUtils {
     public static String getNetMaskByWifi() {
         @SuppressLint("WifiManagerLeak")
         WifiManager wm = (WifiManager) Utils.getApp().getSystemService(Context.WIFI_SERVICE);
-        if (wm == null) {
-            return "";
-        }
+        if (wm == null) return "";
         return Formatter.formatIpAddress(wm.getDhcpInfo().netmask);
     }
 
@@ -519,23 +515,7 @@ public final class NetworkUtils {
     public static String getServerAddressByWifi() {
         @SuppressLint("WifiManagerLeak")
         WifiManager wm = (WifiManager) Utils.getApp().getSystemService(Context.WIFI_SERVICE);
-        if (wm == null) {
-            return "";
-        }
+        if (wm == null) return "";
         return Formatter.formatIpAddress(wm.getDhcpInfo().serverAddress);
-    }
-
-    public enum NetworkType {
-        NETWORK_ETHERNET,
-        NETWORK_WIFI,
-        NETWORK_4G,
-        NETWORK_3G,
-        NETWORK_2G,
-        NETWORK_UNKNOWN,
-        NETWORK_NO
-    }
-
-    public interface Callback {
-        void call(boolean isSuccess);
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-2019 KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,6 +64,10 @@ public class PlayPauseDrawable extends Drawable {
     private float mProgress;
     private boolean mIsPlay;
 
+    public void setmIsPlay(boolean mIsPlay) {
+        this.mIsPlay = mIsPlay;
+    }
+
     public PlayPauseDrawable(Context context) {
         final Resources res = context.getResources();
         mPaint.setAntiAlias(true);
@@ -76,17 +80,6 @@ public class PlayPauseDrawable extends Drawable {
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(color);
-    }
-
-    /**
-     * Linear interpolate between a and b with parameter t.
-     */
-    private static float lerp(float a, float b, float t) {
-        return a + (b - a) * t;
-    }
-
-    public void setmIsPlay(boolean mIsPlay) {
-        this.mIsPlay = mIsPlay;
     }
 
     @Override
@@ -173,13 +166,13 @@ public class PlayPauseDrawable extends Drawable {
         return mIsPlay;
     }
 
-    private float getProgress() {
-        return mProgress;
-    }
-
     private void setProgress(float progress) {
         mProgress = progress;
         invalidateSelf();
+    }
+
+    private float getProgress() {
+        return mProgress;
     }
 
     @Override
@@ -202,5 +195,12 @@ public class PlayPauseDrawable extends Drawable {
     @Override
     public int getOpacity() {
         return PixelFormat.TRANSLUCENT;
+    }
+
+    /**
+     * Linear interpolate between a and b with parameter t.
+     */
+    private static float lerp(float a, float b, float t) {
+        return a + (b - a) * t;
     }
 }

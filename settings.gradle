@@ -1,2 +1,2 @@
-include ':app', ':architecture'
-rootProject.name = 'PureMusic'
+include ':app', ':architecture', ':player'
+rootProject.name='PureMusic'

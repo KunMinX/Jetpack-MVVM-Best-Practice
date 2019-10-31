@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2018-2020 KunMinX
+  ~ Copyright 2018-2019 KunMinX
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,10 +15,7 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.kunminx.architecture">
-
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    package="com.kunminx.architecture" >
 
     <application>
 
@@ -33,5 +30,8 @@
         </provider>
 
     </application>
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-2019 KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import com.kunminx.puremusic.R;
@@ -66,7 +65,6 @@ public class ForegroundImageView extends AppCompatImageView {
      *
      * @param drawable The Drawable to be drawn on top of the children.
      */
-    @Override
     public void setForeground(Drawable drawable) {
         if (foreground == drawable) {
             return;
@@ -89,16 +87,14 @@ public class ForegroundImageView extends AppCompatImageView {
     }
 
     @Override
-    protected boolean verifyDrawable(@NonNull Drawable who) {
+    protected boolean verifyDrawable(Drawable who) {
         return super.verifyDrawable(who) || who == foreground;
     }
 
     @Override
     public void jumpDrawablesToCurrentState() {
         super.jumpDrawablesToCurrentState();
-        if (foreground != null) {
-            foreground.jumpToCurrentState();
-        }
+        if (foreground != null) foreground.jumpToCurrentState();
     }
 
     @Override

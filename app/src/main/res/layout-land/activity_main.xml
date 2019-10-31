@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2018-2020 KunMinX
+  ~ Copyright 2018-2019 KunMinX
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
 
         <variable
             name="vm"
-            type="com.kunminx.puremusic.bridge.state.MainActivityViewModel" />
+            type="com.kunminx.puremusic.bridge.status.MainActivityViewModel" />
 
     </data>
 
@@ -29,7 +29,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:baselineAligned="false"
+        android:layout_marginTop="-25dp"
         android:orientation="horizontal">
 
         <fragment
@@ -37,7 +37,6 @@
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginTop="-25dp"
             android:layout_weight="1"
             android:fitsSystemWindows="true"
             app:defaultNavHost="true"

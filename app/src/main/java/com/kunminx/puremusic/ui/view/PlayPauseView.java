@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-2019 KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,6 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 
 import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
 
 import com.kunminx.puremusic.R;
 
@@ -55,16 +54,17 @@ public class PlayPauseView extends FrameLayout {
     };
 
     private static final long PLAY_PAUSE_ANIMATION_DURATION = 200;
-    public final boolean isDrawCircle;
+
     private final PlayPauseDrawable mDrawable;
     private final Paint mPaint = new Paint();
-    public int circleAlpha;
     private int mDrawableColor;
+    public boolean isDrawCircle;
+    public int circleAlpha;
+
     private AnimatorSet mAnimatorSet;
     private int mBackgroundColor;
     private int mWidth;
     private int mHeight;
-    private boolean mIsPlay;
 
     public PlayPauseView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -112,6 +112,17 @@ public class PlayPauseView extends FrameLayout {
         }
     }
 
+    public void setCircleColor(@ColorInt int color) {
+        mBackgroundColor = color;
+        invalidate();
+    }
+
+    public void setDrawableColor(@ColorInt int color) {
+        mDrawableColor = color;
+        mDrawable.setDrawableColor(color);
+        invalidate();
+    }
+
     public void setCircleAlpah(int alpah) {
         circleAlpha = alpah;
         invalidate();
@@ -121,23 +132,12 @@ public class PlayPauseView extends FrameLayout {
         return mBackgroundColor;
     }
 
-    public void setCircleColor(@ColorInt int color) {
-        mBackgroundColor = color;
-        invalidate();
-    }
-
     public int getDrawableColor() {
         return mDrawableColor;
     }
 
-    public void setDrawableColor(@ColorInt int color) {
-        mDrawableColor = color;
-        mDrawable.setDrawableColor(color);
-        invalidate();
-    }
-
     @Override
-    protected boolean verifyDrawable(@NonNull Drawable who) {
+    protected boolean verifyDrawable(Drawable who) {
         return who == mDrawable || super.verifyDrawable(who);
     }
 
@@ -159,13 +159,13 @@ public class PlayPauseView extends FrameLayout {
         mDrawable.draw(canvas);
     }
 
+    private boolean mIsPlay;
+
     public boolean isPlay() {
         return mIsPlay;
     }
 
-    /**
-     * 此时为待暂停标识
-     */
+    //此时为待暂停标识
     public void play() {
         if (mAnimatorSet != null) {
             mAnimatorSet.cancel();
@@ -179,9 +179,7 @@ public class PlayPauseView extends FrameLayout {
         pausePlayAnim.start();
     }
 
-    /**
-     * 此时为为待播放标识
-     */
+    //此时为为待播放标识
     public void pause() {
         if (mAnimatorSet != null) {
             mAnimatorSet.cancel();
