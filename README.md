@@ -2,7 +2,7 @@
 
 &nbsp;
 
-[《重学安卓》](https://xiaozhuanlan.com/kunminx) 付费读者加微信进群：myatejx
+[《重学安卓》](https://xiaozhuanlan.com/kunminx)付费读者加微信进群：myatejx
 
 &nbsp;
 
@@ -76,30 +76,8 @@
 4. ConstraintLayout 约束布局的最佳实践。
 5. **优秀的 用户体验 和 交互设计**。
 6. 绝不使用 Dagger，绝不使用奇技淫巧、编写艰深晦涩的代码。
-7. One More Thing：
+7. One More Thing：[Jetpack-MusicPlayer](https://github.com/KunMinX/Jetpack-MusicPlayer)
 
-&nbsp;
-&nbsp;
-
-# The One More Thing is：
-
-在这个项目中，我们用到了 我在 2018 年完成封装 但未曾开源的：
-
-- **一行代码即可接入的、**
-
-- **通过继承即可拓展 业务实体类的、**
-
-- **通过 LiveData 完成状态正确分发的、**
-
-- **全 GitHub 仅此一家的** 高度解耦、轻松配置、可通过 Maven 仓库远程依赖 的 **真正的第三方库**。
-
-
-
-好了，这一期的分享 也差不多了，让我们以 真香警告 做个收尾：
-
-### 就算不用云音乐听歌，也请务必收藏好该库！
-
-[GitHub 链接：https://github.com/KunMinX/Jetpack-MusicPlayer](https://github.com/KunMinX/Jetpack-MusicPlayer)
 
 &nbsp;
 &nbsp;
