@@ -1,0 +1,154 @@
+## 前言
+
+很高兴见到你！
+
+上周我在 各大技术社区 发表了一篇 [《Jetpack MVVM 精讲》](https://juejin.im/post/5dafc49b6fb9a04e17209922)，原以为在 知识网红 唱衰安卓 的 2019 会无人问津，没想到文章一经发布，从 国内知名公司 的架构师、技术经理，到 世界级公司 的 Android 开发 都在看。😉
+
+
+
+并且从读者的反馈来看，近期大部分安卓开发 已跳出舒适圈，开始尝试认识和应用 Jetpack MVVM 到实际的项目开发中。
+
+
+
+只可惜，关于 Jetpack MVVM，网上多是 东拼西凑、人云亦云、通篇贴代码 的文章，这不仅不能提供完整的视角 来帮助读者 首先明确背景状况，更是给还没入门 Jetpack 的读者 徒添困扰、起到劝退的作用。
+
+![reader_say.png](https://upload-images.jianshu.io/upload_images/57036-5445e7b4d66d97c7.png)
+
+
+
+好消息是，这一期，我们带着 **精心打磨的 Jetpack MVVM 最佳实践案例** 来了！
+
+
+
+|                  是 爱不释手 的 交互设计！                   |                     是 连贯 的 用户体验                      |                    唯一可信源 的 统一分发                    |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+| ![1231111323.gif](https://upload-images.jianshu.io/upload_images/57036-0a5cdc68f003211a.gif?imageMogr2/auto-orient/strip) | ![222.gif](https://upload-images.jianshu.io/upload_images/57036-2b21db531e51ff03.gif?imageMogr2/auto-orient/strip) | ![333.gif](https://upload-images.jianshu.io/upload_images/57036-9a541148ce5bed2e.gif?imageMogr2/auto-orient/strip) |
+
+
+
+|                    横竖屏布局 的 无缝切换                    |
+| :----------------------------------------------------------: |
+| ![444.gif](https://upload-images.jianshu.io/upload_images/57036-688f3eafc76cfa27.gif?imageMogr2/auto-orient/strip) |
+
+
+
+## 项目简介
+
+本人拥有 3 年的 移动端架构 践行和设计经验，领导团队重构的 中大型项目 多达十数个，对 Jetpack MVVM 架构在 确立规范化、标准化 开发模式 以 **减少不可预期的错误** 所作的努力，有着深入的理解。
+
+
+
+在这个的案例中，我将为你展示，Jetpack MVVM 是如何 **蕴繁于简** 地 将原本十分容易出错、一出错就会耽搁半天时间的开发工作，通过 寥寥的几行代码 轻而易举地完成。😉
+
+
+
+在这个项目中，
+
+
+
+> 我们为 **横、竖屏 **的情况 分别安排了两套 **截然不同的布局**，并且在 [生命周期](https://xiaozhuanlan.com/topic/0213584967)、[重建机制](https://xiaozhuanlan.com/topic/7692814530)、[状态管理](https://xiaozhuanlan.com/topic/7692814530)、[DataBinding](https://xiaozhuanlan.com/topic/9816742350)、[ViewModel](https://xiaozhuanlan.com/topic/6257931840)、[LiveData](https://xiaozhuanlan.com/topic/0168753249) 、[Navigation](https://xiaozhuanlan.com/topic/5860149732) 等知识点的帮助下，通过寥寥几行代码，轻松做到 **在横竖屏两种布局间 无缝地切换，并且不产生任何 预期外的错误**。
+
+·
+
+> 我们在多个 Fragment 页面 分别安排了 **播放状态 指示器**（包括 播放暂停按钮状态、播放列表当前索引指示 等），并向你展示了 如何 以及为何 通过 [LiveData](https://xiaozhuanlan.com/topic/0168753249) **配合** 作为唯一可信源 的 [ViewModel](https://xiaozhuanlan.com/topic/6257931840) 或单例，来实现 **全应用范围内 可追溯事件 的统一分发**。
+
+·
+
+> 我们在 Fragment 和 Activity 之间分别安排了 跨页面通信，从而向你展示 如何基于 **迪米特原则**（也称 最少知道原则）、通过 UnPeekLiveData 和 应用级 SharedViewModel 来实现 **生命周期安全的、事件源可追溯的 页面通信**（事件回调）。
+
+·
+
+> 我们在 `ui.page ` 、`data.repository`、`bridge.request` 等目录下，分别安排了 视图控制器、[ViewModel](https://xiaozhuanlan.com/topic/6257931840) 、DataRepository 等 内容，从而向你展示，**单向依赖** 的架构设计，是如何通过分层的 数据请求和响应，来 **规避 内存泄漏** 等问题。
+
+·
+
+> 并且，上述目录 所包含的 类中，我们大都 **提供了丰富的注释**，来帮助你理解 骨架代码 为何要如此设计、如此设计能够 **在软件工程的背景下** 避免哪些不可预期的错误。
+
+
+
+除了 **在 蕴繁于简 的代码中 掌握 MVVM 最佳实践**，你还可以 从这个开源项目中 获得的内容 包括：
+
+1. 整洁的代码风格 和 标准的资源命名规范。
+2. 对 视图控制器 知识点的 深入理解 和 正确使用。
+3. AndroidX 和 Material Design 2 的全面使用。
+4. ConstraintLayout 约束布局的最佳实践。
+5. **优秀的 用户体验 和 交互设计**。
+6. 绝不使用 Dagger，绝不使用奇技淫巧、编写艰深晦涩的代码。
+7. One More Thing：
+
+
+
+## The One More Thing is：
+
+在这个项目中，我们用到了 我在 2018 年完成封装 但未曾开源的：
+
+- **一行代码即可接入的、**
+
+- **通过继承即可拓展 业务实体类的、**
+
+- **通过 LiveData 完成状态正确分发的、**
+
+- **全 GitHub 仅此一家的 **高度解耦、轻松配置、可通过 Maven 仓库远程依赖 的 **真正的第三方库**。
+
+
+
+好了，这一期的时间 也差不多了，我们以一个 真香警告 做个收尾：
+
+### 就算 不做 音乐播放器，也请 务必 收藏好该库！
+
+[GitHub 链接：https://github.com/KunMinX/Jetpack-MusicPlayer](https://github.com/KunMinX/Jetpack-MusicPlayer)
+
+
+
+## Thanks to
+
+[AndroidX](https://developer.android.google.cn/jetpack/androidx)
+
+[Jetpack MVVM](https://developer.android.google.cn/jetpack/)
+
+[material-components-android](https://github.com/material-components/material-components-android)
+
+[轻听](https://play.google.com/store/apps/details?id=com.tencent.qqmusiclocalplayer)
+
+[material-design-icons](https://github.com/google/material-design-icons)
+
+[AndroidSlidingUpPanel](https://github.com/umano/AndroidSlidingUpPanel)
+
+[Glide](https://design.google.com/icons/)
+
+项目中使用的 图片素材 来自 [UnSplash](https://unsplash.com/) 提供的 **无版权免费图片**。
+
+项目中使用的 音频素材 来自 [BenSound](https://www.bensound.com/) 提供的 **无版权免费音乐**。
+
+
+
+## My Pages
+
+Email：[kunminx@gmail.com](mailto:kunminx@gmail.com)
+
+Home：[KunMinX 的个人博客](https://www.kunminx.com/)
+
+Juejin：[KunMinX 在掘金](https://juejin.im/user/58ab0de9ac502e006975d757/posts)
+
+[《重学安卓》 专栏](https://xiaozhuanlan.com/kunminx?rel=kunminx)
+
+[![重学安卓小专栏](https://i.loli.net/2019/06/17/5d067596c2dbf49609.png)](https://xiaozhuanlan.com/kunminx?rel=kunminx)
+
+## License
+
+```
+Copyright 2018-2019 KunMinX
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
+
