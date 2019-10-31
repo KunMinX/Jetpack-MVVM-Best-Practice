@@ -18,18 +18,14 @@ package com.kunminx.puremusic.data.repository;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.kunminx.puremusic.data.bean.AlbumResult;
-import com.kunminx.player.dto.MusicAlbum;
-import com.kunminx.puremusic.data.bean.SingerImg;
-import com.kunminx.puremusic.data.bean.SongInfo;
-import com.kunminx.puremusic.data.bean.SongResult;
+import com.kunminx.puremusic.data.bean.TestAlbum;
 
 /**
  * Create by KunMinX at 19/10/29
  */
 public interface IRemoteRequest {
 
-    void getSongsResult(MutableLiveData<SongResult.DataBean.SongsResult> liveData, String keyword);
+    /*void getSongsResult(MutableLiveData<SongResult.DataBean.SongsResult> liveData, String keyword);
 
     void getAlbumsResult(MutableLiveData<AlbumResult.DataBean.AlbumsResult> liveData, String keyword);
 
@@ -37,8 +33,8 @@ public interface IRemoteRequest {
 
     void getSongInfo(MutableLiveData<SongInfo.DataBean> liveData, String albumMid);
 
-    void getSongUrl(MutableLiveData<String> liveData, String songMid);
+    void getSongUrl(MutableLiveData<String> liveData, String songMid);*/
 
-    void getFreeMusic(MutableLiveData<MusicAlbum> liveData);
+    void getFreeMusic(MutableLiveData<TestAlbum> liveData);
 
 }

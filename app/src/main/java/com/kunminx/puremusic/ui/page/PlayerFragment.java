@@ -26,9 +26,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.kunminx.player.PlayerController;
-import com.kunminx.player.dto.FreeMusic;
-import com.kunminx.player.dto.MusicAlbum;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.bridge.status.PlayerViewModel;
 import com.kunminx.puremusic.databinding.FragmentPlayerBinding;
@@ -87,8 +84,8 @@ public class PlayerFragment extends BaseFragment {
 
             // 切歌时，音乐的标题、作者、封面 状态的改变
             mPlayerViewModel.title.set(changeMusic.getTitle());
-            mPlayerViewModel.artist.set(changeMusic.getContent());
-            mPlayerViewModel.img.set(changeMusic.getImg());
+            mPlayerViewModel.artist.set(changeMusic.getSummary());
+            mPlayerViewModel.coverImg.set(changeMusic.getImg());
         });
 
         PlayerManager.getInstance().getPlayingMusicLiveData().observe(this, playingMusic -> {

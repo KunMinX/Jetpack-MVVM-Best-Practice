@@ -19,11 +19,7 @@ package com.kunminx.puremusic.bridge.request;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.kunminx.puremusic.data.bean.AlbumResult;
-import com.kunminx.player.dto.MusicAlbum;
-import com.kunminx.puremusic.data.bean.SingerImg;
-import com.kunminx.puremusic.data.bean.SongInfo;
-import com.kunminx.puremusic.data.bean.SongResult;
+import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.data.repository.HttpRequestManager;
 
 /**
@@ -37,7 +33,7 @@ import com.kunminx.puremusic.data.repository.HttpRequestManager;
  */
 public class MusicRequestViewModel extends ViewModel {
 
-    private MutableLiveData<SongResult.DataBean.SongsResult> songResultLiveData;
+    /*private MutableLiveData<SongResult.DataBean.SongsResult> songResultLiveData;
 
     private MutableLiveData<AlbumResult.DataBean.AlbumsResult> albumResultLiveData;
 
@@ -45,11 +41,11 @@ public class MusicRequestViewModel extends ViewModel {
 
     private MutableLiveData<SongInfo.DataBean> songInfoLiveData;
 
-    private MutableLiveData<String> songUrlLiveData;
+    private MutableLiveData<String> songUrlLiveData;*/
 
-    private MutableLiveData<MusicAlbum> freeMusicLiveData;
+    private MutableLiveData<TestAlbum> freeMusicsLiveData;
 
-    public MutableLiveData<SongResult.DataBean.SongsResult> getSongResultLiveData() {
+    /*public MutableLiveData<SongResult.DataBean.SongsResult> getSongResultLiveData() {
         if (songResultLiveData == null) {
             songResultLiveData = new MutableLiveData<>();
         }
@@ -82,16 +78,16 @@ public class MusicRequestViewModel extends ViewModel {
             songUrlLiveData = new MutableLiveData<>();
         }
         return songUrlLiveData;
-    }
+    }*/
 
-    public MutableLiveData<MusicAlbum> getFreeMusicLiveData() {
-        if (freeMusicLiveData == null) {
-            freeMusicLiveData = new MutableLiveData<>();
+    public MutableLiveData<TestAlbum> getFreeMusicsLiveData() {
+        if (freeMusicsLiveData == null) {
+            freeMusicsLiveData = new MutableLiveData<>();
         }
-        return freeMusicLiveData;
+        return freeMusicsLiveData;
     }
 
-    public void requestSongsResult(String keyword) {
+    /*public void requestSongsResult(String keyword) {
         HttpRequestManager.getInstance().getSongsResult(getSongResultLiveData(), keyword);
     }
 
@@ -109,10 +105,10 @@ public class MusicRequestViewModel extends ViewModel {
 
     public void requestSongUrl(String songMid) {
         HttpRequestManager.getInstance().getSongUrl(getSongUrlLiveData(), songMid);
-    }
+    }*/
 
-    public void requestFreeMusic() {
-        HttpRequestManager.getInstance().getFreeMusic(getFreeMusicLiveData());
+    public void requestFreeMusics() {
+        HttpRequestManager.getInstance().getFreeMusic(getFreeMusicsLiveData());
     }
 
 }

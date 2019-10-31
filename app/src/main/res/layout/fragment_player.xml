@@ -39,7 +39,7 @@
 
         <com.kunminx.puremusic.ui.view.ForegroundImageView
             android:id="@+id/album_art"
-            imageUrl="@{vm.img}"
+            imageUrl="@{vm.coverImg}"
             placeHolder="@{vm.placeHolder}"
             android:layout_width="@dimen/sliding_up_header"
             android:layout_height="@dimen/sliding_up_header"
@@ -87,7 +87,7 @@
             android:visibility="gone" />
 
         <LinearLayout
-            android:id="@+id/content"
+            android:id="@+id/summary"
             android:layout_width="match_parent"
             android:layout_height="@dimen/sliding_up_header"
             android:layout_gravity="top"

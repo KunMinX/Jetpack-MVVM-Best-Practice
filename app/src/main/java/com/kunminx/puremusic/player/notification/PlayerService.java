@@ -33,12 +33,11 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import com.kunminx.player.config.Configs;
-import com.kunminx.player.dto.FreeMusic;
-import com.kunminx.player.dto.MusicAlbum;
 import com.kunminx.player.utils.ImageUtils;
 import com.kunminx.puremusic.MainActivity;
-import com.kunminx.puremusic.player.helper.PlayerCallHelper;
+import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.player.PlayerManager;
+import com.kunminx.puremusic.player.helper.PlayerCallHelper;
 
 /**
  * Create by KunMinX at 19/7/17
@@ -84,7 +83,7 @@ public class PlayerService extends Service {
             });
         }
 
-        FreeMusic results = PlayerManager.getInstance().getCurrentPlayingMusic();
+        TestAlbum.TestMusic results = PlayerManager.getInstance().getCurrentPlayingMusic();
         if (results == null) {
             stopSelf();
             return START_NOT_STICKY;
@@ -96,11 +95,11 @@ public class PlayerService extends Service {
         return START_NOT_STICKY;
     }
 
-    private void createNotification(FreeMusic freeMusic) {
+    private void createNotification(TestAlbum.TestMusic testMusic) {
         try {
-            String title = freeMusic.getTitle();
-            MusicAlbum musicAlbum = PlayerManager.getInstance().getAlbum();
-            String summary = musicAlbum.getSummary();
+            String title = testMusic.getTitle();
+            TestAlbum album = PlayerManager.getInstance().getAlbum();
+            String summary = album.getSummary();
 
             RemoteViews simpleContentView = new RemoteViews(
                     getApplicationContext().getPackageName(), com.kunminx.player.R.layout.notify_player_small);
@@ -159,14 +158,14 @@ public class PlayerService extends Service {
             notification.bigContentView.setTextViewText(com.kunminx.player.R.id.player_author_name, summary);
             notification.flags |= Notification.FLAG_ONGOING_EVENT;
 
-            String coverPath = Configs.MUSIC_DOWNLOAD_PATH + freeMusic.getMusicId() + ".jpg";
+            String coverPath = Configs.MUSIC_DOWNLOAD_PATH + testMusic.getMusicId() + ".jpg";
             Bitmap bitmap = ImageUtils.getBitmap(coverPath);
 
             if (bitmap != null) {
                 notification.contentView.setImageViewBitmap(com.kunminx.player.R.id.player_album_art, bitmap);
                 notification.bigContentView.setImageViewBitmap(com.kunminx.player.R.id.player_album_art, bitmap);
             } else {
-                PlayerManager.getInstance().requestAlbumCover(freeMusic.getImg(), freeMusic.getMusicId());
+                PlayerManager.getInstance().requestAlbumCover(testMusic.getCoverImg(), testMusic.getMusicId());
                 notification.contentView.setImageViewResource(com.kunminx.player.R.id.player_album_art, com.kunminx.player.R.drawable.bg_default);
                 notification.bigContentView.setImageViewResource(com.kunminx.player.R.id.player_album_art, com.kunminx.player.R.drawable.bg_default);
             }

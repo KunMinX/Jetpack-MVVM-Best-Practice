@@ -29,7 +29,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 import com.kunminx.puremusic.R;
-import com.kunminx.puremusic.ui.view.CommonViewPagerAdapter;
+import com.kunminx.architecture.ui.adapter.CommonViewPagerAdapter;
 import com.kunminx.puremusic.ui.view.PlayPauseView;
 
 /**

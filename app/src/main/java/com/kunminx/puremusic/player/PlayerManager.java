@@ -23,20 +23,19 @@ import androidx.lifecycle.MutableLiveData;
 import com.kunminx.player.IPlayController;
 import com.kunminx.player.PlayerController;
 import com.kunminx.player.dto.ChangeMusic;
-import com.kunminx.player.dto.FreeMusic;
-import com.kunminx.player.dto.MusicAlbum;
 import com.kunminx.player.dto.PlayingMusic;
+import com.kunminx.puremusic.data.bean.TestAlbum;
 
 import java.util.List;
 
 /**
  * Create by KunMinX at 19/10/31
  */
-public class PlayerManager implements IPlayController<MusicAlbum<FreeMusic>, FreeMusic> {
+public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestMusic> {
 
     private static PlayerManager sManager = new PlayerManager();
 
-    private PlayerController<MusicAlbum<FreeMusic>, FreeMusic> mController;
+    private PlayerController<TestAlbum, TestAlbum.TestMusic> mController;
 
     private Context mContext;
 
@@ -55,7 +54,7 @@ public class PlayerManager implements IPlayController<MusicAlbum<FreeMusic>, Fre
     }
 
     @Override
-    public void resetAlbum(MusicAlbum<FreeMusic> musicAlbum, int playIndex) {
+    public void resetAlbum(TestAlbum musicAlbum, int playIndex) {
         mController.resetAlbum(mContext, musicAlbum, playIndex);
     }
 
@@ -140,12 +139,12 @@ public class PlayerManager implements IPlayController<MusicAlbum<FreeMusic>, Fre
     }
 
     @Override
-    public MusicAlbum<FreeMusic> getAlbum() {
+    public TestAlbum getAlbum() {
         return mController.getAlbum();
     }
 
     @Override
-    public List<FreeMusic> getAlbumMusics() {
+    public List<TestAlbum.TestMusic> getAlbumMusics() {
         return mController.getAlbumMusics();
     }
 
@@ -173,7 +172,7 @@ public class PlayerManager implements IPlayController<MusicAlbum<FreeMusic>, Fre
 
     @Override
     public MutableLiveData<Boolean> getStartService() {
-        return mController.getStartService();
+        return mController.getStartForegroundService();
     }
 
     @Override
@@ -187,7 +186,7 @@ public class PlayerManager implements IPlayController<MusicAlbum<FreeMusic>, Fre
     }
 
     @Override
-    public FreeMusic getCurrentPlayingMusic() {
+    public TestAlbum.TestMusic getCurrentPlayingMusic() {
         return mController.getCurrentPlayingMusic();
     }
 }

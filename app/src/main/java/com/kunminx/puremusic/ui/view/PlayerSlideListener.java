@@ -116,7 +116,7 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
         mBinding.title.setTranslationX(floatEvaluator.evaluate(slideOffset, 0, titleEndTranslationX));
         mBinding.artist.setTranslationX(floatEvaluator.evaluate(slideOffset, 0, artistEndTranslationX));
         mBinding.artist.setTranslationY(floatEvaluator.evaluate(slideOffset, 0, artistNormalEndTranslationY));
-        mBinding.content.setTranslationY(floatEvaluator.evaluate(slideOffset, 0, contentNormalEndTranslationY));
+        mBinding.summary.setTranslationY(floatEvaluator.evaluate(slideOffset, 0, contentNormalEndTranslationY));
 
         //aniamte icons
         mBinding.playPause.setX(intEvaluator.evaluate(slideOffset, playPauseStartX, playPauseEndX));
@@ -130,9 +130,9 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
         mBinding.previous.setAlpha(floatEvaluator.evaluate(slideOffset, 0, 1));
         mBinding.iconContainer.setY(intEvaluator.evaluate(slideOffset, iconContainerStartY, iconContainerEndY));
 
-        CoordinatorLayout.LayoutParams params1 = (CoordinatorLayout.LayoutParams) mBinding.content.getLayoutParams();
+        CoordinatorLayout.LayoutParams params1 = (CoordinatorLayout.LayoutParams) mBinding.summary.getLayoutParams();
         params1.height = intEvaluator.evaluate(slideOffset, DisplayUtils.dp2px(55), DisplayUtils.dp2px(60));
-        mBinding.content.setLayoutParams(params1);
+        mBinding.summary.setLayoutParams(params1);
 
         //animate lyric view
         mBinding.lyricView.setTranslationY(lyricLineStartTranslationY - (lyricLineStartTranslationY - lyricLineEndTranslationY) * slideOffset);
@@ -255,7 +255,7 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
         lyricFullHeight = screenHeight - lyricFullMarginTop - lyricFullMarginBottom;
 
         lyricLineStartTranslationY = screenHeight;
-        int gapBetweenArtistAndLyric = iconContainerEndY - contentNormalEndTranslationY - mBinding.content.getHeight();
+        int gapBetweenArtistAndLyric = iconContainerEndY - contentNormalEndTranslationY - mBinding.summary.getHeight();
         lyricLineEndTranslationY = iconContainerEndY - gapBetweenArtistAndLyric / 2 - lyricLineHeight / 2;
         lyricFullTranslationY = mBinding.customToolbar.getTop()
                 + mBinding.customToolbar.getHeight() + DisplayUtils.dp2px(32);
@@ -292,7 +292,7 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
         Animation contentAnimation = new Animation() {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
-                mBinding.content.setTranslationY(contentNormalEndTranslationY - (contentNormalEndTranslationY - contentFullEndTranslationY) * interpolatedTime);
+                mBinding.summary.setTranslationY(contentNormalEndTranslationY - (contentNormalEndTranslationY - contentFullEndTranslationY) * interpolatedTime);
                 mBinding.artist.setTranslationY(artistNormalEndTranslationY - (artistNormalEndTranslationY - artistFullEndTranslationY) * interpolatedTime);
             }
         };
@@ -349,7 +349,7 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
         Animation contentAnimation = new Animation() {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
-                mBinding.content.setTranslationY(contentFullEndTranslationY + (contentNormalEndTranslationY - contentFullEndTranslationY) * interpolatedTime);
+                mBinding.summary.setTranslationY(contentFullEndTranslationY + (contentNormalEndTranslationY - contentFullEndTranslationY) * interpolatedTime);
                 mBinding.artist.setTranslationY(artistFullEndTranslationY + (artistNormalEndTranslationY - artistFullEndTranslationY) * interpolatedTime);
             }
         };

@@ -38,7 +38,7 @@
 
         <com.kunminx.puremusic.ui.view.ForegroundImageView
             android:id="@+id/album_art"
-            imageUrl="@{vm.img}"
+            imageUrl="@{vm.coverImg}"
             placeHolder="@{vm.placeHolder}"
             android:layout_width="@dimen/sliding_up_header_land"
             android:layout_height="@dimen/sliding_up_header_land"

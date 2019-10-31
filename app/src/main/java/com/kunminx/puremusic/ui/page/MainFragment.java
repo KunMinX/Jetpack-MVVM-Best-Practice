@@ -30,14 +30,12 @@ import com.bumptech.glide.Glide;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.bridge.request.MusicRequestViewModel;
 import com.kunminx.puremusic.bridge.status.MainViewModel;
-import com.kunminx.player.dto.FreeMusic;
+import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.databinding.AdapterPlayItemBinding;
 import com.kunminx.puremusic.databinding.FragmentMainBinding;
-import com.kunminx.player.PlayerController;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.base.BaseFragment;
 import com.kunminx.architecture.ui.adapter.SimpleBaseBindingAdapter;
-import com.kunminx.puremusic.ui.view.CommonViewPagerAdapter;
 
 /**
  * Create by KunMinX at 19/10/29
@@ -48,7 +46,7 @@ public class MainFragment extends BaseFragment {
     private FragmentMainBinding mBinding;
     private MainViewModel mMainViewModel;
     private MusicRequestViewModel mMusicRequestViewModel;
-    private SimpleBaseBindingAdapter<FreeMusic, AdapterPlayItemBinding> mAdapter;
+    private SimpleBaseBindingAdapter<TestAlbum.TestMusic, AdapterPlayItemBinding> mAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,12 +71,12 @@ public class MainFragment extends BaseFragment {
 
         mMainViewModel.initTabAndPage.set(true);
 
-        mAdapter = new SimpleBaseBindingAdapter<FreeMusic, AdapterPlayItemBinding>(getContext(), R.layout.adapter_play_item) {
+        mAdapter = new SimpleBaseBindingAdapter<TestAlbum.TestMusic, AdapterPlayItemBinding>(getContext(), R.layout.adapter_play_item) {
             @Override
-            protected void onSimpleBindItem(AdapterPlayItemBinding binding, FreeMusic item, RecyclerView.ViewHolder holder) {
+            protected void onSimpleBindItem(AdapterPlayItemBinding binding, TestAlbum.TestMusic item, RecyclerView.ViewHolder holder) {
                 binding.tvTitle.setText(item.getTitle());
-                binding.tvArtist.setText(item.getSource());
-                Glide.with(binding.ivCover.getContext()).load(item.getImg()).into(binding.ivCover);
+                binding.tvArtist.setText(item.getArtist().getName());
+                Glide.with(binding.ivCover.getContext()).load(item.getCoverImg()).into(binding.ivCover);
                 int currentIndex = PlayerManager.getInstance().getAlbumIndex();
                 binding.ivPlayStatus.setImageDrawable(getResources().getDrawable(
                         currentIndex == holder.getAdapterPosition() ? R.drawable.ic_music_gray_48dp : R.color.transparent));
@@ -100,9 +98,9 @@ public class MainFragment extends BaseFragment {
             mAdapter.notifyDataSetChanged();
         });
 
-        mMusicRequestViewModel.getFreeMusicLiveData().observe(this, musicAlbum -> {
-            if (musicAlbum != null && musicAlbum.getFreeMusics() != null) {
-                mAdapter.setList(musicAlbum.getFreeMusics());
+        mMusicRequestViewModel.getFreeMusicsLiveData().observe(this, musicAlbum -> {
+            if (musicAlbum != null && musicAlbum.getMusics() != null) {
+                mAdapter.setList(musicAlbum.getMusics());
                 mAdapter.notifyDataSetChanged();
 
                 // TODO tip 4：未作 UnPeek 处理的 用于 request 的 LiveData，在视图控制器重建时会自动倒灌数据
@@ -119,9 +117,9 @@ public class MainFragment extends BaseFragment {
         });
 
         if (PlayerManager.getInstance().getAlbum() == null) {
-            mMusicRequestViewModel.requestFreeMusic();
+            mMusicRequestViewModel.requestFreeMusics();
         } else {
-            mAdapter.setList(PlayerManager.getInstance().getAlbum().getFreeMusics());
+            mAdapter.setList(PlayerManager.getInstance().getAlbum().getMusics());
             mAdapter.notifyDataSetChanged();
         }
     }

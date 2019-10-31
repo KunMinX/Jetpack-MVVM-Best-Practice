@@ -2,7 +2,7 @@
 
 &nbsp;
 
-付费用户加微信进群：myatejx | 知识星球提问：https://t.zsxq.com/VNRZrfa
+[《重学安卓》](https://xiaozhuanlan.com/kunminx) 付费读者加微信进群：myatejx
 
 &nbsp;
 

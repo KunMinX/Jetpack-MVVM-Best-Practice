@@ -20,17 +20,11 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.kunminx.player.dto.FreeMusic;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.api.APIs;
-import com.kunminx.puremusic.data.bean.AlbumResult;
-import com.kunminx.player.dto.MusicAlbum;
-import com.kunminx.puremusic.data.bean.SingerImg;
-import com.kunminx.puremusic.data.bean.SongInfo;
-import com.kunminx.puremusic.data.bean.SongResult;
-import com.kunminx.puremusic.data.bean.SongUrl;
 import com.kunminx.architecture.data.convert.JsonCallback;
 import com.kunminx.architecture.utils.Utils;
+import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 
@@ -60,7 +54,7 @@ public class HttpRequestManager implements IRemoteRequest {
     }
 
 
-    @Override
+    /*@Override
     public void getSongsResult(MutableLiveData<SongResult.DataBean.SongsResult> liveData, String keyword) {
 
         //TODO 分页后续改为 paging 来处理，
@@ -145,16 +139,16 @@ public class HttpRequestManager implements IRemoteRequest {
                         }
                     }
                 });
-    }
+    }*/
 
     @Override
-    public void getFreeMusic(MutableLiveData<MusicAlbum> liveData) {
+    public void getFreeMusic(MutableLiveData<TestAlbum> liveData) {
 
         Gson gson = new Gson();
-        Type type = new TypeToken<MusicAlbum<FreeMusic>>() {
+        Type type = new TypeToken<TestAlbum>() {
         }.getType();
-        MusicAlbum musicAlbum = gson.fromJson(Utils.getApp().getString(R.string.free_music_json), type);
+        TestAlbum testAlbum = gson.fromJson(Utils.getApp().getString(R.string.free_music_json), type);
 
-        liveData.setValue(musicAlbum);
+        liveData.setValue(testAlbum);
     }
 }
