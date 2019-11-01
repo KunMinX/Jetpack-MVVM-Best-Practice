@@ -35,12 +35,12 @@ import androidx.core.app.NotificationCompat;
 import com.kunminx.player.utils.ImageUtils;
 import com.kunminx.puremusic.MainActivity;
 import com.kunminx.puremusic.data.bean.TestAlbum;
-import com.kunminx.puremusic.data.config.Configs;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.player.helper.PlayerCallHelper;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.FileCallback;
 import com.lzy.okgo.model.Response;
+import com.kunminx.puremusic.data.config.Configs;
 
 import java.io.File;
 

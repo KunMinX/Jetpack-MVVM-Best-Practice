@@ -26,13 +26,13 @@
 
 |                  是让人 爱不释手 的 交互设计！                   |                     是 连贯 的 用户体验                      |                    唯一可信源 的 统一分发                    |
 | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
-| ![1231111323.gif](https://upload-images.jianshu.io/upload_images/57036-0a5cdc68f003211a.gif?imageMogr2/auto-orient/strip) | ![222.gif](https://upload-images.jianshu.io/upload_images/57036-2b21db531e51ff03.gif?imageMogr2/auto-orient/strip) | ![333.gif](https://upload-images.jianshu.io/upload_images/57036-9a541148ce5bed2e.gif?imageMogr2/auto-orient/strip) |
+| ![1231111323.gif](https://upload-images.jianshu.io/upload_images/57036-0a5cdc68f003211a.gif) | ![222.gif](https://upload-images.jianshu.io/upload_images/57036-2b21db531e51ff03.gif) | ![333.gif](https://upload-images.jianshu.io/upload_images/57036-9a541148ce5bed2e.gif) |
 
 
 
 |                    横竖屏布局 的 无缝切换                    |
 | :----------------------------------------------------------: |
-| ![444.gif](https://upload-images.jianshu.io/upload_images/57036-688f3eafc76cfa27.gif?imageMogr2/auto-orient/strip) |
+| ![444.gif](https://upload-images.jianshu.io/upload_images/57036-688f3eafc76cfa27.gif) |
 
 &nbsp;
 &nbsp;
@@ -76,7 +76,7 @@
 4. ConstraintLayout 约束布局的最佳实践。
 5. **优秀的 用户体验 和 交互设计**。
 6. 绝不使用 Dagger，绝不使用奇技淫巧、编写艰深晦涩的代码。
-7. One More Thing：[Jetpack-MusicPlayer](https://github.com/KunMinX/Jetpack-MusicPlayer)
+7. The One More Thing is：[Jetpack-MusicPlayer](https://github.com/KunMinX/Jetpack-MusicPlayer)
 
 
 &nbsp;

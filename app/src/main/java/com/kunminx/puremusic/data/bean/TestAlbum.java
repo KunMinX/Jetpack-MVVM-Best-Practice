@@ -16,9 +16,9 @@
 
 package com.kunminx.puremusic.data.bean;
 
-import com.kunminx.player.dto.BaseAlbumItem;
-import com.kunminx.player.dto.BaseArtistItem;
-import com.kunminx.player.dto.BaseMusicItem;
+import com.kunminx.player.bean.base.BaseAlbumItem;
+import com.kunminx.player.bean.base.BaseArtistItem;
+import com.kunminx.player.bean.base.BaseMusicItem;
 
 /**
  * Create by KunMinX at 19/10/31

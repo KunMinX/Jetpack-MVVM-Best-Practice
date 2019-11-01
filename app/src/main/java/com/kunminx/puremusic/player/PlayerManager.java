@@ -20,11 +20,10 @@ import android.content.Context;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.kunminx.player.IPlayController;
+import com.kunminx.player.contract.IPlayController;
 import com.kunminx.player.PlayerController;
-import com.kunminx.player.PlayingInfoManager;
-import com.kunminx.player.dto.ChangeMusic;
-import com.kunminx.player.dto.PlayingMusic;
+import com.kunminx.player.bean.dto.ChangeMusic;
+import com.kunminx.player.bean.dto.PlayingMusic;
 import com.kunminx.puremusic.data.bean.TestAlbum;
 
 import java.util.List;
@@ -52,6 +51,11 @@ public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestM
     public void init(Context context) {
         mController.init(context);
         mContext = context.getApplicationContext();
+    }
+
+    @Override
+    public void initAlbum(TestAlbum musicAlbum) {
+        mController.initAlbum(mContext, musicAlbum);
     }
 
     @Override
