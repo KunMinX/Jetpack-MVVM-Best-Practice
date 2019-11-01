@@ -24,7 +24,11 @@ import androidx.databinding.ObservableInt;
 import androidx.lifecycle.ViewModel;
 
 import com.kunminx.architecture.utils.Utils;
+import com.kunminx.player.PlayingInfoManager;
 import com.kunminx.puremusic.R;
+import com.kunminx.puremusic.player.PlayerManager;
+
+import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
 
 /**
  * TODO tip：每个页面都要单独准备一个 statusViewModel，
@@ -50,10 +54,19 @@ public class PlayerViewModel extends ViewModel {
 
     public final ObservableBoolean isPlaying = new ObservableBoolean();
 
+    public final ObservableField<MaterialDrawableBuilder.IconValue> playModeIcon = new ObservableField<>();
 
     {
         title.set(Utils.getApp().getString(R.string.app_name));
         artist.set(Utils.getApp().getString(R.string.app_name));
         placeHolder.set(Utils.getApp().getResources().getDrawable(R.drawable.bg_album_default));
+
+        if (PlayerManager.getInstance().getRepeatMode() == PlayingInfoManager.RepeatMode.LIST_LOOP) {
+            playModeIcon.set(MaterialDrawableBuilder.IconValue.REPEAT);
+        } else if (PlayerManager.getInstance().getRepeatMode() == PlayingInfoManager.RepeatMode.ONE_LOOP) {
+            playModeIcon.set(MaterialDrawableBuilder.IconValue.REPEAT_ONCE);
+        } else {
+            playModeIcon.set(MaterialDrawableBuilder.IconValue.SHUFFLE);
+        }
     }
 }

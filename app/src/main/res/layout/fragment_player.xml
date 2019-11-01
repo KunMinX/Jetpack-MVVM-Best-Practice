@@ -100,8 +100,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:minHeight="4dp"
                 android:max="@{vm.maxSeekDuration}"
+                android:minHeight="4dp"
                 android:progress="@{vm.currentSeekPosition}"
                 android:progressDrawable="@drawable/progressbar_color"
                 android:progressTint="?colorAccent" />
@@ -157,13 +157,13 @@
 
             <com.kunminx.puremusic.ui.view.PlayPauseView
                 android:id="@+id/play_pause"
+                isPlaying="@{vm.isPlaying}"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_marginEnd="16dp"
                 android:layout_toStartOf="@id/next"
                 android:clickable="true"
                 android:focusable="true"
-                isPlaying="@{vm.isPlaying}"
                 android:foreground="?attr/selectableItemBackground"
                 android:onClick="@{()->click.togglePlay()}"
                 playpauseview:circleAlpha="0"
@@ -192,9 +192,9 @@
                 android:layout_toStartOf="@id/previous"
                 android:alpha="0"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:onClick="@{()->click.mark()}"
+                android:onClick="@{()->click.playMode()}"
                 android:scaleType="center"
-                app:materialIcon="heart"
+                mdIcon="@{vm.playModeIcon}"
                 app:materialIconColor="@android:color/black"
                 app:materialIconSize="28dp" />
 

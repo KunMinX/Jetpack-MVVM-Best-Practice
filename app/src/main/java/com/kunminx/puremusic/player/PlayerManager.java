@@ -22,6 +22,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.kunminx.player.IPlayController;
 import com.kunminx.player.PlayerController;
+import com.kunminx.player.PlayingInfoManager;
 import com.kunminx.player.dto.ChangeMusic;
 import com.kunminx.player.dto.PlayingMusic;
 import com.kunminx.puremusic.data.bean.TestAlbum;
@@ -99,8 +100,8 @@ public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestM
     }
 
     @Override
-    public int changeMode() {
-        return mController.changeMode();
+    public void changeMode() {
+        mController.changeMode();
     }
 
     @Override
@@ -171,7 +172,12 @@ public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestM
     }
 
     @Override
-    public int getRepeatMode() {
+    public MutableLiveData<Enum> getPlayModeLiveData() {
+        return mController.getPlayModeLiveData();
+    }
+
+    @Override
+    public Enum getRepeatMode() {
         return mController.getRepeatMode();
     }
 

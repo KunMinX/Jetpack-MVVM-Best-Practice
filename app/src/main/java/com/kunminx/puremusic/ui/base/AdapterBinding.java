@@ -32,6 +32,9 @@ import com.kunminx.puremusic.R;
 import com.kunminx.architecture.ui.adapter.CommonViewPagerAdapter;
 import com.kunminx.puremusic.ui.view.PlayPauseView;
 
+import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
+import net.steamcrafted.materialiconlib.MaterialIconView;
+
 /**
  * Create by KunMinX at 19/9/18
  */
@@ -99,6 +102,11 @@ public class AdapterBinding {
                 tabLayout.setupWithViewPager(viewPager);
             }
         }
+    }
+
+    @BindingAdapter(value = {"mdIcon"}, requireAll = false)
+    public static void setIcon(MaterialIconView view, MaterialDrawableBuilder.IconValue iconValue) {
+        view.setIcon(iconValue);
     }
 
 }
