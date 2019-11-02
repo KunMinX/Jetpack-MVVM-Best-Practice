@@ -111,7 +111,7 @@ public class MainFragment extends BaseFragment {
 
                 if (PlayerManager.getInstance().getAlbum() == null ||
                         !PlayerManager.getInstance().getAlbum().getAlbumId().equals(musicAlbum.getAlbumId())) {
-                    PlayerManager.getInstance().initAlbum(musicAlbum);
+                    PlayerManager.getInstance().loadAlbum(musicAlbum);
                 }
             }
         });

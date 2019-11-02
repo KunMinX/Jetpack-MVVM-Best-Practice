@@ -49,18 +49,18 @@ public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestM
 
     @Override
     public void init(Context context) {
-        mController.init(context);
         mContext = context.getApplicationContext();
+        mController.init(mContext);
     }
 
     @Override
-    public void initAlbum(TestAlbum musicAlbum) {
-        mController.initAlbum(mContext, musicAlbum);
+    public void loadAlbum(TestAlbum musicAlbum) {
+        mController.loadAlbum(mContext, musicAlbum);
     }
 
     @Override
-    public void resetAlbum(TestAlbum musicAlbum, int playIndex) {
-        mController.resetAlbum(mContext, musicAlbum, playIndex);
+    public void loadAlbum(TestAlbum musicAlbum, int playIndex) {
+        mController.loadAlbum(mContext, musicAlbum, playIndex);
     }
 
     @Override
