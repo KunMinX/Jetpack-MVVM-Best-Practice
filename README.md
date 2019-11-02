@@ -76,15 +76,19 @@
 4. ConstraintLayout 约束布局的最佳实践。
 5. **优秀的 用户体验 和 交互设计**。
 6. 绝不使用 Dagger，绝不使用奇技淫巧、编写艰深晦涩的代码。
-7. The One More Thing is：[Jetpack-MusicPlayer](https://github.com/KunMinX/Jetpack-MusicPlayer)
+7. The one more thing is：
+
+即日起，可直接到 应用商店 下载体验！
+
+[![google-play1.png](https://upload-images.jianshu.io/upload_images/57036-f9dbd7810d38ae95.png)]()
+
+[![coolapk1.png](https://upload-images.jianshu.io/upload_images/57036-6cf24d0c9efe8362.png)]()
 
 
 &nbsp;
 &nbsp;
 
 # Thanks to
-
-[Jetpack-MusicPlayer](https://github.com/KunMinX/Jetpack-MusicPlayer)
 
 [AndroidX](https://developer.android.google.cn/jetpack/androidx)
 
