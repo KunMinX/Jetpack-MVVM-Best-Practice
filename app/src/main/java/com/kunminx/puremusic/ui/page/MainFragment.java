@@ -27,6 +27,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.kunminx.architecture.ui.adapter.SimpleBaseBindingAdapter;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.bridge.request.MusicRequestViewModel;
 import com.kunminx.puremusic.bridge.status.MainViewModel;
@@ -35,7 +36,6 @@ import com.kunminx.puremusic.databinding.AdapterPlayItemBinding;
 import com.kunminx.puremusic.databinding.FragmentMainBinding;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.base.BaseFragment;
-import com.kunminx.architecture.ui.adapter.SimpleBaseBindingAdapter;
 
 /**
  * Create by KunMinX at 19/10/29
@@ -70,6 +70,8 @@ public class MainFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 
         mMainViewModel.initTabAndPage.set(true);
+
+        mMainViewModel.pageAssetPath.set("summary.html");
 
         mAdapter = new SimpleBaseBindingAdapter<TestAlbum.TestMusic, AdapterPlayItemBinding>(getContext(), R.layout.adapter_play_item) {
             @Override
@@ -145,7 +147,7 @@ public class MainFragment extends BaseFragment {
         }
 
         public void search() {
-
+            nav().navigate(R.id.action_mainFragment_to_searchFragment);
         }
     }
 

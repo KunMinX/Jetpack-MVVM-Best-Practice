@@ -18,6 +18,9 @@ package com.kunminx.puremusic.ui.base;
 
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -107,6 +110,22 @@ public class AdapterBinding {
     @BindingAdapter(value = {"mdIcon"}, requireAll = false)
     public static void setIcon(MaterialIconView view, MaterialDrawableBuilder.IconValue iconValue) {
         view.setIcon(iconValue);
+    }
+
+    @BindingAdapter(value = {"pageAssetPath"}, requireAll = false)
+    public static void loadAssetsPage(WebView webView, String assetPath) {
+        webView.setWebViewClient(new WebViewClient());
+        webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setDefaultTextEncodingName("UTF-8");
+        webSettings.setSupportZoom(true);
+        webSettings.setBuiltInZoomControls(true);
+        webSettings.setDisplayZoomControls(false);
+        webSettings.setUseWideViewPort(true);
+        webSettings.setLoadWithOverviewMode(true);
+        String url = "file:///android_asset/" + assetPath;
+        webView.loadUrl(url);
     }
 
 }

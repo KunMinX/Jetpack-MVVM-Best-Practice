@@ -78,7 +78,7 @@
 6. 绝不使用 Dagger，绝不使用奇技淫巧、编写艰深晦涩的代码。
 7. The one more thing is：
 
-即日起，可直接到 应用商店 下载体验！
+即日起，可在 应用商店 下载体验！
 
 [![google-play1.png](https://upload-images.jianshu.io/upload_images/57036-f9dbd7810d38ae95.png)]()
 

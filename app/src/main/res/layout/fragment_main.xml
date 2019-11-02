@@ -160,16 +160,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
-                android:overScrollMode="never"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/adapter_play_item" />
 
-            <WebView
-                android:id="@+id/web_view"
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:overScrollMode="never" />
+                android:layout_height="match_parent">
+
+                <WebView
+                    android:id="@+id/web_view"
+                    pageAssetPath="@{vm.pageAssetPath}"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false" />
+
+            </androidx.core.widget.NestedScrollView>
 
         </androidx.viewpager.widget.ViewPager>
 

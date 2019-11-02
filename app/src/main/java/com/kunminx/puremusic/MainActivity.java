@@ -22,6 +22,8 @@ import android.os.Bundle;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.kunminx.puremusic.bridge.status.MainActivityViewModel;
 import com.kunminx.puremusic.databinding.ActivityMainBinding;
@@ -66,7 +68,18 @@ public class MainActivity extends BaseActivity {
         mBinding.setVm(mMainActivityViewModel);
 
         mSharedViewModel.activityCanBeClosedDirectly.observe(this, aBoolean -> {
-            finish();
+            NavController nav = Navigation.findNavController(this, R.id.main_fragment_host);
+            if (nav.getCurrentDestination() != null && nav.getCurrentDestination().getId() != R.id.mainFragment) {
+                nav.navigateUp();
+
+                //TODO tip 6: 同 tip 5.
+
+            } else if (mBinding.dl != null && mBinding.dl.isDrawerOpen(GravityCompat.START)) {
+                mBinding.dl.closeDrawer(GravityCompat.START);
+
+            } else {
+                super.onBackPressed();
+            }
         });
 
         // TODO tip 4：同 tip 2.
@@ -80,7 +93,8 @@ public class MainActivity extends BaseActivity {
 
 //            mMainActivityViewModel.openDrawer.set(aBoolean);
 
-            //TODO do not:（只有万不得已的情况下，才用这种土办法，不然会埋下各种隐患）
+            //TODO do not:（只有万不得已的情况下，才用这种土办法，不然会埋下视图调用的一致性隐患）
+            //( Note: 2019.11.2 此处有待商榷，看看 Android Studio 4.0 最新推出的 ViewBinding 是如何彻底解决这个问题的 )
 
             if (mBinding.dl != null) {
                 if (aBoolean && !mBinding.dl.isDrawerOpen(GravityCompat.START)) {

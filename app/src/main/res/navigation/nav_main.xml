@@ -25,15 +25,24 @@
         android:name="com.kunminx.puremusic.ui.page.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
+
         <action
             android:id="@+id/action_mainFragment_to_searchFragment"
-            app:destination="@id/searchFragment" />
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/h_fragment_enter"
+            app:exitAnim="@anim/h_fragment_exit"
+            app:popEnterAnim="@anim/h_fragment_pop_enter"
+            app:popExitAnim="@anim/h_fragment_pop_exit"
+            />
+
     </fragment>
 
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.kunminx.puremusic.ui.page.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+
+    </fragment>
 
 </navigation>

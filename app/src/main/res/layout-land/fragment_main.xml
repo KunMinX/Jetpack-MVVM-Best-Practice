@@ -79,12 +79,15 @@
                 android:id="@+id/rv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:clipToPadding="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             <WebView
                 android:id="@+id/web_view"
+                pageAssetPath="@{vm.pageAssetPath}"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:clipToPadding="false" />
 
         </androidx.viewpager.widget.ViewPager>
 

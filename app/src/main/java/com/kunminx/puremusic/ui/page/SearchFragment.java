@@ -46,7 +46,7 @@ public class SearchFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         mBinding = FragmentSearchBinding.bind(view);
-
+        mBinding.setClick(new ClickProxy());
         return view;
     }
 
@@ -55,6 +55,12 @@ public class SearchFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 
 
+    }
 
+    public class ClickProxy {
+
+        public void search() {
+//            nav().navigate(R.id.action_searchFragment_to_searchFragment);
+        }
     }
 }
