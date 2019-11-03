@@ -16,6 +16,8 @@
 
 package com.kunminx.puremusic.ui.page;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +25,11 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 
+import com.kunminx.architecture.utils.DisplayUtils;
 import com.kunminx.puremusic.R;
+import com.kunminx.puremusic.bridge.status.SearchViewModel;
 import com.kunminx.puremusic.databinding.FragmentSearchBinding;
 import com.kunminx.puremusic.ui.base.BaseFragment;
 
@@ -34,11 +39,12 @@ import com.kunminx.puremusic.ui.base.BaseFragment;
 public class SearchFragment extends BaseFragment {
 
     private FragmentSearchBinding mBinding;
+    private SearchViewModel mSearchViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mSearchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
     }
 
     @Nullable
@@ -47,6 +53,7 @@ public class SearchFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         mBinding = FragmentSearchBinding.bind(view);
         mBinding.setClick(new ClickProxy());
+        mBinding.setVm(mSearchViewModel);
         return view;
     }
 
@@ -59,8 +66,15 @@ public class SearchFragment extends BaseFragment {
 
     public class ClickProxy {
 
-        public void search() {
-//            nav().navigate(R.id.action_searchFragment_to_searchFragment);
+        public void back() {
+            nav().navigateUp();
+        }
+
+        public void testNav() {
+            String u = "https://xiaozhuanlan.com/topic/5860149732";
+            Uri uri = Uri.parse(u);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
         }
     }
 }

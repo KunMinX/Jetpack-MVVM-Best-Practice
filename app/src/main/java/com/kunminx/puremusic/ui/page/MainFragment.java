@@ -16,6 +16,7 @@
 
 package com.kunminx.puremusic.ui.page;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,11 +38,12 @@ import com.kunminx.puremusic.databinding.FragmentMainBinding;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.base.BaseFragment;
 
+import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
+
 /**
  * Create by KunMinX at 19/10/29
  */
 public class MainFragment extends BaseFragment {
-
 
     private FragmentMainBinding mBinding;
     private MainViewModel mMainViewModel;
@@ -80,8 +82,8 @@ public class MainFragment extends BaseFragment {
                 binding.tvArtist.setText(item.getArtist().getName());
                 Glide.with(binding.ivCover.getContext()).load(item.getCoverImg()).into(binding.ivCover);
                 int currentIndex = PlayerManager.getInstance().getAlbumIndex();
-                binding.ivPlayStatus.setImageDrawable(getResources().getDrawable(
-                        currentIndex == holder.getAdapterPosition() ? R.drawable.ic_music_gray_48dp : R.color.transparent));
+                binding.ivPlayStatus.setColor(currentIndex == holder.getAdapterPosition()
+                        ? getResources().getColor(R.color.gray) : Color.TRANSPARENT);
                 binding.getRoot().setOnClickListener(v -> {
                     PlayerManager.getInstance().playAudio(holder.getAdapterPosition());
                 });
@@ -101,22 +103,22 @@ public class MainFragment extends BaseFragment {
         });
 
         mMusicRequestViewModel.getFreeMusicsLiveData().observe(this, musicAlbum -> {
-            if (musicAlbum != null && musicAlbum.getMusics() != null) {
-                mAdapter.setList(musicAlbum.getMusics());
-                mAdapter.notifyDataSetChanged();
+                    if (musicAlbum != null && musicAlbum.getMusics() != null) {
+                        mAdapter.setList(musicAlbum.getMusics());
+                        mAdapter.notifyDataSetChanged();
 
-                // TODO tip 4：未作 UnPeek 处理的 用于 request 的 LiveData，在视图控制器重建时会自动倒灌数据
+                        // TODO tip 4：未作 UnPeek 处理的 用于 request 的 LiveData，在视图控制器重建时会自动倒灌数据
 
-                // 一定要记住这一点，因为如果没有妥善处理，这里就会出现预期外的错误，一定要记得它在重建时 是一定会倒灌的。
+                        // 一定要记住这一点，因为如果没有妥善处理，这里就会出现预期外的错误，一定要记得它在重建时 是一定会倒灌的。
 
-                // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/0129483567
+                        // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/0129483567
 
-                if (PlayerManager.getInstance().getAlbum() == null ||
-                        !PlayerManager.getInstance().getAlbum().getAlbumId().equals(musicAlbum.getAlbumId())) {
-                    PlayerManager.getInstance().loadAlbum(musicAlbum);
-                }
-            }
-        });
+                        if (PlayerManager.getInstance().getAlbum() == null ||
+                                !PlayerManager.getInstance().getAlbum().getAlbumId().equals(musicAlbum.getAlbumId())) {
+                            PlayerManager.getInstance().loadAlbum(musicAlbum);
+                        }
+                    }
+                });
 
         if (PlayerManager.getInstance().getAlbum() == null) {
             mMusicRequestViewModel.requestFreeMusics();

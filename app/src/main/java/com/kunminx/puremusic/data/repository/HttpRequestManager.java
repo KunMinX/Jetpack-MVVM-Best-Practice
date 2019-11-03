@@ -24,11 +24,14 @@ import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.api.APIs;
 import com.kunminx.architecture.data.convert.JsonCallback;
 import com.kunminx.architecture.utils.Utils;
+import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 
 import java.lang.reflect.Type;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Create by KunMinX at 19/10/29
@@ -150,5 +153,15 @@ public class HttpRequestManager implements IRemoteRequest {
         TestAlbum testAlbum = gson.fromJson(Utils.getApp().getString(R.string.free_music_json), type);
 
         liveData.setValue(testAlbum);
+    }
+
+    @Override
+    public void getLibraryInfo(MutableLiveData<List<LibraryInfo>> liveData) {
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<LibraryInfo>>() {
+        }.getType();
+        List<LibraryInfo> list = gson.fromJson(Utils.getApp().getString(R.string.library_json), type);
+
+        liveData.setValue(list);
     }
 }

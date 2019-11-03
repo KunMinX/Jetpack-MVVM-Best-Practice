@@ -128,4 +128,25 @@ public class AdapterBinding {
         webView.loadUrl(url);
     }
 
+    @BindingAdapter(value = {"loadPage"}, requireAll = false)
+    public static void loadPage(WebView webView, String loadPage) {
+        webView.setWebViewClient(new WebViewClient());
+        webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setDefaultTextEncodingName("UTF-8");
+        webSettings.setSupportZoom(true);
+        webSettings.setBuiltInZoomControls(true);
+        webSettings.setDisplayZoomControls(false);
+        webSettings.setUseWideViewPort(true);
+        webSettings.setLoadWithOverviewMode(true);
+        webView.loadUrl(loadPage);
+    }
+
+    @BindingAdapter(value = {"allowDrawerOpen"}, requireAll = false)
+    public static void allowDrawerOpen(DrawerLayout drawerLayout, boolean allowDrawerOpen) {
+        drawerLayout.setDrawerLockMode(allowDrawerOpen
+                ? DrawerLayout.LOCK_MODE_UNLOCKED
+                : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
 }

@@ -21,6 +21,7 @@ import android.os.Bundle;
 
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -104,6 +105,13 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
+
+        // TODO tip 7: do not:（只有万不得已的情况下，才用这种土办法，不然会埋下视图调用的一致性隐患）
+
+        if (mBinding.dl != null) {
+            mBinding.dl.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        }
+
     }
 
     @Override

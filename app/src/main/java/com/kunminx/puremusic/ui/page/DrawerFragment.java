@@ -16,6 +16,8 @@
 
 package com.kunminx.puremusic.ui.page;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +25,15 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.kunminx.architecture.ui.adapter.SimpleBaseBindingAdapter;
 import com.kunminx.puremusic.R;
+import com.kunminx.puremusic.bridge.request.InfoRequestViewModel;
+import com.kunminx.puremusic.bridge.status.DrawerViewModel;
+import com.kunminx.puremusic.data.bean.LibraryInfo;
+import com.kunminx.puremusic.databinding.AdapterLibraryBinding;
 import com.kunminx.puremusic.databinding.FragmentDrawerBinding;
 import com.kunminx.puremusic.ui.base.BaseFragment;
 
@@ -34,11 +43,15 @@ import com.kunminx.puremusic.ui.base.BaseFragment;
 public class DrawerFragment extends BaseFragment {
 
     private FragmentDrawerBinding mBinding;
+    private DrawerViewModel mDrawerViewModel;
+    private InfoRequestViewModel mInfoRequestViewModel;
+    private SimpleBaseBindingAdapter<LibraryInfo, AdapterLibraryBinding> mAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mInfoRequestViewModel = ViewModelProviders.of(this).get(InfoRequestViewModel.class);
+        mDrawerViewModel = ViewModelProviders.of(this).get(DrawerViewModel.class);
     }
 
     @Nullable
@@ -46,7 +59,8 @@ public class DrawerFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_drawer, container, false);
         mBinding = FragmentDrawerBinding.bind(view);
-
+        mBinding.setVm(mDrawerViewModel);
+        mBinding.setClick(new ClickProxy());
         return view;
     }
 
@@ -54,6 +68,49 @@ public class DrawerFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mAdapter = new SimpleBaseBindingAdapter<LibraryInfo, AdapterLibraryBinding>(getContext(), R.layout.adapter_library) {
+            @Override
+            protected void onSimpleBindItem(AdapterLibraryBinding binding, LibraryInfo item, RecyclerView.ViewHolder holder) {
+                binding.tvTitle.setText(item.getTitle());
+                binding.tvSummary.setText(item.getSummary());
+                binding.getRoot().setOnClickListener(v -> {
+                    Uri uri = Uri.parse(item.getUrl());
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                });
+            }
+        };
 
+        mBinding.rv.setAdapter(mAdapter);
+
+        mInfoRequestViewModel.getLibraryLiveData().observe(this, libraryInfos -> {
+            mInitDataCame = true;
+            if (mAnimationLoaded && libraryInfos != null) {
+                mAdapter.setList(libraryInfos);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+
+        mInfoRequestViewModel.requestLibraryInfo();
     }
+
+    @Override
+    public void loadInitData() {
+        super.loadInitData();
+        if (mInfoRequestViewModel.getLibraryLiveData().getValue() != null) {
+            mAdapter.setList(mInfoRequestViewModel.getLibraryLiveData().getValue());
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public class ClickProxy {
+
+        public void logoClick() {
+            String u = "https://github.com/KunMinX/Jetpack-MVVM-Best-Practice";
+            Uri uri = Uri.parse(u);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        }
+    }
+
 }

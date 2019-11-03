@@ -18,8 +18,10 @@ package com.kunminx.puremusic.data.repository;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.data.bean.TestAlbum;
 
+import java.util.List;
 /**
  * Create by KunMinX at 19/10/29
  */
@@ -37,4 +39,5 @@ public interface IRemoteRequest {
 
     void getFreeMusic(MutableLiveData<TestAlbum> liveData);
 
+    void getLibraryInfo(MutableLiveData<List<LibraryInfo>> liveData);
 }

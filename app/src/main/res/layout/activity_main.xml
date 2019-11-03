@@ -13,7 +13,6 @@
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/dl"
-        isOpenDrawer="@{vm.openDrawer}"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="-25dp"
@@ -53,7 +52,7 @@
         <fragment
             android:id="@+id/drawer_fragment_host"
             android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="320dp"
+            android:layout_width="330dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"

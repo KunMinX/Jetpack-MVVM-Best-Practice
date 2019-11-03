@@ -55,28 +55,33 @@
             android:orientation="horizontal"
             android:visibility="invisible">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/upIndicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <net.steamcrafted.materialiconlib.MaterialIconView
+                android:id="@+id/btn_close"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:onClick="@{()->click.slideDown()}"
-                app:srcCompat="@drawable/ic_panel_back" />
+                android:scaleType="center"
+                app:materialIcon="chevron_down"
+                app:materialIconColor="@color/white"
+                app:materialIconSize="28dp" />
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <net.steamcrafted.materialiconlib.MaterialIconView
                 android:id="@+id/popup_menu"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="16dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:onClick="@{()->click.more()}"
-                android:padding="0dp"
-                android:tint="#ffffff"
-                app:srcCompat="@drawable/ic_more_gray_48dp" />
+                android:scaleType="center"
+                app:materialIcon="dots_vertical"
+                app:materialIconColor="@color/white"
+                app:materialIconSize="28dp" />
 
         </RelativeLayout>
 
@@ -186,6 +191,7 @@
 
             <net.steamcrafted.materialiconlib.MaterialIconView
                 android:id="@+id/mark"
+                mdIcon="@{vm.playModeIcon}"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_marginEnd="16dp"
@@ -194,7 +200,6 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:onClick="@{()->click.playMode()}"
                 android:scaleType="center"
-                mdIcon="@{vm.playModeIcon}"
                 app:materialIconColor="@android:color/black"
                 app:materialIconSize="28dp" />
 
@@ -227,7 +232,8 @@
             android:progress="@{vm.currentSeekPosition}"
             android:progressDrawable="@drawable/progressbar_color"
             android:thumb="@null"
-            android:visibility="visible" />
+            android:visibility="visible"
+            app:onSeekBarChangeListener="@{click}" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

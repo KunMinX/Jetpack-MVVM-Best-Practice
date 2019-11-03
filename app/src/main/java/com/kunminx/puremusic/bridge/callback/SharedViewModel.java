@@ -38,4 +38,6 @@ public class SharedViewModel extends ViewModel {
 
     public final UnPeekLiveData<Boolean> openOrCloseDrawer = new UnPeekLiveData<>();
 
+    public final UnPeekLiveData<Boolean> enableDrawer = new UnPeekLiveData<>();
+
 }

@@ -16,7 +16,7 @@
 
 package com.kunminx.puremusic.bridge.status;
 
-import androidx.databinding.ObservableBoolean;
+import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
 /**
@@ -27,13 +27,8 @@ import androidx.lifecycle.ViewModel;
  * <p>
  * Create by KunMinX at 19/10/29
  */
-public class MainActivityViewModel extends ViewModel {
+public class DrawerViewModel extends ViewModel {
 
-    public final ObservableBoolean openDrawer = new ObservableBoolean();
+    public final ObservableField<String> loadPage = new ObservableField<>();
 
-    public final ObservableBoolean allowDrawerOpen = new ObservableBoolean();
-
-    {
-        allowDrawerOpen.set(true);
-    }
 }

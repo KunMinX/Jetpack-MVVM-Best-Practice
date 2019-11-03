@@ -22,50 +22,55 @@
         <variable
             name="click"
             type="com.kunminx.puremusic.ui.page.SearchFragment.ClickProxy" />
+
+        <variable
+            name="vm"
+            type="com.kunminx.puremusic.bridge.status.SearchViewModel" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        android:orientation="vertical">
+        android:background="@color/white">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <net.steamcrafted.materialiconlib.MaterialIconView
+            android:id="@+id/btn_back"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="37dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:onClick="@{()->click.back()}"
+            android:scaleType="center"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:materialIcon="arrow_left"
+            app:materialIconColor="@color/gray"
+            app:materialIconSize="28dp" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        <net.steamcrafted.materialiconlib.MaterialIconView
+            android:id="@+id/ic"
+            android:layout_width="242dp"
+            android:layout_height="242dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:materialIcon="magnify"
+            app:materialIconColor="@color/light_gray"
+            app:materialIconSize="28dp" />
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/et_search"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/btn"
-                    app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/tv_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:onClick="@{()->click.testNav()}"
+            android:text="@string/search_page_tip"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ic" />
 
-                <Button
-                    android:id="@+id/btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="@{()->click.search()}"
-                    android:text="click"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

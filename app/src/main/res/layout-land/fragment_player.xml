@@ -124,7 +124,8 @@
             android:progress="@{vm.currentSeekPosition}"
             android:progressDrawable="@drawable/progressbar_color"
             android:thumb="@null"
-            android:visibility="visible" />
+            android:visibility="visible"
+            app:onSeekBarChangeListener="@{click}" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
