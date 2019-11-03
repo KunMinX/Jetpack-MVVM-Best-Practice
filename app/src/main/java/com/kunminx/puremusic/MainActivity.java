@@ -46,15 +46,6 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        PlayerManager.getInstance().getStartService().observe(this, aBoolean -> {
-            Intent intent = new Intent(getApplicationContext(), PlayerService.class);
-            if (aBoolean) {
-                getApplicationContext().startService(intent);
-            } else {
-                getApplicationContext().stopService(intent);
-            }
-        });
-
         mMainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
 
         // TODO tip 1: 此处通过 DataBinding 来规避 潜在的 视图调用的一致性问题，
