@@ -16,8 +16,11 @@
 
 package com.kunminx.puremusic.ui.base;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.view.View;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -31,6 +34,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
+import com.kunminx.architecture.utils.Utils;
 import com.kunminx.puremusic.R;
 import com.kunminx.architecture.ui.adapter.CommonViewPagerAdapter;
 import com.kunminx.puremusic.ui.view.PlayPauseView;
@@ -114,7 +118,16 @@ public class AdapterBinding {
 
     @BindingAdapter(value = {"pageAssetPath"}, requireAll = false)
     public static void loadAssetsPage(WebView webView, String assetPath) {
-        webView.setWebViewClient(new WebViewClient());
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                Uri uri = request.getUrl();
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+                Utils.getApp().startActivity(intent);
+                return true;
+            }
+        });
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);

@@ -52,6 +52,8 @@
             android:id="@+id/ic"
             android:layout_width="242dp"
             android:layout_height="242dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:onClick="@{()->click.testNav()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
