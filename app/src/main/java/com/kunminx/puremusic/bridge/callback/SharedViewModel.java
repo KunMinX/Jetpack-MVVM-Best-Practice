@@ -20,12 +20,15 @@ import androidx.lifecycle.ViewModel;
 
 import com.kunminx.architecture.bridge.callback.UnPeekLiveData;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Create by KunMinX at 19/10/16
  */
 public class SharedViewModel extends ViewModel {
 
-    // TODO tip：此处演示通过 UnPeekLiveData 配合 SharedViewModel 来发送 生命周期安全的、事件源可追溯的 通知。
+    // TODO tip 1：此处演示通过 UnPeekLiveData 配合 SharedViewModel 来发送 生命周期安全的、事件源可追溯的 通知。
 
     // 如果这么说还不理解的话，
     // 详见 https://xiaozhuanlan.com/topic/0168753249 和 https://xiaozhuanlan.com/topic/6257931840
@@ -38,6 +41,8 @@ public class SharedViewModel extends ViewModel {
 
     public final UnPeekLiveData<Boolean> openOrCloseDrawer = new UnPeekLiveData<>();
 
-    public final UnPeekLiveData<Boolean> enableDrawer = new UnPeekLiveData<>();
+    public final UnPeekLiveData<Boolean> enableSwipeDrawer = new UnPeekLiveData<>();
+
+    public static List<String> tagOfSecondaryPages = new ArrayList<>();
 
 }

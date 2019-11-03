@@ -27,11 +27,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.kunminx.architecture.utils.DisplayUtils;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.bridge.status.SearchViewModel;
 import com.kunminx.puremusic.databinding.FragmentSearchBinding;
 import com.kunminx.puremusic.ui.base.BaseFragment;
+import com.kunminx.puremusic.ui.manager.DrawerCoordinateHelper;
 
 /**
  * Create by KunMinX at 19/10/29
@@ -45,6 +45,8 @@ public class SearchFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mSearchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
+
+        getLifecycle().addObserver(DrawerCoordinateHelper.getInstance());
     }
 
     @Nullable
@@ -60,7 +62,6 @@ public class SearchFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
 
     }
 

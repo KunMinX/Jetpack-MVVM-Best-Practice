@@ -28,6 +28,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.kunminx.player.PlayingInfoManager;
 import com.kunminx.puremusic.R;
+import com.kunminx.puremusic.bridge.callback.SharedViewModel;
 import com.kunminx.puremusic.bridge.status.PlayerViewModel;
 import com.kunminx.puremusic.databinding.FragmentPlayerBinding;
 import com.kunminx.puremusic.player.PlayerManager;
@@ -78,6 +79,24 @@ public class PlayerFragment extends BaseFragment {
             if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {
                 SlidingUpPanelLayout sliding = (SlidingUpPanelLayout) view.getParent().getParent();
                 sliding.addPanelSlideListener(new PlayerSlideListener(mBinding, sliding));
+                sliding.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+                    @Override
+                    public void onPanelSlide(View view, float v) {
+
+                    }
+
+                    @Override
+                    public void onPanelStateChanged(View view, SlidingUpPanelLayout.PanelState panelState,
+                                                    SlidingUpPanelLayout.PanelState panelState1) {
+
+                        if (panelState1 == SlidingUpPanelLayout.PanelState.EXPANDED) {
+                            SharedViewModel.tagOfSecondaryPages.add(this.getClass().getSimpleName());
+                        } else {
+                            SharedViewModel.tagOfSecondaryPages.remove(this.getClass().getSimpleName());
+                        }
+                        mSharedViewModel.enableSwipeDrawer.setValue(SharedViewModel.tagOfSecondaryPages.size() == 0);
+                    }
+                });
             }
         });
 
@@ -115,15 +134,22 @@ public class PlayerFragment extends BaseFragment {
         });
 
         PlayerManager.getInstance().getPlayModeLiveData().observe(this, anEnum -> {
+            int tip = 0;
             if (anEnum == PlayingInfoManager.RepeatMode.LIST_LOOP) {
                 mPlayerViewModel.playModeIcon.set(MaterialDrawableBuilder.IconValue.REPEAT);
-                showShortToast(R.string.play_repeat);
+                tip = R.string.play_repeat;
             } else if (anEnum == PlayingInfoManager.RepeatMode.ONE_LOOP) {
                 mPlayerViewModel.playModeIcon.set(MaterialDrawableBuilder.IconValue.REPEAT_ONCE);
-                showShortToast(R.string.play_repeat_once);
+                tip = R.string.play_repeat_once;
             } else {
                 mPlayerViewModel.playModeIcon.set(MaterialDrawableBuilder.IconValue.SHUFFLE);
-                showShortToast(R.string.play_shuffle);
+                tip = R.string.play_shuffle;
+            }
+            if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {
+                SlidingUpPanelLayout sliding = (SlidingUpPanelLayout) view.getParent().getParent();
+                if (sliding.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
+                    showShortToast(tip);
+                }
             }
         });
 

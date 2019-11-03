@@ -95,7 +95,6 @@ public class MainActivity extends BaseActivity {
 //            mMainActivityViewModel.openDrawer.set(aBoolean);
 
             //TODO do not:（只有万不得已的情况下，才用这种土办法，不然会埋下视图调用的一致性隐患）
-            //( Note: 2019.11.2 此处有待商榷，看看 Android Studio 4.0 最新推出的 ViewBinding 是如何彻底解决这个问题的 )
 
             if (mBinding.dl != null) {
                 if (aBoolean && !mBinding.dl.isDrawerOpen(GravityCompat.START)) {
@@ -108,9 +107,15 @@ public class MainActivity extends BaseActivity {
 
         // TODO tip 7: do not:（只有万不得已的情况下，才用这种土办法，不然会埋下视图调用的一致性隐患）
 
-        if (mBinding.dl != null) {
-            mBinding.dl.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        }
+        mSharedViewModel.enableSwipeDrawer.observe(this, aBoolean -> {
+
+            if (mBinding.dl != null) {
+                mBinding.dl.setDrawerLockMode(aBoolean
+                        ? DrawerLayout.LOCK_MODE_UNLOCKED
+                        : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            }
+        });
+
 
     }
 
