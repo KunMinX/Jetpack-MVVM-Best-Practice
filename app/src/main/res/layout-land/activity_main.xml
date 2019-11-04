@@ -29,7 +29,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="-25dp"
         android:orientation="horizontal">
 
         <fragment
@@ -37,6 +36,7 @@
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="-25dp"
             android:layout_weight="1"
             android:fitsSystemWindows="true"
             app:defaultNavHost="true"

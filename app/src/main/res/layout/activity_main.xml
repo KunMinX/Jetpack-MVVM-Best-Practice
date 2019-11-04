@@ -14,15 +14,12 @@
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/dl"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="-25dp"
-        android:fitsSystemWindows="true">
+        android:layout_height="match_parent">
 
         <com.sothree.slidinguppanel.SlidingUpPanelLayout
             android:id="@+id/sliding_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
             android:gravity="bottom"
             sothree:umanoDragView="@+id/slide_fragment_host"
             sothree:umanoOverlay="false"

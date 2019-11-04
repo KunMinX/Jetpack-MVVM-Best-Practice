@@ -25,14 +25,12 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 
-import com.kunminx.architecture.utils.BarUtils;
-import com.kunminx.puremusic.App;
-import com.kunminx.puremusic.R;
-import com.kunminx.puremusic.bridge.callback.SharedViewModel;
 import com.kunminx.architecture.utils.AdaptScreenUtils;
+import com.kunminx.architecture.utils.BarUtils;
 import com.kunminx.architecture.utils.ScreenUtils;
+import com.kunminx.puremusic.App;
+import com.kunminx.puremusic.bridge.callback.SharedViewModel;
 
 /**
  * Create by KunMinX at 19/8/1
@@ -49,6 +47,7 @@ public class BaseActivity extends AppCompatActivity {
         BarUtils.setStatusBarLightMode(this, true);
 
         mSharedViewModel = getAppViewModelProvider().get(SharedViewModel.class);
+
     }
 
     public boolean isDebug() {

@@ -51,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_gravity="top"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="37dp"
             android:orientation="horizontal"
             android:visibility="invisible">
 

@@ -77,5 +77,12 @@ public class SearchFragment extends BaseFragment {
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
         }
+
+        public void subscribe() {
+            String u = "https://xiaozhuanlan.com/kunminx";
+            Uri uri = Uri.parse(u);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        }
     }
 }

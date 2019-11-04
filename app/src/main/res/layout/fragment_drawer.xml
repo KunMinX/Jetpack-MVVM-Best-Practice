@@ -37,7 +37,7 @@
             android:id="@+id/iv_logo"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginTop="42dp"
+            android:layout_marginTop="40dp"
             android:onClick="@{()->click.logoClick()}"
             android:src="@drawable/ic_launcher"
             app:layout_constraintLeft_toLeftOf="parent"

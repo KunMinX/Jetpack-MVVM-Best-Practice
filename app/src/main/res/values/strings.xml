@@ -24,6 +24,11 @@
 
     <string name="app_summary">是难得一见的 Jetpack MVVM 最佳实践！</string>
     <string name="project_title">本项目中用到的技术点包括：</string>
-    <string name="Copyright">Product with love by KunMinX ©2019</string>
+    <string name="Copyright">Product with love by KunMinX @2019</string>
     <string name="search_page_tip">本页面用于测试 Navigation 路由导航</string>
+
+    <string name="relearn_android">《重学安卓》</string>
+    <string name="learn_more_friends">付费读者加微信进群 myatejx</string>
+    <string name="learn_more">Learn More</string>
+
 </resources>
