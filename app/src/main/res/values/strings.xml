@@ -7,7 +7,7 @@
     </string>
 
     <string name="library_json">
-        "[{\"title\":\"LifeCycler\",\"summary\":\"主要用于在软件工程的背景下，解决生命周期管理的一致性问题\",\"url\":\"https://xiaozhuanlan.com/topic/3684721950\"},{\"title\":\"LiveData\",\"summary\":\"主要用于 配合唯一可信源 完成 生命周期安全的 事件统一分发，以避免收到 不可预期的推送 和 难以追溯的事件源\",\"url\":\"https://xiaozhuanlan.com/topic/0168753249\"},{\"title\":\"ViewModel\",\"summary\":\"主要用于 托管页面状态 和 实现 生命周期安全的、事件源可追溯的 跨页面通信\",\"url\":\"https://xiaozhuanlan.com/topic/6257931840\"},{\"title\":\"DataBinding\",\"summary\":\"主要用于在软件工程的背景下，解决视图调用的一致性问题\",\"url\":\"https://xiaozhuanlan.com/topic/9816742350\"},{\"title\":\"Navigation\",\"summary\":\"通过声明式编程来标准化、统一化和简化应用内路由导航\",\"url\":\"https://xiaozhuanlan.com/topic/5860149732\"}]"
+        "[{\"title\":\"Lifecycle\",\"summary\":\"主要用于在软件工程的背景下，解决生命周期管理的一致性问题\",\"url\":\"https://xiaozhuanlan.com/topic/3684721950\"},{\"title\":\"LiveData\",\"summary\":\"主要用于 配合唯一可信源 完成 生命周期安全的 事件统一分发，以避免收到 不可预期的推送 和 难以追溯的事件源\",\"url\":\"https://xiaozhuanlan.com/topic/0168753249\"},{\"title\":\"ViewModel\",\"summary\":\"主要用于 托管页面状态 和 实现 生命周期安全的、事件源可追溯的 跨页面通信\",\"url\":\"https://xiaozhuanlan.com/topic/6257931840\"},{\"title\":\"DataBinding\",\"summary\":\"主要用于在软件工程的背景下，解决视图调用的一致性问题\",\"url\":\"https://xiaozhuanlan.com/topic/9816742350\"},{\"title\":\"Navigation\",\"summary\":\"通过声明式编程来标准化、统一化和简化应用内路由导航\",\"url\":\"https://xiaozhuanlan.com/topic/5860149732\"}]"
     </string>
     <string name="play">播放</string>
     <string name="notify_of_play">播放时的通知栏展示</string>
