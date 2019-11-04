@@ -339,11 +339,7 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
         CoordinatorLayout.LayoutParams imageLayout = (CoordinatorLayout.LayoutParams) mBinding.albumArt.getLayoutParams();
         imageLayout.height = screenWidth;
         imageLayout.width = screenWidth;
-//        mBinding.albumArt.setImageDrawable(albumImageDrawable);
         mBinding.albumArt.setLayoutParams(imageLayout);
-//        mBinding.albumArt.setForeground(
-//                ScrimUtil.makeCubicGradientScrimDrawable(nowPlayingCardColor,
-//                        8, Gravity.CENTER_HORIZONTAL));
 
         //animate title and artist
         Animation contentAnimation = new Animation() {

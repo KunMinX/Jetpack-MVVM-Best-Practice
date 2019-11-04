@@ -94,7 +94,7 @@ public class MainFragment extends BaseFragment {
 
         PlayerManager.getInstance().getChangeMusicLiveData().observe(this, changeMusic -> {
 
-            // TODO tip 1：所有播放状态的改变，都要通过这个 作为 唯一可信源 的 PlayerController 来统一分发，
+            // TODO tip 1：所有播放状态的改变，都要通过这个 作为 唯一可信源 的 PlayerManager 来统一分发，
 
             // 如此才能方便 追溯事件源，以及 避免 不可预期的 推送和错误。
             // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/0168753249

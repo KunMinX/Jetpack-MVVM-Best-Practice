@@ -16,7 +16,6 @@
 
 package com.kunminx.puremusic;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.core.view.GravityCompat;
@@ -28,8 +27,6 @@ import androidx.navigation.Navigation;
 
 import com.kunminx.puremusic.bridge.status.MainActivityViewModel;
 import com.kunminx.puremusic.databinding.ActivityMainBinding;
-import com.kunminx.puremusic.player.PlayerManager;
-import com.kunminx.puremusic.player.notification.PlayerService;
 import com.kunminx.puremusic.ui.base.BaseActivity;
 
 /**
@@ -51,8 +48,8 @@ public class MainActivity extends BaseActivity {
         // TODO tip 1: 此处通过 DataBinding 来规避 潜在的 视图调用的一致性问题，
 
         // 因为本项目采用 横、竖 两套布局，且不同布局的控件存在差异，
-        // 在 DataBinding 的适配器模式加持下，有绑定就有绑定，没绑定也没什么大不了的，
-        // 总之 不会因一致性问题造成 视图调用的空指针。
+        // 在 DataBinding 适配器模式的加持下，有绑定就有绑定，没绑定也没什么大不了的，
+        // 总之 不会因一致性问题造成 视图调用的空指针异常。
 
         // 如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
@@ -78,7 +75,7 @@ public class MainActivity extends BaseActivity {
 
         // TODO tip 5: 同 tip 1，这边我将 drawer 的 open 和 close 都放在 bindingAdapter 中操作，
 
-        // 规避了视图的一致性问题，因为 横屏布局根据就没有 drawerLayout，此处如果用传统的视图调用方式，会很容易疏忽而造成空引用。
+        // 规避了视图的一致性问题，因为 横屏布局 根本就没有 drawerLayout，此处如果用传统的视图调用方式，会很容易疏忽而造成空引用。
 
         mSharedViewModel.openOrCloseDrawer.observe(this, aBoolean -> {
             //TODO yes:

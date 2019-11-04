@@ -27,7 +27,7 @@ import com.kunminx.puremusic.bridge.callback.SharedViewModel;
 import com.kunminx.puremusic.ui.base.BaseFragment;
 
 /**
- * TODO tip：通过 LifeCycler 来解决抽屉侧滑禁用与否的判断的 一致性问题，
+ * TODO tip：通过 Lifecycle 来解决抽屉侧滑禁用与否的判断的 一致性问题，
  * <p>
  * 每个需要注册和监听生命周期来判断的视图控制器，无需在各自内部手动书写解绑等操作。
  * 如果这样说还不理解，详见 https://xiaozhuanlan.com/topic/3684721950

@@ -121,7 +121,7 @@ public class PlayerFragment extends BaseFragment {
 
         PlayerManager.getInstance().getPauseLiveData().observe(this, aBoolean -> {
 
-            // TODO tip 2：所有播放状态的改变，都要通过这个 作为 唯一可信源 的 PlayerController 来统一分发，
+            // TODO tip 2：所有播放状态的改变，都要通过这个 作为 唯一可信源 的 PlayerManager 来统一分发，
 
             // 如此才能方便 追溯事件源、保证 全应用范围内 所有状态的正确和及时，以及 避免 不可预期的 推送和错误。
 
