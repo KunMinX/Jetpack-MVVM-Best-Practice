@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kunminx.puremusic.bridge.status;
+package com.kunminx.puremusic.bridge.state;
 
 import androidx.lifecycle.ViewModel;
 

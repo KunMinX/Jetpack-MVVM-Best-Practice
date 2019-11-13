@@ -25,7 +25,7 @@
 
         <variable
             name="vm"
-            type="com.kunminx.puremusic.bridge.status.MainViewModel" />
+            type="com.kunminx.puremusic.bridge.state.MainViewModel" />
 
     </data>
 

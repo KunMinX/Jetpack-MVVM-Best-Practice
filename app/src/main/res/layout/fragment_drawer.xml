@@ -21,7 +21,7 @@
 
         <variable
             name="vm"
-            type="com.kunminx.puremusic.bridge.status.DrawerViewModel" />
+            type="com.kunminx.puremusic.bridge.state.DrawerViewModel" />
 
         <variable
             name="click"

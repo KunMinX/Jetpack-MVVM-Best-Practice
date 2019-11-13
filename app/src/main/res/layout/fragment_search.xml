@@ -25,7 +25,7 @@
 
         <variable
             name="vm"
-            type="com.kunminx.puremusic.bridge.status.SearchViewModel" />
+            type="com.kunminx.puremusic.bridge.state.SearchViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

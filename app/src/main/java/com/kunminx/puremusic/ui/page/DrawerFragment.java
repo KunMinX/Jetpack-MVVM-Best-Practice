@@ -31,7 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kunminx.architecture.ui.adapter.SimpleBaseBindingAdapter;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.bridge.request.InfoRequestViewModel;
-import com.kunminx.puremusic.bridge.status.DrawerViewModel;
+import com.kunminx.puremusic.bridge.state.DrawerViewModel;
 import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.databinding.AdapterLibraryBinding;
 import com.kunminx.puremusic.databinding.FragmentDrawerBinding;

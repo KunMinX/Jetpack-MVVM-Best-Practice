@@ -31,14 +31,13 @@ import com.bumptech.glide.Glide;
 import com.kunminx.architecture.ui.adapter.SimpleBaseBindingAdapter;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.bridge.request.MusicRequestViewModel;
-import com.kunminx.puremusic.bridge.status.MainViewModel;
+import com.kunminx.puremusic.bridge.state.MainViewModel;
 import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.databinding.AdapterPlayItemBinding;
 import com.kunminx.puremusic.databinding.FragmentMainBinding;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.base.BaseFragment;
-
-import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
+import com.kunminx.puremusic.ui.helper.DrawerCoordinateHelper;
 
 /**
  * Create by KunMinX at 19/10/29
@@ -49,6 +48,7 @@ public class MainFragment extends BaseFragment {
     private MainViewModel mMainViewModel;
     private MusicRequestViewModel mMusicRequestViewModel;
     private SimpleBaseBindingAdapter<TestAlbum.TestMusic, AdapterPlayItemBinding> mAdapter;
+    private ClickProxy mClickProxy;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,7 +62,7 @@ public class MainFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         mBinding = FragmentMainBinding.bind(view);
-        mBinding.setClick(new ClickProxy());
+        mBinding.setClick(mClickProxy = new ClickProxy());
         mBinding.setVm(mMainViewModel);
         return view;
     }
@@ -87,6 +87,8 @@ public class MainFragment extends BaseFragment {
                 binding.getRoot().setOnClickListener(v -> {
                     PlayerManager.getInstance().playAudio(holder.getAdapterPosition());
                 });
+
+//                binding.getRoot().setOnTouchListener(DrawerCoordinateHelper.getInstance());
             }
         };
 
@@ -103,22 +105,22 @@ public class MainFragment extends BaseFragment {
         });
 
         mMusicRequestViewModel.getFreeMusicsLiveData().observe(this, musicAlbum -> {
-                    if (musicAlbum != null && musicAlbum.getMusics() != null) {
-                        mAdapter.setList(musicAlbum.getMusics());
-                        mAdapter.notifyDataSetChanged();
+            if (musicAlbum != null && musicAlbum.getMusics() != null) {
+                mAdapter.setList(musicAlbum.getMusics());
+                mAdapter.notifyDataSetChanged();
 
-                        // TODO tip 4：未作 UnPeek 处理的 用于 request 的 LiveData，在视图控制器重建时会自动倒灌数据
+                // TODO tip 4：未作 UnPeek 处理的 用于 request 的 LiveData，在视图控制器重建时会自动倒灌数据
 
-                        // 一定要记住这一点，因为如果没有妥善处理，这里就会出现预期外的错误，一定要记得它在重建时 是一定会倒灌的。
+                // 一定要记住这一点，因为如果没有妥善处理，这里就会出现预期外的错误，一定要记得它在重建时 是一定会倒灌的。
 
-                        // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/0129483567
+                // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/0129483567
 
-                        if (PlayerManager.getInstance().getAlbum() == null ||
-                                !PlayerManager.getInstance().getAlbum().getAlbumId().equals(musicAlbum.getAlbumId())) {
-                            PlayerManager.getInstance().loadAlbum(musicAlbum);
-                        }
-                    }
-                });
+                if (PlayerManager.getInstance().getAlbum() == null ||
+                        !PlayerManager.getInstance().getAlbum().getAlbumId().equals(musicAlbum.getAlbumId())) {
+                    PlayerManager.getInstance().loadAlbum(musicAlbum);
+                }
+            }
+        });
 
         if (PlayerManager.getInstance().getAlbum() == null) {
             mMusicRequestViewModel.requestFreeMusics();
@@ -126,6 +128,10 @@ public class MainFragment extends BaseFragment {
             mAdapter.setList(PlayerManager.getInstance().getAlbum().getMusics());
             mAdapter.notifyDataSetChanged();
         }
+
+        DrawerCoordinateHelper.getInstance().openDrawer.observe(this, aBoolean -> {
+            mSharedViewModel.openOrCloseDrawer.setValue(true);
+        });
     }
 
     // TODO tip 2：此处通过 DataBinding 来规避 在 setOnClickListener 时存在的 视图调用的一致性问题，
@@ -151,6 +157,7 @@ public class MainFragment extends BaseFragment {
         public void search() {
             nav().navigate(R.id.action_mainFragment_to_searchFragment);
         }
+
     }
 
 }

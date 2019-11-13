@@ -28,10 +28,10 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.kunminx.puremusic.R;
-import com.kunminx.puremusic.bridge.status.SearchViewModel;
+import com.kunminx.puremusic.bridge.state.SearchViewModel;
 import com.kunminx.puremusic.databinding.FragmentSearchBinding;
 import com.kunminx.puremusic.ui.base.BaseFragment;
-import com.kunminx.puremusic.ui.manager.DrawerCoordinateHelper;
+import com.kunminx.puremusic.ui.helper.DrawerCoordinateHelper;
 
 /**
  * Create by KunMinX at 19/10/29

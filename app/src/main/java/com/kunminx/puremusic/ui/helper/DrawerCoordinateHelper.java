@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package com.kunminx.puremusic.ui.manager;
+package com.kunminx.puremusic.ui.helper;
+
+import android.view.MotionEvent;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.ViewModelProviders;
 
-import com.kunminx.architecture.utils.Utils;
-import com.kunminx.puremusic.App;
+import com.kunminx.architecture.bridge.callback.UnPeekLiveData;
 import com.kunminx.puremusic.bridge.callback.SharedViewModel;
 import com.kunminx.puremusic.ui.base.BaseFragment;
 
@@ -34,7 +35,12 @@ import com.kunminx.puremusic.ui.base.BaseFragment;
  * <p>
  * Create by KunMinX at 19/11/3
  */
-public class DrawerCoordinateHelper implements DefaultLifecycleObserver {
+public class DrawerCoordinateHelper implements DefaultLifecycleObserver, View.OnTouchListener {
+
+    private float downX;
+    private float downY;
+
+    public final UnPeekLiveData<Boolean> openDrawer = new UnPeekLiveData<>();
 
     private static DrawerCoordinateHelper sHelper = new DrawerCoordinateHelper();
 
@@ -61,5 +67,45 @@ public class DrawerCoordinateHelper implements DefaultLifecycleObserver {
 
         ((BaseFragment) owner).getSharedViewModel()
                 .enableSwipeDrawer.setValue(SharedViewModel.tagOfSecondaryPages.size() == 0);
+    }
+
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        float x = event.getX();
+        float y = event.getY();
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                downX = x;
+                downY = y;
+                break;
+            case MotionEvent.ACTION_UP:
+                float dx = x - downX;
+                float dy = y - downY;
+                if (Math.abs(dx) > 8 && Math.abs(dy) > 8) {
+                    int orientation = getOrientation(dx, dy);
+                    switch (orientation) {
+                        case 'r':
+                            openDrawer.setValue(true);
+                            break;
+                        case 'l':
+                            break;
+                        case 't':
+                            break;
+                        case 'b':
+                            break;
+                    }
+                }
+                break;
+        }
+        return false;
+    }
+
+    private int getOrientation(float dx, float dy) {
+        if (Math.abs(dx) > Math.abs(dy)) {
+            return dx > 0 ? 'r' : 'l';
+        } else {
+            return dy > 0 ? 'b' : 't';
+        }
     }
 }

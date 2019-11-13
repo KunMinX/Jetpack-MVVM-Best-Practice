@@ -25,7 +25,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.kunminx.puremusic.bridge.status.MainActivityViewModel;
+import com.kunminx.puremusic.bridge.state.MainActivityViewModel;
 import com.kunminx.puremusic.databinding.ActivityMainBinding;
 import com.kunminx.puremusic.ui.base.BaseActivity;
 

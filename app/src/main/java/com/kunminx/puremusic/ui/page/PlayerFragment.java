@@ -29,7 +29,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.kunminx.player.PlayingInfoManager;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.bridge.callback.SharedViewModel;
-import com.kunminx.puremusic.bridge.status.PlayerViewModel;
+import com.kunminx.puremusic.bridge.state.PlayerViewModel;
 import com.kunminx.puremusic.databinding.FragmentPlayerBinding;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.base.BaseFragment;
