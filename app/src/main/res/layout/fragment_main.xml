@@ -62,7 +62,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/toolbar"
                     drawable_radius="@{8}"
-                    drawable_solidColor="@{0x66ffffff}"
+                    drawable_solidColor="@{0x88ffffff}"
                     drawable_strokeColor="@{0x33666666}"
                     drawable_strokeWidth="@{1}"
                     android:layout_width="match_parent"
