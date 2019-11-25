@@ -65,10 +65,10 @@ public class InfoRequestViewModel extends ViewModel {
 
     public void requestTestXXX() {
         UseCaseHandler.getInstance().execute(getTestUseCase(),
-                new TestUseCase.TestRequest(0, 0),
-                new UseCase.UseCaseCallback<TestUseCase.TestResponse>() {
+                new TestUseCase.RequestValues(0, 0),
+                new UseCase.UseCaseCallback<TestUseCase.ResponseValue>() {
                     @Override
-                    public void onSuccess(TestUseCase.TestResponse response) {
+                    public void onSuccess(TestUseCase.ResponseValue response) {
                         getTestXXX().setValue(response.getResult());
                     }
 

@@ -23,14 +23,16 @@ import androidx.lifecycle.LifecycleOwner;
 
 import com.kunminx.puremusic.data.usecase.base.UseCase;
 
-import static com.kunminx.puremusic.data.usecase.TestUseCase.*;
+import static com.kunminx.puremusic.data.usecase.TestUseCase.RequestValues;
+import static com.kunminx.puremusic.data.usecase.TestUseCase.ResponseValue;
+
 
 /**
  * UseCase 示例，单独服务于有 “叫停” 需求的业务
  * <p>
  * Create by KunMinX at 19/11/25
  */
-public class TestUseCase extends UseCase<TestRequest, TestResponse> implements DefaultLifecycleObserver {
+public class TestUseCase extends UseCase<RequestValues, ResponseValue> implements DefaultLifecycleObserver {
 
     private boolean isActive;
 
@@ -45,7 +47,7 @@ public class TestUseCase extends UseCase<TestRequest, TestResponse> implements D
     }
 
     @Override
-    protected void executeUseCase(TestRequest requestValues) {
+    protected void executeUseCase(RequestValues requestValues) {
         //TODO do some work
 
         //访问数据层资源，在 UseCase 中处理带叫停性质的业务
@@ -53,16 +55,19 @@ public class TestUseCase extends UseCase<TestRequest, TestResponse> implements D
 
         if (!isActive) {
             //TODO 叫停
+            return;
         }
+
+        getUseCaseCallback().onSuccess(new ResponseValue("xxx"));
 
     }
 
-    public static final class TestRequest implements RequestValues {
+    public static final class RequestValues implements UseCase.RequestValues {
 
         private int page;
         private int size;
 
-        public TestRequest(int page, int size) {
+        public RequestValues(int page, int size) {
             this.page = page;
             this.size = size;
         }
@@ -84,8 +89,12 @@ public class TestUseCase extends UseCase<TestRequest, TestResponse> implements D
         }
     }
 
-    public static final class TestResponse implements ResponseValue {
+    public static final class ResponseValue implements UseCase.ResponseValue {
         private String result;
+
+        public ResponseValue(String result) {
+            this.result = result;
+        }
 
         public String getResult() {
             return result;
