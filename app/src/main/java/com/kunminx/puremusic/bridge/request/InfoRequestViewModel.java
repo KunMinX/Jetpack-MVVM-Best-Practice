@@ -21,6 +21,9 @@ import androidx.lifecycle.ViewModel;
 
 import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.data.repository.HttpRequestManager;
+import com.kunminx.puremusic.data.usecase.TestUseCase;
+import com.kunminx.puremusic.data.usecase.base.UseCase;
+import com.kunminx.puremusic.data.usecase.base.UseCaseHandler;
 
 import java.util.List;
 
@@ -31,6 +34,10 @@ public class InfoRequestViewModel extends ViewModel {
 
     private MutableLiveData<List<LibraryInfo>> libraryLiveData;
 
+    private TestUseCase mTestUseCase;
+
+    private MutableLiveData<String> testXXX;
+
     public MutableLiveData<List<LibraryInfo>> getLibraryLiveData() {
         if (libraryLiveData == null) {
             libraryLiveData = new MutableLiveData<>();
@@ -38,7 +45,37 @@ public class InfoRequestViewModel extends ViewModel {
         return libraryLiveData;
     }
 
+    public TestUseCase getTestUseCase() {
+        if (mTestUseCase == null) {
+            mTestUseCase = new TestUseCase();
+        }
+        return mTestUseCase;
+    }
+
+    public MutableLiveData<String> getTestXXX() {
+        if (testXXX == null) {
+            testXXX = new MutableLiveData<>();
+        }
+        return testXXX;
+    }
+
     public void requestLibraryInfo() {
         HttpRequestManager.getInstance().getLibraryInfo(getLibraryLiveData());
+    }
+
+    public void requestTestXXX() {
+        UseCaseHandler.getInstance().execute(getTestUseCase(),
+                new TestUseCase.TestRequest(0, 0),
+                new UseCase.UseCaseCallback<TestUseCase.TestResponse>() {
+                    @Override
+                    public void onSuccess(TestUseCase.TestResponse response) {
+                        getTestXXX().setValue(response.getResult());
+                    }
+
+                    @Override
+                    public void onError() {
+                        //TODO 此处使用相应的 LiveDate 通知 UI 层
+                    }
+                });
     }
 }

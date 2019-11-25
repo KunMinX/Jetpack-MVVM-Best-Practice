@@ -21,6 +21,9 @@ import androidx.lifecycle.ViewModel;
 
 import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.data.repository.HttpRequestManager;
+import com.kunminx.puremusic.data.usecase.TestUseCase;
+import com.kunminx.puremusic.data.usecase.base.UseCase;
+import com.kunminx.puremusic.data.usecase.base.UseCaseHandler;
 
 /**
  * 音乐资源  RequestViewModel
@@ -110,5 +113,4 @@ public class MusicRequestViewModel extends ViewModel {
     public void requestFreeMusics() {
         HttpRequestManager.getInstance().getFreeMusic(getFreeMusicsLiveData());
     }
-
 }

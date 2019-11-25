@@ -68,6 +68,9 @@ public class DrawerFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //TODO tip1：绑定跟随视图控制器生命周期的、可叫停的、单独放在 UseCase 中处理的业务
+        getLifecycle().addObserver(mInfoRequestViewModel.getTestUseCase());
+
         mAdapter = new SimpleBaseBindingAdapter<LibraryInfo, AdapterLibraryBinding>(getContext(), R.layout.adapter_library) {
             @Override
             protected void onSimpleBindItem(AdapterLibraryBinding binding, LibraryInfo item, RecyclerView.ViewHolder holder) {
@@ -92,6 +95,15 @@ public class DrawerFragment extends BaseFragment {
         });
 
         mInfoRequestViewModel.requestLibraryInfo();
+
+        mInfoRequestViewModel.getTestXXX().observe(this, s -> {
+            //TODO tip3：暂无实际功能，仅演示 UseCase 流程
+
+            //接收来自 可感知生命周期的 UseCase 处理的结果
+        });
+
+        //TODO tip2：暂无实际功能，仅演示 UseCase 流程
+        mInfoRequestViewModel.requestTestXXX();
     }
 
     @Override

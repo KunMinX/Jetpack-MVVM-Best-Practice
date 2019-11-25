@@ -21,10 +21,7 @@ import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.kunminx.puremusic.data.repository.HttpRequestManager;
 import com.kunminx.puremusic.data.usecase.base.UseCase;
-
-import java.util.List;
 
 import static com.kunminx.puremusic.data.usecase.TestUseCase.*;
 
@@ -61,8 +58,14 @@ public class TestUseCase extends UseCase<TestRequest, TestResponse> implements D
     }
 
     public static final class TestRequest implements RequestValues {
+
         private int page;
         private int size;
+
+        public TestRequest(int page, int size) {
+            this.page = page;
+            this.size = size;
+        }
 
         public int getPage() {
             return page;
@@ -82,14 +85,14 @@ public class TestUseCase extends UseCase<TestRequest, TestResponse> implements D
     }
 
     public static final class TestResponse implements ResponseValue {
-        private List<String> mList;
+        private String result;
 
-        public List<String> getList() {
-            return mList;
+        public String getResult() {
+            return result;
         }
 
-        public void setList(List<String> list) {
-            mList = list;
+        public void setResult(String result) {
+            this.result = result;
         }
     }
 }
