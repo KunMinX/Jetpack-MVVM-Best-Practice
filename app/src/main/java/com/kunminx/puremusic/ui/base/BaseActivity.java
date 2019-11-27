@@ -26,6 +26,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.kunminx.architecture.data.manager.NetworkStateManager;
 import com.kunminx.architecture.utils.AdaptScreenUtils;
 import com.kunminx.architecture.utils.BarUtils;
 import com.kunminx.architecture.utils.ScreenUtils;
@@ -48,6 +49,11 @@ public class BaseActivity extends AppCompatActivity {
 
         mSharedViewModel = getAppViewModelProvider().get(SharedViewModel.class);
 
+        NetworkStateManager.getInstance().mNetworkStateCallback.observe(this, netState -> {
+
+            //TODO 这里可以执行统一的网络状态通知和处理
+
+        });
     }
 
     public boolean isDebug() {
