@@ -179,6 +179,8 @@ public class PlayerFragment extends BaseFragment {
                     // TODO: do not:
                     // mActivity.finish();
                 }
+            } else {
+                mSharedViewModel.activityCanBeClosedDirectly.setValue(true);
             }
         });
 
