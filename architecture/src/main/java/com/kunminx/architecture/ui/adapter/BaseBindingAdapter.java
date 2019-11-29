@@ -65,6 +65,9 @@ public abstract class BaseBindingAdapter<M, B extends ViewDataBinding> extends R
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         B binding = DataBindingUtil.getBinding(holder.itemView);
         this.onBindItem(binding, this.mList.get(position), holder);
+        if (binding != null) {
+            binding.executePendingBindings();
+        }
     }
 
     protected abstract @LayoutRes
