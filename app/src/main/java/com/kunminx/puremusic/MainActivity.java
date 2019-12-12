@@ -54,6 +54,7 @@ public class MainActivity extends BaseActivity {
         // 如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        mBinding.setLifecycleOwner(this);
         mBinding.setVm(mMainActivityViewModel);
 
         mSharedViewModel.activityCanBeClosedDirectly.observe(this, aBoolean -> {
@@ -80,28 +81,32 @@ public class MainActivity extends BaseActivity {
         mSharedViewModel.openOrCloseDrawer.observe(this, aBoolean -> {
             //TODO yes:
 
-//            mMainActivityViewModel.openDrawer.set(aBoolean);
+            mMainActivityViewModel.openDrawer.setValue(aBoolean);
 
             //TODO do not:（只有万不得已的情况下，才用这种土办法，不然会埋下视图调用的一致性隐患）
 
-            if (mBinding.dl != null) {
+            /*if (mBinding.dl != null) {
                 if (aBoolean && !mBinding.dl.isDrawerOpen(GravityCompat.START)) {
                     mBinding.dl.openDrawer(GravityCompat.START);
                 } else {
                     mBinding.dl.closeDrawer(GravityCompat.START);
                 }
-            }
+            }*/
         });
-
-        // TODO tip 7: do not:（只有万不得已的情况下，才用这种土办法，不然会埋下视图调用的一致性隐患）
 
         mSharedViewModel.enableSwipeDrawer.observe(this, aBoolean -> {
 
-            if (mBinding.dl != null) {
+            //TODO yes:
+
+            mMainActivityViewModel.allowDrawerOpen.setValue(aBoolean);
+
+            // TODO tip 7: do not:（只有万不得已的情况下，才用这种土办法，不然会埋下视图调用的一致性隐患）
+
+            /*if (mBinding.dl != null) {
                 mBinding.dl.setDrawerLockMode(aBoolean
                         ? DrawerLayout.LOCK_MODE_UNLOCKED
                         : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-            }
+            }*/
         });
 
 

@@ -86,6 +86,13 @@ public class AdapterBinding {
         }
     }
 
+    @BindingAdapter(value = {"allowDrawerOpen"}, requireAll = false)
+    public static void allowDrawerOpen(DrawerLayout drawerLayout, boolean allowDrawerOpen) {
+        drawerLayout.setDrawerLockMode(allowDrawerOpen
+                ? DrawerLayout.LOCK_MODE_UNLOCKED
+                : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
+
     @BindingAdapter(value = {"isPlaying"}, requireAll = false)
     public static void isPlaying(PlayPauseView pauseView, boolean isPlaying) {
         if (isPlaying) {
@@ -156,10 +163,5 @@ public class AdapterBinding {
         webView.loadUrl(loadPage);
     }
 
-    @BindingAdapter(value = {"allowDrawerOpen"}, requireAll = false)
-    public static void allowDrawerOpen(DrawerLayout drawerLayout, boolean allowDrawerOpen) {
-        drawerLayout.setDrawerLockMode(allowDrawerOpen
-                ? DrawerLayout.LOCK_MODE_UNLOCKED
-                : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-    }
+
 }
