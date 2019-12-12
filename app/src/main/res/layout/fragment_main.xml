@@ -89,10 +89,10 @@
 
                     <net.steamcrafted.materialiconlib.MaterialIconView
                         android:id="@+id/iv_icon"
+                        onClickWithDebouncing="@{()->click.search()}"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:onClick="@{()->click.search()}"
                         android:scaleType="center"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintRight_toLeftOf="@+id/tv_app"
@@ -103,9 +103,9 @@
 
                     <TextView
                         android:id="@+id/tv_app"
+                        onClickWithDebouncing="@{()->click.search()}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="@{()->click.search()}"
                         android:text="@string/app_name"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -116,11 +116,11 @@
 
                     <net.steamcrafted.materialiconlib.MaterialIconView
                         android:id="@+id/iv_search"
+                        onClickWithDebouncing="@{()->click.search()}"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:layout_marginEnd="12dp"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:onClick="@{()->click.search()}"
                         android:scaleType="center"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
