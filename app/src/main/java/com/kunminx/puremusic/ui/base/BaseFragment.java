@@ -42,6 +42,7 @@ public class BaseFragment extends Fragment {
 
     protected AppCompatActivity mActivity;
     protected SharedViewModel mSharedViewModel;
+    protected boolean mAnimationEnterLoaded;
     protected boolean mAnimationLoaded;
     protected boolean mInitDataCame;
 
@@ -64,7 +65,8 @@ public class BaseFragment extends Fragment {
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
         sHandler.postDelayed(() -> {
             mAnimationLoaded = true;
-            if (mInitDataCame) {
+            if (mInitDataCame && !mAnimationEnterLoaded) {
+                mAnimationEnterLoaded = true;
                 loadInitData();
             }
         }, 280);

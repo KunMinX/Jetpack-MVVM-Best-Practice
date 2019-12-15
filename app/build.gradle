@@ -7,12 +7,13 @@ android {
         applicationId "com.kunminx.puremusic"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 10303
-        versionName "1.3.3"
+        versionCode 10305
+        versionName "1.3.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
+//            minifyEnabled false
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
