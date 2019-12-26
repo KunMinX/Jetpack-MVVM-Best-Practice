@@ -54,6 +54,7 @@ public class BaseActivity extends AppCompatActivity {
             //TODO 这里可以执行统一的网络状态通知和处理
 
         });
+
     }
 
     public boolean isDebug() {
