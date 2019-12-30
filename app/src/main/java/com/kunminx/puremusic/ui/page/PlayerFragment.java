@@ -26,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.kunminx.architecture.data.manager.NetworkStateManager;
 import com.kunminx.player.PlayingInfoManager;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.bridge.callback.SharedViewModel;
@@ -183,7 +184,6 @@ public class PlayerFragment extends BaseFragment {
                 mSharedViewModel.activityCanBeClosedDirectly.setValue(true);
             }
         });
-
 
     }
 

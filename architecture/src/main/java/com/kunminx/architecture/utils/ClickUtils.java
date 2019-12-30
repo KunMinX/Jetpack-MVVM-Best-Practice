@@ -42,7 +42,7 @@ public class ClickUtils {
     private static final float PRESSED_BG_DARK_DEFAULT_VALUE = 0.9f;
 
     private static final int DEBOUNCING_TAG = -7;
-    private static final long DEBOUNCING_DEFAULT_VALUE = 200;
+    private static final long DEBOUNCING_DEFAULT_VALUE = 700;
 
     private ClickUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");

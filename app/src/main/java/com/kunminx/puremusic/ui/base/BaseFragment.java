@@ -31,6 +31,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.kunminx.architecture.data.manager.NetState;
+import com.kunminx.architecture.data.manager.NetworkStateManager;
 import com.kunminx.puremusic.App;
 import com.kunminx.puremusic.bridge.callback.SharedViewModel;
 
@@ -58,6 +60,17 @@ public class BaseFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mSharedViewModel = getAppViewModelProvider().get(SharedViewModel.class);
+
+        NetworkStateManager.getInstance().mNetworkStateCallback.observe(this, netState -> {
+            //TODO 注意 liveData 的 lambda 回调中不可为空，不然会出现 Cannot add the same observer with different lifecycles 的现象，
+            // 详见：https://stackoverflow.com/questions/47025233/android-lifecycle-library-cannot-add-the-same-observer-with-different-lifecycle
+
+            onNetworkStateChanged(netState);
+        });
+    }
+
+    protected void onNetworkStateChanged(NetState netState) {
+        //TODO 子类可以重写该方法，统一的网络状态通知和处理
     }
 
     @Nullable
