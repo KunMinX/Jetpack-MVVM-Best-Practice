@@ -49,6 +49,8 @@ public class BaseActivity extends AppCompatActivity {
 
         mSharedViewModel = getAppViewModelProvider().get(SharedViewModel.class);
 
+        getLifecycle().addObserver(NetworkStateManager.getInstance());
+
     }
 
     public boolean isDebug() {
