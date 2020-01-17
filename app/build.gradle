@@ -9,7 +9,6 @@ android {
         targetSdkVersion 29
         versionCode 10309
         versionName "1.3.9"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -44,9 +43,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation project(':architecture')
     implementation 'com.kunminx.player:player:1.1.6'
@@ -82,5 +78,4 @@ dependencies {
 
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
     implementation 'net.steamcrafted:materialiconlib:1.1.5'
-
 }
