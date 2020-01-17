@@ -63,8 +63,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta3'
-    implementation 'com.google.android.material:material:1.2.0-alpha02'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
+    implementation 'com.google.android.material:material:1.2.0-alpha03'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
     implementation "androidx.lifecycle:lifecycle-runtime:2.1.0"
@@ -76,7 +76,7 @@ dependencies {
 
     implementation 'com.lwjlol.navigation:keep-fragmentstate:0.0.1'
 
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.13'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.14'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
     implementation 'com.github.bumptech.glide:glide:4.10.0'
