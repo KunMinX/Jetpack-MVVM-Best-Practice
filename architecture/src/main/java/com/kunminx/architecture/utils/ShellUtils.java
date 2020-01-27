@@ -1,9 +1,12 @@
 package com.kunminx.architecture.utils;
 
+import androidx.annotation.NonNull;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -110,7 +113,9 @@ public final class ShellUtils {
             process = Runtime.getRuntime().exec(isRooted ? "su" : "sh");
             os = new DataOutputStream(process.getOutputStream());
             for (String command : commands) {
-                if (command == null) continue;
+                if (command == null) {
+                    continue;
+                }
                 os.write(command.getBytes());
                 os.writeBytes(LINE_SEP);
                 os.flush();
@@ -122,10 +127,10 @@ public final class ShellUtils {
                 successMsg = new StringBuilder();
                 errorMsg = new StringBuilder();
                 successResult = new BufferedReader(
-                        new InputStreamReader(process.getInputStream(), "UTF-8")
+                        new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8)
                 );
                 errorResult = new BufferedReader(
-                        new InputStreamReader(process.getErrorStream(), "UTF-8")
+                        new InputStreamReader(process.getErrorStream(), StandardCharsets.UTF_8)
                 );
                 String line;
                 if ((line = successResult.readLine()) != null) {
@@ -180,9 +185,9 @@ public final class ShellUtils {
      * The result of command.
      */
     public static class CommandResult {
-        public int    result;
-        public String successMsg;
-        public String errorMsg;
+        public final int result;
+        public final String successMsg;
+        public final String errorMsg;
 
         public CommandResult(final int result, final String successMsg, final String errorMsg) {
             this.result = result;
@@ -191,6 +196,7 @@ public final class ShellUtils {
         }
 
         @Override
+        @NonNull
         public String toString() {
             return "result: " + result + "\n" +
                     "successMsg: " + successMsg + "\n" +

@@ -22,6 +22,7 @@ import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.data.bean.TestAlbum;
 
 import java.util.List;
+
 /**
  * Create by KunMinX at 19/10/29
  */

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
 import java.lang.reflect.Field;
@@ -99,7 +100,9 @@ public final class Utils {
      * @return the context of Application object
      */
     public static Application getApp() {
-        if (sApplication != null) return sApplication;
+        if (sApplication != null) {
+            return sApplication;
+        }
         Application app = getApplicationByReflect();
         init(app);
         return app;
@@ -115,13 +118,7 @@ public final class Utils {
                 throw new NullPointerException("u should init first");
             }
             return (Application) app;
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (NoSuchMethodException | IllegalAccessException | ClassNotFoundException | InvocationTargetException e) {
             e.printStackTrace();
         }
         throw new NullPointerException("u should init first");
@@ -146,9 +143,13 @@ public final class Utils {
 
     static boolean isAppForeground() {
         ActivityManager am = (ActivityManager) Utils.getApp().getSystemService(Context.ACTIVITY_SERVICE);
-        if (am == null) return false;
+        if (am == null) {
+            return false;
+        }
         List<ActivityManager.RunningAppProcessInfo> info = am.getRunningAppProcesses();
-        if (info == null || info.size() == 0) return false;
+        if (info == null || info.size() == 0) {
+            return false;
+        }
         for (ActivityManager.RunningAppProcessInfo aInfo : info) {
             if (aInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
                 return aInfo.processName.equals(Utils.getApp().getPackageName());
@@ -156,6 +157,20 @@ public final class Utils {
         }
         return false;
     }
+
+    public interface OnAppStatusChangedListener {
+        void onForeground();
+
+        void onBackground();
+    }
+
+    public interface OnActivityDestroyedListener {
+        void onActivityDestroyed(Activity activity);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // interface
+    ///////////////////////////////////////////////////////////////////////////
 
     static class ActivityLifecycleImpl implements ActivityLifecycleCallbacks {
 
@@ -167,13 +182,44 @@ public final class Utils {
         private int mConfigCount = 0;
         private boolean mIsBackground = false;
 
+        private static void fixSoftInputLeaks(final Activity activity) {
+            if (activity == null) {
+                return;
+            }
+            InputMethodManager imm =
+                    (InputMethodManager) Utils.getApp().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm == null) {
+                return;
+            }
+            String[] leakViews = new String[]{"mLastSrvView", "mCurRootView", "mServedView", "mNextServedView"};
+            for (String leakView : leakViews) {
+                try {
+                    Field leakViewField = InputMethodManager.class.getDeclaredField(leakView);
+                    if (leakViewField == null) {
+                        continue;
+                    }
+                    if (!leakViewField.isAccessible()) {
+                        leakViewField.setAccessible(true);
+                    }
+                    Object obj = leakViewField.get(imm);
+                    if (!(obj instanceof View)) {
+                        continue;
+                    }
+                    View view = (View) obj;
+                    if (view.getRootView() == activity.getWindow().getDecorView().getRootView()) {
+                        leakViewField.set(imm, null);
+                    }
+                } catch (Throwable ignore) { /**/ }
+            }
+        }
+
         @Override
-        public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+        public void onActivityCreated(@NonNull Activity activity, Bundle savedInstanceState) {
             setTopActivity(activity);
         }
 
         @Override
-        public void onActivityStarted(Activity activity) {
+        public void onActivityStarted(@NonNull Activity activity) {
             if (!mIsBackground) {
                 setTopActivity(activity);
             }
@@ -185,7 +231,7 @@ public final class Utils {
         }
 
         @Override
-        public void onActivityResumed(Activity activity) {
+        public void onActivityResumed(@NonNull Activity activity) {
             setTopActivity(activity);
             if (mIsBackground) {
                 mIsBackground = false;
@@ -194,7 +240,7 @@ public final class Utils {
         }
 
         @Override
-        public void onActivityPaused(Activity activity) {/**/
+        public void onActivityPaused(@NonNull Activity activity) {/**/
 
         }
 
@@ -212,10 +258,10 @@ public final class Utils {
         }
 
         @Override
-        public void onActivitySaveInstanceState(Activity activity, Bundle outState) {/**/}
+        public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {/**/}
 
         @Override
-        public void onActivityDestroyed(Activity activity) {
+        public void onActivityDestroyed(@NonNull Activity activity) {
             mActivityList.remove(activity);
             consumeOnActivityDestroyedListener(activity);
             fixSoftInputLeaks(activity);
@@ -235,6 +281,20 @@ public final class Utils {
             return topActivityByReflect;
         }
 
+        private void setTopActivity(final Activity activity) {
+            if (PERMISSION_ACTIVITY_CLASS_NAME.equals(activity.getClass().getName())) {
+                return;
+            }
+            if (mActivityList.contains(activity)) {
+                if (!mActivityList.getLast().equals(activity)) {
+                    mActivityList.remove(activity);
+                    mActivityList.addLast(activity);
+                }
+            } else {
+                mActivityList.addLast(activity);
+            }
+        }
+
         void addOnAppStatusChangedListener(final Object object,
                                            final OnAppStatusChangedListener listener) {
             mStatusListenerMap.put(object, listener);
@@ -245,45 +305,43 @@ public final class Utils {
         }
 
         void removeOnActivityDestroyedListener(final Activity activity) {
-            if (activity == null) return;
+            if (activity == null) {
+                return;
+            }
             mDestroyedListenerMap.remove(activity);
         }
 
         void addOnActivityDestroyedListener(final Activity activity,
                                             final OnActivityDestroyedListener listener) {
-            if (activity == null || listener == null) return;
+            if (activity == null || listener == null) {
+                return;
+            }
             Set<OnActivityDestroyedListener> listeners;
             if (!mDestroyedListenerMap.containsKey(activity)) {
                 listeners = new HashSet<>();
                 mDestroyedListenerMap.put(activity, listeners);
             } else {
                 listeners = mDestroyedListenerMap.get(activity);
-                if (listeners.contains(listener)) return;
+                if (listeners.contains(listener)) {
+                    return;
+                }
             }
             listeners.add(listener);
         }
 
         private void postStatus(final boolean isForeground) {
-            if (mStatusListenerMap.isEmpty()) return;
+            if (mStatusListenerMap.isEmpty()) {
+                return;
+            }
             for (OnAppStatusChangedListener onAppStatusChangedListener : mStatusListenerMap.values()) {
-                if (onAppStatusChangedListener == null) return;
+                if (onAppStatusChangedListener == null) {
+                    return;
+                }
                 if (isForeground) {
                     onAppStatusChangedListener.onForeground();
                 } else {
                     onAppStatusChangedListener.onBackground();
                 }
-            }
-        }
-
-        private void setTopActivity(final Activity activity) {
-            if (PERMISSION_ACTIVITY_CLASS_NAME.equals(activity.getClass().getName())) return;
-            if (mActivityList.contains(activity)) {
-                if (!mActivityList.getLast().equals(activity)) {
-                    mActivityList.remove(activity);
-                    mActivityList.addLast(activity);
-                }
-            } else {
-                mActivityList.addLast(activity);
             }
         }
 
@@ -310,7 +368,9 @@ public final class Utils {
                 Field mActivityListField = activityThreadClass.getDeclaredField("mActivityList");
                 mActivityListField.setAccessible(true);
                 Map activities = (Map) mActivityListField.get(currentActivityThreadMethod);
-                if (activities == null) return null;
+                if (activities == null) {
+                    return null;
+                }
                 for (Object activityRecord : activities.values()) {
                     Class activityRecordClass = activityRecord.getClass();
                     Field pausedField = activityRecordClass.getDeclaredField("paused");
@@ -321,41 +381,10 @@ public final class Utils {
                         return (Activity) activityField.get(activityRecord);
                     }
                 }
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (NoSuchFieldException e) {
+            } catch (ClassNotFoundException | NoSuchFieldException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                 e.printStackTrace();
             }
             return null;
-        }
-
-        private static void fixSoftInputLeaks(final Activity activity) {
-            if (activity == null) return;
-            InputMethodManager imm =
-                    (InputMethodManager) Utils.getApp().getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm == null) return;
-            String[] leakViews = new String[]{"mLastSrvView", "mCurRootView", "mServedView", "mNextServedView"};
-            for (String leakView : leakViews) {
-                try {
-                    Field leakViewField = InputMethodManager.class.getDeclaredField(leakView);
-                    if (leakViewField == null) continue;
-                    if (!leakViewField.isAccessible()) {
-                        leakViewField.setAccessible(true);
-                    }
-                    Object obj = leakViewField.get(imm);
-                    if (!(obj instanceof View)) continue;
-                    View view = (View) obj;
-                    if (view.getRootView() == activity.getWindow().getDecorView().getRootView()) {
-                        leakViewField.set(imm, null);
-                    }
-                } catch (Throwable ignore) { /**/ }
-            }
         }
     }
 
@@ -366,19 +395,5 @@ public final class Utils {
             Utils.init(getContext());
             return true;
         }
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
-    // interface
-    ///////////////////////////////////////////////////////////////////////////
-
-    public interface OnAppStatusChangedListener {
-        void onForeground();
-
-        void onBackground();
-    }
-
-    public interface OnActivityDestroyedListener {
-        void onActivityDestroyed(Activity activity);
     }
 }

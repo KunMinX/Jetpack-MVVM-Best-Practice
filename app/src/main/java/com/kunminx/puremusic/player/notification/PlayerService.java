@@ -50,15 +50,13 @@ import java.io.File;
  */
 public class PlayerService extends Service {
 
-    private static final String GROUP_ID = "group_001";
-    private static final String CHANNEL_ID = "channel_001";
-
     public static final String NOTIFY_PREVIOUS = "pure_music.kunminx.previous";
     public static final String NOTIFY_CLOSE = "pure_music.kunminx.close";
     public static final String NOTIFY_PAUSE = "pure_music.kunminx.pause";
     public static final String NOTIFY_PLAY = "pure_music.kunminx.play";
     public static final String NOTIFY_NEXT = "pure_music.kunminx.next";
-
+    private static final String GROUP_ID = "group_001";
+    private static final String CHANNEL_ID = "channel_001";
     private PlayerCallHelper mPlayerCallHelper;
 
 
@@ -110,7 +108,7 @@ public class PlayerService extends Service {
             RemoteViews simpleContentView = new RemoteViews(
                     getApplicationContext().getPackageName(), R.layout.notify_player_small);
 
-            RemoteViews expandedView = null;
+            RemoteViews expandedView;
             expandedView = new RemoteViews(
                     getApplicationContext().getPackageName(), R.layout.notify_player_big);
 

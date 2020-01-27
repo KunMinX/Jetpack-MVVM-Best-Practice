@@ -16,6 +16,7 @@
 
 package com.kunminx.puremusic.ui.base;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -34,10 +35,10 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
+import com.kunminx.architecture.ui.adapter.CommonViewPagerAdapter;
 import com.kunminx.architecture.utils.ClickUtils;
 import com.kunminx.architecture.utils.Utils;
 import com.kunminx.puremusic.R;
-import com.kunminx.architecture.ui.adapter.CommonViewPagerAdapter;
 import com.kunminx.puremusic.ui.view.PlayPauseView;
 
 import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
@@ -46,6 +47,7 @@ import net.steamcrafted.materialiconlib.MaterialIconView;
 /**
  * Create by KunMinX at 19/9/18
  */
+@SuppressWarnings("unused")
 public class AdapterBinding {
 
     @BindingAdapter(value = {"imageUrl", "placeHolder"}, requireAll = false)
@@ -124,6 +126,7 @@ public class AdapterBinding {
         view.setIcon(iconValue);
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @BindingAdapter(value = {"pageAssetPath"}, requireAll = false)
     public static void loadAssetsPage(WebView webView, String assetPath) {
         webView.setWebViewClient(new WebViewClient() {
@@ -149,6 +152,7 @@ public class AdapterBinding {
         webView.loadUrl(url);
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @BindingAdapter(value = {"loadPage"}, requireAll = false)
     public static void loadPage(WebView webView, String loadPage) {
         webView.setWebViewClient(new WebViewClient());

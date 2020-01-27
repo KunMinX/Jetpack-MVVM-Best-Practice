@@ -26,7 +26,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.kunminx.architecture.data.manager.NetworkStateManager;
 import com.kunminx.player.PlayingInfoManager;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.bridge.callback.SharedViewModel;
@@ -91,11 +90,11 @@ public class PlayerFragment extends BaseFragment {
                                                     SlidingUpPanelLayout.PanelState panelState1) {
 
                         if (panelState1 == SlidingUpPanelLayout.PanelState.EXPANDED) {
-                            SharedViewModel.tagOfSecondaryPages.add(this.getClass().getSimpleName());
+                            SharedViewModel.TAG_OF_SECONDARY_PAGES.add(this.getClass().getSimpleName());
                         } else {
-                            SharedViewModel.tagOfSecondaryPages.remove(this.getClass().getSimpleName());
+                            SharedViewModel.TAG_OF_SECONDARY_PAGES.remove(this.getClass().getSimpleName());
                         }
-                        mSharedViewModel.enableSwipeDrawer.setValue(SharedViewModel.tagOfSecondaryPages.size() == 0);
+                        mSharedViewModel.enableSwipeDrawer.setValue(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
                     }
                 });
             }
@@ -135,7 +134,7 @@ public class PlayerFragment extends BaseFragment {
         });
 
         PlayerManager.getInstance().getPlayModeLiveData().observe(this, anEnum -> {
-            int tip = 0;
+            int tip;
             if (anEnum == PlayingInfoManager.RepeatMode.LIST_LOOP) {
                 mPlayerViewModel.playModeIcon.set(MaterialDrawableBuilder.IconValue.REPEAT);
                 tip = R.string.play_repeat;

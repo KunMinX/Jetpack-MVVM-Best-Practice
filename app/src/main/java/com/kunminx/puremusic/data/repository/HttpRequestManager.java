@@ -20,17 +20,12 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.kunminx.puremusic.R;
-import com.kunminx.puremusic.data.api.APIs;
-import com.kunminx.architecture.data.convert.JsonCallback;
 import com.kunminx.architecture.utils.Utils;
+import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.data.bean.TestAlbum;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.model.Response;
 
 import java.lang.reflect.Type;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -38,16 +33,15 @@ import java.util.List;
  */
 public class HttpRequestManager implements IRemoteRequest {
 
-    private static HttpRequestManager sRequestManager = new HttpRequestManager();
+    private static final HttpRequestManager S_REQUEST_MANAGER = new HttpRequestManager();
+    private MutableLiveData<String> responseCodeLiveData;
 
     private HttpRequestManager() {
     }
 
     public static HttpRequestManager getInstance() {
-        return sRequestManager;
+        return S_REQUEST_MANAGER;
     }
-
-    private MutableLiveData<String> responseCodeLiveData;
 
     public MutableLiveData<String> getResponseCodeLiveData() {
         if (responseCodeLiveData == null) {

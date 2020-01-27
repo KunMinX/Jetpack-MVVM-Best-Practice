@@ -6,7 +6,7 @@ import android.util.Log;
 
 import java.lang.reflect.Field;
 
-
+@SuppressWarnings("unused")
 public final class AdaptScreenUtils {
 
     private static boolean isInitMiui = false;
@@ -71,7 +71,9 @@ public final class AdaptScreenUtils {
 
     private static DisplayMetrics getDisplayMetrics(Resources resources) {
         DisplayMetrics miuiDisplayMetrics = getMiuiTmpMetrics(resources);
-        if (miuiDisplayMetrics == null) return resources.getDisplayMetrics();
+        if (miuiDisplayMetrics == null) {
+            return resources.getDisplayMetrics();
+        }
         return miuiDisplayMetrics;
     }
 
@@ -92,7 +94,9 @@ public final class AdaptScreenUtils {
             isInitMiui = true;
             return ret;
         }
-        if (mTmpMetricsField == null) return null;
+        if (mTmpMetricsField == null) {
+            return null;
+        }
         try {
             return (DisplayMetrics) mTmpMetricsField.get(resources);
         } catch (Exception e) {

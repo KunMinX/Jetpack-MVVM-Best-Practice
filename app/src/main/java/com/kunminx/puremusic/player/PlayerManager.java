@@ -36,9 +36,9 @@ import java.util.List;
  */
 public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestMusic> {
 
-    private static PlayerManager sManager = new PlayerManager();
+    private static final PlayerManager S_MANAGER = new PlayerManager();
 
-    private PlayerController<TestAlbum, TestAlbum.TestMusic> mController;
+    private final PlayerController<TestAlbum, TestAlbum.TestMusic> mController;
 
     private Context mContext;
 
@@ -47,7 +47,7 @@ public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestM
     }
 
     public static PlayerManager getInstance() {
-        return sManager;
+        return S_MANAGER;
     }
 
     public void init(Context context) {
@@ -172,14 +172,17 @@ public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestM
         return mController.getAlbumIndex();
     }
 
+    @Override
     public MutableLiveData<ChangeMusic> getChangeMusicLiveData() {
         return mController.getChangeMusicLiveData();
     }
 
+    @Override
     public MutableLiveData<PlayingMusic> getPlayingMusicLiveData() {
         return mController.getPlayingMusicLiveData();
     }
 
+    @Override
     public MutableLiveData<Boolean> getPauseLiveData() {
         return mController.getPauseLiveData();
     }

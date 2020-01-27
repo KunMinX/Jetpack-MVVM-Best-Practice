@@ -37,36 +37,34 @@ import com.kunminx.puremusic.ui.base.BaseFragment;
  */
 public class DrawerCoordinateHelper implements DefaultLifecycleObserver, View.OnTouchListener {
 
+    private static final DrawerCoordinateHelper S_HELPER = new DrawerCoordinateHelper();
+    public final UnPeekLiveData<Boolean> openDrawer = new UnPeekLiveData<>();
     private float downX;
     private float downY;
 
-    public final UnPeekLiveData<Boolean> openDrawer = new UnPeekLiveData<>();
-
-    private static DrawerCoordinateHelper sHelper = new DrawerCoordinateHelper();
-
-    public static DrawerCoordinateHelper getInstance() {
-        return sHelper;
+    private DrawerCoordinateHelper() {
     }
 
-    private DrawerCoordinateHelper() {
+    public static DrawerCoordinateHelper getInstance() {
+        return S_HELPER;
     }
 
     @Override
     public void onCreate(@NonNull LifecycleOwner owner) {
 
-        SharedViewModel.tagOfSecondaryPages.add(owner.getClass().getSimpleName());
+        SharedViewModel.TAG_OF_SECONDARY_PAGES.add(owner.getClass().getSimpleName());
 
         ((BaseFragment) owner).getSharedViewModel()
-                .enableSwipeDrawer.setValue(SharedViewModel.tagOfSecondaryPages.size() == 0);
+                .enableSwipeDrawer.setValue(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
     }
 
     @Override
     public void onDestroy(@NonNull LifecycleOwner owner) {
 
-        SharedViewModel.tagOfSecondaryPages.remove(owner.getClass().getSimpleName());
+        SharedViewModel.TAG_OF_SECONDARY_PAGES.remove(owner.getClass().getSimpleName());
 
         ((BaseFragment) owner).getSharedViewModel()
-                .enableSwipeDrawer.setValue(SharedViewModel.tagOfSecondaryPages.size() == 0);
+                .enableSwipeDrawer.setValue(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
     }
 
 
@@ -84,18 +82,12 @@ public class DrawerCoordinateHelper implements DefaultLifecycleObserver, View.On
                 float dy = y - downY;
                 if (Math.abs(dx) > 8 && Math.abs(dy) > 8) {
                     int orientation = getOrientation(dx, dy);
-                    switch (orientation) {
-                        case 'r':
-                            openDrawer.setValue(true);
-                            break;
-                        case 'l':
-                            break;
-                        case 't':
-                            break;
-                        case 'b':
-                            break;
+                    if (orientation == 'r') {
+                        openDrawer.setValue(true);
                     }
                 }
+                break;
+            default:
                 break;
         }
         return false;

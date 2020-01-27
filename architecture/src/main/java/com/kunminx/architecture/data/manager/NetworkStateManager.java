@@ -27,8 +27,6 @@ import androidx.lifecycle.LifecycleOwner;
 
 import com.kunminx.architecture.bridge.callback.UnPeekLiveData;
 
-import java.util.Objects;
-
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -36,18 +34,16 @@ import static java.util.Objects.requireNonNull;
  */
 public class NetworkStateManager implements DefaultLifecycleObserver {
 
-    private static NetworkStateManager sManager = new NetworkStateManager();
+    private static final NetworkStateManager S_MANAGER = new NetworkStateManager();
+    public final UnPeekLiveData<NetState> mNetworkStateCallback = new UnPeekLiveData<>();
+    private NetworkStateReceive mNetworkStateReceive;
 
     private NetworkStateManager() {
     }
 
     public static NetworkStateManager getInstance() {
-        return sManager;
+        return S_MANAGER;
     }
-
-    public final UnPeekLiveData<NetState> mNetworkStateCallback = new UnPeekLiveData<>();
-    private NetworkStateReceive mNetworkStateReceive;
-
 
     @Override
     public void onStart(@NonNull LifecycleOwner owner) {

@@ -62,6 +62,8 @@ public class PlayerReceiver extends BroadcastReceiver {
                 case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
                     PlayerManager.getInstance().playPrevious();
                     break;
+                default:
+                    break;
             }
 
         } else {

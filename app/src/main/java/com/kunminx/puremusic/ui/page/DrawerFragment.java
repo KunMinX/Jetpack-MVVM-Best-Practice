@@ -28,7 +28,6 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.kunminx.architecture.data.manager.NetworkStateManager;
 import com.kunminx.architecture.ui.adapter.SimpleBaseBindingAdapter;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.bridge.request.InfoRequestViewModel;
@@ -90,6 +89,7 @@ public class DrawerFragment extends BaseFragment {
         mInfoRequestViewModel.getLibraryLiveData().observe(this, libraryInfos -> {
             mInitDataCame = true;
             if (mAnimationLoaded && libraryInfos != null) {
+                //noinspection unchecked
                 mAdapter.setList(libraryInfos);
                 mAdapter.notifyDataSetChanged();
             }
@@ -111,6 +111,7 @@ public class DrawerFragment extends BaseFragment {
     public void loadInitData() {
         super.loadInitData();
         if (mInfoRequestViewModel.getLibraryLiveData().getValue() != null) {
+            //noinspection unchecked
             mAdapter.setList(mInfoRequestViewModel.getLibraryLiveData().getValue());
             mAdapter.notifyDataSetChanged();
         }
