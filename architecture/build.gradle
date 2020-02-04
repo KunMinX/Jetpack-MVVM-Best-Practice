@@ -27,6 +27,7 @@ android {
         versionCode 1
         versionName "1.0"
 
+       // testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
     }
 
@@ -57,6 +58,9 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
+  //  testImplementation 'junit:junit:4.12'
+  //  androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+  //  androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
@@ -70,6 +74,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata:2.2.0'
 //    implementation "androidx.paging:paging-runtime:2.1.0"
 
+    implementation 'androidx.navigation:navigation-runtime:2.2.0'
     implementation 'com.lwjlol.navigation:keep-fragmentstate:0.0.1'
 
     implementation 'io.reactivex.rxjava2:rxjava:2.2.14'

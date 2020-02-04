@@ -69,6 +69,8 @@ public class PlayerCallHelper implements AudioManager.OnAudioFocusChangeListener
                         }
                     }
 
+                } else if (state == TelephonyManager.CALL_STATE_OFFHOOK) {
+
                 }
                 super.onCallStateChanged(state, incomingNumber);
             }

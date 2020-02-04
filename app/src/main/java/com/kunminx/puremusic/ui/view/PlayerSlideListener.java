@@ -48,8 +48,9 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
     private final IntEvaluator intEvaluator = new IntEvaluator();
     private final FloatEvaluator floatEvaluator = new FloatEvaluator();
     private final ArgbEvaluator colorEvaluator = new ArgbEvaluator();
-    private final int nowPlayingCardColor;
-    private final int playPauseDrawableColor;
+    private int nowPlayingCardColor;
+    private int playPauseDrawableColor;
+	
     private Drawable albumImageDrawable;
     private int titleEndTranslationX;
     private int artistEndTranslationX;

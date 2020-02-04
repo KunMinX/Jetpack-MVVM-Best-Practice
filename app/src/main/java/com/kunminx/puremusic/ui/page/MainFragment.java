@@ -84,7 +84,9 @@ public class MainFragment extends BaseFragment {
                 int currentIndex = PlayerManager.getInstance().getAlbumIndex();
                 binding.ivPlayStatus.setColor(currentIndex == holder.getAdapterPosition()
                         ? getResources().getColor(R.color.gray) : Color.TRANSPARENT);
-                binding.getRoot().setOnClickListener(v -> PlayerManager.getInstance().playAudio(holder.getAdapterPosition()));
+                binding.getRoot().setOnClickListener(v -> {
+                    PlayerManager.getInstance().playAudio(holder.getAdapterPosition());
+                });
 
 //                binding.getRoot().setOnTouchListener(DrawerCoordinateHelper.getInstance());
             }
@@ -104,8 +106,8 @@ public class MainFragment extends BaseFragment {
 
         mMusicRequestViewModel.getFreeMusicsLiveData().observe(this, musicAlbum -> {
             if (musicAlbum != null && musicAlbum.getMusics() != null) {
-                //noinspection unchecked
-                mAdapter.setList(musicAlbum.getMusics());
+                 //noinspection unchecked
+				mAdapter.setList(musicAlbum.getMusics());
                 mAdapter.notifyDataSetChanged();
 
                 // TODO tip 4：未作 UnPeek 处理的 用于 request 的 LiveData，在视图控制器重建时会自动倒灌数据
@@ -124,12 +126,13 @@ public class MainFragment extends BaseFragment {
         if (PlayerManager.getInstance().getAlbum() == null) {
             mMusicRequestViewModel.requestFreeMusics();
         } else {
-            //noinspection unchecked
             mAdapter.setList(PlayerManager.getInstance().getAlbum().getMusics());
             mAdapter.notifyDataSetChanged();
         }
 
-        DrawerCoordinateHelper.getInstance().openDrawer.observe(this, aBoolean -> mSharedViewModel.openOrCloseDrawer.setValue(true));
+        DrawerCoordinateHelper.getInstance().openDrawer.observe(this, aBoolean -> {
+            mSharedViewModel.openOrCloseDrawer.setValue(true);
+        });
     }
 
     // TODO tip 2：此处通过 DataBinding 来规避 在 setOnClickListener 时存在的 视图调用的一致性问题，

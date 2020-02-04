@@ -63,7 +63,6 @@ public class PlayerReceiver extends BroadcastReceiver {
                     PlayerManager.getInstance().playPrevious();
                     break;
                 default:
-                    break;
             }
 
         } else {

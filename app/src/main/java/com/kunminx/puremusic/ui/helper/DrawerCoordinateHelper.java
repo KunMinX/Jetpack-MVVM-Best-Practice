@@ -82,13 +82,20 @@ public class DrawerCoordinateHelper implements DefaultLifecycleObserver, View.On
                 float dy = y - downY;
                 if (Math.abs(dx) > 8 && Math.abs(dy) > 8) {
                     int orientation = getOrientation(dx, dy);
-                    if (orientation == 'r') {
-                        openDrawer.setValue(true);
+                    switch (orientation) {
+                        case 'r':
+                            openDrawer.setValue(true);
+                            break;
+                        case 'l':
+                            break;
+                        case 't':
+                            break;
+                        case 'b':
+                            break;
                     }
                 }
                 break;
-            default:
-                break;
+            default:            
         }
         return false;
     }
