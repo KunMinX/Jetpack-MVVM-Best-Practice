@@ -39,6 +39,9 @@ import android.view.ViewConfiguration;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -55,50 +58,88 @@ import java.util.List;
 
 public class LyricView extends View {
 
-    private int mBtnColor = Color.parseColor("#EFEFEF");  // 按钮颜色
-    private int mHintColor = Color.parseColor("#666666");  // 提示语颜色
-    private int mDefaultColor = Color.parseColor("#000000");  // 默认字体颜色
-    private int mIndicatorColor = Color.parseColor("#EFEFEF");  // 指示器颜色
-    private int mHighLightColor = Color.parseColor("#4FC5C7");  // 当前播放位置的颜色
-    private int mCurrentShowColor = Color.parseColor("#AAAAAA");  // 当前拖动位置的颜色
-
-    private int mLineCount;  // 行数
-    private float mLineHeight;  // 行高
-
-    private float mScrollY = 0;  // 纵轴偏移量
-    private float mVelocity = 0;  // 纵轴上的滑动速度
-    private float mLineSpace = 0;  // 行间距（包含在行高中）
-    private float mShaderWidth = 0;  // 渐变过渡的距离
-    private int mCurrentShowLine = 0;  // 当前拖动位置对应的行数
-    private int mCurrentPlayLine = 0;  // 当前播放位置对应的行数
-    private int mMinStartUpSpeed = 1600;  // 最低滑行启动速度
-
-    private boolean mUserTouch = false;  // 判断当前用户是否触摸
-    private boolean mIndicatorShow = false;  // 判断当前滑动指示器是否显示
-    private boolean mIsMoved = false;//判断用户触摸时是否发生move事件
-    private boolean mPlayerClick = false; //判断当前用户是否点击指示器
-
-    /***/
-    private int mBtnWidth = 0;  // Btn 按钮的宽度
-    private int mDefaultMargin = 12;
-    private int maximumFlingVelocity;  // 最大纵向滑动速度
-    private Rect mBtnBound, mTimerBound;
-    private VelocityTracker mVelocityTracker;
-
-    private LyricInfo mLyricInfo;
-    private String mDefaultTime = "00:00";
-    private String mDefaultHint = "暂无歌词";
-    private Paint mTextPaint, mBtnPaint, mIndicatorPaint;
-
-    private OnPlayerClickListener mClickListener;
-
+    // 按钮颜色
+    private final int mBtnColor = Color.parseColor("#EFEFEF");
+    // 指示器颜色
+    private final int mIndicatorColor = Color.parseColor("#EFEFEF");
+    // 当前拖动位置的颜色
+    private final int mCurrentShowColor = Color.parseColor("#AAAAAA");
+    // 最低滑行启动速度
+    private final int mMinStartUpSpeed = 1600;
+    private final int mDefaultMargin = 12;
+    private final String mDefaultTime = "00:00";
     private final int MSG_PLAYER_SLIDE = 0x158;
     private final int MSG_PLAYER_HIDE = 0x157;
+    /**
+     * 计算阻尼效果的大小
+     */
+    private final int mMaxDampingDistance = 360;
+    // 提示语颜色
+    private int mHintColor = Color.parseColor("#666666");
+    // 默认字体颜色
+    private int mDefaultColor = Color.parseColor("#000000");
+    // 当前播放位置的颜色
+    private int mHighLightColor = Color.parseColor("#4FC5C7");
+    // 行数
+    private int mLineCount;
+    // 行高
+    private float mLineHeight;
+    // 纵轴偏移量
+    private float mScrollY = 0;
+    // 纵轴上的滑动速度
+    private float mVelocity = 0;
+    // 行间距（包含在行高中）
+    private float mLineSpace = 0;
+    // 渐变过渡的距离
+    private float mShaderWidth = 0;
+    // 当前拖动位置对应的行数
+    private int mCurrentShowLine = 0;
+    // 当前播放位置对应的行数
+    private int mCurrentPlayLine = 0;
+    // 判断当前用户是否触摸
+    private boolean mUserTouch = false;
+    // 判断当前滑动指示器是否显示
+    private boolean mIndicatorShow = false;
+    final Handler postman = new Handler() {
 
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case MSG_PLAYER_HIDE:
+                    postman.sendEmptyMessageDelayed(MSG_PLAYER_SLIDE, 1200);
+                    mIndicatorShow = false;
+                    invalidateView();
+                    break;
+                case MSG_PLAYER_SLIDE:
+                    smoothScrollTo(measureCurrentScrollY(mCurrentPlayLine));
+                    invalidateView();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+    // 判断用户触摸时是否发生move事件
+    private boolean mIsMoved = false;
+    // 判断当前用户是否点击指示器
+    private boolean mPlayerClick = false;
+    // Btn 按钮的宽度
+    private int mBtnWidth = 0;
+    private Rect mBtnBound, mTimerBound;
+    private VelocityTracker mVelocityTracker;
+    private LyricInfo mLyricInfo;
+    private String mDefaultHint = "暂无歌词";
+    private Paint mTextPaint, mBtnPaint, mIndicatorPaint;
+    private OnPlayerClickListener mClickListener;
     private ValueAnimator mFlingAnimator;
     private boolean mPlayable = false;
     private boolean mSliding = false;
+    // 最大纵向滑动速度
+    private int maximumFlingVelocity;
     private boolean mTouchable = true;
+    // 记录手指按下时的坐标和当前的滑动偏移量
+    private float mDownX, mDownY, mLastScrollY;
 
     public LyricView(Context context) {
         super(context);
@@ -113,6 +154,21 @@ public class LyricView extends View {
     public LyricView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initMyView(context);
+    }
+
+    /**
+     * 将解析得到的表示时间的字符转化为Long型
+     */
+    private static long measureStartTimeMillis(String timeString) {
+        //因为给如的字符串的时间格式为XX:XX.XX,返回的long要求是以毫秒为单位
+        //将字符串 XX:XX.XX 转换为 XX:XX:XX
+        timeString = timeString.replace('.', ':');
+        //将字符串 XX:XX:XX 拆分
+        String[] times = timeString.split(":");
+        // mm:ss:SS
+        return Integer.valueOf(times[0]) * 60 * 1000 +//分
+                Integer.valueOf(times[1]) * 1000 +//秒
+                Integer.valueOf(times[2]);//毫秒
     }
 
     private void initMyView(Context context) {
@@ -199,9 +255,7 @@ public class LyricView extends View {
             mTextPaint.setColor(mHintColor);
             canvas.drawText(mDefaultHint, getMeasuredWidth() * 0.5f, (getMeasuredHeight() + mLineHeight - 6) * 0.5f, mTextPaint);
         }
-        /**
-         * 滑动提示部分内容绘制
-         * */
+        // 滑动提示部分内容绘制
         if (mIndicatorShow && scrollable()) {
             if (mPlayable) {
                 drawPlayer(canvas);
@@ -213,7 +267,7 @@ public class LyricView extends View {
     /**
      * 绘制左侧的播放按钮
      *
-     * @param canvas
+     * @param canvas .
      */
     private void drawPlayer(Canvas canvas) {
         mBtnBound = new Rect(mDefaultMargin, (int) (getMeasuredHeight() * 0.5f - mBtnWidth * 0.5f), mBtnWidth + mDefaultMargin, (int) (getMeasuredHeight() * 0.5f + mBtnWidth * 0.5f));
@@ -226,14 +280,16 @@ public class LyricView extends View {
         path.lineTo(mBtnBound.centerX() + radio, mBtnBound.centerY());
         path.lineTo(mBtnBound.centerX() - radio * 0.5f, mBtnBound.centerY() - value);
         mBtnPaint.setAlpha(128);
-        canvas.drawPath(path, mBtnPaint);  // 绘制播放按钮的三角形
-        canvas.drawCircle(mBtnBound.centerX(), mBtnBound.centerY(), mBtnBound.width() * 0.48f, mBtnPaint);  // 绘制圆环
+        // 绘制播放按钮的三角形
+        canvas.drawPath(path, mBtnPaint);
+        // 绘制圆环
+        canvas.drawCircle(mBtnBound.centerX(), mBtnBound.centerY(), mBtnBound.width() * 0.48f, mBtnPaint);
     }
 
     /**
      * 绘制指示器
      *
-     * @param canvas
+     * @param canvas .
      */
     private void drawIndicator(Canvas canvas) {
         mIndicatorPaint.setColor(mIndicatorColor);
@@ -276,19 +332,13 @@ public class LyricView extends View {
         return mDefaultTime;
     }
 
-    private float mDownX, mDownY, mLastScrollY;      // 记录手指按下时的坐标和当前的滑动偏移量
-
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                getParent().requestDisallowInterceptTouchEvent(true);
-                break;
             case MotionEvent.ACTION_MOVE:
                 getParent().requestDisallowInterceptTouchEvent(true);
-                break;
-            case MotionEvent.ACTION_UP:
                 break;
             default:
                 break;
@@ -334,7 +384,7 @@ public class LyricView extends View {
     /**
      * 手势取消执行事件
      *
-     * @param event
+     * @param event .
      */
     private void actionCancel(MotionEvent event) {
         releaseVelocityTracker();
@@ -343,7 +393,7 @@ public class LyricView extends View {
     /**
      * 手势按下执行事件
      *
-     * @param event
+     * @param event .
      */
     private void actionDown(MotionEvent event) {
         postman.removeMessages(MSG_PLAYER_SLIDE);
@@ -363,15 +413,18 @@ public class LyricView extends View {
     /**
      * 手势移动执行事件
      *
-     * @param event
+     * @param event .
      */
     private void actionMove(MotionEvent event) {
         if (scrollable()) {
             final VelocityTracker tracker = mVelocityTracker;
             tracker.computeCurrentVelocity(1000, maximumFlingVelocity);
-            float scrollY = mLastScrollY + mDownY - event.getY();   // 102  -2  58  42
-            float value01 = scrollY - (mLineCount * mLineHeight * 0.5f);   // 52  -52  8  -8
-            float value02 = ((Math.abs(value01) - (mLineCount * mLineHeight * 0.5f)));   // 2  2  -42  -42
+            // 102  -2  58  42
+            float scrollY = mLastScrollY + mDownY - event.getY();
+            // 52  -52  8  -8
+            float value01 = scrollY - (mLineCount * mLineHeight * 0.5f);
+            // 2  2  -42  -42
+            float value02 = ((Math.abs(value01) - (mLineCount * mLineHeight * 0.5f)));
             mScrollY = value02 > 0 ? scrollY - (measureDampingDistance(value02) * value01 / Math.abs(value01)) : scrollY;   //   value01 / Math.abs(value01)  控制滑动方向
             mVelocity = tracker.getYVelocity();
             measureCurrentLine();
@@ -380,11 +433,6 @@ public class LyricView extends View {
             }
         }
     }
-
-    /**
-     * 计算阻尼效果的大小
-     */
-    private final int mMaxDampingDistance = 360;
 
     private float measureDampingDistance(float value02) {
         return value02 > mMaxDampingDistance ? (mMaxDampingDistance * 0.6f + (value02 - mMaxDampingDistance) * 0.72f) : value02 * 0.6f;
@@ -398,7 +446,8 @@ public class LyricView extends View {
         // 2.4s 后发送一个指示器隐藏的请求
         postman.sendEmptyMessageDelayed(MSG_PLAYER_HIDE, 2400);
         if (scrollable()) {
-            setUserTouch(false);  // 用户手指离开屏幕，取消触摸标记
+            // 用户手指离开屏幕，取消触摸标记
+            setUserTouch(false);
             if (overScrolled() && mScrollY < 0) {
                 smoothScrollTo(0);
                 return;
@@ -470,19 +519,17 @@ public class LyricView extends View {
      * @param velocity 滑动速度
      */
     private void doFlingAnimator(float velocity) {
-        //注：     Math.abs(velocity)  < =  16000
-        float distance = (velocity / Math.abs(velocity) * Math.min((Math.abs(velocity) * 0.050f), 640));   // 计算就已当前的滑动速度理论上的滑行距离是多少
-        float to = Math.min(Math.max(0, (mScrollY - distance)), (mLineCount - 1) * mLineHeight);   // 综合考虑边界问题后得出的实际滑行距离
+        //注：Math.abs(velocity)  < =  16000
+        // 计算就已当前的滑动速度理论上的滑行距离是多少
+        float distance = (velocity / Math.abs(velocity) * Math.min((Math.abs(velocity) * 0.050f), 640));
+        // 综合考虑边界问题后得出的实际滑行距离
+        float to = Math.min(Math.max(0, (mScrollY - distance)), (mLineCount - 1) * mLineHeight);
 
         mFlingAnimator = ValueAnimator.ofFloat(mScrollY, to);
-        mFlingAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                mScrollY = (float) animation.getAnimatedValue();
-                measureCurrentLine();
-                invalidateView();
-            }
+        mFlingAnimator.addUpdateListener(animation -> {
+            mScrollY = (float) animation.getAnimatedValue();
+            measureCurrentLine();
+            invalidateView();
         });
 
         mFlingAnimator.addListener(new AnimatorListenerAdapter() {
@@ -549,17 +596,13 @@ public class LyricView extends View {
      */
     private void smoothScrollTo(float toY) {
         final ValueAnimator animator = ValueAnimator.ofFloat(mScrollY, toY);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                if (mUserTouch) {
-                    animator.cancel();
-                    return;
-                }
-                mScrollY = (float) animation.getAnimatedValue();
-                invalidateView();
+        animator.addUpdateListener(animation -> {
+            if (mUserTouch) {
+                animator.cancel();
+                return;
             }
+            mScrollY = (float) animation.getAnimatedValue();
+            invalidateView();
         });
 
         animator.addListener(new AnimatorListenerAdapter() {
@@ -597,23 +640,6 @@ public class LyricView extends View {
     private boolean overScrolled() {
         return scrollable() && (mScrollY > mLineHeight * (mLineCount - 1) || mScrollY < 0);
     }
-
-    Handler postman = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case MSG_PLAYER_HIDE:
-                    postman.sendEmptyMessageDelayed(MSG_PLAYER_SLIDE, 1200);
-                    mIndicatorShow = false;
-                    invalidateView();
-                case MSG_PLAYER_SLIDE:
-                    smoothScrollTo(measureCurrentScrollY(mCurrentPlayLine));
-                    invalidateView();
-            }
-        }
-    };
 
     /**
      * 根据当前给定的时间戳滑动到指定位置
@@ -656,7 +682,7 @@ public class LyricView extends View {
                 lyricInfo.song_lines = new ArrayList<>();
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream, charsetName);
                 BufferedReader reader = new BufferedReader(inputStreamReader);
-                String line = null;
+                String line;
                 while ((line = reader.readLine()) != null) {
                     analyzeLyric(lyricInfo, line);
                 }
@@ -681,7 +707,7 @@ public class LyricView extends View {
     /**
      * 逐行解析歌词内容
      */
-    private void analyzeLyric(LyricInfo lyricInfo, String line) {
+    private void analyzeLyric(LyricInfo lyricInfo, @Nullable String line) {
         int index = line.indexOf("]");
         if (line != null && line.startsWith("[offset:")) {
             // 时间偏移量
@@ -691,20 +717,17 @@ public class LyricView extends View {
         }
         if (line != null && line.startsWith("[ti:")) {
             // title 标题
-            String string = line.substring(4, index).trim();
-            lyricInfo.song_title = string;
+            lyricInfo.song_title = line.substring(4, index).trim();
             return;
         }
         if (line != null && line.startsWith("[ar:")) {
             // artist 作者
-            String string = line.substring(4, index).trim();
-            lyricInfo.song_artist = string;
+            lyricInfo.song_artist = line.substring(4, index).trim();
             return;
         }
         if (line != null && line.startsWith("[al:")) {
             // album 所属专辑
-            String string = line.substring(4, index).trim();
-            lyricInfo.song_album = string;
+            lyricInfo.song_album = line.substring(4, index).trim();
             return;
         }
         if (line != null && line.startsWith("[by:")) {
@@ -713,15 +736,15 @@ public class LyricView extends View {
         if (line != null && index == 9 && line.trim().length() > 10) {
             // 歌词内容,需要考虑一行歌词有多个时间戳的情况
             int lastIndexOfRightBracket = line.lastIndexOf("]");
-            String content = line.substring(lastIndexOfRightBracket + 1, line.length());
+            String content = line.substring(lastIndexOfRightBracket + 1);
 
             String times = line.substring(0, lastIndexOfRightBracket + 1).replace("[", "-").replace("]", "-");
-            String arrTimes[] = times.split("-");
+            String[] arrTimes = times.split("-");
             for (String temp : arrTimes) {
                 if (temp.trim().length() == 0) {
                     continue;
                 }
-                /** [02:34.14][01:07.00]当你我不小心又想起她
+                /* [02:34.14][01:07.00]当你我不小心又想起她
                  *
                  上面的歌词的就可以拆分为下面两句歌词了
                  [02:34.14]当你我不小心又想起她
@@ -733,21 +756,6 @@ public class LyricView extends View {
                 lyricInfo.song_lines.add(lineInfo);
             }
         }
-    }
-
-    /**
-     * 将解析得到的表示时间的字符转化为Long型
-     */
-    private static long measureStartTimeMillis(String timeString) {
-        //因为给如的字符串的时间格式为XX:XX.XX,返回的long要求是以毫秒为单位
-        //将字符串 XX:XX.XX 转换为 XX:XX:XX
-        timeString = timeString.replace('.', ':');
-        //将字符串 XX:XX:XX 拆分
-        String[] times = timeString.split(":");
-        // mm:ss:SS
-        return Integer.valueOf(times[0]) * 60 * 1000 +//分
-                Integer.valueOf(times[1]) * 1000 +//秒
-                Integer.valueOf(times[2]);//毫秒
     }
 
     /**
@@ -774,39 +782,6 @@ public class LyricView extends View {
         mScrollY = 0;
     }
 
-    class LyricInfo {
-        List<LineInfo> song_lines;
-
-        String song_artist;  // 歌手
-        String song_title;  // 标题
-        String song_album;  // 专辑
-
-        long song_offset;  // 偏移量
-    }
-
-    class LineInfo {
-        String content;  // 歌词内容
-        long start;  // 开始时间
-    }
-
-    class sort implements Comparator<LineInfo> {
-
-        @Override
-        public int compare(LineInfo lrc, LineInfo lrc2) {
-            if (lrc.start < lrc2.start) {
-                return -1;
-            } else if ((lrc.start > lrc2.start)) {
-                return 1;
-            } else {
-                return 0;
-            }
-        }
-    }
-
-    public interface OnPlayerClickListener {
-        void onPlayerClicked(long progress, String content);
-    }
-
     private void setRawTextSize(float size) {
         if (size != mTextPaint.getTextSize()) {
             mTextPaint.setTextSize(size);
@@ -826,13 +801,6 @@ public class LyricView extends View {
         }
         return TypedValue.applyDimension(unit, size, resources.getDisplayMetrics());
     }
-
-
-    /**
-     * ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ *
-     *                                                                                             对外API                                                                                        *
-     * ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ *
-     * */
 
     /**
      * 设置当前时间显示位置
@@ -881,6 +849,13 @@ public class LyricView extends View {
         resetView();
     }
 
+
+    /*
+     * ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ *
+     *                                                                                             对外API                                                                                        *
+     * ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ *
+     * */
+
     /**
      * 设置高亮显示文本的字体颜色
      *
@@ -893,15 +868,15 @@ public class LyricView extends View {
         }
     }
 
+    public int getDefaultColor() {
+        return mDefaultColor;
+    }
+
     public void setDefaultColor(int color) {
         if (mDefaultColor != color) {
             mDefaultColor = color;
             invalidateView();
         }
-    }
-
-    public int getDefaultColor() {
-        return mDefaultColor;
     }
 
     /**
@@ -921,8 +896,8 @@ public class LyricView extends View {
     /**
      * 设置歌词文本内容字体大小
      *
-     * @param unit
-     * @param size
+     * @param unit .
+     * @param size .
      */
     public void setTextSize(int unit, float size) {
         setRawTextSize(getRawSize(unit, size));
@@ -931,7 +906,7 @@ public class LyricView extends View {
     /**
      * 设置歌词文本内容字体大小
      *
-     * @param size
+     * @param size .
      */
     public void setTextSize(float size) {
         setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
@@ -949,6 +924,33 @@ public class LyricView extends View {
         if (mHintColor != color) {
             mHintColor = color;
             invalidate();
+        }
+    }
+
+    public interface OnPlayerClickListener {
+        void onPlayerClicked(long progress, String content);
+    }
+
+    class LyricInfo {
+        List<LineInfo> song_lines;
+
+        String song_artist;  // 歌手
+        String song_title;  // 标题
+        String song_album;  // 专辑
+
+        long song_offset;  // 偏移量
+    }
+
+    class LineInfo {
+        String content;  // 歌词内容
+        long start;  // 开始时间
+    }
+
+    class sort implements Comparator<LineInfo> {
+
+        @Override
+        public int compare(LineInfo lrc, LineInfo lrc2) {
+            return Long.compare(lrc.start, lrc2.start);
         }
     }
 

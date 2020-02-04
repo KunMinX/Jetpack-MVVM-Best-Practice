@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
 import android.provider.MediaStore;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,17 +42,17 @@ public class CompatUtils {
 
     private void taskPhoto(AppCompatActivity activity) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Uri mImageCaptureUri = null;
+        Uri mImageCaptureUri;
         // 判断7.0android系统
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             //临时添加一个拍照权限
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             //通过FileProvider获取uri
             takePhotoSaveAdr = FileProvider.getUriForFile(activity, activity.getPackageName(),
-                    new File(Environment.getExternalStorageDirectory(), "savephoto.jpg"));
+                    new File(activity.getExternalCacheDir(), "savephoto.jpg"));
             intent.putExtra(MediaStore.EXTRA_OUTPUT, takePhotoSaveAdr);
         } else {
-            mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "savephoto.jpg"));
+            mImageCaptureUri = Uri.fromFile(new File(activity.getExternalCacheDir(), "savephoto.jpg"));
             intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
         }
         activity.startActivityForResult(intent, TAKE_PHOTO);
@@ -80,10 +79,10 @@ public class CompatUtils {
                 intent.setClipData(ClipData.newRawUri(MediaStore.EXTRA_OUTPUT, uri));
                 uriClipUri = uri;
             } else if (requestCode == PHOTO_ALBUM) {
-                uriClipUri = Uri.parse("file://" + "/" + Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "clip.jpg");
+                uriClipUri = Uri.parse("file://" + "/" + activity.getExternalCacheDir().getAbsolutePath() + "/" + "clip.jpg");
             }
         } else {
-            uriClipUri = Uri.parse("file://" + "/" + Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "clip.jpg");
+            uriClipUri = Uri.parse("file://" + "/" + activity.getExternalCacheDir().getAbsolutePath() + "/" + "clip.jpg");
         }
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uriClipUri);
         intent.putExtra("return-data", false);
@@ -102,7 +101,7 @@ public class CompatUtils {
                             clipUri = takePhotoSaveAdr;
                         }
                     } else {
-                        clipUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().toString() + "/savephoto.jpg"));
+                        clipUri = Uri.fromFile(new File(activity.getExternalCacheDir().toString() + "/savephoto.jpg"));
                     }
                     startPhotoZoom(activity, clipUri, TAKE_PHOTO);
                     break;
@@ -116,6 +115,8 @@ public class CompatUtils {
                     optionsa.diskCacheStrategy(DiskCacheStrategy.NONE)
                     optionsa.skipMemoryCache(true)//禁用掉Glide的内存缓存
                     Glide.with(this).load(uriClipUri).apply(optionsa).into(iv_userPhoto);*/
+                    break;
+                default:
                     break;
             }
         }

@@ -42,13 +42,12 @@ import com.kunminx.puremusic.bridge.callback.SharedViewModel;
  */
 public class BaseFragment extends Fragment {
 
+    private static final Handler HANDLER = new Handler();
     protected AppCompatActivity mActivity;
     protected SharedViewModel mSharedViewModel;
     protected boolean mAnimationEnterLoaded;
     protected boolean mAnimationLoaded;
     protected boolean mInitDataCame;
-
-    private static Handler sHandler = new Handler();
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -61,14 +60,12 @@ public class BaseFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mSharedViewModel = getAppViewModelProvider().get(SharedViewModel.class);
 
-        NetworkStateManager.getInstance().mNetworkStateCallback.observe(this, netState -> {
-            //TODO 注意 liveData 的 lambda 回调中不可为空，不然会出现 Cannot add the same observer with different lifecycles 的现象，
-            // 详见：https://stackoverflow.com/questions/47025233/android-lifecycle-library-cannot-add-the-same-observer-with-different-lifecycle
-
-            onNetworkStateChanged(netState);
-        });
+        //TODO 注意 liveData 的 lambda 回调中不可为空，不然会出现 Cannot add the same observer with different lifecycles 的现象，
+        // 详见：https://stackoverflow.com/questions/47025233/android-lifecycle-library-cannot-add-the-same-observer-with-different-lifecycle
+        NetworkStateManager.getInstance().mNetworkStateCallback.observe(this, this::onNetworkStateChanged);
     }
 
+    @SuppressWarnings("EmptyMethod")
     protected void onNetworkStateChanged(NetState netState) {
         //TODO 子类可以重写该方法，统一的网络状态通知和处理
     }
@@ -76,7 +73,7 @@ public class BaseFragment extends Fragment {
     @Nullable
     @Override
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
-        sHandler.postDelayed(() -> {
+        HANDLER.postDelayed(() -> {
             mAnimationLoaded = true;
             if (mInitDataCame && !mAnimationEnterLoaded) {
                 mAnimationEnterLoaded = true;

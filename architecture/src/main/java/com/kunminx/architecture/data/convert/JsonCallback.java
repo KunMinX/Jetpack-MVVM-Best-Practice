@@ -39,12 +39,12 @@ public abstract class JsonCallback<T> extends AbsCallback<T> {
     private static final String TAG = JsonCallback.class.getSimpleName();
 
     @Override
-    public T convertResponse(Response response) throws Throwable {
+    public T convertResponse(Response response) {
         if (response.isSuccessful()) {
             if (response.body() == null) {
                 return null;
             }
-            T data = null;
+            T data;
             Gson gson = new Gson();
             JsonReader jsonReader = new JsonReader(response.body().charStream());
             Type genType = getClass().getGenericSuperclass();

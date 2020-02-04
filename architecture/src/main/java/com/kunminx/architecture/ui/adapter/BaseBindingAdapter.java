@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,15 +36,15 @@ import java.util.List;
  */
 public abstract class BaseBindingAdapter<M, B extends ViewDataBinding> extends RecyclerView.Adapter {
 
-    protected Context mContext;
+    protected final Context mContext;
     protected List<M> mList = new ArrayList<>();
-
-    public List<M> getList() {
-        return mList;
-    }
 
     public BaseBindingAdapter(Context context) {
         this.mContext = context;
+    }
+
+    public List<M> getList() {
+        return mList;
     }
 
     public void setList(List<M> list) {
@@ -56,7 +57,8 @@ public abstract class BaseBindingAdapter<M, B extends ViewDataBinding> extends R
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @NonNull
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         B binding = DataBindingUtil.inflate(LayoutInflater.from(this.mContext), this.getLayoutResId(viewType), parent, false);
         return new BaseBindingViewHolder(binding.getRoot());
     }
@@ -78,9 +80,9 @@ public abstract class BaseBindingAdapter<M, B extends ViewDataBinding> extends R
      * RecyclerView 中的数据有位置改变（比如删除）时一般不会重新调用 onBindViewHolder() 方法，除非这个元素不可用。
      * 为了实时获取元素的位置，我们通过 ViewHolder.getAdapterPosition() 方法。
      *
-     * @param binding
-     * @param item
-     * @param holder
+     * @param binding .
+     * @param item    .
+     * @param holder  .
      */
     protected abstract void onBindItem(B binding, M item, RecyclerView.ViewHolder holder);
 

@@ -22,6 +22,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import com.kunminx.puremusic.R;
@@ -65,6 +66,7 @@ public class ForegroundImageView extends AppCompatImageView {
      *
      * @param drawable The Drawable to be drawn on top of the children.
      */
+    @Override
     public void setForeground(Drawable drawable) {
         if (foreground == drawable) {
             return;
@@ -87,14 +89,16 @@ public class ForegroundImageView extends AppCompatImageView {
     }
 
     @Override
-    protected boolean verifyDrawable(Drawable who) {
+    protected boolean verifyDrawable(@NonNull Drawable who) {
         return super.verifyDrawable(who) || who == foreground;
     }
 
     @Override
     public void jumpDrawablesToCurrentState() {
         super.jumpDrawablesToCurrentState();
-        if (foreground != null) foreground.jumpToCurrentState();
+        if (foreground != null) {
+            foreground.jumpToCurrentState();
+        }
     }
 
     @Override

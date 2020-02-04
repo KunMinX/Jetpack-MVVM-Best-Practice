@@ -23,9 +23,7 @@ import com.kunminx.architecture.utils.Utils;
  */
 public class Configs {
 
-    public static String CACHE_PATH = Utils.getApp().getCacheDir().getAbsolutePath();
+    public static final String CACHE_PATH = Utils.getApp().getCacheDir().getAbsolutePath();
 
-    public static String MUSIC_DOWNLOAD_PATH = CACHE_PATH + "/";
-
-
+    public static final String MUSIC_DOWNLOAD_PATH = CACHE_PATH + "/";
 }
