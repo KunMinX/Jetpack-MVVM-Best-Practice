@@ -25,7 +25,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.bridge.state.SearchViewModel;
@@ -44,7 +43,7 @@ public class SearchFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSearchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
+        mSearchViewModel = getFragmentViewModelProvider(this).get(SearchViewModel.class);
 
         getLifecycle().addObserver(DrawerCoordinateHelper.getInstance());
     }

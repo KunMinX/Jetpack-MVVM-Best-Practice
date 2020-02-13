@@ -79,4 +79,8 @@ public class BaseActivity extends AppCompatActivity {
         return ((App) getApplicationContext()).getAppViewModelProvider(this);
     }
 
+    protected ViewModelProvider getActivityViewModelProvider(AppCompatActivity activity) {
+        return new ViewModelProvider(activity, activity.getDefaultViewModelProviderFactory());
+    }
+
 }

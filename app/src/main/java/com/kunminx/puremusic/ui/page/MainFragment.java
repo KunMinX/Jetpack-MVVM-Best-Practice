@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -53,8 +52,8 @@ public class MainFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        mMusicRequestViewModel = ViewModelProviders.of(this).get(MusicRequestViewModel.class);
+        mMainViewModel = getFragmentViewModelProvider(this).get(MainViewModel.class);
+        mMusicRequestViewModel = getFragmentViewModelProvider(this).get(MusicRequestViewModel.class);
     }
 
     @Nullable

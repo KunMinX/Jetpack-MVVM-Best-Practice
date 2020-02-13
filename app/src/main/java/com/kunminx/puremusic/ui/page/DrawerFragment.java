@@ -25,7 +25,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kunminx.architecture.ui.adapter.SimpleBaseBindingAdapter;
@@ -50,8 +49,8 @@ public class DrawerFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mInfoRequestViewModel = ViewModelProviders.of(this).get(InfoRequestViewModel.class);
-        mDrawerViewModel = ViewModelProviders.of(this).get(DrawerViewModel.class);
+        mInfoRequestViewModel = getFragmentViewModelProvider(this).get(InfoRequestViewModel.class);
+        mDrawerViewModel = getFragmentViewModelProvider(this).get(DrawerViewModel.class);
     }
 
     @Nullable

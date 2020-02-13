@@ -24,7 +24,6 @@ import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.kunminx.player.PlayingInfoManager;
 import com.kunminx.puremusic.R;
@@ -49,7 +48,7 @@ public class PlayerFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPlayerViewModel = ViewModelProviders.of(this).get(PlayerViewModel.class);
+        mPlayerViewModel = getFragmentViewModelProvider(this).get(PlayerViewModel.class);
     }
 
     @Nullable

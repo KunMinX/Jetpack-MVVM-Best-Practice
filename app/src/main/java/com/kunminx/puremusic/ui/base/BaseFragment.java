@@ -112,6 +112,10 @@ public class BaseFragment extends Fragment {
         return ((App) mActivity.getApplicationContext()).getAppViewModelProvider(mActivity);
     }
 
+    protected ViewModelProvider getFragmentViewModelProvider(Fragment fragment) {
+        return new ViewModelProvider(fragment, fragment.getDefaultViewModelProviderFactory());
+    }
+
     protected NavController nav() {
         return NavHostFragment.findNavController(this);
     }
