@@ -86,8 +86,6 @@ public class MainFragment extends BaseFragment {
                 binding.getRoot().setOnClickListener(v -> {
                     PlayerManager.getInstance().playAudio(holder.getAdapterPosition());
                 });
-
-//                binding.getRoot().setOnTouchListener(DrawerCoordinateHelper.getInstance());
             }
         };
 
