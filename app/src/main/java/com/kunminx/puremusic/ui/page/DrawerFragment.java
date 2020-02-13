@@ -73,8 +73,7 @@ public class DrawerFragment extends BaseFragment {
         mAdapter = new SimpleBaseBindingAdapter<LibraryInfo, AdapterLibraryBinding>(getContext(), R.layout.adapter_library) {
             @Override
             protected void onSimpleBindItem(AdapterLibraryBinding binding, LibraryInfo item, RecyclerView.ViewHolder holder) {
-                binding.tvTitle.setText(item.getTitle());
-                binding.tvSummary.setText(item.getSummary());
+                binding.setInfo(item);
                 binding.getRoot().setOnClickListener(v -> {
                     Uri uri = Uri.parse(item.getUrl());
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
