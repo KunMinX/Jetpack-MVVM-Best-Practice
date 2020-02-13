@@ -164,22 +164,9 @@ public class PlayerFragment extends BaseFragment {
                     sliding.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                 } else {
 
-                    // TODO: do not:
-
-                    // mActivity.XXX();
-                    // mActivity.YYY();
-                    // mActivity.finish();
-
-                    // 不建议这么用。尤其是对于多 fragment 通用的、与 Activity 交互的逻辑，这么做可能造成一致性问题：
-                    // 未来该 fragment 修改了 mActivity.ZZZ()，其他 fragment 却未必记得修改。
-
-                    // 同时，也不建议在 Activity 中封装一个包含上述 XXX、YYY、finish 的方法 供 fragment 直接调用，
-                    // 因为 Activity 自身不需要这个方法，为了 fragment 而封装这个方法，可读性很差，看起来莫名其妙。
-
-                    // 最重要的是，fragment 和 Activity 的交互，本身就属于 页面通信的范畴，适合统一地以 页面通信 的方式来处理：
-                    // 让 Activity 在 liveData 回调中处理来自 fragment 的请求。
-
                     // TODO tip 6：此处演示通过 UnPeekLiveData 来发送 生命周期安全的、事件源可追溯的 通知。
+
+                    // fragment 与 Activity 的交互，同属于页面通信的范畴，适合统一地以 页面通信 的方式实现。
 
                     // 如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/0168753249
                     // --------
@@ -190,6 +177,8 @@ public class PlayerFragment extends BaseFragment {
                     // TODO: yes:
                     mSharedViewModel.activityCanBeClosedDirectly.setValue(true);
 
+                    // TODO: do not:
+                    // mActivity.finish();
                 }
             } else {
                 mSharedViewModel.activityCanBeClosedDirectly.setValue(true);
