@@ -29,6 +29,13 @@ import com.kunminx.puremusic.data.repository.HttpRequestManager;
  * 一个项目中通常存在多个 RequestViewModel
  * 对 Jetpack ViewModel 的知识点感兴趣可详见 https://xiaozhuanlan.com/topic/6257931840
  * <p>
+ *
+ * 此外，requestViewModel 的职责仅限于 数据请求，不建议在此处理 UI 逻辑，
+ * UI 逻辑只适合在 Activity/Fragment 等视图控制器中完成，是 “数据驱动” 的一部分，
+ * 将来升级到 Jetpack Compose 更是如此。
+ *
+ * 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/6257931840
+ *
  * Create by KunMinX at 19/10/29
  */
 public class MusicRequestViewModel extends ViewModel {
