@@ -84,7 +84,7 @@ public class DrawerFragment extends BaseFragment {
 
         mBinding.rv.setAdapter(mAdapter);
 
-        mInfoRequestViewModel.getLibraryLiveData().observe(this, libraryInfos -> {
+        mInfoRequestViewModel.getLibraryLiveData().observe(getViewLifecycleOwner(), libraryInfos -> {
             mInitDataCame = true;
             if (mAnimationLoaded && libraryInfos != null) {
                 //noinspection unchecked
@@ -95,7 +95,7 @@ public class DrawerFragment extends BaseFragment {
 
         mInfoRequestViewModel.requestLibraryInfo();
 
-        mInfoRequestViewModel.getTestXXX().observe(this, s -> {
+        mInfoRequestViewModel.getTestXXX().observe(getViewLifecycleOwner(), s -> {
             //TODO tip3：暂无实际功能，仅演示 UseCase 流程
 
             //接收来自 可感知生命周期的 UseCase 处理的结果

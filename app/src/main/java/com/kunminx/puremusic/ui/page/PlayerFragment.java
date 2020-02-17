@@ -74,7 +74,7 @@ public class PlayerFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mSharedViewModel.timeToAddSlideListener.observe(this, aBoolean -> {
+        mSharedViewModel.timeToAddSlideListener.observe(getViewLifecycleOwner(), aBoolean -> {
             if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {
                 SlidingUpPanelLayout sliding = (SlidingUpPanelLayout) view.getParent().getParent();
                 sliding.addPanelSlideListener(new PlayerSlideListener(mBinding, sliding));
@@ -99,7 +99,7 @@ public class PlayerFragment extends BaseFragment {
             }
         });
 
-        PlayerManager.getInstance().getChangeMusicLiveData().observe(this, changeMusic -> {
+        PlayerManager.getInstance().getChangeMusicLiveData().observe(getViewLifecycleOwner(), changeMusic -> {
 
             // TODO tip 3：同 tip 2.
 
@@ -109,7 +109,7 @@ public class PlayerFragment extends BaseFragment {
             mPlayerViewModel.coverImg.set(changeMusic.getImg());
         });
 
-        PlayerManager.getInstance().getPlayingMusicLiveData().observe(this, playingMusic -> {
+        PlayerManager.getInstance().getPlayingMusicLiveData().observe(getViewLifecycleOwner(), playingMusic -> {
 
             // TODO tip 4：同 tip 2.
 
@@ -118,7 +118,7 @@ public class PlayerFragment extends BaseFragment {
             mPlayerViewModel.currentSeekPosition.set(playingMusic.getPlayerPosition());
         });
 
-        PlayerManager.getInstance().getPauseLiveData().observe(this, aBoolean -> {
+        PlayerManager.getInstance().getPauseLiveData().observe(getViewLifecycleOwner(), aBoolean -> {
 
             // TODO tip 2：所有播放状态的改变，都要通过这个 作为 唯一可信源 的 PlayerManager 来统一分发，
 
@@ -132,7 +132,7 @@ public class PlayerFragment extends BaseFragment {
             mPlayerViewModel.isPlaying.set(!aBoolean);
         });
 
-        PlayerManager.getInstance().getPlayModeLiveData().observe(this, anEnum -> {
+        PlayerManager.getInstance().getPlayModeLiveData().observe(getViewLifecycleOwner(), anEnum -> {
             int tip;
             if (anEnum == PlayingInfoManager.RepeatMode.LIST_LOOP) {
                 mPlayerViewModel.playModeIcon.set(MaterialDrawableBuilder.IconValue.REPEAT);
@@ -152,7 +152,7 @@ public class PlayerFragment extends BaseFragment {
             }
         });
 
-        mSharedViewModel.closeSlidePanelIfExpanded.observe(this, aBoolean -> {
+        mSharedViewModel.closeSlidePanelIfExpanded.observe(getViewLifecycleOwner(), aBoolean -> {
 
             // 按下返回键，如果此时 slide 面板是展开的，那么只对面板进行 slide down
 

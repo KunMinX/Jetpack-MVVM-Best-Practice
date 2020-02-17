@@ -91,7 +91,7 @@ public class MainFragment extends BaseFragment {
 
         mBinding.rv.setAdapter(mAdapter);
 
-        PlayerManager.getInstance().getChangeMusicLiveData().observe(this, changeMusic -> {
+        PlayerManager.getInstance().getChangeMusicLiveData().observe(getViewLifecycleOwner(), changeMusic -> {
 
             // TODO tip 1：所有播放状态的改变，都要通过这个 作为 唯一可信源 的 PlayerManager 来统一分发，
 
@@ -101,7 +101,7 @@ public class MainFragment extends BaseFragment {
             mAdapter.notifyDataSetChanged();
         });
 
-        mMusicRequestViewModel.getFreeMusicsLiveData().observe(this, musicAlbum -> {
+        mMusicRequestViewModel.getFreeMusicsLiveData().observe(getViewLifecycleOwner(), musicAlbum -> {
             if (musicAlbum != null && musicAlbum.getMusics() != null) {
                  //noinspection unchecked
 				mAdapter.setList(musicAlbum.getMusics());
@@ -127,7 +127,7 @@ public class MainFragment extends BaseFragment {
             mAdapter.notifyDataSetChanged();
         }
 
-        DrawerCoordinateHelper.getInstance().openDrawer.observe(this, aBoolean -> {
+        DrawerCoordinateHelper.getInstance().openDrawer.observe(getViewLifecycleOwner(), aBoolean -> {
             mSharedViewModel.openOrCloseDrawer.setValue(true);
         });
     }
