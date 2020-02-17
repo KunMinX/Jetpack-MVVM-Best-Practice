@@ -74,6 +74,13 @@ public class PlayerFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //TODO tip N:
+        //getViewLifeCycleOwner 是 2020 年新增的特性，
+        // 主要是为了解决 getView() 的生命长度 比 fragment 短（仅存活于 onCreateView 之后和 onDestroyView 之前），
+        // 导致某些时候 fragment 其他成员还活着，但 getView() 为 null 的 生命周期安全问题，
+        // 也即，在 fragment 的场景下，请使用 getViewLifeCycleOwner 来作为 liveData 的观察者。
+        // 也即，Activity 不用改变。
+
         mSharedViewModel.timeToAddSlideListener.observe(getViewLifecycleOwner(), aBoolean -> {
             if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {
                 SlidingUpPanelLayout sliding = (SlidingUpPanelLayout) view.getParent().getParent();
