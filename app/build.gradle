@@ -7,8 +7,8 @@ android {
         applicationId "com.kunminx.puremusic"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 10506
-        versionName "1.5.6"
+        versionCode 10508
+        versionName "1.5.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -52,7 +52,7 @@ dependencies {
 
     compileOnly 'androidx.appcompat:appcompat:1.1.0'
     compileOnly 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
-    compileOnly 'com.google.android.material:material:1.2.0-alpha04'
+    compileOnly 'com.google.android.material:material:1.2.0-alpha05'
     compileOnly 'androidx.recyclerview:recyclerview:1.1.0'
 
     compileOnly 'androidx.lifecycle:lifecycle-runtime:2.2.0'
@@ -60,10 +60,9 @@ dependencies {
     compileOnly 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     compileOnly 'androidx.lifecycle:lifecycle-viewmodel:2.2.0'
     compileOnly 'androidx.lifecycle:lifecycle-livedata:2.2.0'
-//    compileOnly "androidx.paging:paging-runtime:2.1.0"
 
     compileOnly 'androidx.navigation:navigation-runtime:2.2.1'
-    compileOnly 'com.lwjlol.navigation:keep-fragmentstate:0.0.1'
+//    compileOnly 'com.lwjlol.navigation:keep-fragmentstate:0.0.1'
 
     compileOnly 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'

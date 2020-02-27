@@ -132,6 +132,8 @@ public class MainFragment extends BaseFragment {
         });
     }
 
+
+
     // TODO tip 2：此处通过 DataBinding 来规避 在 setOnClickListener 时存在的 视图调用的一致性问题，
 
     // 也即，有绑定就有绑定，没绑定也没什么大不了的，总之 不会因一致性问题造成 视图调用的空指针。
