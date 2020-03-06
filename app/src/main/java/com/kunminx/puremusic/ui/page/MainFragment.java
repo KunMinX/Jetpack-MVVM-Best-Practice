@@ -103,8 +103,8 @@ public class MainFragment extends BaseFragment {
 
         mMusicRequestViewModel.getFreeMusicsLiveData().observe(getViewLifecycleOwner(), musicAlbum -> {
             if (musicAlbum != null && musicAlbum.getMusics() != null) {
-                 //noinspection unchecked
-				mAdapter.setList(musicAlbum.getMusics());
+                //noinspection unchecked
+                mAdapter.setList(musicAlbum.getMusics());
                 mAdapter.notifyDataSetChanged();
 
                 // TODO tip 4：未作 UnPeek 处理的 用于 request 的 LiveData，在视图控制器重建时会自动倒灌数据
@@ -131,7 +131,6 @@ public class MainFragment extends BaseFragment {
             mSharedViewModel.openOrCloseDrawer.setValue(true);
         });
     }
-
 
 
     // TODO tip 2：此处通过 DataBinding 来规避 在 setOnClickListener 时存在的 视图调用的一致性问题，

@@ -46,7 +46,7 @@ public class NetworkStateManager implements DefaultLifecycleObserver {
     }
 
     @Override
-    public void onStart(@NonNull LifecycleOwner owner) {
+    public void onResume(@NonNull LifecycleOwner owner) {
         mNetworkStateReceive = new NetworkStateReceive();
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         if (owner instanceof AppCompatActivity) {
@@ -58,7 +58,7 @@ public class NetworkStateManager implements DefaultLifecycleObserver {
     }
 
     @Override
-    public void onStop(@NonNull LifecycleOwner owner) {
+    public void onPause(@NonNull LifecycleOwner owner) {
         if (owner instanceof AppCompatActivity) {
             ((AppCompatActivity) owner).unregisterReceiver(mNetworkStateReceive);
         } else if (owner instanceof Fragment) {
