@@ -121,6 +121,11 @@ public class AdapterBinding {
         }
     }
 
+    @BindingAdapter(value = {"tabSelectedListener"}, requireAll = false)
+    public static void tabSelectedListener(TabLayout tabLayout, TabLayout.OnTabSelectedListener listener) {
+        tabLayout.addOnTabSelectedListener(listener);
+    }
+
     @BindingAdapter(value = {"mdIcon"}, requireAll = false)
     public static void setIcon(MaterialIconView view, MaterialDrawableBuilder.IconValue iconValue) {
         view.setIcon(iconValue);

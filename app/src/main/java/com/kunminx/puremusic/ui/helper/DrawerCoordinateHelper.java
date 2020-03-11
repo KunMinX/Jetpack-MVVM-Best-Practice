@@ -16,6 +16,7 @@
 
 package com.kunminx.puremusic.ui.helper;
 
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -41,6 +42,8 @@ public class DrawerCoordinateHelper implements DefaultLifecycleObserver, View.On
     public final UnPeekLiveData<Boolean> openDrawer = new UnPeekLiveData<>();
     private float downX;
     private float downY;
+    private boolean enableToListen;
+    private boolean initCoordinate;
 
     private DrawerCoordinateHelper() {
     }
@@ -70,32 +73,43 @@ public class DrawerCoordinateHelper implements DefaultLifecycleObserver, View.On
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        if (!enableToListen) {
+            return false;
+        }
         float x = event.getX();
         float y = event.getY();
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 downX = x;
                 downY = y;
-                break;
+                return enableToListen;
+            case MotionEvent.ACTION_MOVE:
+                if (!initCoordinate) {
+                    downX = x;
+                    downY = y;
+                    initCoordinate = true;
+                }
+                return true;
             case MotionEvent.ACTION_UP:
                 float dx = x - downX;
                 float dy = y - downY;
                 if (Math.abs(dx) > 8 && Math.abs(dy) > 8) {
                     int orientation = getOrientation(dx, dy);
+                    Log.d("TAG", String.valueOf(orientation));
                     switch (orientation) {
                         case 'r':
                             openDrawer.setValue(true);
-                            break;
+                            return true;
                         case 'l':
-                            break;
+                            return false;
                         case 't':
-                            break;
+                            return false;
                         case 'b':
-                            break;
+                            return false;
                     }
                 }
                 break;
-            default:            
+            default:
         }
         return false;
     }
@@ -106,5 +120,9 @@ public class DrawerCoordinateHelper implements DefaultLifecycleObserver, View.On
         } else {
             return dy > 0 ? 'b' : 't';
         }
+    }
+
+    public void setEnableToListen(boolean enableToListen) {
+        this.enableToListen = enableToListen;
     }
 }

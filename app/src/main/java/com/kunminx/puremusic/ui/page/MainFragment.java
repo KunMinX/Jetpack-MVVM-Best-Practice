@@ -27,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.tabs.TabLayout;
 import com.kunminx.architecture.ui.adapter.SimpleBaseBindingAdapter;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.bridge.request.MusicRequestViewModel;
@@ -91,6 +92,9 @@ public class MainFragment extends BaseFragment {
 
         mBinding.rv.setAdapter(mAdapter);
 
+        mBinding.viewPager.setOnTouchListener(DrawerCoordinateHelper.getInstance());
+        DrawerCoordinateHelper.getInstance().setEnableToListen(true);
+
         PlayerManager.getInstance().getChangeMusicLiveData().observe(getViewLifecycleOwner(), changeMusic -> {
 
             // TODO tip 1：所有播放状态的改变，都要通过这个 作为 唯一可信源 的 PlayerManager 来统一分发，
@@ -130,6 +134,7 @@ public class MainFragment extends BaseFragment {
         DrawerCoordinateHelper.getInstance().openDrawer.observe(getViewLifecycleOwner(), aBoolean -> {
             mSharedViewModel.openOrCloseDrawer.setValue(true);
         });
+
     }
 
 
@@ -138,7 +143,7 @@ public class MainFragment extends BaseFragment {
     // 也即，有绑定就有绑定，没绑定也没什么大不了的，总之 不会因一致性问题造成 视图调用的空指针。
     // 如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
-    public class ClickProxy {
+    public class ClickProxy implements TabLayout.OnTabSelectedListener {
 
         public void openMenu() {
 
@@ -157,6 +162,21 @@ public class MainFragment extends BaseFragment {
             nav().navigate(R.id.action_mainFragment_to_searchFragment);
         }
 
+
+        @Override
+        public void onTabSelected(TabLayout.Tab tab) {
+
+        }
+
+        @Override
+        public void onTabUnselected(TabLayout.Tab tab) {
+            DrawerCoordinateHelper.getInstance().setEnableToListen(tab.getPosition() == 1);
+        }
+
+        @Override
+        public void onTabReselected(TabLayout.Tab tab) {
+
+        }
     }
 
 }
