@@ -49,6 +49,7 @@ public class MainFragment extends BaseFragment {
     private MusicRequestViewModel mMusicRequestViewModel;
     private SimpleBaseBindingAdapter<TestAlbum.TestMusic, AdapterPlayItemBinding> mAdapter;
     private ClickProxy mClickProxy;
+    private boolean mEnableToListen;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,8 +93,10 @@ public class MainFragment extends BaseFragment {
 
         mBinding.rv.setAdapter(mAdapter);
 
-        mBinding.viewPager.setOnTouchListener(DrawerCoordinateHelper.getInstance());
-        DrawerCoordinateHelper.getInstance().setEnableToListen(true);
+        if (mBinding.viewPager != null) {
+            mEnableToListen = true;
+            mBinding.viewPager.setListener(() -> mSharedViewModel.openOrCloseDrawer.setValue(mEnableToListen));
+        }
 
         PlayerManager.getInstance().getChangeMusicLiveData().observe(getViewLifecycleOwner(), changeMusic -> {
 
@@ -170,7 +173,10 @@ public class MainFragment extends BaseFragment {
 
         @Override
         public void onTabUnselected(TabLayout.Tab tab) {
-            DrawerCoordinateHelper.getInstance().setEnableToListen(tab.getPosition() == 1);
+//            DrawerCoordinateHelper.getInstance().setEnableToListen(tab.getPosition() == 1);
+            if (mBinding.viewPager != null) {
+                mEnableToListen = tab.getPosition() == 1;
+            }
         }
 
         @Override
