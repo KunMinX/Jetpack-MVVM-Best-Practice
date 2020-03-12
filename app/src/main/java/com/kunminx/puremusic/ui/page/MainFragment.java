@@ -38,6 +38,7 @@ import com.kunminx.puremusic.databinding.FragmentMainBinding;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.base.BaseFragment;
 import com.kunminx.puremusic.ui.helper.DrawerCoordinateHelper;
+import com.kunminx.puremusic.ui.view.DragableViewPager;
 
 /**
  * Create by KunMinX at 19/10/29
@@ -49,7 +50,7 @@ public class MainFragment extends BaseFragment {
     private MusicRequestViewModel mMusicRequestViewModel;
     private SimpleBaseBindingAdapter<TestAlbum.TestMusic, AdapterPlayItemBinding> mAdapter;
     private ClickProxy mClickProxy;
-    private boolean mEnableToListen;
+    private boolean mEnableToListen = true;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,11 +93,6 @@ public class MainFragment extends BaseFragment {
         };
 
         mBinding.rv.setAdapter(mAdapter);
-
-        if (mBinding.viewPager != null) {
-            mEnableToListen = true;
-            mBinding.viewPager.setListener(() -> mSharedViewModel.openOrCloseDrawer.setValue(mEnableToListen));
-        }
 
         PlayerManager.getInstance().getChangeMusicLiveData().observe(getViewLifecycleOwner(), changeMusic -> {
 
@@ -146,7 +142,7 @@ public class MainFragment extends BaseFragment {
     // 也即，有绑定就有绑定，没绑定也没什么大不了的，总之 不会因一致性问题造成 视图调用的空指针。
     // 如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
-    public class ClickProxy implements TabLayout.OnTabSelectedListener {
+    public class ClickProxy implements TabLayout.OnTabSelectedListener, DragableViewPager.onDragRightListener {
 
         public void openMenu() {
 
@@ -165,7 +161,6 @@ public class MainFragment extends BaseFragment {
             nav().navigate(R.id.action_mainFragment_to_searchFragment);
         }
 
-
         @Override
         public void onTabSelected(TabLayout.Tab tab) {
 
@@ -173,15 +168,17 @@ public class MainFragment extends BaseFragment {
 
         @Override
         public void onTabUnselected(TabLayout.Tab tab) {
-//            DrawerCoordinateHelper.getInstance().setEnableToListen(tab.getPosition() == 1);
-            if (mBinding.viewPager != null) {
-                mEnableToListen = tab.getPosition() == 1;
-            }
+            mEnableToListen = tab.getPosition() == 1;
         }
 
         @Override
         public void onTabReselected(TabLayout.Tab tab) {
 
+        }
+
+        @Override
+        public void onDragRight() {
+            mSharedViewModel.openOrCloseDrawer.setValue(mEnableToListen);
         }
     }
 

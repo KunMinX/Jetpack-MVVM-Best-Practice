@@ -133,10 +133,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:fitsSystemWindows="true"
-                app:tabSelectedListener="@{click}"
                 app:tabBackground="@color/white"
                 app:tabIndicatorColor="@color/gray"
                 app:tabIndicatorHeight="4dp"
+                app:tabSelectedListener="@{click}"
                 app:tabSelectedTextColor="@color/gray"
                 app:tabTextColor="@color/light_gray">
 
@@ -156,6 +156,7 @@
 
         <com.kunminx.puremusic.ui.view.DragableViewPager
             android:id="@+id/view_pager"
+            onDragRightListener="@{click}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never"

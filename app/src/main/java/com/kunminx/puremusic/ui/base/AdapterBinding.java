@@ -39,6 +39,7 @@ import com.kunminx.architecture.ui.adapter.CommonViewPagerAdapter;
 import com.kunminx.architecture.utils.ClickUtils;
 import com.kunminx.architecture.utils.Utils;
 import com.kunminx.puremusic.R;
+import com.kunminx.puremusic.ui.view.DragableViewPager;
 import com.kunminx.puremusic.ui.view.PlayPauseView;
 
 import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
@@ -124,6 +125,11 @@ public class AdapterBinding {
     @BindingAdapter(value = {"tabSelectedListener"}, requireAll = false)
     public static void tabSelectedListener(TabLayout tabLayout, TabLayout.OnTabSelectedListener listener) {
         tabLayout.addOnTabSelectedListener(listener);
+    }
+
+    @BindingAdapter(value = {"onDragRightListener"}, requireAll = false)
+    public static void onDragRightListener(DragableViewPager viewPager, DragableViewPager.onDragRightListener listener) {
+        viewPager.setListener(listener);
     }
 
     @BindingAdapter(value = {"mdIcon"}, requireAll = false)

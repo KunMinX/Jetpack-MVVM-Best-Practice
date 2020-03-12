@@ -2,7 +2,6 @@ package com.kunminx.puremusic.ui.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 
@@ -47,8 +46,6 @@ public class DragableViewPager extends ViewPager {
                 float dy = y - mLastY;
                 if (Math.abs(dx) > mTouchSlop && Math.abs(dy) > mTouchSlop) {
                     int orientation = getOrientation(dx, dy);
-                    Log.d("TAG", "dx:" + dx + " dy:" + dy);
-                    Log.d("TAG", String.valueOf(orientation));
                     switch (orientation) {
                         case 'r':
                             if (mListener != null) {
