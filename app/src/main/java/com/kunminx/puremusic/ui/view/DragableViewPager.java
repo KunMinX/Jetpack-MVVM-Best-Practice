@@ -3,7 +3,6 @@ package com.kunminx.puremusic.ui.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.ViewConfiguration;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,16 +16,14 @@ public class DragableViewPager extends ViewPager {
     private float mLastX;
     private float mLastY;
     private onDragRightListener mListener;
-    private int mTouchSlop;
+    private boolean mInitCoordinate;
 
     public DragableViewPager(@NonNull Context context) {
         super(context);
-        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
 
     public DragableViewPager(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
 
     @Override
@@ -39,25 +36,29 @@ public class DragableViewPager extends ViewPager {
                 mLastY = y;
                 break;
             case MotionEvent.ACTION_MOVE:
-
+                if (!mInitCoordinate) {
+                    mLastX = x;
+                    mLastY = y;
+                    mInitCoordinate = true;
+                }
                 break;
             case MotionEvent.ACTION_UP:
                 float dx = x - mLastX;
                 float dy = y - mLastY;
-                if (Math.abs(dx) > mTouchSlop && Math.abs(dy) > mTouchSlop) {
-                    int orientation = getOrientation(dx, dy);
-                    switch (orientation) {
-                        case 'r':
-                            if (mListener != null) {
-                                mListener.onDragRight();
-                            }
-                            break;
-                        case 'l':
-                        case 't':
-                        case 'b':
-                            break;
-                    }
+                int orientation = getOrientation(dx, dy);
+
+                switch (orientation) {
+                    case 'r':
+                        if (mListener != null) {
+                            mListener.onDragRight();
+                        }
+                        break;
+                    case 'l':
+                    case 't':
+                    case 'b':
+                        break;
                 }
+                mInitCoordinate = false;
                 break;
             default:
 
