@@ -28,16 +28,6 @@ import java.util.List;
  */
 public interface IRemoteRequest {
 
-    /*void getSongsResult(MutableLiveData<SongResult.DataBean.SongsResult> liveData, String keyword);
-
-    void getAlbumsResult(MutableLiveData<AlbumResult.DataBean.AlbumsResult> liveData, String keyword);
-
-    void getSingerImg(MutableLiveData<SingerImg.SingerResult> liveData, String singerName);
-
-    void getSongInfo(MutableLiveData<SongInfo.DataBean> liveData, String albumMid);
-
-    void getSongUrl(MutableLiveData<String> liveData, String songMid);*/
-
     void getFreeMusic(MutableLiveData<TestAlbum> liveData);
 
     void getLibraryInfo(MutableLiveData<List<LibraryInfo>> liveData);
