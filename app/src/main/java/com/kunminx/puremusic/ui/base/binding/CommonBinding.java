@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kunminx.architecture.ui.binding;
+package com.kunminx.puremusic.ui.base.binding;
 
 import android.graphics.drawable.Drawable;
 import android.view.View;
