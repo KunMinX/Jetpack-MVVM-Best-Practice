@@ -7,8 +7,8 @@ android {
         applicationId "com.kunminx.puremusic"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 10603
-        versionName "1.6.3"
+        versionCode 10606
+        versionName "1.6.6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -62,7 +62,6 @@ dependencies {
     compileOnly 'androidx.lifecycle:lifecycle-livedata:2.2.0'
 
     compileOnly 'androidx.navigation:navigation-runtime:2.2.1'
-//    compileOnly 'com.lwjlol.navigation:keep-fragmentstate:0.0.1'
 
     compileOnly 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'

@@ -16,10 +16,6 @@
 
 package com.kunminx.puremusic.ui.helper;
 
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
@@ -36,14 +32,10 @@ import com.kunminx.puremusic.ui.base.BaseFragment;
  * <p>
  * Create by KunMinX at 19/11/3
  */
-public class DrawerCoordinateHelper implements DefaultLifecycleObserver, View.OnTouchListener {
+public class DrawerCoordinateHelper implements DefaultLifecycleObserver {
 
     private static final DrawerCoordinateHelper S_HELPER = new DrawerCoordinateHelper();
     public final UnPeekLiveData<Boolean> openDrawer = new UnPeekLiveData<>();
-    private float downX;
-    private float downY;
-    private boolean enableToListen;
-    private boolean initCoordinate;
 
     private DrawerCoordinateHelper() {
     }
@@ -70,59 +62,4 @@ public class DrawerCoordinateHelper implements DefaultLifecycleObserver, View.On
                 .enableSwipeDrawer.setValue(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
     }
 
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        if (!enableToListen) {
-            return false;
-        }
-        float x = event.getX();
-        float y = event.getY();
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                downX = x;
-                downY = y;
-                return enableToListen;
-            case MotionEvent.ACTION_MOVE:
-                if (!initCoordinate) {
-                    downX = x;
-                    downY = y;
-                    initCoordinate = true;
-                }
-                return true;
-            case MotionEvent.ACTION_UP:
-                float dx = x - downX;
-                float dy = y - downY;
-                if (Math.abs(dx) > 8 && Math.abs(dy) > 8) {
-                    int orientation = getOrientation(dx, dy);
-                    Log.d("TAG", String.valueOf(orientation));
-                    switch (orientation) {
-                        case 'r':
-                            openDrawer.setValue(true);
-                            return true;
-                        case 'l':
-                            return false;
-                        case 't':
-                            return false;
-                        case 'b':
-                            return false;
-                    }
-                }
-                break;
-            default:
-        }
-        return false;
-    }
-
-    private int getOrientation(float dx, float dy) {
-        if (Math.abs(dx) > Math.abs(dy)) {
-            return dx > 0 ? 'r' : 'l';
-        } else {
-            return dy > 0 ? 'b' : 't';
-        }
-    }
-
-    public void setEnableToListen(boolean enableToListen) {
-        this.enableToListen = enableToListen;
-    }
 }
