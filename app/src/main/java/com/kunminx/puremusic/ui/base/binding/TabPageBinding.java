@@ -37,9 +37,9 @@ public class TabPageBinding {
         tabLayout.addOnTabSelectedListener(listener);
     }
 
-    @BindingAdapter(value = {"onDragRightListener"}, requireAll = false)
-    public static void onDragRightListener(DragableViewPager viewPager, DragableViewPager.OnDragRightListener listener) {
-        viewPager.setOnDragRightListener(listener);
+    @BindingAdapter(value = {"onDragCommandListener"}, requireAll = false)
+    public static void onDragCommandListener(DragableViewPager viewPager, DragableViewPager.OnDragCommandListener listener) {
+        viewPager.setOnDragCommandListener(listener);
     }
 
 }

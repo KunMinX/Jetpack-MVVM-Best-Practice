@@ -156,7 +156,7 @@
 
         <com.kunminx.puremusic.ui.view.DragableViewPager
             android:id="@+id/view_pager"
-            onDragRightListener="@{click}"
+            onDragCommandListener="@{click}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never"

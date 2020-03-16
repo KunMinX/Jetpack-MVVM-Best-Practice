@@ -15,7 +15,7 @@ public class DragableViewPager extends ViewPager {
 
     private float mLastX;
     private float mLastY;
-    private OnDragRightListener mOnDragRightListener;
+    private OnDragCommandListener mOnDragCommandListener;
     private boolean mInitCoordinate;
 
     public DragableViewPager(@NonNull Context context) {
@@ -49,11 +49,15 @@ public class DragableViewPager extends ViewPager {
 
                 switch (orientation) {
                     case 'r':
-                        if (mOnDragRightListener != null) {
-                            mOnDragRightListener.onDragRight();
+                        if (mOnDragCommandListener != null) {
+                            mOnDragCommandListener.onDragRight();
                         }
                         break;
                     case 'l':
+                        if (mOnDragCommandListener != null) {
+                            mOnDragCommandListener.onDragLeft();
+                        }
+                        break;
                     case 't':
                     case 'b':
                         break;
@@ -75,11 +79,13 @@ public class DragableViewPager extends ViewPager {
         }
     }
 
-    public void setOnDragRightListener(OnDragRightListener onDragRightListener) {
-        mOnDragRightListener = onDragRightListener;
+    public void setOnDragCommandListener(OnDragCommandListener onDragCommandListener) {
+        mOnDragCommandListener = onDragCommandListener;
     }
 
-    public interface OnDragRightListener {
+    public interface OnDragCommandListener {
+        void onDragLeft();
+
         void onDragRight();
     }
 }
