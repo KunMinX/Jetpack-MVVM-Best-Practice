@@ -27,6 +27,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.kunminx.puremusic.R;
+import com.kunminx.puremusic.bridge.request.InfoRequestViewModel;
 import com.kunminx.puremusic.bridge.state.SearchViewModel;
 import com.kunminx.puremusic.databinding.FragmentSearchBinding;
 import com.kunminx.puremusic.ui.base.BaseFragment;
@@ -40,10 +41,12 @@ public class SearchFragment extends BaseFragment {
 
     private FragmentSearchBinding mBinding;
     private SearchViewModel mSearchViewModel;
+    private InfoRequestViewModel mInfoRequestViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mInfoRequestViewModel = getFragmentViewModelProvider(this).get(InfoRequestViewModel.class);
         mSearchViewModel = getFragmentViewModelProvider(this).get(SearchViewModel.class);
 
         getLifecycle().addObserver(DrawerCoordinateHelper.getInstance());
@@ -64,6 +67,14 @@ public class SearchFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mInfoRequestViewModel.getTestCancelableBusiness().observe(getViewLifecycleOwner(), s -> {
+            //TODO tip3：暂无实际功能，仅演示 UseCase 流程
+
+            //接收来自 可感知生命周期的 UseCase 处理的结果
+        });
+
+        //TODO tip2：暂无实际功能，仅演示 UseCase 流程
+        mInfoRequestViewModel.requestTestXXX();
     }
 
     public class ClickProxy {

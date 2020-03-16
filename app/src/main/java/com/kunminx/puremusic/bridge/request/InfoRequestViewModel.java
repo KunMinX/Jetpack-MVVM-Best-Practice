@@ -21,7 +21,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.data.repository.HttpRequestManager;
-import com.kunminx.puremusic.data.usecase.TestUseCase;
+import com.kunminx.puremusic.data.usecase.CanBeStoppedUseCase;
 import com.kunminx.architecture.data.usecase.UseCase;
 import com.kunminx.architecture.data.usecase.UseCaseHandler;
 
@@ -29,26 +29,26 @@ import java.util.List;
 
 /**
  * 信息列表 RequestViewModel
- *
+ * <p>
  * TODO tip：RequestViewModel 通常按业务划分
  * 一个项目中通常存在多个 RequestViewModel
- *
+ * <p>
  * requestViewModel 的职责仅限于 数据请求，不建议在此处理 UI 逻辑，
  * UI 逻辑只适合在 Activity/Fragment 等视图控制器中完成，是 “数据驱动” 的一部分，
  * 将来升级到 Jetpack Compose 更是如此。
- *
+ * <p>
  * 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/6257931840
- *
- *
+ * <p>
+ * <p>
  * Create by KunMinX at 19/11/2
  */
 public class InfoRequestViewModel extends ViewModel {
 
     private MutableLiveData<List<LibraryInfo>> libraryLiveData;
 
-    private TestUseCase mTestUseCase;
+    private CanBeStoppedUseCase mCanBeStoppedUseCase;
 
-    private MutableLiveData<String> testXXX;
+    private MutableLiveData<String> testCancelableBusiness;
 
     public MutableLiveData<List<LibraryInfo>> getLibraryLiveData() {
         if (libraryLiveData == null) {
@@ -57,18 +57,18 @@ public class InfoRequestViewModel extends ViewModel {
         return libraryLiveData;
     }
 
-    public TestUseCase getTestUseCase() {
-        if (mTestUseCase == null) {
-            mTestUseCase = new TestUseCase();
+    public CanBeStoppedUseCase getCanBeStoppedUseCase() {
+        if (mCanBeStoppedUseCase == null) {
+            mCanBeStoppedUseCase = new CanBeStoppedUseCase();
         }
-        return mTestUseCase;
+        return mCanBeStoppedUseCase;
     }
 
-    public MutableLiveData<String> getTestXXX() {
-        if (testXXX == null) {
-            testXXX = new MutableLiveData<>();
+    public MutableLiveData<String> getTestCancelableBusiness() {
+        if (testCancelableBusiness == null) {
+            testCancelableBusiness = new MutableLiveData<>();
         }
-        return testXXX;
+        return testCancelableBusiness;
     }
 
     public void requestLibraryInfo() {
@@ -76,12 +76,12 @@ public class InfoRequestViewModel extends ViewModel {
     }
 
     public void requestTestXXX() {
-        UseCaseHandler.getInstance().execute(getTestUseCase(),
-                new TestUseCase.RequestValues(0, 0),
-                new UseCase.UseCaseCallback<TestUseCase.ResponseValue>() {
+        UseCaseHandler.getInstance().execute(getCanBeStoppedUseCase(),
+                new CanBeStoppedUseCase.RequestValues(0, 0),
+                new UseCase.UseCaseCallback<CanBeStoppedUseCase.ResponseValue>() {
                     @Override
-                    public void onSuccess(TestUseCase.ResponseValue response) {
-                        getTestXXX().setValue(response.getResult());
+                    public void onSuccess(CanBeStoppedUseCase.ResponseValue response) {
+                        getTestCancelableBusiness().setValue(response.getResult());
                     }
 
                     @Override

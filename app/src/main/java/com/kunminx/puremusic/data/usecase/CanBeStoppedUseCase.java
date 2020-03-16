@@ -23,16 +23,16 @@ import androidx.lifecycle.LifecycleOwner;
 
 import com.kunminx.architecture.data.usecase.UseCase;
 
-import static com.kunminx.puremusic.data.usecase.TestUseCase.RequestValues;
-import static com.kunminx.puremusic.data.usecase.TestUseCase.ResponseValue;
+import static com.kunminx.puremusic.data.usecase.CanBeStoppedUseCase.RequestValues;
+import static com.kunminx.puremusic.data.usecase.CanBeStoppedUseCase.ResponseValue;
 
 
 /**
- * UseCase 示例，单独服务于有 “叫停” 需求的业务
+ * UseCase 示例，实现 LifeCycle 接口，单独服务于 有 “叫停” 需求 的业务
  * <p>
  * Create by KunMinX at 19/11/25
  */
-public class TestUseCase extends UseCase<RequestValues, ResponseValue> implements DefaultLifecycleObserver {
+public class CanBeStoppedUseCase extends UseCase<RequestValues, ResponseValue> implements DefaultLifecycleObserver {
 
     private boolean isActive;
 
