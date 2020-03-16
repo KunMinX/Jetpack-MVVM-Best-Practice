@@ -29,18 +29,6 @@ public class DragBackConstraintLayout extends ConstraintLayout {
     }
 
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        switch (ev.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                return false;
-            case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_MOVE:
-                return true;
-        }
-        return super.onInterceptTouchEvent(ev);
-    }
-
-    @Override
     public boolean onTouchEvent(MotionEvent event) {
         float x = event.getX();
         float y = event.getY();
@@ -75,7 +63,6 @@ public class DragBackConstraintLayout extends ConstraintLayout {
                 mInitCoordinate = false;
                 break;
             default:
-
         }
 
         return super.onTouchEvent(event);
