@@ -11,7 +11,7 @@ import com.kunminx.puremusic.ui.view.DragableViewPager;
 /**
  * Create by KunMinX at 2020/3/13
  */
-public class TabPageBinding {
+public class TabPageBindingAdapter {
 
     @BindingAdapter(value = {"initTabAndPage"}, requireAll = false)
     public static void initTabAndPage(TabLayout tabLayout, boolean initTabAndPage) {

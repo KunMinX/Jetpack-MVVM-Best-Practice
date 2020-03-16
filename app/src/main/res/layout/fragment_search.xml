@@ -24,12 +24,16 @@
             type="com.kunminx.puremusic.ui.page.SearchFragment.ClickProxy" />
 
         <variable
+            name="event"
+            type="com.kunminx.puremusic.ui.page.SearchFragment.EventHandler" />
+
+        <variable
             name="vm"
             type="com.kunminx.puremusic.bridge.state.SearchViewModel" />
     </data>
 
     <com.kunminx.puremusic.ui.view.DragBackConstraintLayout
-        onDragBackListener="@{click}"
+        onDragBackListener="@{event}"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">

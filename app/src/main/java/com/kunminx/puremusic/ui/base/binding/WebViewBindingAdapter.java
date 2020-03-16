@@ -16,7 +16,7 @@ import com.kunminx.architecture.utils.Utils;
 /**
  * Create by KunMinX at 2020/3/13
  */
-public class WebViewBinding {
+public class WebViewBindingAdapter {
 
     @SuppressLint("SetJavaScriptEnabled")
     @BindingAdapter(value = {"pageAssetPath"}, requireAll = false)

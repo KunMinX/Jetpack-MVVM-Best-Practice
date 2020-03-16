@@ -55,6 +55,7 @@ public class SearchFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         mBinding = FragmentSearchBinding.bind(view);
         mBinding.setClick(new ClickProxy());
+        mBinding.setEvent(new EventHandler());
         mBinding.setVm(mSearchViewModel);
         return view;
     }
@@ -65,7 +66,7 @@ public class SearchFragment extends BaseFragment {
 
     }
 
-    public class ClickProxy implements DragBackConstraintLayout.OnDragBackListener {
+    public class ClickProxy {
 
         public void back() {
             nav().navigateUp();
@@ -84,6 +85,9 @@ public class SearchFragment extends BaseFragment {
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
         }
+    }
+
+    public class EventHandler implements DragBackConstraintLayout.OnDragBackListener {
 
         @Override
         public void onDragBack() {

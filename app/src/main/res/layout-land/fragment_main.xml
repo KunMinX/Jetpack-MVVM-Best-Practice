@@ -24,6 +24,10 @@
             type="com.kunminx.puremusic.ui.page.MainFragment.ClickProxy" />
 
         <variable
+            name="event"
+            type="com.kunminx.puremusic.ui.page.MainFragment.EventHandler" />
+
+        <variable
             name="vm"
             type="com.kunminx.puremusic.bridge.state.MainViewModel" />
 

@@ -7,8 +7,8 @@ android {
         applicationId "com.kunminx.puremusic"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 10701
-        versionName "1.7.1"
+        versionCode 10703
+        versionName "1.7.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

@@ -49,7 +49,6 @@ public class MainFragment extends BaseFragment {
     private MainViewModel mMainViewModel;
     private MusicRequestViewModel mMusicRequestViewModel;
     private SimpleBaseBindingAdapter<TestAlbum.TestMusic, AdapterPlayItemBinding> mAdapter;
-    private ClickProxy mClickProxy;
     private boolean mEnableToListen = true;
 
     @Override
@@ -64,7 +63,8 @@ public class MainFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         mBinding = FragmentMainBinding.bind(view);
-        mBinding.setClick(mClickProxy = new ClickProxy());
+        mBinding.setClick(new ClickProxy());
+        mBinding.setEvent(new EventHandler());
         mBinding.setVm(mMainViewModel);
         return view;
     }
@@ -142,7 +142,7 @@ public class MainFragment extends BaseFragment {
     // 也即，有绑定就有绑定，没绑定也没什么大不了的，总之 不会因一致性问题造成 视图调用的空指针。
     // 如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
-    public class ClickProxy implements TabLayout.OnTabSelectedListener, DragableViewPager.OnDragCommandListener {
+    public class ClickProxy {
 
         public void openMenu() {
 
@@ -160,6 +160,10 @@ public class MainFragment extends BaseFragment {
         public void search() {
             nav().navigate(R.id.action_mainFragment_to_searchFragment);
         }
+
+    }
+
+    public class EventHandler implements TabLayout.OnTabSelectedListener, DragableViewPager.OnDragCommandListener {
 
         @Override
         public void onTabSelected(TabLayout.Tab tab) {

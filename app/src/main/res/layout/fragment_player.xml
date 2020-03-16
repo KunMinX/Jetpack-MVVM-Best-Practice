@@ -26,6 +26,10 @@
             type="com.kunminx.puremusic.ui.page.PlayerFragment.ClickProxy" />
 
         <variable
+            name="event"
+            type="com.kunminx.puremusic.ui.page.PlayerFragment.EventHandler" />
+
+        <variable
             name="vm"
             type="com.kunminx.puremusic.bridge.state.PlayerViewModel" />
 
@@ -233,7 +237,7 @@
             android:progressDrawable="@drawable/progressbar_color"
             android:thumb="@null"
             android:visibility="visible"
-            app:onSeekBarChangeListener="@{click}" />
+            app:onSeekBarChangeListener="@{event}" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

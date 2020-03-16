@@ -31,7 +31,7 @@ import com.kunminx.puremusic.ui.view.DragBackConstraintLayout;
  * Create by KunMinX at 19/9/18
  */
 @SuppressWarnings("unused")
-public class CommonBinding {
+public class CommonBindingAdapter {
 
     @BindingAdapter(value = {"imageUrl", "placeHolder"}, requireAll = false)
     public static void loadUrl(ImageView view, String url, Drawable placeHolder) {

@@ -10,7 +10,7 @@ import net.steamcrafted.materialiconlib.MaterialIconView;
 /**
  * Create by KunMinX at 2020/3/13
  */
-public class IconBinding {
+public class IconBindingAdapter {
 
     @BindingAdapter(value = {"isPlaying"}, requireAll = false)
     public static void isPlaying(PlayPauseView pauseView, boolean isPlaying) {

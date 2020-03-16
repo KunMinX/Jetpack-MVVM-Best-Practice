@@ -25,6 +25,10 @@
             type="com.kunminx.puremusic.ui.page.MainFragment.ClickProxy" />
 
         <variable
+            name="event"
+            type="com.kunminx.puremusic.ui.page.MainFragment.EventHandler" />
+
+        <variable
             name="vm"
             type="com.kunminx.puremusic.bridge.state.MainViewModel" />
 
@@ -136,7 +140,7 @@
                 app:tabBackground="@color/white"
                 app:tabIndicatorColor="@color/gray"
                 app:tabIndicatorHeight="4dp"
-                app:tabSelectedListener="@{click}"
+                app:tabSelectedListener="@{event}"
                 app:tabSelectedTextColor="@color/gray"
                 app:tabTextColor="@color/light_gray">
 
@@ -156,7 +160,7 @@
 
         <com.kunminx.puremusic.ui.view.DragableViewPager
             android:id="@+id/view_pager"
-            onDragCommandListener="@{click}"
+            onDragCommandListener="@{event}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never"

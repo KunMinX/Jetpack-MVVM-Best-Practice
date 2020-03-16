@@ -7,7 +7,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 /**
  * Create by KunMinX at 2020/3/13
  */
-public class DrawerBinding {
+public class DrawerBindingAdapter {
 
     @BindingAdapter(value = {"isOpenDrawer"}, requireAll = false)
     public static void openDrawer(DrawerLayout drawerLayout, boolean isOpenDrawer) {
