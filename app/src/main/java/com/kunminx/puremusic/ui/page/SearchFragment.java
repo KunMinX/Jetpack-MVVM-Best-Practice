@@ -50,6 +50,9 @@ public class SearchFragment extends BaseFragment {
         mSearchViewModel = getFragmentViewModelProvider(this).get(SearchViewModel.class);
 
         getLifecycle().addObserver(DrawerCoordinateHelper.getInstance());
+
+        //TODO tip1：绑定跟随视图控制器生命周期的、可叫停的、单独放在 UseCase 中处理的业务
+        getLifecycle().addObserver(mInfoRequestViewModel.getCanBeStoppedUseCase());
     }
 
     @Nullable
