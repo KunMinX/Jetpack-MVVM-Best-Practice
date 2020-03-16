@@ -4,26 +4,40 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.viewpager.widget.ViewPager;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 /**
- * Create by KunMinX at 20/3/12
+ * Create by KunMinX at 20/3/16
  */
-public class DragableViewPager extends ViewPager {
+public class DragBackConstraintLayout extends ConstraintLayout {
 
     private float mLastX;
     private float mLastY;
-    private OnDragRightListener mOnDragRightListener;
+    private OnDragBackListener mOnDragBackListener;
     private boolean mInitCoordinate;
 
-    public DragableViewPager(@NonNull Context context) {
+    public DragBackConstraintLayout(Context context) {
         super(context);
     }
 
-    public DragableViewPager(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public DragBackConstraintLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    public DragBackConstraintLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                return false;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_MOVE:
+                return true;
+        }
+        return super.onInterceptTouchEvent(ev);
     }
 
     @Override
@@ -34,7 +48,7 @@ public class DragableViewPager extends ViewPager {
             case MotionEvent.ACTION_DOWN:
                 mLastX = x;
                 mLastY = y;
-                break;
+                return true;
             case MotionEvent.ACTION_MOVE:
                 if (!mInitCoordinate) {
                     mLastX = x;
@@ -49,8 +63,8 @@ public class DragableViewPager extends ViewPager {
 
                 switch (orientation) {
                     case 'r':
-                        if (mOnDragRightListener != null) {
-                            mOnDragRightListener.onDragRight();
+                        if (mOnDragBackListener != null) {
+                            mOnDragBackListener.onDragBack();
                         }
                         break;
                     case 'l':
@@ -75,11 +89,11 @@ public class DragableViewPager extends ViewPager {
         }
     }
 
-    public void setOnDragRightListener(OnDragRightListener onDragRightListener) {
-        mOnDragRightListener = onDragRightListener;
+    public void setOnDragBackListener(OnDragBackListener onDragBackListener) {
+        mOnDragBackListener = onDragBackListener;
     }
 
-    public interface OnDragRightListener {
-        void onDragRight();
+    public interface OnDragBackListener {
+        void onDragBack();
     }
 }

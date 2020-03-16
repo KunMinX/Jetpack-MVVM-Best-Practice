@@ -142,7 +142,7 @@ public class MainFragment extends BaseFragment {
     // 也即，有绑定就有绑定，没绑定也没什么大不了的，总之 不会因一致性问题造成 视图调用的空指针。
     // 如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
-    public class ClickProxy implements TabLayout.OnTabSelectedListener, DragableViewPager.onDragRightListener {
+    public class ClickProxy implements TabLayout.OnTabSelectedListener, DragableViewPager.OnDragRightListener {
 
         public void openMenu() {
 

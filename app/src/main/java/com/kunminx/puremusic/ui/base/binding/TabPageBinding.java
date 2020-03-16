@@ -38,8 +38,8 @@ public class TabPageBinding {
     }
 
     @BindingAdapter(value = {"onDragRightListener"}, requireAll = false)
-    public static void onDragRightListener(DragableViewPager viewPager, DragableViewPager.onDragRightListener listener) {
-        viewPager.setListener(listener);
+    public static void onDragRightListener(DragableViewPager viewPager, DragableViewPager.OnDragRightListener listener) {
+        viewPager.setOnDragRightListener(listener);
     }
 
 }

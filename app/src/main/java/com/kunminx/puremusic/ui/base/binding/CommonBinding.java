@@ -24,8 +24,8 @@ import android.widget.TextView;
 import androidx.databinding.BindingAdapter;
 
 import com.bumptech.glide.Glide;
-import com.kunminx.architecture.R;
 import com.kunminx.architecture.utils.ClickUtils;
+import com.kunminx.puremusic.ui.view.DragBackConstraintLayout;
 
 /**
  * Create by KunMinX at 19/9/18
@@ -67,5 +67,10 @@ public class CommonBinding {
     @BindingAdapter(value = {"onClickWithDebouncing"}, requireAll = false)
     public static void onClickWithDebouncing(View view, View.OnClickListener clickListener) {
         ClickUtils.applySingleDebouncing(view, clickListener);
+    }
+
+    @BindingAdapter(value = {"onDragBackListener"}, requireAll = false)
+    public static void onClickWithDebouncing(DragBackConstraintLayout layout, DragBackConstraintLayout.OnDragBackListener listener) {
+        layout.setOnDragBackListener(listener);
     }
 }
