@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kunminx.puremusic.data.usecase.base;
+package com.kunminx.architecture.data.usecase;
 
 /**
  * Use cases are the entry points to the domain layer.

@@ -39,7 +39,7 @@ import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
  * 将来升级到 Jetpack Compose 更是如此。
  *
  * 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
- * <p>
+ *
  * Create by KunMinX at 19/10/29
  */
 public class PlayerViewModel extends ViewModel {

@@ -12,9 +12,10 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
 
-package com.kunminx.architecture.data.convert;
+
+package com.kunminx.puremusic.data.convert;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -30,9 +31,11 @@ import java.lang.reflect.Type;
 
 import okhttp3.Response;
 
+*/
 /**
  * Create by KunMinX at 19/7/13
- */
+ *//*
+
 public abstract class JsonCallback<T> extends AbsCallback<T> {
 
 
@@ -83,3 +86,4 @@ public abstract class JsonCallback<T> extends AbsCallback<T> {
         NetworkStateManager.getInstance().mNetworkStateCallback.setValue(netState);
     }
 }
+*/

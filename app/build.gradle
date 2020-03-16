@@ -52,7 +52,7 @@ dependencies {
 
     compileOnly 'androidx.appcompat:appcompat:1.1.0'
     compileOnly 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
-    compileOnly 'com.google.android.material:material:1.2.0-alpha05'
+    implementation 'com.google.android.material:material:1.2.0-alpha05'
     compileOnly 'androidx.recyclerview:recyclerview:1.1.0'
 
     compileOnly 'androidx.lifecycle:lifecycle-runtime:2.2.0'
@@ -63,16 +63,16 @@ dependencies {
 
     compileOnly 'androidx.navigation:navigation-runtime:2.2.1'
 
-    compileOnly 'com.github.bumptech.glide:glide:4.11.0'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
-    compileOnly 'com.yanzhenjie.permission:x:2.0.1'
+    implementation 'com.yanzhenjie.permission:x:2.0.1'
 
-    compileOnly 'com.lzy.net:okgo:3.0.4'
-    compileOnly 'com.lzy.net:okrx2:2.0.2'
-    compileOnly 'com.lzy.net:okserver:2.0.5'
+    /*implementation 'com.lzy.net:okgo:3.0.4'
+    implementation 'com.lzy.net:okrx2:2.0.2'
+    implementation 'com.lzy.net:okserver:2.0.5'*/
 
-    compileOnly 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.code.gson:gson:2.8.6'
 
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
     implementation 'net.steamcrafted:materialiconlib:1.1.5'

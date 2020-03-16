@@ -24,13 +24,11 @@ import com.kunminx.puremusic.data.repository.HttpRequestManager;
 
 /**
  * 音乐资源  RequestViewModel
- * <p>
+ *
  * TODO tip：RequestViewModel 通常按业务划分
  * 一个项目中通常存在多个 RequestViewModel
- * 对 Jetpack ViewModel 的知识点感兴趣可详见 https://xiaozhuanlan.com/topic/6257931840
- * <p>
  *
- * 此外，requestViewModel 的职责仅限于 数据请求，不建议在此处理 UI 逻辑，
+ * requestViewModel 的职责仅限于 数据请求，不建议在此处理 UI 逻辑，
  * UI 逻辑只适合在 Activity/Fragment 等视图控制器中完成，是 “数据驱动” 的一部分，
  * 将来升级到 Jetpack Compose 更是如此。
  *
@@ -40,52 +38,7 @@ import com.kunminx.puremusic.data.repository.HttpRequestManager;
  */
 public class MusicRequestViewModel extends ViewModel {
 
-    /*private MutableLiveData<SongResult.DataBean.SongsResult> songResultLiveData;
-
-    private MutableLiveData<AlbumResult.DataBean.AlbumsResult> albumResultLiveData;
-
-    private MutableLiveData<SingerImg.SingerResult> singleImgLiveData;
-
-    private MutableLiveData<SongInfo.DataBean> songInfoLiveData;
-
-    private MutableLiveData<String> songUrlLiveData;*/
-
     private MutableLiveData<TestAlbum> freeMusicsLiveData;
-
-    /*public MutableLiveData<SongResult.DataBean.SongsResult> getSongResultLiveData() {
-        if (songResultLiveData == null) {
-            songResultLiveData = new MutableLiveData<>();
-        }
-        return songResultLiveData;
-    }
-
-    public MutableLiveData<AlbumResult.DataBean.AlbumsResult> getAlbumResultLiveData() {
-        if (albumResultLiveData == null) {
-            albumResultLiveData = new MutableLiveData<>();
-        }
-        return albumResultLiveData;
-    }
-
-    public MutableLiveData<SingerImg.SingerResult> getSingleImgLiveData() {
-        if (singleImgLiveData == null) {
-            singleImgLiveData = new MutableLiveData<>();
-        }
-        return singleImgLiveData;
-    }
-
-    public MutableLiveData<SongInfo.DataBean> getSongInfoLiveData() {
-        if (songInfoLiveData == null) {
-            songInfoLiveData = new MutableLiveData<>();
-        }
-        return songInfoLiveData;
-    }
-
-    public MutableLiveData<String> getSongUrlLiveData() {
-        if (songUrlLiveData == null) {
-            songUrlLiveData = new MutableLiveData<>();
-        }
-        return songUrlLiveData;
-    }*/
 
     public MutableLiveData<TestAlbum> getFreeMusicsLiveData() {
         if (freeMusicsLiveData == null) {
@@ -93,26 +46,6 @@ public class MusicRequestViewModel extends ViewModel {
         }
         return freeMusicsLiveData;
     }
-
-    /*public void requestSongsResult(String keyword) {
-        HttpRequestManager.getInstance().getSongsResult(getSongResultLiveData(), keyword);
-    }
-
-    public void requestAlbumsResult(String keyword) {
-        HttpRequestManager.getInstance().getAlbumsResult(getAlbumResultLiveData(), keyword);
-    }
-
-    public void requestSingerImg(String singerName) {
-        HttpRequestManager.getInstance().getSingerImg(getSingleImgLiveData(), singerName);
-    }
-
-    public void requestSongInfo(String albumMid) {
-        HttpRequestManager.getInstance().getSongInfo(getSongInfoLiveData(), albumMid);
-    }
-
-    public void requestSongUrl(String songMid) {
-        HttpRequestManager.getInstance().getSongUrl(getSongUrlLiveData(), songMid);
-    }*/
 
     public void requestFreeMusics() {
         HttpRequestManager.getInstance().getFreeMusic(getFreeMusicsLiveData());

@@ -21,7 +21,7 @@ import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.kunminx.puremusic.data.usecase.base.UseCase;
+import com.kunminx.architecture.data.usecase.UseCase;
 
 import static com.kunminx.puremusic.data.usecase.TestUseCase.RequestValues;
 import static com.kunminx.puremusic.data.usecase.TestUseCase.ResponseValue;

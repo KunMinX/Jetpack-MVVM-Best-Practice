@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kunminx.puremusic.data.usecase.base;
+package com.kunminx.architecture.data.usecase;
 
 /**
  * Interface for schedulers, see {@link UseCaseThreadPoolScheduler}.

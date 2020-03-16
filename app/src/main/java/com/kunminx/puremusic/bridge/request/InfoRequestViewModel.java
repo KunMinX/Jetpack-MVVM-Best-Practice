@@ -22,12 +22,16 @@ import androidx.lifecycle.ViewModel;
 import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.data.repository.HttpRequestManager;
 import com.kunminx.puremusic.data.usecase.TestUseCase;
-import com.kunminx.puremusic.data.usecase.base.UseCase;
-import com.kunminx.puremusic.data.usecase.base.UseCaseHandler;
+import com.kunminx.architecture.data.usecase.UseCase;
+import com.kunminx.architecture.data.usecase.UseCaseHandler;
 
 import java.util.List;
 
 /**
+ * 信息列表 RequestViewModel
+ *
+ * TODO tip：RequestViewModel 通常按业务划分
+ * 一个项目中通常存在多个 RequestViewModel
  *
  * requestViewModel 的职责仅限于 数据请求，不建议在此处理 UI 逻辑，
  * UI 逻辑只适合在 Activity/Fragment 等视图控制器中完成，是 “数据驱动” 的一部分，

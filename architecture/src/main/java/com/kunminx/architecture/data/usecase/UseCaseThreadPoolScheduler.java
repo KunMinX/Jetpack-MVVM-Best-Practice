@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kunminx.puremusic.data.usecase.base;
+package com.kunminx.architecture.data.usecase;
 
 import android.os.Handler;
 
@@ -37,11 +37,6 @@ public class UseCaseThreadPoolScheduler implements UseCaseScheduler {
     public static final int TIMEOUT = 30;
     final ThreadPoolExecutor mThreadPoolExecutor;
     private final Handler mHandler = new Handler();
-
-    /*public UseCaseThreadPoolScheduler() {
-        mThreadPoolExecutor = new ThreadPoolExecutor(POOL_SIZE, MAX_POOL_SIZE, TIMEOUT,
-                TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(POOL_SIZE));
-    }*/
 
     /**
      * 固定线程数的无界线程池
