@@ -24,10 +24,6 @@
             type="com.kunminx.puremusic.ui.page.MainFragment.ClickProxy" />
 
         <variable
-            name="event"
-            type="com.kunminx.puremusic.ui.page.MainFragment.EventHandler" />
-
-        <variable
             name="vm"
             type="com.kunminx.puremusic.bridge.state.MainViewModel" />
 
@@ -73,7 +69,7 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <com.kunminx.puremusic.ui.view.DragableViewPager
+        <androidx.viewpager.widget.ViewPager
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -93,7 +89,7 @@
                 android:layout_height="match_parent"
                 android:clipToPadding="false" />
 
-        </com.kunminx.puremusic.ui.view.DragableViewPager>
+        </androidx.viewpager.widget.ViewPager>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

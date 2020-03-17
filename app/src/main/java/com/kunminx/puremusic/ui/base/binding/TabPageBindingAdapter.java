@@ -6,7 +6,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.kunminx.architecture.ui.adapter.CommonViewPagerAdapter;
 import com.kunminx.puremusic.R;
-import com.kunminx.puremusic.ui.view.DragableViewPager;
 
 /**
  * Create by KunMinX at 2020/3/13
@@ -35,11 +34,6 @@ public class TabPageBindingAdapter {
     @BindingAdapter(value = {"tabSelectedListener"}, requireAll = false)
     public static void tabSelectedListener(TabLayout tabLayout, TabLayout.OnTabSelectedListener listener) {
         tabLayout.addOnTabSelectedListener(listener);
-    }
-
-    @BindingAdapter(value = {"onDragCommandListener"}, requireAll = false)
-    public static void onDragCommandListener(DragableViewPager viewPager, DragableViewPager.OnDragCommandListener listener) {
-        viewPager.setOnDragCommandListener(listener);
     }
 
 }

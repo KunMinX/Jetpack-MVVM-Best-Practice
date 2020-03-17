@@ -32,7 +32,6 @@ import com.kunminx.puremusic.bridge.state.SearchViewModel;
 import com.kunminx.puremusic.databinding.FragmentSearchBinding;
 import com.kunminx.puremusic.ui.base.BaseFragment;
 import com.kunminx.puremusic.ui.helper.DrawerCoordinateHelper;
-import com.kunminx.puremusic.ui.view.DragBackConstraintLayout;
 
 /**
  * Create by KunMinX at 19/10/29
@@ -61,7 +60,6 @@ public class SearchFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         mBinding = FragmentSearchBinding.bind(view);
         mBinding.setClick(new ClickProxy());
-        mBinding.setEvent(new EventHandler());
         mBinding.setVm(mSearchViewModel);
         return view;
     }
@@ -101,11 +99,4 @@ public class SearchFragment extends BaseFragment {
         }
     }
 
-    public class EventHandler implements DragBackConstraintLayout.OnDragBackListener {
-
-        @Override
-        public void onDragBack() {
-            nav().navigateUp();
-        }
-    }
 }

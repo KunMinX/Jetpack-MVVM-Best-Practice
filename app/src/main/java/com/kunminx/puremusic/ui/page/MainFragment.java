@@ -27,7 +27,6 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.tabs.TabLayout;
 import com.kunminx.architecture.ui.adapter.SimpleBaseBindingAdapter;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.bridge.request.MusicRequestViewModel;
@@ -38,7 +37,6 @@ import com.kunminx.puremusic.databinding.FragmentMainBinding;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.base.BaseFragment;
 import com.kunminx.puremusic.ui.helper.DrawerCoordinateHelper;
-import com.kunminx.puremusic.ui.view.DragableViewPager;
 
 /**
  * Create by KunMinX at 19/10/29
@@ -49,7 +47,6 @@ public class MainFragment extends BaseFragment {
     private MainViewModel mMainViewModel;
     private MusicRequestViewModel mMusicRequestViewModel;
     private SimpleBaseBindingAdapter<TestAlbum.TestMusic, AdapterPlayItemBinding> mAdapter;
-    private boolean mEnableToListen = true;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,7 +61,6 @@ public class MainFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         mBinding = FragmentMainBinding.bind(view);
         mBinding.setClick(new ClickProxy());
-        mBinding.setEvent(new EventHandler());
         mBinding.setVm(mMainViewModel);
         return view;
     }
@@ -161,36 +157,6 @@ public class MainFragment extends BaseFragment {
             nav().navigate(R.id.action_mainFragment_to_searchFragment);
         }
 
-    }
-
-    public class EventHandler implements TabLayout.OnTabSelectedListener, DragableViewPager.OnDragCommandListener {
-
-        @Override
-        public void onTabSelected(TabLayout.Tab tab) {
-
-        }
-
-        @Override
-        public void onTabUnselected(TabLayout.Tab tab) {
-            mEnableToListen = tab.getPosition() == 1;
-        }
-
-        @Override
-        public void onTabReselected(TabLayout.Tab tab) {
-
-        }
-
-        @Override
-        public void onDragLeft() {
-            if (!mEnableToListen) {
-                nav().navigate(R.id.action_mainFragment_to_searchFragment);
-            }
-        }
-
-        @Override
-        public void onDragRight() {
-            mSharedViewModel.openOrCloseDrawer.setValue(mEnableToListen);
-        }
     }
 
 }

@@ -24,16 +24,11 @@
             type="com.kunminx.puremusic.ui.page.SearchFragment.ClickProxy" />
 
         <variable
-            name="event"
-            type="com.kunminx.puremusic.ui.page.SearchFragment.EventHandler" />
-
-        <variable
             name="vm"
             type="com.kunminx.puremusic.bridge.state.SearchViewModel" />
     </data>
 
-    <com.kunminx.puremusic.ui.view.DragBackConstraintLayout
-        onDragBackListener="@{event}"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
@@ -135,5 +130,5 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_tip" />
 
-    </com.kunminx.puremusic.ui.view.DragBackConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
