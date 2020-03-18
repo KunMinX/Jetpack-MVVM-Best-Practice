@@ -115,6 +115,7 @@
             android:onClick="@{()->click.testNav()}"
             android:text="@string/search_page_tip"
             android:textSize="16sp"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ic" />
@@ -123,12 +124,13 @@
             android:id="@+id/tv_test_download"
             drawable_radius="@{25}"
             drawable_solidColor="@{0xffFF7055}"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:background="?attr/selectableItemBackground"
             android:onClick="@{()->click.testDownload()}"
             android:text="@string/test_download"
-            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:textSize="13sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_tip" />
@@ -137,15 +139,27 @@
             android:id="@+id/tv_test_lifecycle_download"
             drawable_radius="@{25}"
             drawable_solidColor="@{0xffFF7055}"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="32dp"
+            android:layout_marginTop="24dp"
             android:background="?attr/selectableItemBackground"
             android:onClick="@{()->click.testLifecycleDownload()}"
             android:text="@string/test_lifecycle_download"
-            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:textSize="13sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_test_download" />
+
+        <ProgressBar
+            android:id="@+id/pb"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:progress="@{vm.progress}"
+            android:progressDrawable="@drawable/progressbar_color"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_test_lifecycle_download" />
 
         <TextView
             android:id="@+id/tv_back"
@@ -156,7 +170,7 @@
             android:textSize="20sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_test_lifecycle_download" />
+            app:layout_constraintTop_toBottomOf="@+id/pb" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

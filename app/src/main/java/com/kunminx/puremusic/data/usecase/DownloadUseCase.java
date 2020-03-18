@@ -1,10 +1,6 @@
 package com.kunminx.puremusic.data.usecase;
 
-import android.content.Context;
-import android.os.Environment;
-
 import com.kunminx.architecture.data.usecase.UseCase;
-import com.kunminx.architecture.utils.Utils;
 import com.kunminx.puremusic.data.config.Configs;
 
 import java.io.File;

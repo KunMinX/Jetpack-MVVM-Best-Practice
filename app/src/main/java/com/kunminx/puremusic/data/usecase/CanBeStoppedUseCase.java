@@ -18,10 +18,12 @@ package com.kunminx.puremusic.data.usecase;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.MutableLiveData;
 
 import com.kunminx.architecture.data.usecase.UseCase;
+import com.kunminx.puremusic.data.bean.DownloadFile;
+import com.kunminx.puremusic.data.repository.HttpRequestManager;
 
 import static com.kunminx.puremusic.data.usecase.CanBeStoppedUseCase.RequestValues;
 import static com.kunminx.puremusic.data.usecase.CanBeStoppedUseCase.ResponseValue;
@@ -34,74 +36,56 @@ import static com.kunminx.puremusic.data.usecase.CanBeStoppedUseCase.ResponseVal
  */
 public class CanBeStoppedUseCase extends UseCase<RequestValues, ResponseValue> implements DefaultLifecycleObserver {
 
-    private boolean isActive;
-
     @Override
-    public void onResume(@NonNull LifecycleOwner owner) {
-        isActive = owner.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED);
-    }
-
-    @Override
-    public void onPause(@NonNull LifecycleOwner owner) {
-        isActive = owner.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED);
+    public void onStop(@NonNull LifecycleOwner owner) {
+        if (getRequestValues() != null && getRequestValues().liveData != null) {
+            DownloadFile downloadFile = getRequestValues().liveData.getValue();
+            downloadFile.setForgive(true);
+            getRequestValues().liveData.setValue(downloadFile);
+            getUseCaseCallback().onSuccess(new ResponseValue(getRequestValues().liveData));
+        }
     }
 
     @Override
     protected void executeUseCase(RequestValues requestValues) {
-        //TODO do some work
 
         //访问数据层资源，在 UseCase 中处理带叫停性质的业务
-        // HttpRequestManager.getInstance().getFreeMusic(null);
 
-        if (!isActive) {
-            //TODO 叫停
-            return;
-        }
-
-        getUseCaseCallback().onSuccess(new ResponseValue("xxx"));
+        HttpRequestManager.getInstance().downloadFile(requestValues.liveData);
 
     }
 
     public static final class RequestValues implements UseCase.RequestValues {
 
-        private int page;
-        private int size;
+        private MutableLiveData<DownloadFile> liveData;
 
-        public RequestValues(int page, int size) {
-            this.page = page;
-            this.size = size;
+        public RequestValues(MutableLiveData<DownloadFile> liveData) {
+            this.liveData = liveData;
         }
 
-        public int getPage() {
-            return page;
+        public MutableLiveData<DownloadFile> getLiveData() {
+            return liveData;
         }
 
-        public void setPage(int page) {
-            this.page = page;
-        }
-
-        public int getSize() {
-            return size;
-        }
-
-        public void setSize(int size) {
-            this.size = size;
+        public void setLiveData(MutableLiveData<DownloadFile> liveData) {
+            this.liveData = liveData;
         }
     }
 
     public static final class ResponseValue implements UseCase.ResponseValue {
-        private String result;
 
-        public ResponseValue(String result) {
-            this.result = result;
+        private MutableLiveData<DownloadFile> liveData;
+
+        public ResponseValue(MutableLiveData<DownloadFile> liveData) {
+            this.liveData = liveData;
         }
 
-        public String getResult() {
-            return result;
+        public MutableLiveData<DownloadFile> getLiveData() {
+            return liveData;
         }
 
-        public void setResult(String result) {
-            this.result = result;
+        public void setLiveData(MutableLiveData<DownloadFile> liveData) {
+            this.liveData = liveData;
         }
     }
 }

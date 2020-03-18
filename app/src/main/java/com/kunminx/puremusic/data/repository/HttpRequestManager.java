@@ -16,6 +16,8 @@
 
 package com.kunminx.puremusic.data.repository;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
@@ -92,14 +94,15 @@ public class HttpRequestManager implements ILocalRequest, IRemoteRequest {
             @Override
             public void run() {
 
-                //模拟下载，假设下载一个文件要 20秒、每秒下载 5% 并通知 UI 层
+                //模拟下载，假设下载一个文件要 10秒、每 100 毫秒下载 1% 并通知 UI 层
 
                 DownloadFile downloadFile = liveData.getValue();
                 if (downloadFile == null) {
                     downloadFile = new DownloadFile();
                 }
-                if (downloadFile.getProgress() < 20) {
+                if (downloadFile.getProgress() < 100) {
                     downloadFile.setProgress(downloadFile.getProgress() + 1);
+                    Log.d("TAG", "下载进度 " + downloadFile.getProgress() + "%");
                 } else {
                     timer.cancel();
                     return;
@@ -109,11 +112,11 @@ public class HttpRequestManager implements ILocalRequest, IRemoteRequest {
                     return;
                 }
                 liveData.postValue(downloadFile);
+                downloadFile(liveData);
             }
         };
 
-        timer.schedule(task, 1000);
-
+        timer.schedule(task, 100);
     }
 
 }

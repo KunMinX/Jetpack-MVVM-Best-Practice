@@ -19,6 +19,7 @@ package com.kunminx.puremusic.bridge.request;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.kunminx.puremusic.data.bean.DownloadFile;
 import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.data.repository.HttpRequestManager;
 import com.kunminx.puremusic.data.usecase.CanBeStoppedUseCase;
@@ -46,10 +47,6 @@ public class InfoRequestViewModel extends ViewModel {
 
     private MutableLiveData<List<LibraryInfo>> libraryLiveData;
 
-    private CanBeStoppedUseCase mCanBeStoppedUseCase;
-
-    private MutableLiveData<String> testCancelableBusiness;
-
     public MutableLiveData<List<LibraryInfo>> getLibraryLiveData() {
         if (libraryLiveData == null) {
             libraryLiveData = new MutableLiveData<>();
@@ -57,37 +54,7 @@ public class InfoRequestViewModel extends ViewModel {
         return libraryLiveData;
     }
 
-    public CanBeStoppedUseCase getCanBeStoppedUseCase() {
-        if (mCanBeStoppedUseCase == null) {
-            mCanBeStoppedUseCase = new CanBeStoppedUseCase();
-        }
-        return mCanBeStoppedUseCase;
-    }
-
-    public MutableLiveData<String> getTestCancelableBusiness() {
-        if (testCancelableBusiness == null) {
-            testCancelableBusiness = new MutableLiveData<>();
-        }
-        return testCancelableBusiness;
-    }
-
     public void requestLibraryInfo() {
         HttpRequestManager.getInstance().getLibraryInfo(getLibraryLiveData());
-    }
-
-    public void requestTestXXX() {
-        UseCaseHandler.getInstance().execute(getCanBeStoppedUseCase(),
-                new CanBeStoppedUseCase.RequestValues(0, 0),
-                new UseCase.UseCaseCallback<CanBeStoppedUseCase.ResponseValue>() {
-                    @Override
-                    public void onSuccess(CanBeStoppedUseCase.ResponseValue response) {
-                        getTestCancelableBusiness().setValue(response.getResult());
-                    }
-
-                    @Override
-                    public void onError() {
-                        //TODO 此处使用相应的 LiveDate 通知 UI 层
-                    }
-                });
     }
 }
