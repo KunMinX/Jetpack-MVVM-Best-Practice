@@ -19,12 +19,8 @@ package com.kunminx.puremusic.bridge.request;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.kunminx.puremusic.data.bean.DownloadFile;
 import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.data.repository.HttpRequestManager;
-import com.kunminx.puremusic.data.usecase.CanBeStoppedUseCase;
-import com.kunminx.architecture.data.usecase.UseCase;
-import com.kunminx.architecture.data.usecase.UseCaseHandler;
 
 import java.util.List;
 
