@@ -16,7 +16,6 @@
 
 package com.kunminx.puremusic.ui.page;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,6 +30,7 @@ import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.bridge.request.DownloadViewModel;
 import com.kunminx.puremusic.bridge.request.InfoRequestViewModel;
 import com.kunminx.puremusic.bridge.state.SearchViewModel;
+import com.kunminx.puremusic.data.bean.DownloadFile;
 import com.kunminx.puremusic.databinding.FragmentSearchBinding;
 import com.kunminx.puremusic.ui.base.BaseFragment;
 import com.kunminx.puremusic.ui.helper.DrawerCoordinateHelper;
@@ -75,7 +75,7 @@ public class SearchFragment extends BaseFragment {
 
         });
 
-        mDownloadViewModel.getDownloadFileCanBeStoppedLiveData().observe(getViewLifecycleOwner(),downloadFile -> {
+        mDownloadViewModel.getDownloadFileCanBeStoppedLiveData().observe(getViewLifecycleOwner(), downloadFile -> {
             mSearchViewModel.progress.set(downloadFile.getProgress());
 
         });
@@ -111,5 +111,4 @@ public class SearchFragment extends BaseFragment {
             mDownloadViewModel.requestCanBeStoppedDownloadFile();
         }
     }
-
 }

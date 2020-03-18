@@ -119,8 +119,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ic" />
-
-        <TextView
+<TextView
             android:id="@+id/tv_test_download"
             drawable_radius="@{25}"
             drawable_solidColor="@{0xffFF7055}"
@@ -172,6 +171,5 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_test_lifecycle_download" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

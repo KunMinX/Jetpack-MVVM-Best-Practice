@@ -105,10 +105,12 @@ public class HttpRequestManager implements ILocalRequest, IRemoteRequest {
                     Log.d("TAG", "下载进度 " + downloadFile.getProgress() + "%");
                 } else {
                     timer.cancel();
+                    downloadFile.setProgress(0);
                     return;
                 }
                 if (downloadFile.isForgive()) {
                     timer.cancel();
+                    downloadFile.setProgress(0);
                     return;
                 }
                 liveData.postValue(downloadFile);
