@@ -97,12 +97,12 @@
             android:id="@+id/ic"
             android:layout_width="242dp"
             android:layout_height="242dp"
+            android:layout_marginTop="24dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:onClick="@{()->click.testNav()}"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_content"
             app:materialIcon="magnify"
             app:materialIconColor="@color/light_gray"
             app:materialIconSize="28dp" />
@@ -120,6 +120,34 @@
             app:layout_constraintTop_toBottomOf="@+id/ic" />
 
         <TextView
+            android:id="@+id/tv_test_download"
+            drawable_radius="@{25}"
+            drawable_solidColor="@{0xffFF7055}"
+            android:layout_width="100dp"
+            android:layout_height="32dp"
+            android:background="?attr/selectableItemBackground"
+            android:onClick="@{()->click.testDownload()}"
+            android:text="@string/test_download"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_tip" />
+
+        <TextView
+            android:id="@+id/tv_test_lifecycle_download"
+            drawable_radius="@{25}"
+            drawable_solidColor="@{0xffFF7055}"
+            android:layout_width="100dp"
+            android:layout_height="32dp"
+            android:background="?attr/selectableItemBackground"
+            android:onClick="@{()->click.testLifecycleDownload()}"
+            android:text="@string/test_lifecycle_download"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_test_download" />
+
+        <TextView
             android:id="@+id/tv_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -128,7 +156,7 @@
             android:textSize="20sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_tip" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_test_lifecycle_download" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

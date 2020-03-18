@@ -97,6 +97,14 @@ public class SearchFragment extends BaseFragment {
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
         }
+
+        public void testDownload() {
+
+        }
+
+        public void testLifecycleDownload() {
+
+        }
     }
 
 }
