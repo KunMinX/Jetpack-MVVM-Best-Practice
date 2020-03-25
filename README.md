@@ -4,15 +4,6 @@
 
 [《重学安卓》](https://xiaozhuanlan.com/kunminx)付费读者加微信进群：myatejx
 
-公告：
-
-刚刚我在《重学安卓》专栏发表了最新一期 [《是让人耳目一新的 Flutter 上车指南啊！》](https://xiaozhuanlan.com/topic/2356748910)
-
-考虑到该内容的含金量超标，将于 3月底 将专栏价格提升至 179 元，以帮助已经订阅的小伙伴 拉高竞争门槛。
-
-对 Jetpack MVVM 和 重学安卓 感兴趣的小伙伴要抓紧了 😉
-
-
 &nbsp;
 
 # 前言
