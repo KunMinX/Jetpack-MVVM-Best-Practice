@@ -111,6 +111,7 @@ public class HttpRequestManager implements ILocalRequest, IRemoteRequest {
                 if (downloadFile.isForgive()) {
                     timer.cancel();
                     downloadFile.setProgress(0);
+                    downloadFile.setForgive(false);
                     return;
                 }
                 liveData.postValue(downloadFile);
