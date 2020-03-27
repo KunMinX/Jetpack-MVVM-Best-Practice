@@ -43,6 +43,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         mMainActivityViewModel = getActivityViewModelProvider(this).get(MainActivityViewModel.class);
+        mMainActivityViewModel.initState();
 
         // TODO tip 1: 此处通过 DataBinding 来规避 潜在的 视图调用的一致性问题，
 
