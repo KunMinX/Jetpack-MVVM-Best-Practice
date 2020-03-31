@@ -39,6 +39,7 @@ import com.kunminx.puremusic.bridge.callback.SharedViewModel;
 public class BaseActivity extends AppCompatActivity {
 
     protected SharedViewModel mSharedViewModel;
+    private ViewModelProvider mActivityProvider;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,7 +81,10 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected ViewModelProvider getActivityViewModelProvider(AppCompatActivity activity) {
-        return new ViewModelProvider(activity, activity.getDefaultViewModelProviderFactory());
+        if (mActivityProvider == null) {
+            mActivityProvider = new ViewModelProvider(activity);
+        }
+        return mActivityProvider;
     }
 
 }

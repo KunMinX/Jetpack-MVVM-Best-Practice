@@ -48,6 +48,8 @@ public class BaseFragment extends Fragment {
     protected boolean mAnimationEnterLoaded;
     protected boolean mAnimationLoaded;
     protected boolean mInitDataCame;
+    private ViewModelProvider mFragmentProvider;
+    private ViewModelProvider mActivityProvider;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -113,11 +115,17 @@ public class BaseFragment extends Fragment {
     }
 
     protected ViewModelProvider getFragmentViewModelProvider(Fragment fragment) {
-        return new ViewModelProvider(fragment, fragment.getDefaultViewModelProviderFactory());
+        if (mFragmentProvider == null) {
+            mFragmentProvider = new ViewModelProvider(fragment);
+        }
+        return mFragmentProvider;
     }
 
     protected ViewModelProvider getActivityViewModelProvider(AppCompatActivity activity) {
-        return new ViewModelProvider(activity, activity.getDefaultViewModelProviderFactory());
+        if (mActivityProvider == null) {
+            mActivityProvider = new ViewModelProvider(activity);
+        }
+        return mActivityProvider;
     }
 
     protected NavController nav() {
