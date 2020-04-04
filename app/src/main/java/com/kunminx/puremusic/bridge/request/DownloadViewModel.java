@@ -1,5 +1,6 @@
 package com.kunminx.puremusic.bridge.request;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -20,14 +21,17 @@ public class DownloadViewModel extends ViewModel {
 
     private CanBeStoppedUseCase mCanBeStoppedUseCase;
 
-    public MutableLiveData<DownloadFile> getDownloadFileLiveData() {
+    //TODO tip 向 ui 层提供的 request LiveData，使用抽象的 LiveData 而不是 MutableLiveData
+    // 如此是为了来自数据层的数据，在 ui 层中只读，以避免团队新手不可预期的误用
+
+    public LiveData<DownloadFile> getDownloadFileLiveData() {
         if (downloadFileLiveData == null) {
             downloadFileLiveData = new MutableLiveData<>();
         }
         return downloadFileLiveData;
     }
 
-    public MutableLiveData<DownloadFile> getDownloadFileCanBeStoppedLiveData() {
+    public LiveData<DownloadFile> getDownloadFileCanBeStoppedLiveData() {
         if (downloadFileCanBeStoppedLiveData == null) {
             downloadFileCanBeStoppedLiveData = new MutableLiveData<>();
         }
@@ -42,16 +46,16 @@ public class DownloadViewModel extends ViewModel {
     }
 
     public void requestDownloadFile() {
-        HttpRequestManager.getInstance().downloadFile(getDownloadFileLiveData());
+        HttpRequestManager.getInstance().downloadFile(downloadFileLiveData);
     }
 
     public void requestCanBeStoppedDownloadFile() {
         UseCaseHandler.getInstance().execute(getCanBeStoppedUseCase(),
-                new CanBeStoppedUseCase.RequestValues(getDownloadFileCanBeStoppedLiveData()),
+                new CanBeStoppedUseCase.RequestValues(downloadFileCanBeStoppedLiveData),
                 new UseCase.UseCaseCallback<CanBeStoppedUseCase.ResponseValue>() {
                     @Override
                     public void onSuccess(CanBeStoppedUseCase.ResponseValue response) {
-                        getDownloadFileCanBeStoppedLiveData().setValue(response.getLiveData().getValue());
+                        downloadFileCanBeStoppedLiveData.setValue(response.getLiveData().getValue());
                     }
 
                     @Override

@@ -16,6 +16,7 @@
 
 package com.kunminx.puremusic.bridge.request;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -40,7 +41,10 @@ public class MusicRequestViewModel extends ViewModel {
 
     private MutableLiveData<TestAlbum> freeMusicsLiveData;
 
-    public MutableLiveData<TestAlbum> getFreeMusicsLiveData() {
+    //TODO tip 向 ui 层提供的 request LiveData，使用抽象的 LiveData 而不是 MutableLiveData
+    // 如此是为了来自数据层的数据，在 ui 层中只读，以避免团队新手不可预期的误用
+
+    public LiveData<TestAlbum> getFreeMusicsLiveData() {
         if (freeMusicsLiveData == null) {
             freeMusicsLiveData = new MutableLiveData<>();
         }
@@ -48,6 +52,6 @@ public class MusicRequestViewModel extends ViewModel {
     }
 
     public void requestFreeMusics() {
-        HttpRequestManager.getInstance().getFreeMusic(getFreeMusicsLiveData());
+        HttpRequestManager.getInstance().getFreeMusic(freeMusicsLiveData);
     }
 }
