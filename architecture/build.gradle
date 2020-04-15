@@ -63,29 +63,13 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta3'
-    implementation 'com.google.android.material:material:1.2.0-alpha02'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
-    implementation "androidx.lifecycle:lifecycle-runtime:2.1.0"
-    implementation "androidx.lifecycle:lifecycle-common-java8:2.1.0"
-    implementation "androidx.lifecycle:lifecycle-extensions:2.1.0"
-    implementation "androidx.lifecycle:lifecycle-viewmodel:2.1.0"
-    implementation "androidx.lifecycle:lifecycle-livedata:2.1.0"
-//    implementation "androidx.paging:paging-runtime:2.1.0"
-
-    implementation 'com.lwjlol.navigation:keep-fragmentstate:0.0.1'
-
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.13'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-
-    implementation 'com.github.bumptech.glide:glide:4.10.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
-
-    implementation 'com.yanzhenjie.permission:x:2.0.1'
-
-    implementation 'com.lzy.net:okgo:3.0.4'
-    implementation 'com.lzy.net:okrx2:2.0.2'
-    implementation 'com.lzy.net:okserver:2.0.5'
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'androidx.lifecycle:lifecycle-runtime:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata:2.2.0'
+    implementation 'androidx.navigation:navigation-runtime:2.2.1'
 }

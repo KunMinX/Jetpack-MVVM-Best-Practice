@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kunminx.puremusic.data.usecase.base;
+package com.kunminx.architecture.data.usecase;
 
 import android.os.Handler;
 
@@ -31,29 +31,19 @@ import java.util.concurrent.TimeUnit;
  */
 public class UseCaseThreadPoolScheduler implements UseCaseScheduler {
 
-    private final Handler mHandler = new Handler();
-
     public static final int POOL_SIZE = 2;
-
     public static final int MAX_POOL_SIZE = 4 * 2;
-
     public static final int FIXED_POOL_SIZE = 4;
-
     public static final int TIMEOUT = 30;
-
-    ThreadPoolExecutor mThreadPoolExecutor;
-
-    /*public UseCaseThreadPoolScheduler() {
-        mThreadPoolExecutor = new ThreadPoolExecutor(POOL_SIZE, MAX_POOL_SIZE, TIMEOUT,
-                TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(POOL_SIZE));
-    }*/
+    final ThreadPoolExecutor mThreadPoolExecutor;
+    private final Handler mHandler = new Handler();
 
     /**
      * 固定线程数的无界线程池
      */
     public UseCaseThreadPoolScheduler() {
         mThreadPoolExecutor = new ThreadPoolExecutor(FIXED_POOL_SIZE, FIXED_POOL_SIZE, TIMEOUT,
-                TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
+                TimeUnit.SECONDS, new LinkedBlockingQueue<>());
     }
 
     @Override
@@ -64,12 +54,9 @@ public class UseCaseThreadPoolScheduler implements UseCaseScheduler {
     @Override
     public <V extends UseCase.ResponseValue> void notifyResponse(final V response,
                                                                  final UseCase.UseCaseCallback<V> useCaseCallback) {
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                if (null != useCaseCallback) {
-                    useCaseCallback.onSuccess(response);
-                }
+        mHandler.post(() -> {
+            if (null != useCaseCallback) {
+                useCaseCallback.onSuccess(response);
             }
         });
     }
@@ -77,12 +64,7 @@ public class UseCaseThreadPoolScheduler implements UseCaseScheduler {
     @Override
     public <V extends UseCase.ResponseValue> void onError(
             final UseCase.UseCaseCallback<V> useCaseCallback) {
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                useCaseCallback.onError();
-            }
-        });
+        mHandler.post(useCaseCallback::onError);
     }
 
 }

@@ -1,2 +1,2 @@
 include ':app', ':architecture'
-rootProject.name='PureMusic'
+rootProject.name = 'PureMusic'

@@ -1,8 +1,10 @@
 <!doctype html>
 <html>
 <head>
-<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
-<title>前言</title><style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color:#ffffff; --text-color:#333333; --select-text-bg-color:#B5D6FC; --select-text-font-color:auto; --monospace:"Lucida Console",Consolas,"Courier",monospace; }
+    <meta charset='UTF-8'>
+    <meta content='width=device-width initial-scale=1' name='viewport'>
+    <title>前言</title>
+    <style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color:#ffffff; --text-color:#333333; --select-text-bg-color:#B5D6FC; --select-text-font-color:auto; --monospace:"Lucida Console",Consolas,"Courier",monospace; }
 html { font-size: 14px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
 body { margin: 0px; padding: 0px; height: auto; bottom: 0px; top: 0px; left: 0px; right: 0px; font-size: 1rem; line-height: 1.42857; overflow-x: hidden; background: inherit; tab-size: 4; }
 iframe { margin: auto; }
@@ -295,13 +297,216 @@ header, .context-menu, .megamenu-content, footer { font-family: "Segoe UI", Aria
 .ty-preferences .nav-group-item.active { color: white; background: rgb(153, 153, 153); }
 
  .typora-export li, .typora-export p, .typora-export,  .footnote-line {white-space: normal;} 
-</style>
+
+
+    </style>
 </head>
-<body class='typora-export os-windows' >
-<div  id='write'  class = 'is-node'><p><a href='https://xiaozhuanlan.com/kunminx'><span>《重学安卓》</span></a><span>付费读者加微信进群：myatejx</span></p><p>&nbsp;</p><h2><a name="前言" class="md-header-anchor"></a><span>前言</span></h2><p><span>很高兴见到你！</span></p><p><span>上周我在 各大技术社区 发表了一篇 </span><a href='https://juejin.im/post/5dafc49b6fb9a04e17209922'><span>《Jetpack MVVM 精讲》</span></a><span>，原以为在 知识网红 唱衰安卓 的 2019 会无人问津，没想到文章一经发布，从 国内知名公司 的架构师、技术经理，到 世界级公司 的 Android 开发 都在看。😉</span></p><p><img src='https://upload-images.jianshu.io/upload_images/57036-5445e7b4d66d97c7.png' alt='reader_say.png' referrerPolicy='no-referrer' /></p><p><span>并且从读者的反馈来看，近期大部分安卓开发 已跳出舒适圈，开始尝试认识和应用 Jetpack MVVM 到实际的项目开发中。</span></p><p><span>只可惜，关于 Jetpack MVVM，网上多是 </span><strong><span>东拼西凑、人云亦云、通篇贴代码</span></strong><span> 的文章，这不仅不能提供完整的视角 来帮助读者 首先明确背景状况，更是给还没入门 Jetpack 的读者 </span><strong><span>徒添困扰</span></strong><span>、起到 </span><strong><span>劝退</span></strong><span> 的作用。</span></p><p><span>好消息是，这一期，我们带着 </span><strong><span>精心打磨的 Jetpack MVVM 最佳实践案例</span></strong><span> 来了！</span>
-&nbsp;</p><figure><table><thead><tr><th style='text-align:center;' ><span>是让人 爱不释手 的 交互设计！</span></th><th style='text-align:center;' ><span>是 连贯 的 用户体验</span></th><th style='text-align:center;' ><span>唯一可信源 的 统一分发</span></th></tr></thead><tbody><tr><td style='text-align:center;' ><img src='https://upload-images.jianshu.io/upload_images/57036-0a5cdc68f003211a.gif' alt='1231111323.gif' referrerPolicy='no-referrer' /></td><td style='text-align:center;' ><img src='https://upload-images.jianshu.io/upload_images/57036-2b21db531e51ff03.gif' alt='222.gif' referrerPolicy='no-referrer' /></td><td style='text-align:center;' ><img src='https://upload-images.jianshu.io/upload_images/57036-9a541148ce5bed2e.gif' alt='333.gif' referrerPolicy='no-referrer' /></td></tr></tbody></table></figure><p>&nbsp;</p><figure><table><thead><tr><th style='text-align:center;' ><span>横竖屏布局 的 无缝切换</span></th></tr></thead><tbody><tr><td style='text-align:center;' ><img src='https://upload-images.jianshu.io/upload_images/57036-688f3eafc76cfa27.gif' alt='444.gif' referrerPolicy='no-referrer' /></td></tr></tbody></table></figure><p>&nbsp;</p><h2><a name="项目简介" class="md-header-anchor"></a><span>项目简介</span></h2><p><span>本人拥有 3 年的 移动端架构 践行和设计经验，领导团队重构的 中大型项目 多达十数个，对 Jetpack MVVM 架构在 确立规范化、标准化 开发模式 以 </span><strong><span>减少不可预期的错误</span></strong><span> 所作的努力，有着深入的理解。</span></p><p><span>在这个案例中，我将为你展示，Jetpack MVVM 是如何 </span><strong><span>蕴繁于简</span></strong><span> 地 将原本十分容易出错、一出错就会耽搁半天时间的开发工作，通过 寥寥的几行代码 轻而易举地完成。😉</span></p><blockquote><p><span>👆👆👆 划重点！</span></p></blockquote><p>&nbsp;</p><p><span>在这个项目中，</span></p><blockquote><p><span>我们为 </span><strong><span>横、竖屏</span></strong><span> 的情况 分别安排了两套 </span><strong><span>截然不同的布局</span></strong><span>，并且在 </span><a href='https://xiaozhuanlan.com/topic/0213584967'><span>生命周期</span></a><span>、</span><a href='https://xiaozhuanlan.com/topic/7692814530'><span>重建机制</span></a><span>、</span><a href='https://xiaozhuanlan.com/topic/7692814530'><span>状态管理</span></a><span>、</span><a href='https://xiaozhuanlan.com/topic/9816742350'><span>DataBinding</span></a><span>、</span><a href='https://xiaozhuanlan.com/topic/6257931840'><span>ViewModel</span></a><span>、</span><a href='https://xiaozhuanlan.com/topic/0168753249'><span>LiveData</span></a><span> 、</span><a href='https://xiaozhuanlan.com/topic/5860149732'><span>Navigation</span></a><span> 等知识点的帮助下，通过寥寥几行代码，轻松做到 </span><strong><span>在横竖屏两种布局间 无缝地切换，并且不产生任何 预期外的错误</span></strong><span>。</span></p></blockquote><p>&nbsp;</p><blockquote><p><span>我们在多个 Fragment 页面 分别安排了 </span><strong><span>播放状态 指示器</span></strong><span>（包括 播放暂停按钮状态、播放列表当前索引指示 等），并向你展示了 如何 以及为何 通过 </span><a href='https://xiaozhuanlan.com/topic/0168753249'><span>LiveData</span></a><span> </span><strong><span>配合</span></strong><span> 作为唯一可信源 的 </span><a href='https://xiaozhuanlan.com/topic/6257931840'><span>ViewModel</span></a><span> 或单例，来实现 </span><strong><span>全应用范围内 可追溯事件 的统一分发</span></strong><span>。</span></p></blockquote><p>&nbsp;</p><blockquote><p><span>我们在 Fragment 和 Activity 之间分别安排了 跨页面通信，从而向你展示 如何基于 </span><strong><span>迪米特原则</span></strong><span>（也称 最少知道原则）、通过 UnPeekLiveData 和 应用级 SharedViewModel 来实现 </span><strong><span>生命周期安全的、事件源可追溯的 页面通信</span></strong><span>（事件回调）。</span></p></blockquote><p>&nbsp;</p><blockquote><p><span>我们在 </span><code>ui.page</code><span> 、</span><code>data.repository</code><span>、</span><code>bridge.request</code><span> 等目录下，分别安排了 视图控制器、</span><a href='https://xiaozhuanlan.com/topic/6257931840'><span>ViewModel</span></a><span> 、DataRepository 等 内容，从而向你展示，</span><strong><span>单向依赖</span></strong><span> 的架构设计，是如何通过分层的 数据请求和响应，来 </span><strong><span>规避 内存泄漏</span></strong><span> 等问题。</span></p></blockquote><p>&nbsp;</p><blockquote><p><span>本项目的代码一律采用 经过 ISO 认证的 标准化工业级语言 Java 来编写。并且，在上述目录 所包含的 类中，我们大都 </span><strong><span>提供了丰富的注释</span></strong><span>，来帮助你理解 骨架代码 为何要如此设计、如此设计能够 </span><strong><span>在软件工程的背景下</span></strong><span> 避免哪些不可预期的错误。</span></p></blockquote><p>&nbsp;
-&nbsp;</p><p><span>除了 </span><strong><span>在 蕴繁于简 的代码中 掌握 MVVM 最佳实践</span></strong><span>，你还可以 从这个开源项目中 获得的内容 包括：</span></p><ol start='' ><li><span>整洁的代码风格 和 标准的资源命名规范。</span></li><li><span>对 视图控制器 知识点的 深入理解 和 正确使用。</span></li><li><span>AndroidX 和 Material Design 2 的全面使用。</span></li><li><span>ConstraintLayout 约束布局的最佳实践。</span></li><li><strong><span>优秀的 用户体验 和 交互设计</span></strong><span>。</span></li><li><span>绝不使用 Dagger，绝不使用奇技淫巧、编写艰深晦涩的代码。</span></li><li><span>The one more thing is：</span></li></ol><p><span>即日起，可在 应用商店 下载体验！</span></p><p>&nbsp;</p><p><a href='https://www.coolapk.com/apk/247826'><img src='https://upload-images.jianshu.io/upload_images/57036-f9dbd7810d38ae95.png' alt='google-play1.png' referrerPolicy='no-referrer' /></a><span> </span><a href='https://www.coolapk.com/apk/247826'><img src='https://upload-images.jianshu.io/upload_images/57036-6cf24d0c9efe8362.png' alt='coolapk1.png' referrerPolicy='no-referrer' /></a></p><p>&nbsp;
-&nbsp;</p><h2><a name="thanks-to" class="md-header-anchor"></a><span>Thanks to</span></h2><p><a href='https://developer.android.google.cn/jetpack/androidx'><span>AndroidX</span></a></p><p><a href='https://developer.android.google.cn/jetpack/'><span>Jetpack MVVM</span></a></p><p><a href='https://github.com/material-components/material-components-android'><span>material-components-android</span></a></p><p><a href='https://play.google.com/store/apps/details?id=com.tencent.qqmusiclocalplayer'><span>轻听</span></a></p><p><a href='https://github.com/umano/AndroidSlidingUpPanel'><span>AndroidSlidingUpPanel</span></a></p><p><span>项目中使用的 图片素材 来自 </span><a href='https://unsplash.com/'><span>UnSplash</span></a><span> 提供的 </span><strong><span>无版权免费图片</span></strong><span>。</span></p><p><span>项目中使用的 音频素材 来自 </span><a href='https://www.bensound.com/'><span>BenSound</span></a><span> 提供的 </span><strong><span>无版权免费音乐</span></strong><span>。</span></p><p>&nbsp;
-&nbsp;</p><h2><a name="my-pages" class="md-header-anchor"></a><span>My Pages</span></h2><p><span>Email：</span><a href='mailto:kunminx@gmail.com'><span>kunminx@gmail.com</span></a></p><p><span>Home：</span><a href='https://www.kunminx.com/'><span>KunMinX 的个人博客</span></a></p><p><span>Juejin：</span><a href='https://juejin.im/user/58ab0de9ac502e006975d757/posts'><span>KunMinX 在掘金</span></a></p><p><a href='https://xiaozhuanlan.com/kunminx?rel=kunminx'><span>《重学安卓》 专栏</span></a></p><p><span>付费读者加微信进群：myatejx</span></p><p><a href='https://xiaozhuanlan.com/kunminx?rel=kunminx'><img src='https://i.loli.net/2019/06/17/5d067596c2dbf49609.png' alt='重学安卓小专栏' referrerPolicy='no-referrer' /></a></p><h2><a name="license" class="md-header-anchor"></a><span>License</span></h2><pre spellcheck="false" class="md-fences md-end-block ty-contain-cm modeLoaded" lang=""><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang=""><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 8px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><span><span>​</span>x</span></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Copyright 2018-2019 KunMinX</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Licensed under the Apache License, Version 2.0 (the "License");</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">you may not use this file except in compliance with the License.</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">You may obtain a copy of the License at</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; http://www.apache.org/licenses/LICENSE-2.0</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">Unless required by applicable law or agreed to in writing, software</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">distributed under the License is distributed on an "AS IS" BASIS,</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">See the License for the specific language governing permissions and</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">limitations under the License.</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 291px;"></div><div class="CodeMirror-gutters" style="display: none; height: 291px;"></div></div></div></pre><p>&nbsp;</p></div>
+<body class='typora-export os-windows'>
+<div class='is-node' id='write'><p><a
+        href='https://xiaozhuanlan.com/kunminx'><span>《重学安卓》</span></a><span>付费读者加微信进群：myatejx</span>
+</p>
+    <p>&nbsp;</p>
+    <h2><a class="md-header-anchor" name="前言"></a><span>前言</span></h2>
+    <p><span>很高兴见到你！</span></p>
+    <p><span>上周我在 各大技术社区 发表了一篇 </span><a
+            href='https://juejin.im/post/5dafc49b6fb9a04e17209922'><span>《Jetpack MVVM 精讲》</span></a><span>，原以为在 知识网红 唱衰安卓 的 2019 会无人问津，没想到文章一经发布，从 国内知名公司 的架构师、技术经理，到 世界级公司 的 Android 开发 都在看。😉</span>
+    </p>
+    <p><img alt='reader_say.png'
+            referrerPolicy='no-referrer'
+            src='https://upload-images.jianshu.io/upload_images/57036-5445e7b4d66d97c7.png'/></p>
+    <p><span>并且从读者的反馈来看，近期大部分安卓开发 已跳出舒适圈，开始尝试认识和应用 Jetpack MVVM 到实际的项目开发中。</span></p>
+    <p><span>只可惜，关于 Jetpack MVVM，网上多是 </span><strong><span>东拼西凑、人云亦云、通篇贴代码</span></strong><span> 的文章，这不仅不能提供完整的视角 来帮助读者 首先明确背景状况，更是给还没入门 Jetpack 的读者 </span><strong><span>徒添困扰</span></strong><span>、起到 </span><strong><span>劝退</span></strong><span> 的作用。</span>
+    </p>
+    <p>
+        <span>好消息是，这一期，我们带着 </span><strong><span>精心打磨的 Jetpack MVVM 最佳实践案例</span></strong><span> 来了！</span>
+        &nbsp;</p>
+    <figure>
+        <table>
+            <thead>
+            <tr>
+                <th style='text-align:center;'><span>是让人 爱不释手 的 交互设计！</span></th>
+                <th style='text-align:center;'><span>是 连贯 的 用户体验</span></th>
+                <th style='text-align:center;'><span>唯一可信源 的 统一分发</span></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td style='text-align:center;'><img
+                        alt='1231111323.gif'
+                        referrerPolicy='no-referrer'
+                        src='https://upload-images.jianshu.io/upload_images/57036-0a5cdc68f003211a.gif'/>
+                </td>
+                <td style='text-align:center;'><img
+                        alt='222.gif'
+                        referrerPolicy='no-referrer'
+                        src='https://upload-images.jianshu.io/upload_images/57036-2b21db531e51ff03.gif'/>
+                </td>
+                <td style='text-align:center;'><img
+                        alt='333.gif'
+                        referrerPolicy='no-referrer'
+                        src='https://upload-images.jianshu.io/upload_images/57036-9a541148ce5bed2e.gif'/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </figure>
+    <p>&nbsp;</p>
+    <figure>
+        <table>
+            <thead>
+            <tr>
+                <th style='text-align:center;'><span>横竖屏布局 的 无缝切换</span></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td style='text-align:center;'><img
+                        alt='444.gif'
+                        referrerPolicy='no-referrer'
+                        src='https://upload-images.jianshu.io/upload_images/57036-688f3eafc76cfa27.gif'/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </figure>
+    <p>&nbsp;</p>
+    <h2><a class="md-header-anchor" name="项目简介"></a><span>项目简介</span></h2>
+    <p><span>本人拥有 3 年的 移动端架构 践行和设计经验，领导团队重构的 中大型项目 多达十数个，对 Jetpack MVVM 架构在 确立规范化、标准化 开发模式 以 </span><strong><span>减少不可预期的错误</span></strong><span> 所作的努力，有着深入的理解。</span>
+    </p>
+    <p><span>在这个案例中，我将为你展示，Jetpack MVVM 是如何 </span><strong><span>蕴繁于简</span></strong><span> 地 将原本十分容易出错、一出错就会耽搁半天时间的开发工作，通过 寥寥的几行代码 轻而易举地完成。😉</span>
+    </p>
+    <blockquote><p><span>👆👆👆 划重点！</span></p></blockquote>
+    <p>&nbsp;</p>
+    <p><span>在这个项目中，</span></p>
+    <blockquote><p>
+        <span>我们为 </span><strong><span>横、竖屏</span></strong><span> 的情况 分别安排了两套 </span><strong><span>截然不同的布局</span></strong><span>，并且在 </span><a
+            href='https://xiaozhuanlan.com/topic/0213584967'><span>生命周期</span></a><span>、</span><a
+            href='https://xiaozhuanlan.com/topic/7692814530'><span>重建机制</span></a><span>、</span><a
+            href='https://xiaozhuanlan.com/topic/7692814530'><span>状态管理</span></a><span>、</span><a
+            href='https://xiaozhuanlan.com/topic/9816742350'><span>DataBinding</span></a><span>、</span><a
+            href='https://xiaozhuanlan.com/topic/6257931840'><span>ViewModel</span></a><span>、</span><a
+            href='https://xiaozhuanlan.com/topic/0168753249'><span>LiveData</span></a><span> 、</span><a
+            href='https://xiaozhuanlan.com/topic/5860149732'><span>Navigation</span></a><span> 等知识点的帮助下，通过寥寥几行代码，轻松做到 </span><strong><span>在横竖屏两种布局间 无缝地切换，并且不产生任何 预期外的错误</span></strong><span>。</span>
+    </p></blockquote>
+    <p>&nbsp;</p>
+    <blockquote><p><span>我们在多个 Fragment 页面 分别安排了 </span><strong><span>播放状态 指示器</span></strong><span>（包括 播放暂停按钮状态、播放列表当前索引指示 等），并向你展示了 如何 以及为何 通过 </span><a
+            href='https://xiaozhuanlan.com/topic/0168753249'><span>LiveData</span></a><span> </span><strong><span>配合</span></strong><span> 作为唯一可信源 的 </span><a
+            href='https://xiaozhuanlan.com/topic/6257931840'><span>ViewModel</span></a><span> 或单例，来实现 </span><strong><span>全应用范围内 可追溯事件 的统一分发</span></strong><span>。</span>
+    </p></blockquote>
+    <p>&nbsp;</p>
+    <blockquote><p><span>我们在 Fragment 和 Activity 之间分别安排了 跨页面通信，从而向你展示 如何基于 </span><strong><span>迪米特原则</span></strong><span>（也称 最少知道原则）、通过 UnPeekLiveData 和 应用级 SharedViewModel 来实现 </span><strong><span>生命周期安全的、事件源可追溯的 页面通信</span></strong><span>（事件回调）。</span>
+    </p></blockquote>
+    <p>&nbsp;</p>
+    <blockquote><p>
+        <span>我们在 </span><code>ui.page</code><span> 、</span><code>data.repository</code><span>、</span><code>bridge.request</code><span> 等目录下，分别安排了 视图控制器、</span><a
+            href='https://xiaozhuanlan.com/topic/6257931840'><span>ViewModel</span></a><span> 、DataRepository 等 内容，从而向你展示，</span><strong><span>单向依赖</span></strong><span> 的架构设计，是如何通过分层的 数据请求和响应，来 </span><strong><span>规避 内存泄漏</span></strong><span> 等问题。</span>
+    </p></blockquote>
+    <p>&nbsp;</p>
+    <blockquote><p>
+        <span>本项目的代码一律采用 经过 ISO 认证的 标准化工业级语言 Java 来编写。并且，在上述目录 所包含的 类中，我们大都 </span><strong><span>提供了丰富的注释</span></strong><span>，来帮助你理解 骨架代码 为何要如此设计、如此设计能够 </span><strong><span>在软件工程的背景下</span></strong><span> 避免哪些不可预期的错误。</span>
+    </p></blockquote>
+    <p>&nbsp;
+        &nbsp;</p>
+    <p><span>除了 </span><strong><span>在 蕴繁于简 的代码中 掌握 MVVM 最佳实践</span></strong><span>，你还可以 从这个开源项目中 获得的内容 包括：</span>
+    </p>
+    <ol start=''>
+        <li><span>整洁的代码风格 和 标准的资源命名规范。</span></li>
+        <li><span>对 视图控制器 知识点的 深入理解 和 正确使用。</span></li>
+        <li><span>AndroidX 和 Material Design 2 的全面使用。</span></li>
+        <li><span>ConstraintLayout 约束布局的最佳实践。</span></li>
+        <li><strong><span>优秀的 用户体验 和 交互设计</span></strong><span>。</span></li>
+        <li><span>绝不使用 Dagger，绝不使用奇技淫巧、编写艰深晦涩的代码。</span></li>
+        <li><span>The one more thing is：</span></li>
+    </ol>
+    <p><span>即日起，可在 应用商店 下载体验！</span></p>
+    <p>&nbsp;</p>
+    <p><a href='https://www.coolapk.com/apk/247826'><img
+            alt='google-play1.png'
+            referrerPolicy='no-referrer'
+            src='https://upload-images.jianshu.io/upload_images/57036-f9dbd7810d38ae95.png'/></a><span> </span><a
+            href='https://www.coolapk.com/apk/247826'><img
+            alt='coolapk1.png'
+            referrerPolicy='no-referrer'
+            src='https://upload-images.jianshu.io/upload_images/57036-6cf24d0c9efe8362.png'/></a>
+    </p>
+    <p>&nbsp;
+        &nbsp;</p>
+    <h2><a class="md-header-anchor" name="thanks-to"></a><span>Thanks to</span></h2>
+    <p><a href='https://developer.android.google.cn/jetpack/androidx'><span>AndroidX</span></a></p>
+    <p><a href='https://developer.android.google.cn/jetpack/'><span>Jetpack MVVM</span></a></p>
+    <p><a href='https://github.com/material-components/material-components-android'><span>material-components-android</span></a>
+    </p>
+    <p><a href='https://play.google.com/store/apps/details?id=com.tencent.qqmusiclocalplayer'><span>轻听</span></a>
+    </p>
+    <p>
+        <a href='https://github.com/umano/AndroidSlidingUpPanel'><span>AndroidSlidingUpPanel</span></a>
+    </p>
+    <p><span>项目中使用的 图片素材 来自 </span><a href='https://unsplash.com/'><span>UnSplash</span></a><span> 提供的 </span><strong><span>无版权免费图片</span></strong><span>。</span>
+    </p>
+    <p><span>项目中使用的 音频素材 来自 </span><a
+            href='https://www.bensound.com/'><span>BenSound</span></a><span> 提供的 </span><strong><span>无版权免费音乐</span></strong><span>。</span>
+    </p>
+    <p>&nbsp;
+        &nbsp;</p>
+    <h2><a class="md-header-anchor" name="my-pages"></a><span>My Pages</span></h2>
+    <p><span>Email：</span><a href='mailto:kunminx@gmail.com'><span>kunminx@gmail.com</span></a></p>
+    <p><span>Home：</span><a href='https://www.kunminx.com/'><span>KunMinX 的个人博客</span></a></p>
+    <p><span>Juejin：</span><a href='https://juejin.im/user/58ab0de9ac502e006975d757/posts'><span>KunMinX 在掘金</span></a>
+    </p>
+    <p><a href='https://xiaozhuanlan.com/kunminx?rel=kunminx'><span>《重学安卓》 专栏</span></a></p>
+    <p><span>付费读者加微信进群：myatejx</span></p>
+    <p><a href='https://xiaozhuanlan.com/kunminx?rel=kunminx'><img
+            alt='重学安卓小专栏' referrerPolicy='no-referrer'
+            src='https://i.loli.net/2019/06/17/5d067596c2dbf49609.png'/></a></p>
+    <h2><a class="md-header-anchor" name="license"></a><span>License</span></h2>
+    <pre class="md-fences md-end-block ty-contain-cm modeLoaded" lang="" spellcheck="false"><div
+            class="CodeMirror cm-s-inner CodeMirror-wrap" lang=""><div
+            style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 8px;"><textarea
+            autocapitalize="off" autocorrect="off" spellcheck="false"
+            style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"
+            tabindex="0"></textarea></div><div
+            class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div
+            class="CodeMirror-gutter-filler" cm-not-content="true"></div><div
+            class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer"
+                                                         style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div
+            style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div
+            role="presentation" style="position: relative; outline: none;"><div
+            class="CodeMirror-measure"><span><span>​</span>x</span></div><div
+            class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div
+            class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline"
+                                                                      style="position: relative;"><div
+            class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div
+            class="CodeMirror-gutter-background CodeMirror-activeline-gutter"
+            style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span
+            role="presentation"
+            style="padding-right: 0.1px;">Copyright 2018-2020 KunMinX</span></pre></div><pre
+            class=" CodeMirror-line " role="presentation"><span role="presentation"
+                                                                style="padding-right: 0.1px;"><span
+            cm-text="">​</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span
+            role="presentation" style="padding-right: 0.1px;">Licensed under the Apache License, Version 2.0 (the "License");</span></pre><pre
+            class=" CodeMirror-line " role="presentation"><span role="presentation"
+                                                                style="padding-right: 0.1px;">you may not use this file except in compliance with the License.</span></pre><pre
+            class=" CodeMirror-line " role="presentation"><span role="presentation"
+                                                                style="padding-right: 0.1px;">You may obtain a copy of the License at</span></pre><pre
+            class=" CodeMirror-line " role="presentation"><span role="presentation"
+                                                                style="padding-right: 0.1px;"><span
+            cm-text="">​</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span
+            role="presentation" style="padding-right: 0.1px;"> &nbsp; http://www.apache.org/licenses/LICENSE-2.0</span></pre><pre
+            class=" CodeMirror-line " role="presentation"><span role="presentation"
+                                                                style="padding-right: 0.1px;"><span
+            cm-text="">​</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span
+            role="presentation" style="padding-right: 0.1px;">Unless required by applicable law or agreed to in writing, software</span></pre><pre
+            class=" CodeMirror-line " role="presentation"><span role="presentation"
+                                                                style="padding-right: 0.1px;">distributed under the License is distributed on an "AS IS" BASIS,</span></pre><pre
+            class=" CodeMirror-line " role="presentation"><span role="presentation"
+                                                                style="padding-right: 0.1px;">WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></pre><pre
+            class=" CodeMirror-line " role="presentation"><span role="presentation"
+                                                                style="padding-right: 0.1px;">See the License for the specific language governing permissions and</span></pre><pre
+            class=" CodeMirror-line " role="presentation"><span role="presentation"
+                                                                style="padding-right: 0.1px;">limitations under the License.</span></pre></div></div></div></div></div><div
+            style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 291px;"></div><div
+            class="CodeMirror-gutters"
+            style="display: none; height: 291px;"></div></div></div></pre>
+    <p>&nbsp;</p></div>
 </body>
 </html>

@@ -16,38 +16,39 @@
 
 package com.kunminx.puremusic.data.repository;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.kunminx.puremusic.R;
-import com.kunminx.puremusic.data.api.APIs;
-import com.kunminx.architecture.data.convert.JsonCallback;
 import com.kunminx.architecture.utils.Utils;
+import com.kunminx.puremusic.R;
+import com.kunminx.puremusic.data.bean.DownloadFile;
 import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.data.bean.TestAlbum;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.model.Response;
 
+import java.io.File;
 import java.lang.reflect.Type;
-import java.util.Collections;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Handler;
 
 /**
  * Create by KunMinX at 19/10/29
  */
-public class HttpRequestManager implements IRemoteRequest {
+public class HttpRequestManager implements ILocalRequest, IRemoteRequest {
 
-    private static HttpRequestManager sRequestManager = new HttpRequestManager();
+    private static final HttpRequestManager S_REQUEST_MANAGER = new HttpRequestManager();
+    private MutableLiveData<String> responseCodeLiveData;
 
     private HttpRequestManager() {
     }
 
     public static HttpRequestManager getInstance() {
-        return sRequestManager;
+        return S_REQUEST_MANAGER;
     }
-
-    private MutableLiveData<String> responseCodeLiveData;
 
     public MutableLiveData<String> getResponseCodeLiveData() {
         if (responseCodeLiveData == null) {
@@ -55,94 +56,6 @@ public class HttpRequestManager implements IRemoteRequest {
         }
         return responseCodeLiveData;
     }
-
-
-    /*@Override
-    public void getSongsResult(MutableLiveData<SongResult.DataBean.SongsResult> liveData, String keyword) {
-
-        //TODO 分页后续改为 paging 来处理，
-        String url = String.format(APIs.SEARCH_SONG, 1, 20, keyword);
-
-        OkGo.<SongResult>get(url)
-                .execute(new JsonCallback<SongResult>() {
-                    @Override
-                    public void onSuccess(Response<SongResult> response) {
-                        super.onSuccess(response);
-                        liveData.setValue(response.body().getData().getSong());
-                    }
-                });
-    }
-
-    @Override
-    public void getAlbumsResult(MutableLiveData<AlbumResult.DataBean.AlbumsResult> liveData, String keyword) {
-
-        //TODO 分页后续改为 paging 来处理，
-        String url = String.format(APIs.SEARCH_ALBUM, 1, 20, keyword);
-
-        OkGo.<AlbumResult>get(url)
-                .execute(new JsonCallback<AlbumResult>() {
-                    @Override
-                    public void onSuccess(Response<AlbumResult> response) {
-                        super.onSuccess(response);
-                        liveData.setValue(response.body().getData().getAlbum());
-                    }
-                });
-    }
-
-    @Override
-    public void getSingerImg(MutableLiveData<SingerImg.SingerResult> liveData, String singerName) {
-
-        String url = String.format(APIs.SINGLE_IMG, singerName);
-
-        OkGo.<SingerImg>post(url)
-                .headers(APIs.HEADER_KEY_OF_USER_AGENT, APIs.HEADER_VALUE_OF_USER_AGENT)
-                .execute(new JsonCallback<SingerImg>() {
-                    @Override
-                    public void onSuccess(Response<SingerImg> response) {
-                        super.onSuccess(response);
-                        liveData.setValue(response.body().getResult());
-                    }
-                });
-    }
-
-    @Override
-    public void getSongInfo(MutableLiveData<SongInfo.DataBean> liveData, String albumMid) {
-
-        String url = String.format(APIs.ALBUM_DETAIL, albumMid);
-
-        OkGo.<SongInfo>get(url)
-                .execute(new JsonCallback<SongInfo>() {
-                    @Override
-                    public void onSuccess(Response<SongInfo> response) {
-                        super.onSuccess(response);
-                        liveData.setValue(response.body().getData());
-                    }
-                });
-    }
-
-    @Override
-    public void getSongUrl(MutableLiveData<String> liveData, String songMid) {
-
-        String url = APIs.SONG_URL.replace("replaceHere", songMid);
-
-        OkGo.<SongUrl>get(url)
-                .execute(new JsonCallback<SongUrl>() {
-                    @Override
-                    public void onSuccess(Response<SongUrl> response) {
-                        super.onSuccess(response);
-                        if (response.body() != null
-                                && response.body().getReq_0() != null
-                                && response.body().getReq_0().getData() != null) {
-
-                            SongUrl.Req0Bean.DataBean.MidurlinfoBean midurlinfoBean =
-                                    response.body().getReq_0().getData().getMidurlinfo().get(0);
-                            String baseUrl = response.body().getReq_0().getData().getSip().get(0);
-
-                            liveData.setValue(baseUrl + midurlinfoBean.getPurl());
-                        }
-                    }
-                });
-    }*/
 
     @Override
     public void getFreeMusic(MutableLiveData<TestAlbum> liveData) {
@@ -164,4 +77,49 @@ public class HttpRequestManager implements IRemoteRequest {
 
         liveData.setValue(list);
     }
+
+    /**
+     * TODO：模拟下载任务:
+     * 可分别用于 普通的请求，和可跟随页面生命周期叫停的请求，
+     * 具体可见 ViewModel 和 UseCase 中的使用。
+     *
+     * @param liveData 从 Request-ViewModel 或 UseCase 注入 LiveData，用于 控制流程、回传进度、回传文件
+     */
+    @Override
+    public void downloadFile(MutableLiveData<DownloadFile> liveData) {
+
+        Timer timer = new Timer();
+
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+
+                //模拟下载，假设下载一个文件要 10秒、每 100 毫秒下载 1% 并通知 UI 层
+
+                DownloadFile downloadFile = liveData.getValue();
+                if (downloadFile == null) {
+                    downloadFile = new DownloadFile();
+                }
+                if (downloadFile.getProgress() < 100) {
+                    downloadFile.setProgress(downloadFile.getProgress() + 1);
+                    Log.d("TAG", "下载进度 " + downloadFile.getProgress() + "%");
+                } else {
+                    timer.cancel();
+                    downloadFile.setProgress(0);
+                    return;
+                }
+                if (downloadFile.isForgive()) {
+                    timer.cancel();
+                    downloadFile.setProgress(0);
+                    downloadFile.setForgive(false);
+                    return;
+                }
+                liveData.postValue(downloadFile);
+                downloadFile(liveData);
+            }
+        };
+
+        timer.schedule(task, 100);
+    }
+
 }

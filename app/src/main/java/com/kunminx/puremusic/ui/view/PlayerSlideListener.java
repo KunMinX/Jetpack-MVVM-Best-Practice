@@ -30,10 +30,10 @@ import android.view.animation.Transformation;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
-import com.kunminx.puremusic.R;
-import com.kunminx.puremusic.databinding.FragmentPlayerBinding;
 import com.kunminx.architecture.utils.DisplayUtils;
 import com.kunminx.architecture.utils.ScreenUtils;
+import com.kunminx.puremusic.R;
+import com.kunminx.puremusic.databinding.FragmentPlayerBinding;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 /**
@@ -41,24 +41,28 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
  */
 public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListener {
 
-    private FragmentPlayerBinding mBinding;
-    private SlidingUpPanelLayout mSlidingUpPanelLayout;
-
+    private final FragmentPlayerBinding mBinding;
+    private final SlidingUpPanelLayout mSlidingUpPanelLayout;
+    private final int screenWidth;
+    private final int screenHeight;
+    private final IntEvaluator intEvaluator = new IntEvaluator();
+    private final FloatEvaluator floatEvaluator = new FloatEvaluator();
+    private final ArgbEvaluator colorEvaluator = new ArgbEvaluator();
+    private int nowPlayingCardColor;
+    private int playPauseDrawableColor;
+	
     private Drawable albumImageDrawable;
-
     private int titleEndTranslationX;
     private int artistEndTranslationX;
     private int artistNormalEndTranslationY;
     private int artistFullEndTranslationY;
     private int contentNormalEndTranslationY;
     private int contentFullEndTranslationY;
-
     private int lyricLineHeight;
     private int lyricFullHeight;
     private int lyricLineStartTranslationY;
     private int lyricLineEndTranslationY;
     private int lyricFullTranslationY;
-
     private int markStartX;
     private int previousStartX;
     private int playPauseStartX;
@@ -71,23 +75,7 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
     private int playqueueEndX;
     private int iconContainerStartY;
     private int iconContainerEndY;
-
-    private int screenWidth;
-    private int screenHeight;
-
-    private IntEvaluator intEvaluator = new IntEvaluator();
-    private FloatEvaluator floatEvaluator = new FloatEvaluator();
-    private ArgbEvaluator colorEvaluator = new ArgbEvaluator();
-
-    private int nowPlayingCardColor;
-    private int playPauseDrawableColor;
     private Status mStatus = Status.COLLAPSED;
-
-    public enum Status {
-        EXPANDED,
-        COLLAPSED,
-        FULLSCREEN
-    }
 
     public PlayerSlideListener(FragmentPlayerBinding binding, SlidingUpPanelLayout slidingUpPanelLayout) {
         mBinding = binding;
@@ -334,6 +322,7 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
         mStatus = Status.FULLSCREEN;
     }
 
+    @SuppressWarnings("SuspiciousNameCombination")
     private void animateToNormal() {
         //album art
         CoordinatorLayout.LayoutParams imageLayout = (CoordinatorLayout.LayoutParams) mBinding.albumArt.getLayoutParams();
@@ -387,6 +376,12 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
 
 
         mStatus = Status.EXPANDED;
+    }
+
+    public enum Status {
+        EXPANDED,
+        COLLAPSED,
+        FULLSCREEN
     }
 
 

@@ -24,7 +24,6 @@ import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.kunminx.player.PlayingInfoManager;
 import com.kunminx.puremusic.R;
@@ -49,7 +48,7 @@ public class PlayerFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPlayerViewModel = ViewModelProviders.of(this).get(PlayerViewModel.class);
+        mPlayerViewModel = getFragmentViewModelProvider(this).get(PlayerViewModel.class);
     }
 
     @Nullable
@@ -67,6 +66,7 @@ public class PlayerFragment extends BaseFragment {
 
         mBinding = FragmentPlayerBinding.bind(view);
         mBinding.setClick(new ClickProxy());
+        mBinding.setEvent(new EventHandler());
         mBinding.setVm(mPlayerViewModel);
         return view;
     }
@@ -75,7 +75,14 @@ public class PlayerFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mSharedViewModel.timeToAddSlideListener.observe(this, aBoolean -> {
+        //TODO tip N:
+        //getViewLifeCycleOwner 是 2020 年新增的特性，
+        // 主要是为了解决 getView() 的生命长度 比 fragment 短（仅存活于 onCreateView 之后和 onDestroyView 之前），
+        // 导致某些时候 fragment 其他成员还活着，但 getView() 为 null 的 生命周期安全问题，
+        // 也即，在 fragment 的场景下，请使用 getViewLifeCycleOwner 来作为 liveData 的观察者。
+        // 也即，Activity 不用改变。
+
+        mSharedViewModel.timeToAddSlideListener.observe(getViewLifecycleOwner(), aBoolean -> {
             if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {
                 SlidingUpPanelLayout sliding = (SlidingUpPanelLayout) view.getParent().getParent();
                 sliding.addPanelSlideListener(new PlayerSlideListener(mBinding, sliding));
@@ -90,17 +97,17 @@ public class PlayerFragment extends BaseFragment {
                                                     SlidingUpPanelLayout.PanelState panelState1) {
 
                         if (panelState1 == SlidingUpPanelLayout.PanelState.EXPANDED) {
-                            SharedViewModel.tagOfSecondaryPages.add(this.getClass().getSimpleName());
+                            SharedViewModel.TAG_OF_SECONDARY_PAGES.add(this.getClass().getSimpleName());
                         } else {
-                            SharedViewModel.tagOfSecondaryPages.remove(this.getClass().getSimpleName());
+                            SharedViewModel.TAG_OF_SECONDARY_PAGES.remove(this.getClass().getSimpleName());
                         }
-                        mSharedViewModel.enableSwipeDrawer.setValue(SharedViewModel.tagOfSecondaryPages.size() == 0);
+                        mSharedViewModel.enableSwipeDrawer.setValue(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
                     }
                 });
             }
         });
 
-        PlayerManager.getInstance().getChangeMusicLiveData().observe(this, changeMusic -> {
+        PlayerManager.getInstance().getChangeMusicLiveData().observe(getViewLifecycleOwner(), changeMusic -> {
 
             // TODO tip 3：同 tip 2.
 
@@ -110,7 +117,7 @@ public class PlayerFragment extends BaseFragment {
             mPlayerViewModel.coverImg.set(changeMusic.getImg());
         });
 
-        PlayerManager.getInstance().getPlayingMusicLiveData().observe(this, playingMusic -> {
+        PlayerManager.getInstance().getPlayingMusicLiveData().observe(getViewLifecycleOwner(), playingMusic -> {
 
             // TODO tip 4：同 tip 2.
 
@@ -119,7 +126,7 @@ public class PlayerFragment extends BaseFragment {
             mPlayerViewModel.currentSeekPosition.set(playingMusic.getPlayerPosition());
         });
 
-        PlayerManager.getInstance().getPauseLiveData().observe(this, aBoolean -> {
+        PlayerManager.getInstance().getPauseLiveData().observe(getViewLifecycleOwner(), aBoolean -> {
 
             // TODO tip 2：所有播放状态的改变，都要通过这个 作为 唯一可信源 的 PlayerManager 来统一分发，
 
@@ -133,8 +140,8 @@ public class PlayerFragment extends BaseFragment {
             mPlayerViewModel.isPlaying.set(!aBoolean);
         });
 
-        PlayerManager.getInstance().getPlayModeLiveData().observe(this, anEnum -> {
-            int tip = 0;
+        PlayerManager.getInstance().getPlayModeLiveData().observe(getViewLifecycleOwner(), anEnum -> {
+            int tip;
             if (anEnum == PlayingInfoManager.RepeatMode.LIST_LOOP) {
                 mPlayerViewModel.playModeIcon.set(MaterialDrawableBuilder.IconValue.REPEAT);
                 tip = R.string.play_repeat;
@@ -153,7 +160,7 @@ public class PlayerFragment extends BaseFragment {
             }
         });
 
-        mSharedViewModel.closeSlidePanelIfExpanded.observe(this, aBoolean -> {
+        mSharedViewModel.closeSlidePanelIfExpanded.observe(getViewLifecycleOwner(), aBoolean -> {
 
             // 按下返回键，如果此时 slide 面板是展开的，那么只对面板进行 slide down
 
@@ -166,6 +173,8 @@ public class PlayerFragment extends BaseFragment {
                 } else {
 
                     // TODO tip 6：此处演示通过 UnPeekLiveData 来发送 生命周期安全的、事件源可追溯的 通知。
+
+                    // fragment 与 Activity 的交互，同属于页面通信的范畴，适合统一地以 页面通信 的方式实现。
 
                     // 如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/0168753249
                     // --------
@@ -184,7 +193,6 @@ public class PlayerFragment extends BaseFragment {
             }
         });
 
-
     }
 
     // TODO tip 7：此处通过 DataBinding 来规避 在 setOnClickListener 时存在的 视图调用的一致性问题，
@@ -192,7 +200,7 @@ public class PlayerFragment extends BaseFragment {
     // 也即，有绑定就有绑定，没绑定也没什么大不了的，总之 不会因一致性问题造成 视图调用的空指针。
     // 如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
-    public class ClickProxy implements SeekBar.OnSeekBarChangeListener {
+    public class ClickProxy {
 
         public void playMode() {
             PlayerManager.getInstance().changeMode();
@@ -220,6 +228,9 @@ public class PlayerFragment extends BaseFragment {
 
         public void more() {
         }
+    }
+
+    public class EventHandler implements SeekBar.OnSeekBarChangeListener {
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {

@@ -20,7 +20,6 @@ import android.os.Bundle;
 
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -43,7 +42,8 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mMainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+        mMainActivityViewModel = getActivityViewModelProvider(this).get(MainActivityViewModel.class);
+        mMainActivityViewModel.initState();
 
         // TODO tip 1: 此处通过 DataBinding 来规避 潜在的 视图调用的一致性问题，
 
@@ -54,6 +54,7 @@ public class MainActivity extends BaseActivity {
         // 如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        mBinding.setLifecycleOwner(this);
         mBinding.setVm(mMainActivityViewModel);
 
         mSharedViewModel.activityCanBeClosedDirectly.observe(this, aBoolean -> {
@@ -80,28 +81,36 @@ public class MainActivity extends BaseActivity {
         mSharedViewModel.openOrCloseDrawer.observe(this, aBoolean -> {
             //TODO yes:
 
-//            mMainActivityViewModel.openDrawer.set(aBoolean);
+            //TODO 此处绑定的状态，使用 LiveData 而不是 ObservableField，主要是考虑到 ObservableField 具有防抖的特性，不适合该场景。
 
-            //TODO do not:（只有万不得已的情况下，才用这种土办法，不然会埋下视图调用的一致性隐患）
+            //如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
-            if (mBinding.dl != null) {
+            mMainActivityViewModel.openDrawer.setValue(aBoolean);
+
+            //TODO do not:（容易埋下视图调用的一致性隐患）
+
+            /*if (mBinding.dl != null) {
                 if (aBoolean && !mBinding.dl.isDrawerOpen(GravityCompat.START)) {
                     mBinding.dl.openDrawer(GravityCompat.START);
                 } else {
                     mBinding.dl.closeDrawer(GravityCompat.START);
                 }
-            }
+            }*/
         });
-
-        // TODO tip 7: do not:（只有万不得已的情况下，才用这种土办法，不然会埋下视图调用的一致性隐患）
 
         mSharedViewModel.enableSwipeDrawer.observe(this, aBoolean -> {
 
-            if (mBinding.dl != null) {
+            //TODO yes:
+
+            mMainActivityViewModel.allowDrawerOpen.setValue(aBoolean);
+
+            // TODO tip 7: do not:（容易埋下视图调用的一致性隐患）
+
+            /*if (mBinding.dl != null) {
                 mBinding.dl.setDrawerLockMode(aBoolean
                         ? DrawerLayout.LOCK_MODE_UNLOCKED
                         : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-            }
+            }*/
         });
 
 

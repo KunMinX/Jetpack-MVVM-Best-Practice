@@ -39,6 +39,7 @@ import com.kunminx.puremusic.bridge.callback.SharedViewModel;
 public class BaseActivity extends AppCompatActivity {
 
     protected SharedViewModel mSharedViewModel;
+    private ViewModelProvider mActivityProvider;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,11 +50,8 @@ public class BaseActivity extends AppCompatActivity {
 
         mSharedViewModel = getAppViewModelProvider().get(SharedViewModel.class);
 
-        NetworkStateManager.getInstance().mNetworkStateCallback.observe(this, netState -> {
+        getLifecycle().addObserver(NetworkStateManager.getInstance());
 
-            //TODO 这里可以执行统一的网络状态通知和处理
-
-        });
     }
 
     public boolean isDebug() {
@@ -80,6 +78,13 @@ public class BaseActivity extends AppCompatActivity {
 
     protected ViewModelProvider getAppViewModelProvider() {
         return ((App) getApplicationContext()).getAppViewModelProvider(this);
+    }
+
+    protected ViewModelProvider getActivityViewModelProvider(AppCompatActivity activity) {
+        if (mActivityProvider == null) {
+            mActivityProvider = new ViewModelProvider(activity);
+        }
+        return mActivityProvider;
     }
 
 }

@@ -25,10 +25,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.kunminx.puremusic.R;
+import com.kunminx.puremusic.bridge.request.DownloadViewModel;
+import com.kunminx.puremusic.bridge.request.InfoRequestViewModel;
 import com.kunminx.puremusic.bridge.state.SearchViewModel;
+import com.kunminx.puremusic.data.bean.DownloadFile;
 import com.kunminx.puremusic.databinding.FragmentSearchBinding;
 import com.kunminx.puremusic.ui.base.BaseFragment;
 import com.kunminx.puremusic.ui.helper.DrawerCoordinateHelper;
@@ -40,13 +42,18 @@ public class SearchFragment extends BaseFragment {
 
     private FragmentSearchBinding mBinding;
     private SearchViewModel mSearchViewModel;
+    private DownloadViewModel mDownloadViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSearchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
+        mDownloadViewModel = getActivityViewModelProvider(mActivity).get(DownloadViewModel.class);
+        mSearchViewModel = getFragmentViewModelProvider(this).get(SearchViewModel.class);
 
         getLifecycle().addObserver(DrawerCoordinateHelper.getInstance());
+
+        //TODO tip1：绑定跟随视图控制器生命周期的、可叫停的、单独放在 UseCase 中处理的业务
+        getLifecycle().addObserver(mDownloadViewModel.getCanBeStoppedUseCase());
     }
 
     @Nullable
@@ -63,6 +70,15 @@ public class SearchFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mDownloadViewModel.getDownloadFileLiveData().observe(getViewLifecycleOwner(), downloadFile -> {
+            mSearchViewModel.progress.set(downloadFile.getProgress());
+
+        });
+
+        mDownloadViewModel.getDownloadFileCanBeStoppedLiveData().observe(getViewLifecycleOwner(), downloadFile -> {
+            mSearchViewModel.progress.set(downloadFile.getProgress());
+
+        });
     }
 
     public class ClickProxy {
@@ -83,6 +99,16 @@ public class SearchFragment extends BaseFragment {
             Uri uri = Uri.parse(u);
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
+        }
+
+        public void testDownload() {
+            mDownloadViewModel.requestDownloadFile();
+        }
+
+        //TODO tip2: 在 UseCase 中 执行可跟随生命周期中止的下载任务
+
+        public void testLifecycleDownload() {
+            mDownloadViewModel.requestCanBeStoppedDownloadFile();
         }
     }
 }

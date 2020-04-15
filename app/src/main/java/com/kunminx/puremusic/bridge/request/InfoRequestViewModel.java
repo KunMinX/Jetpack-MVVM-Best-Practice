@@ -16,66 +16,45 @@
 
 package com.kunminx.puremusic.bridge.request;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.data.repository.HttpRequestManager;
-import com.kunminx.puremusic.data.usecase.TestUseCase;
-import com.kunminx.puremusic.data.usecase.base.UseCase;
-import com.kunminx.puremusic.data.usecase.base.UseCaseHandler;
 
 import java.util.List;
 
 /**
+ * 信息列表 RequestViewModel
+ * <p>
+ * TODO tip：RequestViewModel 通常按业务划分
+ * 一个项目中通常存在多个 RequestViewModel
+ * <p>
+ * requestViewModel 的职责仅限于 数据请求，不建议在此处理 UI 逻辑，
+ * UI 逻辑只适合在 Activity/Fragment 等视图控制器中完成，是 “数据驱动” 的一部分，
+ * 将来升级到 Jetpack Compose 更是如此。
+ * <p>
+ * 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/6257931840
+ * <p>
+ * <p>
  * Create by KunMinX at 19/11/2
  */
 public class InfoRequestViewModel extends ViewModel {
 
     private MutableLiveData<List<LibraryInfo>> libraryLiveData;
 
-    private TestUseCase mTestUseCase;
+    //TODO tip 向 ui 层提供的 request LiveData，使用抽象的 LiveData 而不是 MutableLiveData
+    // 如此是为了来自数据层的数据，在 ui 层中只读，以避免团队新手不可预期的误用
 
-    private MutableLiveData<String> testXXX;
-
-    public MutableLiveData<List<LibraryInfo>> getLibraryLiveData() {
+    public LiveData<List<LibraryInfo>> getLibraryLiveData() {
         if (libraryLiveData == null) {
             libraryLiveData = new MutableLiveData<>();
         }
         return libraryLiveData;
     }
 
-    public TestUseCase getTestUseCase() {
-        if (mTestUseCase == null) {
-            mTestUseCase = new TestUseCase();
-        }
-        return mTestUseCase;
-    }
-
-    public MutableLiveData<String> getTestXXX() {
-        if (testXXX == null) {
-            testXXX = new MutableLiveData<>();
-        }
-        return testXXX;
-    }
-
     public void requestLibraryInfo() {
-        HttpRequestManager.getInstance().getLibraryInfo(getLibraryLiveData());
-    }
-
-    public void requestTestXXX() {
-        UseCaseHandler.getInstance().execute(getTestUseCase(),
-                new TestUseCase.RequestValues(0, 0),
-                new UseCase.UseCaseCallback<TestUseCase.ResponseValue>() {
-                    @Override
-                    public void onSuccess(TestUseCase.ResponseValue response) {
-                        getTestXXX().setValue(response.getResult());
-                    }
-
-                    @Override
-                    public void onError() {
-                        //TODO 此处使用相应的 LiveDate 通知 UI 层
-                    }
-                });
+        HttpRequestManager.getInstance().getLibraryInfo(libraryLiveData);
     }
 }

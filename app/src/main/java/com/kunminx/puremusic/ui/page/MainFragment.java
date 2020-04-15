@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -48,13 +47,12 @@ public class MainFragment extends BaseFragment {
     private MainViewModel mMainViewModel;
     private MusicRequestViewModel mMusicRequestViewModel;
     private SimpleBaseBindingAdapter<TestAlbum.TestMusic, AdapterPlayItemBinding> mAdapter;
-    private ClickProxy mClickProxy;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        mMusicRequestViewModel = ViewModelProviders.of(this).get(MusicRequestViewModel.class);
+        mMainViewModel = getFragmentViewModelProvider(this).get(MainViewModel.class);
+        mMusicRequestViewModel = getFragmentViewModelProvider(this).get(MusicRequestViewModel.class);
     }
 
     @Nullable
@@ -62,7 +60,7 @@ public class MainFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         mBinding = FragmentMainBinding.bind(view);
-        mBinding.setClick(mClickProxy = new ClickProxy());
+        mBinding.setClick(new ClickProxy());
         mBinding.setVm(mMainViewModel);
         return view;
     }
@@ -87,14 +85,12 @@ public class MainFragment extends BaseFragment {
                 binding.getRoot().setOnClickListener(v -> {
                     PlayerManager.getInstance().playAudio(holder.getAdapterPosition());
                 });
-
-//                binding.getRoot().setOnTouchListener(DrawerCoordinateHelper.getInstance());
             }
         };
 
         mBinding.rv.setAdapter(mAdapter);
 
-        PlayerManager.getInstance().getChangeMusicLiveData().observe(this, changeMusic -> {
+        PlayerManager.getInstance().getChangeMusicLiveData().observe(getViewLifecycleOwner(), changeMusic -> {
 
             // TODO tip 1：所有播放状态的改变，都要通过这个 作为 唯一可信源 的 PlayerManager 来统一分发，
 
@@ -104,8 +100,9 @@ public class MainFragment extends BaseFragment {
             mAdapter.notifyDataSetChanged();
         });
 
-        mMusicRequestViewModel.getFreeMusicsLiveData().observe(this, musicAlbum -> {
+        mMusicRequestViewModel.getFreeMusicsLiveData().observe(getViewLifecycleOwner(), musicAlbum -> {
             if (musicAlbum != null && musicAlbum.getMusics() != null) {
+                //noinspection unchecked
                 mAdapter.setList(musicAlbum.getMusics());
                 mAdapter.notifyDataSetChanged();
 
@@ -129,10 +126,12 @@ public class MainFragment extends BaseFragment {
             mAdapter.notifyDataSetChanged();
         }
 
-        DrawerCoordinateHelper.getInstance().openDrawer.observe(this, aBoolean -> {
+        DrawerCoordinateHelper.getInstance().openDrawer.observe(getViewLifecycleOwner(), aBoolean -> {
             mSharedViewModel.openOrCloseDrawer.setValue(true);
         });
+
     }
+
 
     // TODO tip 2：此处通过 DataBinding 来规避 在 setOnClickListener 时存在的 视图调用的一致性问题，
 

@@ -37,25 +37,16 @@ import com.kunminx.puremusic.player.notification.PlayerReceiver;
  */
 public class PlayerCallHelper implements AudioManager.OnAudioFocusChangeListener {
 
+    private final PlayerCallHelperListener mPlayerCallHelperListener;
     private PhoneStateListener phoneStateListener;
     private RemoteControlClient remoteControlClient;
     private AudioManager mAudioManager;
     private boolean ignoreAudioFocus;
     private boolean mIsTempPauseByPhone;
-    private PlayerCallHelperListener mPlayerCallHelperListener;
+    private boolean tempPause;
 
     public PlayerCallHelper(PlayerCallHelperListener playerCallHelperListener) {
         mPlayerCallHelperListener = playerCallHelperListener;
-    }
-
-    public interface PlayerCallHelperListener {
-        void playAudio();
-
-        boolean isPlaying();
-
-        boolean isPaused();
-
-        void pauseAudio();
     }
 
     public void bindCallListener(Context context) {
@@ -150,8 +141,6 @@ public class PlayerCallHelper implements AudioManager.OnAudioFocusChangeListener
         ignoreAudioFocus = true;
     }
 
-    private boolean tempPause;
-
     @Override
     public void onAudioFocusChange(int focusChange) {
         if (ignoreAudioFocus) {
@@ -174,5 +163,15 @@ public class PlayerCallHelper implements AudioManager.OnAudioFocusChangeListener
                 tempPause = false;
             }
         }
+    }
+
+    public interface PlayerCallHelperListener {
+        void playAudio();
+
+        boolean isPlaying();
+
+        boolean isPaused();
+
+        void pauseAudio();
     }
 }

@@ -15,6 +15,7 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="64dp"
     android:background="@color/light_gray">
@@ -22,7 +23,8 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@color/transparent" />
+        android:src="@color/transparent"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/player_album_art"
@@ -30,7 +32,8 @@
         android:layout_height="40dp"
         android:layout_centerVertical="true"
         android:layout_marginStart="12dp"
-        android:scaleType="fitXY" />
+        android:scaleType="fitXY"
+        tools:ignore="ContentDescription" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -71,7 +74,8 @@
         android:background="@drawable/bar_selector_white"
         android:padding="8dp"
         android:scaleType="center"
-        android:src="@drawable/ic_close_white" />
+        android:src="@drawable/ic_close_white"
+        tools:ignore="ContentDescription" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -99,7 +103,8 @@
             android:layout_marginRight="8dp"
             android:background="@drawable/bar_selector_white"
             android:scaleType="center"
-            android:src="@drawable/ic_next_dark" />
+            android:src="@drawable/ic_next_dark"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/player_pause"
@@ -109,7 +114,8 @@
             android:layout_marginRight="8dp"
             android:background="@drawable/bar_selector_white"
             android:scaleType="center"
-            android:src="@drawable/ic_action_pause" />
+            android:src="@drawable/ic_action_pause"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/player_play"
@@ -120,7 +126,8 @@
             android:background="@drawable/bar_selector_white"
             android:scaleType="center"
             android:src="@drawable/ic_action_play"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/player_next"
@@ -130,7 +137,8 @@
             android:layout_marginRight="8dp"
             android:background="@drawable/bar_selector_white"
             android:scaleType="center"
-            android:src="@drawable/ic_previous_dark" />
+            android:src="@drawable/ic_previous_dark"
+            tools:ignore="ContentDescription" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -16,9 +16,6 @@
 
 package com.kunminx.puremusic.ui.helper;
 
-import android.view.MotionEvent;
-import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
@@ -35,77 +32,34 @@ import com.kunminx.puremusic.ui.base.BaseFragment;
  * <p>
  * Create by KunMinX at 19/11/3
  */
-public class DrawerCoordinateHelper implements DefaultLifecycleObserver, View.OnTouchListener {
+public class DrawerCoordinateHelper implements DefaultLifecycleObserver {
 
-    private float downX;
-    private float downY;
-
+    private static final DrawerCoordinateHelper S_HELPER = new DrawerCoordinateHelper();
     public final UnPeekLiveData<Boolean> openDrawer = new UnPeekLiveData<>();
 
-    private static DrawerCoordinateHelper sHelper = new DrawerCoordinateHelper();
-
-    public static DrawerCoordinateHelper getInstance() {
-        return sHelper;
+    private DrawerCoordinateHelper() {
     }
 
-    private DrawerCoordinateHelper() {
+    public static DrawerCoordinateHelper getInstance() {
+        return S_HELPER;
     }
 
     @Override
     public void onCreate(@NonNull LifecycleOwner owner) {
 
-        SharedViewModel.tagOfSecondaryPages.add(owner.getClass().getSimpleName());
+        SharedViewModel.TAG_OF_SECONDARY_PAGES.add(owner.getClass().getSimpleName());
 
         ((BaseFragment) owner).getSharedViewModel()
-                .enableSwipeDrawer.setValue(SharedViewModel.tagOfSecondaryPages.size() == 0);
+                .enableSwipeDrawer.setValue(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
     }
 
     @Override
     public void onDestroy(@NonNull LifecycleOwner owner) {
 
-        SharedViewModel.tagOfSecondaryPages.remove(owner.getClass().getSimpleName());
+        SharedViewModel.TAG_OF_SECONDARY_PAGES.remove(owner.getClass().getSimpleName());
 
         ((BaseFragment) owner).getSharedViewModel()
-                .enableSwipeDrawer.setValue(SharedViewModel.tagOfSecondaryPages.size() == 0);
+                .enableSwipeDrawer.setValue(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
     }
 
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        float x = event.getX();
-        float y = event.getY();
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                downX = x;
-                downY = y;
-                break;
-            case MotionEvent.ACTION_UP:
-                float dx = x - downX;
-                float dy = y - downY;
-                if (Math.abs(dx) > 8 && Math.abs(dy) > 8) {
-                    int orientation = getOrientation(dx, dy);
-                    switch (orientation) {
-                        case 'r':
-                            openDrawer.setValue(true);
-                            break;
-                        case 'l':
-                            break;
-                        case 't':
-                            break;
-                        case 'b':
-                            break;
-                    }
-                }
-                break;
-        }
-        return false;
-    }
-
-    private int getOrientation(float dx, float dy) {
-        if (Math.abs(dx) > Math.abs(dy)) {
-            return dx > 0 ? 'r' : 'l';
-        } else {
-            return dy > 0 ? 'b' : 't';
-        }
-    }
 }

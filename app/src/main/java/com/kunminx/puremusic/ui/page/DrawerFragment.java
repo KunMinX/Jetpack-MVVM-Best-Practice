@@ -25,7 +25,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kunminx.architecture.ui.adapter.SimpleBaseBindingAdapter;
@@ -50,8 +49,8 @@ public class DrawerFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mInfoRequestViewModel = ViewModelProviders.of(this).get(InfoRequestViewModel.class);
-        mDrawerViewModel = ViewModelProviders.of(this).get(DrawerViewModel.class);
+        mInfoRequestViewModel = getFragmentViewModelProvider(this).get(InfoRequestViewModel.class);
+        mDrawerViewModel = getFragmentViewModelProvider(this).get(DrawerViewModel.class);
     }
 
     @Nullable
@@ -68,14 +67,10 @@ public class DrawerFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //TODO tip1：绑定跟随视图控制器生命周期的、可叫停的、单独放在 UseCase 中处理的业务
-        getLifecycle().addObserver(mInfoRequestViewModel.getTestUseCase());
-
         mAdapter = new SimpleBaseBindingAdapter<LibraryInfo, AdapterLibraryBinding>(getContext(), R.layout.adapter_library) {
             @Override
             protected void onSimpleBindItem(AdapterLibraryBinding binding, LibraryInfo item, RecyclerView.ViewHolder holder) {
-                binding.tvTitle.setText(item.getTitle());
-                binding.tvSummary.setText(item.getSummary());
+                binding.setInfo(item);
                 binding.getRoot().setOnClickListener(v -> {
                     Uri uri = Uri.parse(item.getUrl());
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
@@ -86,30 +81,23 @@ public class DrawerFragment extends BaseFragment {
 
         mBinding.rv.setAdapter(mAdapter);
 
-        mInfoRequestViewModel.getLibraryLiveData().observe(this, libraryInfos -> {
+        mInfoRequestViewModel.getLibraryLiveData().observe(getViewLifecycleOwner(), libraryInfos -> {
             mInitDataCame = true;
             if (mAnimationLoaded && libraryInfos != null) {
+                //noinspection unchecked
                 mAdapter.setList(libraryInfos);
                 mAdapter.notifyDataSetChanged();
             }
         });
 
         mInfoRequestViewModel.requestLibraryInfo();
-
-        mInfoRequestViewModel.getTestXXX().observe(this, s -> {
-            //TODO tip3：暂无实际功能，仅演示 UseCase 流程
-
-            //接收来自 可感知生命周期的 UseCase 处理的结果
-        });
-
-        //TODO tip2：暂无实际功能，仅演示 UseCase 流程
-        mInfoRequestViewModel.requestTestXXX();
     }
 
     @Override
     public void loadInitData() {
         super.loadInitData();
         if (mInfoRequestViewModel.getLibraryLiveData().getValue() != null) {
+            //noinspection unchecked
             mAdapter.setList(mInfoRequestViewModel.getLibraryLiveData().getValue());
             mAdapter.notifyDataSetChanged();
         }

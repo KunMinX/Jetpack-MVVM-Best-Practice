@@ -15,9 +15,11 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="128dp"
     android:background="@color/light_gray"
+    android:baselineAligned="false"
     android:orientation="horizontal">
 
     <RelativeLayout
@@ -29,7 +31,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#ffc0c0c0"
-            android:scaleType="fitXY" />
+            android:scaleType="fitXY"
+            tools:ignore="ContentDescription" />
 
         <ProgressBar
             android:id="@+id/player_progress_bar"
@@ -95,7 +98,8 @@
             android:background="@drawable/bar_selector_white"
             android:padding="10dp"
             android:scaleType="center"
-            android:src="@drawable/ic_close_white" />
+            android:src="@drawable/ic_close_white"
+            tools:ignore="ContentDescription" />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -119,7 +123,8 @@
                 android:layout_marginRight="10dp"
                 android:background="@drawable/bar_selector_white"
                 android:scaleType="center"
-                android:src="@drawable/ic_next_dark" />
+                android:src="@drawable/ic_next_dark"
+                tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/player_pause"
@@ -129,7 +134,8 @@
                 android:layout_marginRight="10dp"
                 android:background="@drawable/bar_selector_white"
                 android:scaleType="center"
-                android:src="@drawable/ic_action_pause" />
+                android:src="@drawable/ic_action_pause"
+                tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/player_play"
@@ -140,7 +146,8 @@
                 android:background="@drawable/bar_selector_white"
                 android:scaleType="center"
                 android:src="@drawable/ic_action_play"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/player_next"
@@ -150,7 +157,8 @@
                 android:layout_marginRight="10dp"
                 android:background="@drawable/bar_selector_white"
                 android:scaleType="center"
-                android:src="@drawable/ic_previous_dark" />
+                android:src="@drawable/ic_previous_dark"
+                tools:ignore="ContentDescription" />
         </LinearLayout>
     </FrameLayout>
 
