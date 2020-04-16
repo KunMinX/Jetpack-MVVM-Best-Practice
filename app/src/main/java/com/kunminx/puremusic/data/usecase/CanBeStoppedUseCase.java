@@ -19,6 +19,7 @@ package com.kunminx.puremusic.data.usecase;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.kunminx.architecture.data.usecase.UseCase;
@@ -80,7 +81,7 @@ public class CanBeStoppedUseCase extends UseCase<RequestValues, ResponseValue> i
             this.liveData = liveData;
         }
 
-        public MutableLiveData<DownloadFile> getLiveData() {
+        public LiveData<DownloadFile> getLiveData() {
             return liveData;
         }
 
