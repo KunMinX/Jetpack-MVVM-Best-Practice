@@ -31,7 +31,7 @@ import static com.kunminx.puremusic.data.usecase.CanBeStoppedUseCase.ResponseVal
 
 /**
  * UseCase 示例，实现 LifeCycle 接口，单独服务于 有 “叫停” 需求 的业务
- * <p>
+ *
  * Create by KunMinX at 19/11/25
  */
 public class CanBeStoppedUseCase extends UseCase<RequestValues, ResponseValue> implements DefaultLifecycleObserver {

@@ -27,17 +27,17 @@ import java.util.List;
 
 /**
  * 信息列表 RequestViewModel
- * <p>
+ *
  * TODO tip：RequestViewModel 通常按业务划分
  * 一个项目中通常存在多个 RequestViewModel
- * <p>
+ *
  * requestViewModel 的职责仅限于 数据请求，不建议在此处理 UI 逻辑，
  * UI 逻辑只适合在 Activity/Fragment 等视图控制器中完成，是 “数据驱动” 的一部分，
  * 将来升级到 Jetpack Compose 更是如此。
- * <p>
+ *
  * 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/6257931840
- * <p>
- * <p>
+ *
+ *
  * Create by KunMinX at 19/11/2
  */
 public class InfoRequestViewModel extends ViewModel {
