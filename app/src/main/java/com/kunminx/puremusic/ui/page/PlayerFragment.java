@@ -24,6 +24,7 @@ import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModel;
 
 import com.kunminx.player.PlayingInfoManager;
 import com.kunminx.puremusic.R;
@@ -32,6 +33,7 @@ import com.kunminx.puremusic.bridge.state.PlayerViewModel;
 import com.kunminx.puremusic.databinding.FragmentPlayerBinding;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.base.BaseFragment;
+import com.kunminx.puremusic.ui.base.DataBindingConfig;
 import com.kunminx.puremusic.ui.view.PlayerSlideListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -42,33 +44,26 @@ import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
  */
 public class PlayerFragment extends BaseFragment {
 
-    private FragmentPlayerBinding mBinding;
     private PlayerViewModel mPlayerViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPlayerViewModel = getFragmentViewModelProvider(this).get(PlayerViewModel.class);
+        mPlayerViewModel = getFragmentViewModel(PlayerViewModel.class);
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_player, container, false);
+    protected DataBindingConfig getDataBindingConfig() {
 
-        // TODO tip 1: 此处通过 DataBinding 来规避 潜在的 视图调用的一致性问题，
+        //TODO 2020.4.18:
+        // 将 DataBinding 实例限制于 base 页面中，不上升为类成员，更不向子类暴露，
+        // 通过这样的方式，来彻底解决 视图调用的一致性问题，
+        // 如此，视图刷新的安全性将和基于函数式编程的 Jetpack Compose 持平。
+        // 而 DataBindingConfig 就是在这样的背景下，用于为 base 页面中的 DataBinding 提供最少必要的绑定项。
 
-        // 因为本项目采用 横、竖 两套布局，且不同布局的控件存在差异，
-        // 在 DataBinding 的适配器模式加持下，有绑定就有绑定，没绑定也没什么大不了的，
-        // 总之 不会因一致性问题造成 视图调用的空指针。
+        // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        // 如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
-
-        mBinding = FragmentPlayerBinding.bind(view);
-        mBinding.setClick(new ClickProxy());
-        mBinding.setEvent(new EventHandler());
-        mBinding.setVm(mPlayerViewModel);
-        return view;
+        return new DataBindingConfig(R.layout.fragment_player, mPlayerViewModel, new ClickProxy(), new EventHandler());
     }
 
     @Override
@@ -85,7 +80,7 @@ public class PlayerFragment extends BaseFragment {
         getSharedViewModel().timeToAddSlideListener.observe(getViewLifecycleOwner(), aBoolean -> {
             if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {
                 SlidingUpPanelLayout sliding = (SlidingUpPanelLayout) view.getParent().getParent();
-                sliding.addPanelSlideListener(new PlayerSlideListener(mBinding, sliding));
+//                sliding.addPanelSlideListener(new PlayerSlideListener(mBinding, sliding));
                 sliding.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
                     @Override
                     public void onPanelSlide(View view, float v) {
@@ -200,7 +195,7 @@ public class PlayerFragment extends BaseFragment {
     // 也即，有绑定就有绑定，没绑定也没什么大不了的，总之 不会因一致性问题造成 视图调用的空指针。
     // 如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
-    public class ClickProxy {
+    public class ClickProxy extends BaseFragment.ClickProxy {
 
         public void playMode() {
             PlayerManager.getInstance().changeMode();
@@ -230,7 +225,7 @@ public class PlayerFragment extends BaseFragment {
         }
     }
 
-    public class EventHandler implements SeekBar.OnSeekBarChangeListener {
+    public static class EventHandler extends BaseFragment.EventHandler implements SeekBar.OnSeekBarChangeListener {
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {

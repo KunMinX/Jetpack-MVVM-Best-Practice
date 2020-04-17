@@ -57,6 +57,7 @@ public abstract class BaseFragment extends Fragment {
     protected boolean mInitDataCame;
     private ViewModelProvider mFragmentProvider;
     private ViewModelProvider mActivityProvider;
+    private DataBindingConfig mDataBindingConfig;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -67,11 +68,13 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSharedViewModel = getAppViewModelProvider().get(SharedViewModel.class);
+        mSharedViewModel = ((App) mActivity.getApplicationContext()).getAppViewModelProvider(mActivity).get(SharedViewModel.class);
 
         //TODO 注意 liveData 的 lambda 回调中不可为空，不然会出现 Cannot add the same observer with different lifecycles 的现象，
         // 详见：https://stackoverflow.com/questions/47025233/android-lifecycle-library-cannot-add-the-same-observer-with-different-lifecycle
         NetworkStateManager.getInstance().mNetworkStateCallback.observe(this, this::onNetworkStateChanged);
+
+        mDataBindingConfig = getDataBindingConfig();
     }
 
     @SuppressWarnings("EmptyMethod")
@@ -87,22 +90,25 @@ public abstract class BaseFragment extends Fragment {
         // 通过这样的方式，来彻底解决 视图调用的一致性问题，
         // 如此，视图刷新的安全性将和基于函数式编程的 Jetpack Compose 持平。
 
-        // 如果这样说还不理解的话，详见  https://xiaozhuanlan.com/topic/2356748910
+        // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        ViewDataBinding binding = DataBindingUtil.inflate(inflater, getLayout(), container, false);
+        ViewDataBinding binding = DataBindingUtil.inflate(inflater, mDataBindingConfig.getLayout(), container, false);
 
         // 与此同时，由于有隐藏 DataBinding 实例的需要，以下通用必用的内容，都在 base 页面中以抽象方法向子类暴露。
         binding.setLifecycleOwner(this);
-        binding.setVariable(BR.vm, getStateViewModel());
-        binding.setVariable(BR.click, getClickProxy());
-        if (getEventHandler() != null) {
-            binding.setVariable(BR.event, getEventHandler());
+        binding.setVariable(BR.vm, mDataBindingConfig.getStateViewModel());
+        binding.setVariable(BR.click, mDataBindingConfig.getClickProxy());
+        if (mDataBindingConfig.getEventHandler() != null) {
+            binding.setVariable(BR.event, mDataBindingConfig.getEventHandler());
         }
         return binding.getRoot();
     }
 
+    protected abstract DataBindingConfig getDataBindingConfig();
 
-    // TODO tip：获取每个页面配套专属的 State - ViewModel，用于与 DataBinding 发生绑定
+//    protected abstract DataBindingInterface getDataBindingInterface();
+
+    /*// TODO tip：获取每个页面配套专属的 State - ViewModel，用于与 DataBinding 发生绑定
     protected abstract ViewModel getStateViewModel();
 
     // 获取页面的 layout
@@ -112,7 +118,7 @@ public abstract class BaseFragment extends Fragment {
     protected abstract ClickProxy getClickProxy();
 
     // TODO tip：获取每个页面配套专属的 EventHandler，用于与 DataBinding 发生绑定
-    protected abstract EventHandler getEventHandler();
+    protected abstract EventHandler getEventHandler();*/
 
     @Nullable
     @Override
@@ -152,29 +158,25 @@ public abstract class BaseFragment extends Fragment {
         showShortToast(mActivity.getApplicationContext().getString(stringRes));
     }
 
-    private ViewModelProvider getAppViewModelProvider() {
-        return ((App) mActivity.getApplicationContext()).getAppViewModelProvider(mActivity);
-    }
-
-    protected ViewModelProvider getFragmentViewModelProvider(Fragment fragment) {
+    protected <T extends ViewModel> T getFragmentViewModel(@NonNull Class<T> modelClass) {
         if (mFragmentProvider == null) {
-            mFragmentProvider = new ViewModelProvider(fragment);
+            mFragmentProvider = new ViewModelProvider(this);
         }
-        return mFragmentProvider;
+        return mFragmentProvider.get(modelClass);
     }
 
-    protected ViewModelProvider getActivityViewModelProvider(AppCompatActivity activity) {
+    protected <T extends ViewModel> T getActivityViewModel(@NonNull Class<T> modelClass) {
         if (mActivityProvider == null) {
-            mActivityProvider = new ViewModelProvider(activity);
+            mActivityProvider = new ViewModelProvider(mActivity);
         }
-        return mActivityProvider;
+        return mActivityProvider.get(modelClass);
     }
 
     protected NavController nav() {
         return NavHostFragment.findNavController(this);
     }
 
-    protected SharedViewModel getSharedViewModel() {
+    public SharedViewModel getSharedViewModel() {
         return mSharedViewModel;
     }
 

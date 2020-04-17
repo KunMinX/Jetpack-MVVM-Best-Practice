@@ -19,9 +19,7 @@ package com.kunminx.puremusic.ui.page;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,15 +31,14 @@ import com.kunminx.puremusic.bridge.request.InfoRequestViewModel;
 import com.kunminx.puremusic.bridge.state.DrawerViewModel;
 import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.databinding.AdapterLibraryBinding;
-import com.kunminx.puremusic.databinding.FragmentDrawerBinding;
 import com.kunminx.puremusic.ui.base.BaseFragment;
+import com.kunminx.puremusic.ui.base.DataBindingConfig;
 
 /**
  * Create by KunMinX at 19/10/29
  */
 public class DrawerFragment extends BaseFragment {
 
-    private FragmentDrawerBinding mBinding;
     private DrawerViewModel mDrawerViewModel;
     private InfoRequestViewModel mInfoRequestViewModel;
     private SimpleBaseBindingAdapter<LibraryInfo, AdapterLibraryBinding> mAdapter;
@@ -49,18 +46,22 @@ public class DrawerFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mInfoRequestViewModel = getFragmentViewModelProvider(this).get(InfoRequestViewModel.class);
-        mDrawerViewModel = getFragmentViewModelProvider(this).get(DrawerViewModel.class);
+        mInfoRequestViewModel = getFragmentViewModel(InfoRequestViewModel.class);
+        mDrawerViewModel = getFragmentViewModel(DrawerViewModel.class);
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_drawer, container, false);
-        mBinding = FragmentDrawerBinding.bind(view);
-        mBinding.setVm(mDrawerViewModel);
-        mBinding.setClick(new ClickProxy());
-        return view;
+    protected DataBindingConfig getDataBindingConfig() {
+
+        //TODO 2020.4.18:
+        // 将 DataBinding 实例限制于 base 页面中，不上升为类成员，更不向子类暴露，
+        // 通过这样的方式，来彻底解决 视图调用的一致性问题，
+        // 如此，视图刷新的安全性将和基于函数式编程的 Jetpack Compose 持平。
+        // 而 DataBindingConfig 就是在这样的背景下，用于为 base 页面中的 DataBinding 提供最少必要的绑定项。
+
+        // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
+
+        return new DataBindingConfig(R.layout.fragment_drawer, mDrawerViewModel, new ClickProxy());
     }
 
     @Override
@@ -103,7 +104,7 @@ public class DrawerFragment extends BaseFragment {
         }
     }
 
-    public class ClickProxy {
+    public class ClickProxy extends BaseFragment.ClickProxy {
 
         public void logoClick() {
             String u = "https://github.com/KunMinX/Jetpack-MVVM-Best-Practice";
