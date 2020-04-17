@@ -73,8 +73,6 @@ public abstract class BaseFragment extends Fragment {
         //TODO 注意 liveData 的 lambda 回调中不可为空，不然会出现 Cannot add the same observer with different lifecycles 的现象，
         // 详见：https://stackoverflow.com/questions/47025233/android-lifecycle-library-cannot-add-the-same-observer-with-different-lifecycle
         NetworkStateManager.getInstance().mNetworkStateCallback.observe(this, this::onNetworkStateChanged);
-
-        mDataBindingConfig = getDataBindingConfig();
     }
 
     @SuppressWarnings("EmptyMethod")
@@ -85,6 +83,8 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        mDataBindingConfig = getDataBindingConfig();
 
         //TODO 2020.4.18: 将 DataBinding 实例限制于 base 页面中，不上升为类成员，更不向子类暴露，
         // 通过这样的方式，来彻底解决 视图调用的一致性问题，
@@ -104,7 +104,7 @@ public abstract class BaseFragment extends Fragment {
         if (mDataBindingConfig.getAdapter() != null) {
             binding.setVariable(BR.adapter, mDataBindingConfig.getAdapter());
         }
-        binding.executePendingBindings();
+//        binding.executePendingBindings();
         return binding.getRoot();
     }
 

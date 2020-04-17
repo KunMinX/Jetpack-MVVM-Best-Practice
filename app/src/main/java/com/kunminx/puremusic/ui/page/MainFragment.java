@@ -62,20 +62,20 @@ public class MainFragment extends BaseFragment {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-
-        return new DataBindingConfig(R.layout.fragment_main, mMainViewModel, new ClickProxy(), null,
-                mAdapter = new SimpleBaseBindingAdapter<TestAlbum.TestMusic, AdapterPlayItemBinding>(getContext(), R.layout.adapter_play_item) {
-                    @Override
-                    protected void onSimpleBindItem(AdapterPlayItemBinding binding, TestAlbum.TestMusic item, RecyclerView.ViewHolder holder) {
-                        binding.setAlbum(item);
-                        int currentIndex = PlayerManager.getInstance().getAlbumIndex();
-                        binding.ivPlayStatus.setColor(currentIndex == holder.getAdapterPosition()
-                                ? getResources().getColor(R.color.gray) : Color.TRANSPARENT);
-                        binding.getRoot().setOnClickListener(v -> {
-                            PlayerManager.getInstance().playAudio(holder.getAdapterPosition());
-                        });
-                    }
+        mAdapter = new SimpleBaseBindingAdapter<TestAlbum.TestMusic, AdapterPlayItemBinding>(getContext(), R.layout.adapter_play_item) {
+            @Override
+            protected void onSimpleBindItem(AdapterPlayItemBinding binding, TestAlbum.TestMusic item, RecyclerView.ViewHolder holder) {
+                binding.setAlbum(item);
+                int currentIndex = PlayerManager.getInstance().getAlbumIndex();
+                binding.ivPlayStatus.setColor(currentIndex == holder.getAdapterPosition()
+                        ? getResources().getColor(R.color.gray) : Color.TRANSPARENT);
+                binding.getRoot().setOnClickListener(v -> {
+                    PlayerManager.getInstance().playAudio(holder.getAdapterPosition());
                 });
+            }
+        };
+
+        return new DataBindingConfig(R.layout.fragment_main, mMainViewModel, new ClickProxy(), null, mAdapter);
     }
 
     @Override
