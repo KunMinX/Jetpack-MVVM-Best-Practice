@@ -82,7 +82,7 @@ public class PlayerFragment extends BaseFragment {
         // 也即，在 fragment 的场景下，请使用 getViewLifeCycleOwner 来作为 liveData 的观察者。
         // 也即，Activity 不用改变。
 
-        mSharedViewModel.timeToAddSlideListener.observe(getViewLifecycleOwner(), aBoolean -> {
+        getSharedViewModel().timeToAddSlideListener.observe(getViewLifecycleOwner(), aBoolean -> {
             if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {
                 SlidingUpPanelLayout sliding = (SlidingUpPanelLayout) view.getParent().getParent();
                 sliding.addPanelSlideListener(new PlayerSlideListener(mBinding, sliding));
@@ -101,7 +101,7 @@ public class PlayerFragment extends BaseFragment {
                         } else {
                             SharedViewModel.TAG_OF_SECONDARY_PAGES.remove(this.getClass().getSimpleName());
                         }
-                        mSharedViewModel.enableSwipeDrawer.setValue(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
+                        getSharedViewModel().enableSwipeDrawer.setValue(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
                     }
                 });
             }
@@ -160,7 +160,7 @@ public class PlayerFragment extends BaseFragment {
             }
         });
 
-        mSharedViewModel.closeSlidePanelIfExpanded.observe(getViewLifecycleOwner(), aBoolean -> {
+        getSharedViewModel().closeSlidePanelIfExpanded.observe(getViewLifecycleOwner(), aBoolean -> {
 
             // 按下返回键，如果此时 slide 面板是展开的，那么只对面板进行 slide down
 
@@ -183,13 +183,13 @@ public class PlayerFragment extends BaseFragment {
                     // 因为 Activity 端的处理后续可能会改变，并且可受用于更多的 fragment，而不单单是本 fragment。
 
                     // TODO: yes:
-                    mSharedViewModel.activityCanBeClosedDirectly.setValue(true);
+                    getSharedViewModel().activityCanBeClosedDirectly.setValue(true);
 
                     // TODO: do not:
                     // mActivity.finish();
                 }
             } else {
-                mSharedViewModel.activityCanBeClosedDirectly.setValue(true);
+                getSharedViewModel().activityCanBeClosedDirectly.setValue(true);
             }
         });
 
@@ -223,7 +223,7 @@ public class PlayerFragment extends BaseFragment {
         }
 
         public void slideDown() {
-            mSharedViewModel.closeSlidePanelIfExpanded.setValue(true);
+            getSharedViewModel().closeSlidePanelIfExpanded.setValue(true);
         }
 
         public void more() {

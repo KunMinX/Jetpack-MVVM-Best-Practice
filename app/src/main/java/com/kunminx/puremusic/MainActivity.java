@@ -57,7 +57,7 @@ public class MainActivity extends BaseActivity {
         mBinding.setLifecycleOwner(this);
         mBinding.setVm(mMainActivityViewModel);
 
-        mSharedViewModel.activityCanBeClosedDirectly.observe(this, aBoolean -> {
+        getSharedViewModel().activityCanBeClosedDirectly.observe(this, aBoolean -> {
             NavController nav = Navigation.findNavController(this, R.id.main_fragment_host);
             if (nav.getCurrentDestination() != null && nav.getCurrentDestination().getId() != R.id.mainFragment) {
                 nav.navigateUp();
@@ -78,7 +78,7 @@ public class MainActivity extends BaseActivity {
 
         // 规避了视图的一致性问题，因为 横屏布局 根本就没有 drawerLayout，此处如果用传统的视图调用方式，会很容易疏忽而造成空引用。
 
-        mSharedViewModel.openOrCloseDrawer.observe(this, aBoolean -> {
+        getSharedViewModel().openOrCloseDrawer.observe(this, aBoolean -> {
             //TODO yes:
 
             //TODO 此处绑定的状态，使用 LiveData 而不是 ObservableField，主要是考虑到 ObservableField 具有防抖的特性，不适合该场景。
@@ -98,7 +98,7 @@ public class MainActivity extends BaseActivity {
             }*/
         });
 
-        mSharedViewModel.enableSwipeDrawer.observe(this, aBoolean -> {
+        getSharedViewModel().enableSwipeDrawer.observe(this, aBoolean -> {
 
             //TODO yes:
 
@@ -129,7 +129,7 @@ public class MainActivity extends BaseActivity {
             // fragment 内部的事情在 fragment 内部消化，不要试图在 Activity 中调用和操纵 Fragment 内部的东西。
             // 因为 fragment 端的处理后续可能会改变，并且可受用于更多的 Activity，而不单单是本 Activity。
 
-            mSharedViewModel.timeToAddSlideListener.setValue(true);
+            getSharedViewModel().timeToAddSlideListener.setValue(true);
 
             isListened = true;
         }
@@ -140,6 +140,6 @@ public class MainActivity extends BaseActivity {
 
         // TODO tip 3：同 tip 2
 
-        mSharedViewModel.closeSlidePanelIfExpanded.setValue(true);
+        getSharedViewModel().closeSlidePanelIfExpanded.setValue(true);
     }
 }

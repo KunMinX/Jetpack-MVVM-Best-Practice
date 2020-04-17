@@ -38,7 +38,7 @@ import com.kunminx.puremusic.bridge.callback.SharedViewModel;
  */
 public class BaseActivity extends AppCompatActivity {
 
-    protected SharedViewModel mSharedViewModel;
+    private SharedViewModel mSharedViewModel;
     private ViewModelProvider mActivityProvider;
 
     @Override
@@ -76,7 +76,7 @@ public class BaseActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
     }
 
-    protected ViewModelProvider getAppViewModelProvider() {
+    private ViewModelProvider getAppViewModelProvider() {
         return ((App) getApplicationContext()).getAppViewModelProvider(this);
     }
 
@@ -85,6 +85,10 @@ public class BaseActivity extends AppCompatActivity {
             mActivityProvider = new ViewModelProvider(activity);
         }
         return mActivityProvider;
+    }
+
+    public SharedViewModel getSharedViewModel() {
+        return mSharedViewModel;
     }
 
 }

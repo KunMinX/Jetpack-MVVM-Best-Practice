@@ -127,7 +127,7 @@ public class MainFragment extends BaseFragment {
         }
 
         DrawerCoordinateHelper.getInstance().openDrawer.observe(getViewLifecycleOwner(), aBoolean -> {
-            mSharedViewModel.openOrCloseDrawer.setValue(true);
+            getSharedViewModel().openOrCloseDrawer.setValue(true);
         });
 
     }
@@ -150,7 +150,7 @@ public class MainFragment extends BaseFragment {
             // Activity 内部的事情在 Activity 内部消化，不要试图在 fragment 中调用和操纵 Activity 内部的东西。
             // 因为 Activity 端的处理后续可能会改变，并且可受用于更多的 fragment，而不单单是本 fragment。
 
-            mSharedViewModel.openOrCloseDrawer.setValue(true);
+            getSharedViewModel().openOrCloseDrawer.setValue(true);
         }
 
         public void search() {
