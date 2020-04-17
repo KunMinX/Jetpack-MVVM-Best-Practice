@@ -20,6 +20,10 @@
 
     <data>
 
+        <variable
+            name="album"
+            type="com.kunminx.puremusic.data.bean.TestAlbum.TestMusic" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,6 +35,7 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_cover"
+            imageUrl="@{album.coverImg}"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_marginStart="12dp"
@@ -53,6 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
+                android:text="@{album.title}"
                 android:textSize="18sp"
                 tools:text="title" />
 
@@ -62,6 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="4dp"
+                android:text="@{album.artist.name}"
                 android:textSize="14sp"
                 tools:text="summary" />
 

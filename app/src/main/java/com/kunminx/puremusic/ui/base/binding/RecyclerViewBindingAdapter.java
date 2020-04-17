@@ -16,20 +16,18 @@
 
 package com.kunminx.puremusic.ui.base.binding;
 
-import android.graphics.drawable.Drawable;
-import android.widget.ImageView;
-
 import androidx.databinding.BindingAdapter;
-
-import com.bumptech.glide.Glide;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Create by KunMinX at 20/4/18
  */
 public class RecyclerViewBindingAdapter {
 
-    @BindingAdapter(value = {"adapter", "placeHolder"}, requireAll = false)
-    public static void loadUrl(ImageView view, String url, Drawable placeHolder) {
-        Glide.with(view.getContext()).load(url).placeholder(placeHolder).into(view);
+    @BindingAdapter(value = {"adapter"})
+    public static void setAdapter(RecyclerView recyclerView, RecyclerView.Adapter adapter) {
+        if (recyclerView != null && adapter != null) {
+            recyclerView.setAdapter(adapter);
+        }
     }
 }

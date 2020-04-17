@@ -18,6 +18,7 @@ package com.kunminx.puremusic.ui.base;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * TODO 2020.4.18:
@@ -40,15 +41,22 @@ public class DataBindingConfig {
 
     private BaseFragment.EventHandler eventHandler;
 
+    private RecyclerView.Adapter adapter;
+
     public DataBindingConfig(int layout, @NonNull ViewModel stateViewModel, @NonNull BaseFragment.ClickProxy clickProxy) {
         this(layout, stateViewModel, clickProxy, null);
     }
 
     public DataBindingConfig(int layout, @NonNull ViewModel stateViewModel, @NonNull BaseFragment.ClickProxy clickProxy, BaseFragment.EventHandler eventHandler) {
+        this(layout, stateViewModel, clickProxy, eventHandler,null);
+    }
+
+    public DataBindingConfig(int layout, ViewModel stateViewModel, BaseFragment.ClickProxy clickProxy, BaseFragment.EventHandler eventHandler, RecyclerView.Adapter adapter) {
         this.layout = layout;
         this.stateViewModel = stateViewModel;
         this.clickProxy = clickProxy;
         this.eventHandler = eventHandler;
+        this.adapter = adapter;
     }
 
     public int getLayout() {
@@ -65,5 +73,9 @@ public class DataBindingConfig {
 
     public BaseFragment.EventHandler getEventHandler() {
         return eventHandler;
+    }
+
+    public RecyclerView.Adapter getAdapter() {
+        return adapter;
     }
 }

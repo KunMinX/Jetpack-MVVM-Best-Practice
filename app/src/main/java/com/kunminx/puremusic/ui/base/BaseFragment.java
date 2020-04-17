@@ -101,6 +101,10 @@ public abstract class BaseFragment extends Fragment {
         if (mDataBindingConfig.getEventHandler() != null) {
             binding.setVariable(BR.event, mDataBindingConfig.getEventHandler());
         }
+        if (mDataBindingConfig.getAdapter() != null) {
+            binding.setVariable(BR.adapter, mDataBindingConfig.getAdapter());
+        }
+        binding.executePendingBindings();
         return binding.getRoot();
     }
 

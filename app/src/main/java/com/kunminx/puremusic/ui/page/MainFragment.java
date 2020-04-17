@@ -24,7 +24,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.kunminx.architecture.ui.adapter.SimpleBaseBindingAdapter;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.bridge.request.MusicRequestViewModel;
@@ -63,7 +62,20 @@ public class MainFragment extends BaseFragment {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.fragment_main, mMainViewModel, new ClickProxy());
+
+        return new DataBindingConfig(R.layout.fragment_main, mMainViewModel, new ClickProxy(), null,
+                mAdapter = new SimpleBaseBindingAdapter<TestAlbum.TestMusic, AdapterPlayItemBinding>(getContext(), R.layout.adapter_play_item) {
+                    @Override
+                    protected void onSimpleBindItem(AdapterPlayItemBinding binding, TestAlbum.TestMusic item, RecyclerView.ViewHolder holder) {
+                        binding.setAlbum(item);
+                        int currentIndex = PlayerManager.getInstance().getAlbumIndex();
+                        binding.ivPlayStatus.setColor(currentIndex == holder.getAdapterPosition()
+                                ? getResources().getColor(R.color.gray) : Color.TRANSPARENT);
+                        binding.getRoot().setOnClickListener(v -> {
+                            PlayerManager.getInstance().playAudio(holder.getAdapterPosition());
+                        });
+                    }
+                });
     }
 
     @Override
@@ -73,23 +85,6 @@ public class MainFragment extends BaseFragment {
         mMainViewModel.initTabAndPage.set(true);
 
         mMainViewModel.pageAssetPath.set("summary.html");
-
-        mAdapter = new SimpleBaseBindingAdapter<TestAlbum.TestMusic, AdapterPlayItemBinding>(getContext(), R.layout.adapter_play_item) {
-            @Override
-            protected void onSimpleBindItem(AdapterPlayItemBinding binding, TestAlbum.TestMusic item, RecyclerView.ViewHolder holder) {
-                binding.tvTitle.setText(item.getTitle());
-                binding.tvArtist.setText(item.getArtist().getName());
-                Glide.with(binding.ivCover.getContext()).load(item.getCoverImg()).into(binding.ivCover);
-                int currentIndex = PlayerManager.getInstance().getAlbumIndex();
-                binding.ivPlayStatus.setColor(currentIndex == holder.getAdapterPosition()
-                        ? getResources().getColor(R.color.gray) : Color.TRANSPARENT);
-                binding.getRoot().setOnClickListener(v -> {
-                    PlayerManager.getInstance().playAudio(holder.getAdapterPosition());
-                });
-            }
-        };
-
-        mBinding.rv.setAdapter(mAdapter);
 
         PlayerManager.getInstance().getChangeMusicLiveData().observe(getViewLifecycleOwner(), changeMusic -> {
 

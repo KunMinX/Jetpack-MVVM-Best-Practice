@@ -16,9 +16,15 @@
 
 package com.kunminx.puremusic.bridge.state;
 
+import androidx.databinding.ObservableArrayList;
 import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
+import androidx.databinding.ObservableInt;
+import androidx.databinding.ObservableList;
 import androidx.lifecycle.ViewModel;
+
+import com.kunminx.puremusic.R;
+import com.kunminx.puremusic.data.bean.TestAlbum;
 
 /**
  * TODO tip：每个页面都要单独准备一个 stateViewModel，

@@ -61,26 +61,23 @@ public class DrawerFragment extends BaseFragment {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.fragment_drawer, mDrawerViewModel, new ClickProxy());
+        return new DataBindingConfig(R.layout.fragment_drawer, mDrawerViewModel, new ClickProxy(), null,
+                mAdapter = new SimpleBaseBindingAdapter<LibraryInfo, AdapterLibraryBinding>(getContext(), R.layout.adapter_library) {
+                    @Override
+                    protected void onSimpleBindItem(AdapterLibraryBinding binding, LibraryInfo item, RecyclerView.ViewHolder holder) {
+                        binding.setInfo(item);
+                        binding.getRoot().setOnClickListener(v -> {
+                            Uri uri = Uri.parse(item.getUrl());
+                            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                            startActivity(intent);
+                        });
+                    }
+                });
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        mAdapter = new SimpleBaseBindingAdapter<LibraryInfo, AdapterLibraryBinding>(getContext(), R.layout.adapter_library) {
-            @Override
-            protected void onSimpleBindItem(AdapterLibraryBinding binding, LibraryInfo item, RecyclerView.ViewHolder holder) {
-                binding.setInfo(item);
-                binding.getRoot().setOnClickListener(v -> {
-                    Uri uri = Uri.parse(item.getUrl());
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    startActivity(intent);
-                });
-            }
-        };
-
-        mBinding.rv.setAdapter(mAdapter);
 
         mInfoRequestViewModel.getLibraryLiveData().observe(getViewLifecycleOwner(), libraryInfos -> {
             mInitDataCame = true;

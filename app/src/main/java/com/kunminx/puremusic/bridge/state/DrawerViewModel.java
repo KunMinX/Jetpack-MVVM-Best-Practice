@@ -16,7 +16,6 @@
 
 package com.kunminx.puremusic.bridge.state;
 
-import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
 /**
@@ -32,7 +31,5 @@ import androidx.lifecycle.ViewModel;
  * Create by KunMinX at 19/10/29
  */
 public class DrawerViewModel extends ViewModel {
-
-    public final ObservableField<String> loadPage = new ObservableField<>();
 
 }

@@ -28,6 +28,10 @@
             name="vm"
             type="com.kunminx.puremusic.bridge.state.MainViewModel" />
 
+        <variable
+            name="adapter"
+            type="androidx.recyclerview.widget.RecyclerView.Adapter" />
+
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -162,6 +166,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv"
+                adapter="@{adapter}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
