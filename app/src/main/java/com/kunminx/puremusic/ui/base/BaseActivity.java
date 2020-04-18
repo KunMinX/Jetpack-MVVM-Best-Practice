@@ -45,7 +45,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private SharedViewModel mSharedViewModel;
     private ViewModelProvider mActivityProvider;
-    private DataBindingConfig mDataBindingConfig;
 
     protected abstract void initViewModel();
 
@@ -61,7 +60,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         getLifecycle().addObserver(NetworkStateManager.getInstance());
 
         initViewModel();
-        mDataBindingConfig = getDataBindingConfig();
+        DataBindingConfig dataBindingConfig = getDataBindingConfig();
 
         //TODO 2020.4.18: 将 DataBinding 实例限制于 base 页面中，不上升为类成员，更不向子类暴露，
         // 通过这样的方式，来彻底解决 视图调用的一致性问题，
@@ -69,17 +68,17 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        ViewDataBinding binding = DataBindingUtil.setContentView(this, mDataBindingConfig.getLayout());
+        ViewDataBinding binding = DataBindingUtil.setContentView(this, dataBindingConfig.getLayout());
 
         // 与此同时，由于有隐藏 DataBinding 实例的需要，以下通用必用的内容，都在 base 页面中以抽象方法向子类暴露。
         binding.setLifecycleOwner(this);
-        binding.setVariable(BR.vm, mDataBindingConfig.getStateViewModel());
-        binding.setVariable(BR.click, mDataBindingConfig.getClickProxy());
-        if (mDataBindingConfig.getEventHandler() != null) {
-            binding.setVariable(BR.event, mDataBindingConfig.getEventHandler());
+        binding.setVariable(BR.vm, dataBindingConfig.getStateViewModel());
+        binding.setVariable(BR.click, dataBindingConfig.getClickProxy());
+        if (dataBindingConfig.getEventHandler() != null) {
+            binding.setVariable(BR.event, dataBindingConfig.getEventHandler());
         }
-        if (mDataBindingConfig.getAdapter() != null) {
-            binding.setVariable(BR.adapter, mDataBindingConfig.getAdapter());
+        if (dataBindingConfig.getAdapter() != null) {
+            binding.setVariable(BR.adapter, dataBindingConfig.getAdapter());
         }
 //        binding.executePendingBindings();
     }

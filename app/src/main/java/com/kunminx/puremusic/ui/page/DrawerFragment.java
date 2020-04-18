@@ -16,6 +16,7 @@
 
 package com.kunminx.puremusic.ui.page;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -41,29 +42,11 @@ public class DrawerFragment extends BaseFragment {
 
     private DrawerViewModel mDrawerViewModel;
     private InfoRequestViewModel mInfoRequestViewModel;
-    private SimpleBaseBindingAdapter<LibraryInfo, AdapterLibraryBinding> mAdapter;
 
     @Override
     protected void initViewModel() {
         mInfoRequestViewModel = getFragmentViewModel(InfoRequestViewModel.class);
         mDrawerViewModel = getFragmentViewModel(DrawerViewModel.class);
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        mAdapter = new SimpleBaseBindingAdapter<LibraryInfo, AdapterLibraryBinding>(getContext(), R.layout.adapter_library) {
-            @Override
-            protected void onSimpleBindItem(AdapterLibraryBinding binding, LibraryInfo item, RecyclerView.ViewHolder holder) {
-                binding.setInfo(item);
-                binding.getRoot().setOnClickListener(v -> {
-                    Uri uri = Uri.parse(item.getUrl());
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    startActivity(intent);
-                });
-            }
-        };
     }
 
     @Override
@@ -77,7 +60,7 @@ public class DrawerFragment extends BaseFragment {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.fragment_drawer, mDrawerViewModel, new ClickProxy(), null, mAdapter);
+        return new DataBindingConfig(R.layout.fragment_drawer, mDrawerViewModel, new ClickProxy(), null, new DrawerAdapter());
     }
 
     @Override
@@ -87,9 +70,7 @@ public class DrawerFragment extends BaseFragment {
         mInfoRequestViewModel.getLibraryLiveData().observe(getViewLifecycleOwner(), libraryInfos -> {
             mInitDataCame = true;
             if (mAnimationLoaded && libraryInfos != null) {
-                //noinspection unchecked
-                mAdapter.setList(libraryInfos);
-                mAdapter.notifyDataSetChanged();
+                mDrawerViewModel.list.setValue(libraryInfos);
             }
         });
 
@@ -100,9 +81,7 @@ public class DrawerFragment extends BaseFragment {
     public void loadInitData() {
         super.loadInitData();
         if (mInfoRequestViewModel.getLibraryLiveData().getValue() != null) {
-            //noinspection unchecked
-            mAdapter.setList(mInfoRequestViewModel.getLibraryLiveData().getValue());
-            mAdapter.notifyDataSetChanged();
+            mDrawerViewModel.list.setValue(mInfoRequestViewModel.getLibraryLiveData().getValue());
         }
     }
 
@@ -113,6 +92,27 @@ public class DrawerFragment extends BaseFragment {
             Uri uri = Uri.parse(u);
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
+        }
+    }
+
+    public class DrawerAdapter extends SimpleBaseBindingAdapter<LibraryInfo, AdapterLibraryBinding> {
+
+        DrawerAdapter() {
+            this(getContext(), R.layout.adapter_library);
+        }
+
+        DrawerAdapter(Context context, int layout) {
+            super(context, layout);
+        }
+
+        @Override
+        protected void onSimpleBindItem(AdapterLibraryBinding binding, LibraryInfo item, RecyclerView.ViewHolder holder) {
+            binding.setInfo(item);
+            binding.getRoot().setOnClickListener(v -> {
+                Uri uri = Uri.parse(item.getUrl());
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            });
         }
     }
 

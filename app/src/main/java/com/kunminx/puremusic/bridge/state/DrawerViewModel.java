@@ -16,7 +16,12 @@
 
 package com.kunminx.puremusic.bridge.state;
 
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.kunminx.puremusic.data.bean.LibraryInfo;
+
+import java.util.List;
 
 /**
  * TODO tip：每个页面都要单独准备一个 stateViewModel，
@@ -32,4 +37,9 @@ import androidx.lifecycle.ViewModel;
  */
 public class DrawerViewModel extends ViewModel {
 
+    //TODO 此处用于绑定的状态，使用 LiveData 而不是 ObservableField，主要是考虑到 ObservableField 具有防抖的特性，不适合该场景。
+
+    //如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
+
+    public final MutableLiveData<List<LibraryInfo>> list = new MutableLiveData<>();
 }

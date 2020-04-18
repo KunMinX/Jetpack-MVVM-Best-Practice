@@ -80,6 +80,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv"
             adapter="@{adapter}"
+            refreshList="@{vm.list}"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="24dp"

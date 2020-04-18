@@ -16,6 +16,7 @@
 
 package com.kunminx.puremusic.ui.page;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -33,7 +34,6 @@ import com.kunminx.puremusic.databinding.AdapterPlayItemBinding;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.base.BaseFragment;
 import com.kunminx.puremusic.ui.base.DataBindingConfig;
-import com.kunminx.puremusic.ui.helper.DrawerCoordinateHelper;
 
 /**
  * Create by KunMinX at 19/10/29
@@ -42,30 +42,11 @@ public class MainFragment extends BaseFragment {
 
     private MainViewModel mMainViewModel;
     private MusicRequestViewModel mMusicRequestViewModel;
-    private SimpleBaseBindingAdapter<TestAlbum.TestMusic, AdapterPlayItemBinding> mAdapter;
 
     @Override
     protected void initViewModel() {
         mMainViewModel = getFragmentViewModel(MainViewModel.class);
         mMusicRequestViewModel = getFragmentViewModel(MusicRequestViewModel.class);
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        mAdapter = new SimpleBaseBindingAdapter<TestAlbum.TestMusic, AdapterPlayItemBinding>(getContext(), R.layout.adapter_play_item) {
-            @Override
-            protected void onSimpleBindItem(AdapterPlayItemBinding binding, TestAlbum.TestMusic item, RecyclerView.ViewHolder holder) {
-                binding.setAlbum(item);
-                int currentIndex = PlayerManager.getInstance().getAlbumIndex();
-                binding.ivPlayStatus.setColor(currentIndex == holder.getAdapterPosition()
-                        ? getResources().getColor(R.color.gray) : Color.TRANSPARENT);
-                binding.getRoot().setOnClickListener(v -> {
-                    PlayerManager.getInstance().playAudio(holder.getAdapterPosition());
-                });
-            }
-        };
     }
 
     @Override
@@ -79,7 +60,7 @@ public class MainFragment extends BaseFragment {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.fragment_main, mMainViewModel, new ClickProxy(), null, mAdapter);
+        return new DataBindingConfig(R.layout.fragment_main, mMainViewModel, new ClickProxy(), null, new PlayListAdapter());
     }
 
     @Override
@@ -97,14 +78,13 @@ public class MainFragment extends BaseFragment {
             // 如此才能方便 追溯事件源，以及 避免 不可预期的 推送和错误。
             // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/0168753249
 
-            mAdapter.notifyDataSetChanged();
+            mMainViewModel.list.setValue(PlayerManager.getInstance().getAlbum().getMusics());
         });
 
         mMusicRequestViewModel.getFreeMusicsLiveData().observe(getViewLifecycleOwner(), musicAlbum -> {
             if (musicAlbum != null && musicAlbum.getMusics() != null) {
                 //noinspection unchecked
-                mAdapter.setList(musicAlbum.getMusics());
-                mAdapter.notifyDataSetChanged();
+                mMainViewModel.list.setValue(musicAlbum.getMusics());
 
                 // TODO tip 4：未作 UnPeek 处理的 用于 request 的 LiveData，在视图控制器重建时会自动倒灌数据
 
@@ -122,10 +102,8 @@ public class MainFragment extends BaseFragment {
         if (PlayerManager.getInstance().getAlbum() == null) {
             mMusicRequestViewModel.requestFreeMusics();
         } else {
-            mAdapter.setList(PlayerManager.getInstance().getAlbum().getMusics());
-            mAdapter.notifyDataSetChanged();
+            mMainViewModel.list.setValue(PlayerManager.getInstance().getAlbum().getMusics());
         }
-
     }
 
 
@@ -155,4 +133,25 @@ public class MainFragment extends BaseFragment {
 
     }
 
+    public class PlayListAdapter extends SimpleBaseBindingAdapter<TestAlbum.TestMusic, AdapterPlayItemBinding> {
+
+        PlayListAdapter() {
+            this(getContext(), R.layout.adapter_play_item);
+        }
+
+        PlayListAdapter(Context context, int layout) {
+            super(context, layout);
+        }
+
+        @Override
+        protected void onSimpleBindItem(AdapterPlayItemBinding binding, TestAlbum.TestMusic item, RecyclerView.ViewHolder holder) {
+            binding.setAlbum(item);
+            int currentIndex = PlayerManager.getInstance().getAlbumIndex();
+            binding.ivPlayStatus.setColor(currentIndex == holder.getAdapterPosition()
+                    ? getResources().getColor(R.color.gray) : Color.TRANSPARENT);
+            binding.getRoot().setOnClickListener(v -> {
+                PlayerManager.getInstance().playAudio(holder.getAdapterPosition());
+            });
+        }
+    }
 }
