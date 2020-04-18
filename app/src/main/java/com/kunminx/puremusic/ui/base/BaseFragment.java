@@ -109,7 +109,6 @@ public abstract class BaseFragment extends Fragment {
         if (dataBindingConfig.getAdapter() != null) {
             binding.setVariable(BR.adapter, dataBindingConfig.getAdapter());
         }
-//        binding.executePendingBindings();
         return binding.getRoot();
     }
 

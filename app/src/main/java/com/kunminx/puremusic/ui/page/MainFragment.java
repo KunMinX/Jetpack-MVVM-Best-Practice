@@ -85,7 +85,6 @@ public class MainFragment extends BaseFragment {
 
         mMusicRequestViewModel.getFreeMusicsLiveData().observe(getViewLifecycleOwner(), musicAlbum -> {
             if (musicAlbum != null && musicAlbum.getMusics() != null) {
-                //noinspection unchecked
                 mMainViewModel.list.setValue(musicAlbum.getMusics());
 
                 // TODO tip 4：未作 UnPeek 处理的 用于 request 的 LiveData，在视图控制器重建时会自动倒灌数据

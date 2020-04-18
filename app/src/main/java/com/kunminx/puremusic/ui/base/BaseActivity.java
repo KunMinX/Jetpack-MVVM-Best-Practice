@@ -80,7 +80,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (dataBindingConfig.getAdapter() != null) {
             binding.setVariable(BR.adapter, dataBindingConfig.getAdapter());
         }
-//        binding.executePendingBindings();
     }
 
     protected abstract DataBindingConfig getDataBindingConfig();
