@@ -104,25 +104,11 @@ public abstract class BaseFragment extends Fragment {
         if (mDataBindingConfig.getAdapter() != null) {
             binding.setVariable(BR.adapter, mDataBindingConfig.getAdapter());
         }
-//        binding.executePendingBindings();
+        binding.executePendingBindings();
         return binding.getRoot();
     }
 
     protected abstract DataBindingConfig getDataBindingConfig();
-
-//    protected abstract DataBindingInterface getDataBindingInterface();
-
-    /*// TODO tip：获取每个页面配套专属的 State - ViewModel，用于与 DataBinding 发生绑定
-    protected abstract ViewModel getStateViewModel();
-
-    // 获取页面的 layout
-    protected abstract int getLayout();
-
-    // TODO tip：获取每个页面配套专属的 ClickProxy，用于与 DataBinding 发生绑定
-    protected abstract ClickProxy getClickProxy();
-
-    // TODO tip：获取每个页面配套专属的 EventHandler，用于与 DataBinding 发生绑定
-    protected abstract EventHandler getEventHandler();*/
 
     @Nullable
     @Override
