@@ -127,7 +127,7 @@ public abstract class BaseFragment extends Fragment {
 
     }
 
-    protected boolean isDebug() {
+    public boolean isDebug() {
         return mActivity.getApplicationContext().getApplicationInfo() != null &&
                 (mActivity.getApplicationContext().getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
     }

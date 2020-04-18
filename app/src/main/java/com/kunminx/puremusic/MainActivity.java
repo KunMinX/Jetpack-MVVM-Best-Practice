@@ -19,14 +19,12 @@ package com.kunminx.puremusic;
 import android.os.Bundle;
 
 import androidx.core.view.GravityCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.kunminx.puremusic.bridge.state.MainActivityViewModel;
-import com.kunminx.puremusic.databinding.ActivityMainBinding;
 import com.kunminx.puremusic.ui.base.BaseActivity;
+import com.kunminx.puremusic.ui.base.DataBindingConfig;
 
 /**
  * Create by KunMinX at 19/10/16
@@ -34,7 +32,6 @@ import com.kunminx.puremusic.ui.base.BaseActivity;
 
 public class MainActivity extends BaseActivity {
 
-    private ActivityMainBinding mBinding;
     private MainActivityViewModel mMainActivityViewModel;
     private boolean isListened = false;
 
@@ -42,20 +39,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mMainActivityViewModel = getActivityViewModelProvider(this).get(MainActivityViewModel.class);
-        mMainActivityViewModel.initState();
-
-        // TODO tip 1: 此处通过 DataBinding 来规避 潜在的 视图调用的一致性问题，
-
-        // 因为本项目采用 横、竖 两套布局，且不同布局的控件存在差异，
-        // 在 DataBinding 适配器模式的加持下，有绑定就有绑定，没绑定也没什么大不了的，
-        // 总之 不会因一致性问题造成 视图调用的空指针异常。
-
-        // 如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
-
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        mBinding.setLifecycleOwner(this);
-        mBinding.setVm(mMainActivityViewModel);
+        mMainActivityViewModel = getActivityViewModel(MainActivityViewModel.class);
 
         getSharedViewModel().activityCanBeClosedDirectly.observe(this, aBoolean -> {
             NavController nav = Navigation.findNavController(this, R.id.main_fragment_host);
@@ -112,8 +96,20 @@ public class MainActivity extends BaseActivity {
                         : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             }*/
         });
+    }
 
+    @Override
+    protected DataBindingConfig getDataBindingConfig() {
+        
+        //TODO 2020.4.18:
+        // 将 DataBinding 实例限制于 base 页面中，不上升为类成员，更不向子类暴露，
+        // 通过这样的方式，来彻底解决 视图调用的一致性问题，
+        // 如此，视图刷新的安全性将和基于函数式编程的 Jetpack Compose 持平。
+        // 而 DataBindingConfig 就是在这样的背景下，用于为 base 页面中的 DataBinding 提供最少必要的绑定项。
 
+        // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
+
+        return new DataBindingConfig(R.layout.activity_main, mMainActivityViewModel);
     }
 
     @Override

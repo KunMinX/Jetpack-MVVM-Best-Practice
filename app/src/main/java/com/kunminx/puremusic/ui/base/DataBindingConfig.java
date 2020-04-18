@@ -43,15 +43,19 @@ public class DataBindingConfig {
 
     private RecyclerView.Adapter adapter;
 
-    public DataBindingConfig(int layout, @NonNull ViewModel stateViewModel, @NonNull BaseFragment.ClickProxy clickProxy) {
+    public DataBindingConfig(int layout, ViewModel stateViewModel) {
+        this(layout, stateViewModel, null);
+    }
+
+    public DataBindingConfig(int layout, @NonNull ViewModel stateViewModel, BaseFragment.ClickProxy clickProxy) {
         this(layout, stateViewModel, clickProxy, null);
     }
 
-    public DataBindingConfig(int layout, @NonNull ViewModel stateViewModel, @NonNull BaseFragment.ClickProxy clickProxy, BaseFragment.EventHandler eventHandler) {
+    public DataBindingConfig(int layout, @NonNull ViewModel stateViewModel, BaseFragment.ClickProxy clickProxy, BaseFragment.EventHandler eventHandler) {
         this(layout, stateViewModel, clickProxy, eventHandler,null);
     }
 
-    public DataBindingConfig(int layout, ViewModel stateViewModel, BaseFragment.ClickProxy clickProxy, BaseFragment.EventHandler eventHandler, RecyclerView.Adapter adapter) {
+    public DataBindingConfig(int layout, @NonNull ViewModel stateViewModel, BaseFragment.ClickProxy clickProxy, BaseFragment.EventHandler eventHandler, RecyclerView.Adapter adapter) {
         this.layout = layout;
         this.stateViewModel = stateViewModel;
         this.clickProxy = clickProxy;
