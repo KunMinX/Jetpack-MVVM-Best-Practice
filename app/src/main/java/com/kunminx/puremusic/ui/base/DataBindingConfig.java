@@ -22,13 +22,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * TODO 2020.4.18:
- *  将 DataBinding 实例限制于 base 页面中，不上升为类成员，更不向子类暴露，
- *  通过这样的方式，来彻底解决 视图调用的一致性问题，
- *  如此，视图刷新的安全性将和基于函数式编程的 Jetpack Compose 持平。
- *  而 DataBindingConfig 就是在这样的背景下，用于为 base 页面中的 DataBinding 提供最少必要的绑定项。
- *
- *  如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
- *
+ * 将 DataBinding 实例限制于 base 页面中，不上升为类成员，更不向子类暴露，
+ * 通过这样的方式，来彻底解决 视图调用的一致性问题，
+ * 如此，视图刷新的安全性将和基于函数式编程的 Jetpack Compose 持平。
+ * 而 DataBindingConfig 就是在这样的背景下，用于为 base 页面中的 DataBinding 提供最少必要的绑定项。
+ * <p>
+ * 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
+ * <p>
  * Create by KunMinX at 20/4/18
  */
 public class DataBindingConfig {
@@ -44,23 +44,8 @@ public class DataBindingConfig {
     private RecyclerView.Adapter adapter;
 
     public DataBindingConfig(int layout, ViewModel stateViewModel) {
-        this(layout, stateViewModel, null);
-    }
-
-    public DataBindingConfig(int layout, @NonNull ViewModel stateViewModel, ClickProxy clickProxy) {
-        this(layout, stateViewModel, clickProxy, null);
-    }
-
-    public DataBindingConfig(int layout, @NonNull ViewModel stateViewModel, ClickProxy clickProxy, EventHandler eventHandler) {
-        this(layout, stateViewModel, clickProxy, eventHandler,null);
-    }
-
-    public DataBindingConfig(int layout, @NonNull ViewModel stateViewModel, ClickProxy clickProxy, EventHandler eventHandler, RecyclerView.Adapter adapter) {
         this.layout = layout;
         this.stateViewModel = stateViewModel;
-        this.clickProxy = clickProxy;
-        this.eventHandler = eventHandler;
-        this.adapter = adapter;
     }
 
     public int getLayout() {
@@ -81,6 +66,31 @@ public class DataBindingConfig {
 
     public RecyclerView.Adapter getAdapter() {
         return adapter;
+    }
+
+    public DataBindingConfig setLayout(int layout) {
+        this.layout = layout;
+        return this;
+    }
+
+    public DataBindingConfig setStateViewModel(ViewModel stateViewModel) {
+        this.stateViewModel = stateViewModel;
+        return this;
+    }
+
+    public DataBindingConfig setClickProxy(ClickProxy clickProxy) {
+        this.clickProxy = clickProxy;
+        return this;
+    }
+
+    public DataBindingConfig setEventHandler(EventHandler eventHandler) {
+        this.eventHandler = eventHandler;
+        return this;
+    }
+
+    public DataBindingConfig setAdapter(RecyclerView.Adapter adapter) {
+        this.adapter = adapter;
+        return this;
     }
 
     public abstract static class ClickProxy {

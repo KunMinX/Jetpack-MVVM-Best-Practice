@@ -60,7 +60,9 @@ public class DrawerFragment extends BaseFragment {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.fragment_drawer, mDrawerViewModel, new ClickProxy(), null, new DrawerAdapter());
+        return new DataBindingConfig(R.layout.fragment_drawer, mDrawerViewModel)
+                .setClickProxy(new ClickProxy())
+                .setAdapter(new DrawerAdapter());
     }
 
     @Override
