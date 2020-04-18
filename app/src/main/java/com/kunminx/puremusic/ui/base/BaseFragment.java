@@ -65,10 +65,14 @@ public abstract class BaseFragment extends Fragment {
         mActivity = (AppCompatActivity) context;
     }
 
+    protected abstract void initViewModel();
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mSharedViewModel = ((App) mActivity.getApplicationContext()).getAppViewModelProvider(mActivity).get(SharedViewModel.class);
+
+        initViewModel();
 
         //TODO 注意 liveData 的 lambda 回调中不可为空，不然会出现 Cannot add the same observer with different lifecycles 的现象，
         // 详见：https://stackoverflow.com/questions/47025233/android-lifecycle-library-cannot-add-the-same-observer-with-different-lifecycle
@@ -79,6 +83,8 @@ public abstract class BaseFragment extends Fragment {
     protected void onNetworkStateChanged(NetState netState) {
         //TODO 子类可以重写该方法，统一的网络状态通知和处理
     }
+
+    protected abstract DataBindingConfig getDataBindingConfig();
 
     @Nullable
     @Override
@@ -104,11 +110,9 @@ public abstract class BaseFragment extends Fragment {
         if (mDataBindingConfig.getAdapter() != null) {
             binding.setVariable(BR.adapter, mDataBindingConfig.getAdapter());
         }
-        binding.executePendingBindings();
+//        binding.executePendingBindings();
         return binding.getRoot();
     }
-
-    protected abstract DataBindingConfig getDataBindingConfig();
 
     @Nullable
     @Override

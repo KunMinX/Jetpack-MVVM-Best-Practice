@@ -44,10 +44,14 @@ public class DrawerFragment extends BaseFragment {
     private SimpleBaseBindingAdapter<LibraryInfo, AdapterLibraryBinding> mAdapter;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initViewModel() {
         mInfoRequestViewModel = getFragmentViewModel(InfoRequestViewModel.class);
         mDrawerViewModel = getFragmentViewModel(DrawerViewModel.class);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         mAdapter = new SimpleBaseBindingAdapter<LibraryInfo, AdapterLibraryBinding>(getContext(), R.layout.adapter_library) {
             @Override
@@ -102,7 +106,7 @@ public class DrawerFragment extends BaseFragment {
         }
     }
 
-    public class ClickProxy extends BaseFragment.ClickProxy {
+    public class ClickProxy extends DataBindingConfig.ClickProxy {
 
         public void logoClick() {
             String u = "https://github.com/KunMinX/Jetpack-MVVM-Best-Practice";

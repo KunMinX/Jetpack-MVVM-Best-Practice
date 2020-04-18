@@ -17,24 +17,19 @@
 package com.kunminx.puremusic.ui.page;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModel;
 
 import com.kunminx.player.PlayingInfoManager;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.bridge.callback.SharedViewModel;
 import com.kunminx.puremusic.bridge.state.PlayerViewModel;
-import com.kunminx.puremusic.databinding.FragmentPlayerBinding;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.base.BaseFragment;
 import com.kunminx.puremusic.ui.base.DataBindingConfig;
-import com.kunminx.puremusic.ui.view.PlayerSlideListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
@@ -47,8 +42,7 @@ public class PlayerFragment extends BaseFragment {
     private PlayerViewModel mPlayerViewModel;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initViewModel() {
         mPlayerViewModel = getFragmentViewModel(PlayerViewModel.class);
     }
 
@@ -195,7 +189,7 @@ public class PlayerFragment extends BaseFragment {
     // 也即，有绑定就有绑定，没绑定也没什么大不了的，总之 不会因一致性问题造成 视图调用的空指针。
     // 如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
-    public class ClickProxy extends BaseFragment.ClickProxy {
+    public class ClickProxy extends DataBindingConfig.ClickProxy {
 
         public void playMode() {
             PlayerManager.getInstance().changeMode();
@@ -225,7 +219,7 @@ public class PlayerFragment extends BaseFragment {
         }
     }
 
-    public static class EventHandler extends BaseFragment.EventHandler implements SeekBar.OnSeekBarChangeListener {
+    public static class EventHandler extends DataBindingConfig.EventHandler implements SeekBar.OnSeekBarChangeListener {
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {

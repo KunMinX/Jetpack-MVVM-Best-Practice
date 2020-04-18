@@ -45,10 +45,14 @@ public class MainFragment extends BaseFragment {
     private SimpleBaseBindingAdapter<TestAlbum.TestMusic, AdapterPlayItemBinding> mAdapter;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initViewModel() {
         mMainViewModel = getFragmentViewModel(MainViewModel.class);
         mMusicRequestViewModel = getFragmentViewModel(MusicRequestViewModel.class);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         mAdapter = new SimpleBaseBindingAdapter<TestAlbum.TestMusic, AdapterPlayItemBinding>(getContext(), R.layout.adapter_play_item) {
             @Override
@@ -134,7 +138,7 @@ public class MainFragment extends BaseFragment {
     // 也即，有绑定就有绑定，没绑定也没什么大不了的，总之 不会因一致性问题造成 视图调用的空指针。
     // 如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
-    public class ClickProxy extends BaseFragment.ClickProxy {
+    public class ClickProxy extends DataBindingConfig.ClickProxy {
 
         public void openMenu() {
 

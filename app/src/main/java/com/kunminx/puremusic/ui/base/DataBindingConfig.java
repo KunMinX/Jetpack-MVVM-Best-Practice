@@ -37,9 +37,9 @@ public class DataBindingConfig {
 
     private ViewModel stateViewModel;
 
-    private BaseFragment.ClickProxy clickProxy;
+    private ClickProxy clickProxy;
 
-    private BaseFragment.EventHandler eventHandler;
+    private EventHandler eventHandler;
 
     private RecyclerView.Adapter adapter;
 
@@ -47,15 +47,15 @@ public class DataBindingConfig {
         this(layout, stateViewModel, null);
     }
 
-    public DataBindingConfig(int layout, @NonNull ViewModel stateViewModel, BaseFragment.ClickProxy clickProxy) {
+    public DataBindingConfig(int layout, @NonNull ViewModel stateViewModel, ClickProxy clickProxy) {
         this(layout, stateViewModel, clickProxy, null);
     }
 
-    public DataBindingConfig(int layout, @NonNull ViewModel stateViewModel, BaseFragment.ClickProxy clickProxy, BaseFragment.EventHandler eventHandler) {
+    public DataBindingConfig(int layout, @NonNull ViewModel stateViewModel, ClickProxy clickProxy, EventHandler eventHandler) {
         this(layout, stateViewModel, clickProxy, eventHandler,null);
     }
 
-    public DataBindingConfig(int layout, @NonNull ViewModel stateViewModel, BaseFragment.ClickProxy clickProxy, BaseFragment.EventHandler eventHandler, RecyclerView.Adapter adapter) {
+    public DataBindingConfig(int layout, @NonNull ViewModel stateViewModel, ClickProxy clickProxy, EventHandler eventHandler, RecyclerView.Adapter adapter) {
         this.layout = layout;
         this.stateViewModel = stateViewModel;
         this.clickProxy = clickProxy;
@@ -71,15 +71,21 @@ public class DataBindingConfig {
         return stateViewModel;
     }
 
-    public BaseFragment.ClickProxy getClickProxy() {
+    public ClickProxy getClickProxy() {
         return clickProxy;
     }
 
-    public BaseFragment.EventHandler getEventHandler() {
+    public EventHandler getEventHandler() {
         return eventHandler;
     }
 
     public RecyclerView.Adapter getAdapter() {
         return adapter;
+    }
+
+    public abstract static class ClickProxy {
+    }
+
+    public abstract static class EventHandler {
     }
 }

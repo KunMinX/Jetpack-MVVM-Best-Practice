@@ -40,10 +40,14 @@ public class SearchFragment extends BaseFragment {
     private DownloadViewModel mDownloadViewModel;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initViewModel() {
         mDownloadViewModel = getActivityViewModel(DownloadViewModel.class);
         mSearchViewModel = getFragmentViewModel(SearchViewModel.class);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         getLifecycle().addObserver(DrawerCoordinateHelper.getInstance());
 
@@ -78,7 +82,7 @@ public class SearchFragment extends BaseFragment {
         });
     }
 
-    public class ClickProxy extends BaseFragment.ClickProxy {
+    public class ClickProxy extends DataBindingConfig.ClickProxy {
 
         public void back() {
             nav().navigateUp();

@@ -47,6 +47,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     private ViewModelProvider mActivityProvider;
     private DataBindingConfig mDataBindingConfig;
 
+    protected abstract void initViewModel();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +60,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         getLifecycle().addObserver(NetworkStateManager.getInstance());
 
+        initViewModel();
         mDataBindingConfig = getDataBindingConfig();
 
         //TODO 2020.4.18: 将 DataBinding 实例限制于 base 页面中，不上升为类成员，更不向子类暴露，
@@ -78,7 +81,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (mDataBindingConfig.getAdapter() != null) {
             binding.setVariable(BR.adapter, mDataBindingConfig.getAdapter());
         }
-        binding.executePendingBindings();
+//        binding.executePendingBindings();
     }
 
     protected abstract DataBindingConfig getDataBindingConfig();
@@ -113,7 +116,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         showShortToast(getApplicationContext().getString(stringRes));
     }
 
-
     protected <T extends ViewModel> T getActivityViewModel(@NonNull Class<T> modelClass) {
         if (mActivityProvider == null) {
             mActivityProvider = new ViewModelProvider(this);
@@ -124,5 +126,4 @@ public abstract class BaseActivity extends AppCompatActivity {
     public SharedViewModel getSharedViewModel() {
         return mSharedViewModel;
     }
-
 }

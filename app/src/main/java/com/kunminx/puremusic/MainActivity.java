@@ -17,8 +17,11 @@
 package com.kunminx.puremusic;
 
 import android.os.Bundle;
+import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -39,8 +42,6 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mMainActivityViewModel = getActivityViewModel(MainActivityViewModel.class);
-
         getSharedViewModel().activityCanBeClosedDirectly.observe(this, aBoolean -> {
             NavController nav = Navigation.findNavController(this, R.id.main_fragment_host);
             if (nav.getCurrentDestination() != null && nav.getCurrentDestination().getId() != R.id.mainFragment) {
@@ -48,8 +49,8 @@ public class MainActivity extends BaseActivity {
 
                 //TODO tip 6: 同 tip 5.
 
-            } else if (mBinding.dl != null && mBinding.dl.isDrawerOpen(GravityCompat.START)) {
-                mBinding.dl.closeDrawer(GravityCompat.START);
+            } else if (mMainActivityViewModel.isDrawerOpened) {
+                mMainActivityViewModel.openDrawer.setValue(false);
 
             } else {
                 super.onBackPressed();
@@ -71,7 +72,7 @@ public class MainActivity extends BaseActivity {
 
             mMainActivityViewModel.openDrawer.setValue(aBoolean);
 
-            //TODO do not:（容易埋下视图调用的一致性隐患）
+            //TODO do not:（容易因疏忽而埋下视图调用的一致性隐患）
 
             /*if (mBinding.dl != null) {
                 if (aBoolean && !mBinding.dl.isDrawerOpen(GravityCompat.START)) {
@@ -88,7 +89,7 @@ public class MainActivity extends BaseActivity {
 
             mMainActivityViewModel.allowDrawerOpen.setValue(aBoolean);
 
-            // TODO tip 7: do not:（容易埋下视图调用的一致性隐患）
+            // TODO tip 7: do not:（容易因疏忽而埋下视图调用的一致性隐患）
 
             /*if (mBinding.dl != null) {
                 mBinding.dl.setDrawerLockMode(aBoolean
@@ -99,8 +100,13 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected void initViewModel() {
+        mMainActivityViewModel = getActivityViewModel(MainActivityViewModel.class);
+    }
+
+    @Override
     protected DataBindingConfig getDataBindingConfig() {
-        
+
         //TODO 2020.4.18:
         // 将 DataBinding 实例限制于 base 页面中，不上升为类成员，更不向子类暴露，
         // 通过这样的方式，来彻底解决 视图调用的一致性问题，
@@ -109,7 +115,7 @@ public class MainActivity extends BaseActivity {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.activity_main, mMainActivityViewModel);
+        return new DataBindingConfig(R.layout.activity_main, mMainActivityViewModel, null, new EventHandler());
     }
 
     @Override
@@ -137,5 +143,27 @@ public class MainActivity extends BaseActivity {
         // TODO tip 3：同 tip 2
 
         getSharedViewModel().closeSlidePanelIfExpanded.setValue(true);
+    }
+
+    public class EventHandler extends DataBindingConfig.EventHandler implements DrawerLayout.DrawerListener {
+        @Override
+        public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+
+        }
+
+        @Override
+        public void onDrawerOpened(@NonNull View drawerView) {
+            mMainActivityViewModel.isDrawerOpened = true;
+        }
+
+        @Override
+        public void onDrawerClosed(@NonNull View drawerView) {
+            mMainActivityViewModel.isDrawerOpened = false;
+        }
+
+        @Override
+        public void onDrawerStateChanged(int newState) {
+
+        }
     }
 }
