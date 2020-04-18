@@ -16,24 +16,19 @@
 
 package com.kunminx.puremusic.ui.page;
 
-import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.kunminx.architecture.ui.adapter.SimpleBaseBindingAdapter;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.bridge.request.MusicRequestViewModel;
 import com.kunminx.puremusic.bridge.state.MainViewModel;
-import com.kunminx.puremusic.data.bean.TestAlbum;
-import com.kunminx.puremusic.databinding.AdapterPlayItemBinding;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.base.BaseFragment;
 import com.kunminx.puremusic.ui.base.DataBindingConfig;
+import com.kunminx.puremusic.ui.page.adapter.PlaylistAdapter;
 
 /**
  * Create by KunMinX at 19/10/29
@@ -62,7 +57,7 @@ public class MainFragment extends BaseFragment {
 
         return new DataBindingConfig(R.layout.fragment_main, mMainViewModel)
                 .setClickProxy(new ClickProxy())
-                .setAdapter(new PlayListAdapter());
+                .setAdapter(new PlaylistAdapter(getContext()));
     }
 
     @Override
@@ -134,25 +129,4 @@ public class MainFragment extends BaseFragment {
 
     }
 
-    public class PlayListAdapter extends SimpleBaseBindingAdapter<TestAlbum.TestMusic, AdapterPlayItemBinding> {
-
-        PlayListAdapter() {
-            this(getContext(), R.layout.adapter_play_item);
-        }
-
-        PlayListAdapter(Context context, int layout) {
-            super(context, layout);
-        }
-
-        @Override
-        protected void onSimpleBindItem(AdapterPlayItemBinding binding, TestAlbum.TestMusic item, RecyclerView.ViewHolder holder) {
-            binding.setAlbum(item);
-            int currentIndex = PlayerManager.getInstance().getAlbumIndex();
-            binding.ivPlayStatus.setColor(currentIndex == holder.getAdapterPosition()
-                    ? getResources().getColor(R.color.gray) : Color.TRANSPARENT);
-            binding.getRoot().setOnClickListener(v -> {
-                PlayerManager.getInstance().playAudio(holder.getAdapterPosition());
-            });
-        }
-    }
 }

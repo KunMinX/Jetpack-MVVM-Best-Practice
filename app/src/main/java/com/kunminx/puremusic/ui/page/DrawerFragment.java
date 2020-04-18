@@ -16,7 +16,6 @@
 
 package com.kunminx.puremusic.ui.page;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,16 +23,13 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.kunminx.architecture.ui.adapter.SimpleBaseBindingAdapter;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.bridge.request.InfoRequestViewModel;
 import com.kunminx.puremusic.bridge.state.DrawerViewModel;
-import com.kunminx.puremusic.data.bean.LibraryInfo;
-import com.kunminx.puremusic.databinding.AdapterLibraryBinding;
 import com.kunminx.puremusic.ui.base.BaseFragment;
 import com.kunminx.puremusic.ui.base.DataBindingConfig;
+import com.kunminx.puremusic.ui.page.adapter.DrawerAdapter;
 
 /**
  * Create by KunMinX at 19/10/29
@@ -62,7 +58,7 @@ public class DrawerFragment extends BaseFragment {
 
         return new DataBindingConfig(R.layout.fragment_drawer, mDrawerViewModel)
                 .setClickProxy(new ClickProxy())
-                .setAdapter(new DrawerAdapter());
+                .setAdapter(new DrawerAdapter(getContext()));
     }
 
     @Override
@@ -94,27 +90,6 @@ public class DrawerFragment extends BaseFragment {
             Uri uri = Uri.parse(u);
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
-        }
-    }
-
-    public class DrawerAdapter extends SimpleBaseBindingAdapter<LibraryInfo, AdapterLibraryBinding> {
-
-        DrawerAdapter() {
-            this(getContext(), R.layout.adapter_library);
-        }
-
-        DrawerAdapter(Context context, int layout) {
-            super(context, layout);
-        }
-
-        @Override
-        protected void onSimpleBindItem(AdapterLibraryBinding binding, LibraryInfo item, RecyclerView.ViewHolder holder) {
-            binding.setInfo(item);
-            binding.getRoot().setOnClickListener(v -> {
-                Uri uri = Uri.parse(item.getUrl());
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-            });
         }
     }
 
