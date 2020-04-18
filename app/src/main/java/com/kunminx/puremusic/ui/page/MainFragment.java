@@ -126,10 +126,6 @@ public class MainFragment extends BaseFragment {
             mAdapter.notifyDataSetChanged();
         }
 
-        DrawerCoordinateHelper.getInstance().openDrawer.observe(getViewLifecycleOwner(), aBoolean -> {
-            getSharedViewModel().openOrCloseDrawer.setValue(true);
-        });
-
     }
 
 

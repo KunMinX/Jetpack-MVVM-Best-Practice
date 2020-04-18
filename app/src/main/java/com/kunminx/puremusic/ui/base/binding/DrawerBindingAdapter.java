@@ -29,4 +29,9 @@ public class DrawerBindingAdapter {
                 ? DrawerLayout.LOCK_MODE_UNLOCKED
                 : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
+
+    @BindingAdapter(value = {"drawerListener"}, requireAll = false)
+    public static void drawerListener(DrawerLayout drawerLayout, DrawerLayout.DrawerListener drawerListener) {
+        drawerLayout.addDrawerListener(drawerListener);
+    }
 }

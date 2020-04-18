@@ -39,6 +39,11 @@ public class MainActivity extends BaseActivity {
     private boolean isListened = false;
 
     @Override
+    protected void initViewModel() {
+        mMainActivityViewModel = getActivityViewModel(MainActivityViewModel.class);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -50,7 +55,7 @@ public class MainActivity extends BaseActivity {
                 //TODO tip 6: 同 tip 5.
 
             } else if (mMainActivityViewModel.isDrawerOpened) {
-                mMainActivityViewModel.openDrawer.setValue(false);
+                getSharedViewModel().openOrCloseDrawer.setValue(false);
 
             } else {
                 super.onBackPressed();
@@ -97,11 +102,6 @@ public class MainActivity extends BaseActivity {
                         : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             }*/
         });
-    }
-
-    @Override
-    protected void initViewModel() {
-        mMainActivityViewModel = getActivityViewModel(MainActivityViewModel.class);
     }
 
     @Override

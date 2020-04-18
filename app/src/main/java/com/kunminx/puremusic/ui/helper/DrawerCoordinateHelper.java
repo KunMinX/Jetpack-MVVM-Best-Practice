@@ -35,7 +35,6 @@ import com.kunminx.puremusic.ui.base.BaseFragment;
 public class DrawerCoordinateHelper implements DefaultLifecycleObserver {
 
     private static final DrawerCoordinateHelper S_HELPER = new DrawerCoordinateHelper();
-    public final UnPeekLiveData<Boolean> openDrawer = new UnPeekLiveData<>();
 
     private DrawerCoordinateHelper() {
     }
