@@ -41,7 +41,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="top">
 
-        <com.kunminx.puremusic.ui.view.ForegroundImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/album_art"
             imageUrl="@{vm.coverImg}"
             placeHolder="@{vm.placeHolder}"
@@ -88,12 +88,6 @@
                 app:materialIconSize="28dp" />
 
         </RelativeLayout>
-
-        <com.kunminx.puremusic.ui.view.LyricView
-            android:id="@+id/lyric_view"
-            android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/summary"
@@ -185,7 +179,6 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginEnd="16dp"
                 android:layout_toStartOf="@+id/play_pause"
-                android:alpha="0"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:onClick="@{()->click.previous()}"
                 android:scaleType="center"
@@ -200,7 +193,6 @@
                 android:layout_height="36dp"
                 android:layout_marginEnd="16dp"
                 android:layout_toStartOf="@id/previous"
-                android:alpha="0"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:onClick="@{()->click.playMode()}"
                 android:scaleType="center"
@@ -236,7 +228,6 @@
             android:progress="@{vm.currentSeekPosition}"
             android:progressDrawable="@drawable/progressbar_color"
             android:thumb="@null"
-            android:visibility="visible"
             app:onSeekBarChangeListener="@{event}" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

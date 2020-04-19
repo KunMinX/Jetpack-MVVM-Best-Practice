@@ -20,6 +20,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -45,8 +47,34 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private SharedViewModel mSharedViewModel;
     private ViewModelProvider mActivityProvider;
+    private ViewDataBinding mBinding;
+    private TextView mTvStrictModeTip;
 
     protected abstract void initViewModel();
+
+    protected abstract DataBindingConfig getDataBindingConfig();
+
+    /**
+     * TODO tip: 警惕使用。非必要情况下，尽可能不在子类中拿到 binding 实例乃至获取 view 实例。使用即埋下隐患。
+     * 目前的方案是在 debug 模式下，对获取实例的情况给予提示。
+     * <p>
+     * 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
+     *
+     * @return
+     */
+    protected ViewDataBinding getBinding() {
+        if (isDebug() && mBinding != null) {
+            if (mTvStrictModeTip == null) {
+                mTvStrictModeTip = new TextView(getApplicationContext());
+                mTvStrictModeTip.setAlpha(0.5f);
+                mTvStrictModeTip.setTextSize(16);
+                mTvStrictModeTip.setBackgroundColor(Color.WHITE);
+                mTvStrictModeTip.setText("Debug 提示：此 Activity 未遵循 DataBinding 严格模式，存在 视图调用的 Null 安全风险");
+                ((ViewGroup) mBinding.getRoot()).addView(mTvStrictModeTip);
+            }
+        }
+        return mBinding;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,23 +90,20 @@ public abstract class BaseActivity extends AppCompatActivity {
         initViewModel();
         DataBindingConfig dataBindingConfig = getDataBindingConfig();
 
-        //TODO tip: 将 DataBinding 实例限制于 base 页面中，不上升为类成员，更不向子类暴露，
+        //TODO tip: 将 DataBinding 实例限制于 base 页面中，默认不向子类暴露，
         // 通过这样的方式，来彻底解决 视图调用的一致性问题，
         // 如此，视图刷新的安全性将和基于函数式编程的 Jetpack Compose 持平。
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
         ViewDataBinding binding = DataBindingUtil.setContentView(this, dataBindingConfig.getLayout());
-
-        // 与此同时，由于有隐藏 DataBinding 实例的需要，以下通用必用的内容，都在 base 页面中以抽象方法向子类暴露。
         binding.setLifecycleOwner(this);
         binding.setVariable(BR.vm, dataBindingConfig.getStateViewModel());
         for (int i = 0, length = dataBindingConfig.getBindingParams().size(); i < length; i++) {
             binding.setVariable(dataBindingConfig.getBindingParams().keyAt(i), dataBindingConfig.getBindingParams().valueAt(i));
         }
+        mBinding = binding;
     }
-
-    protected abstract DataBindingConfig getDataBindingConfig();
 
     public boolean isDebug() {
         return getApplicationContext().getApplicationInfo() != null &&

@@ -28,6 +28,7 @@ import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.bridge.callback.SharedViewModel;
 import com.kunminx.puremusic.bridge.state.PlayerViewModel;
+import com.kunminx.puremusic.databinding.FragmentPlayerBinding;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.base.BaseFragment;
 import com.kunminx.puremusic.ui.base.DataBindingConfig;
@@ -52,7 +53,7 @@ public class PlayerFragment extends BaseFragment {
     protected DataBindingConfig getDataBindingConfig() {
 
         //TODO tip:
-        // 将 DataBinding 实例限制于 base 页面中，不上升为类成员，更不向子类暴露，
+        // 将 DataBinding 实例限制于 base 页面中，默认不向子类暴露，
         // 通过这样的方式，来彻底解决 视图调用的一致性问题，
         // 如此，视图刷新的安全性将和基于函数式编程的 Jetpack Compose 持平。
         // 而 DataBindingConfig 就是在这样的背景下，用于为 base 页面中的 DataBinding 提供绑定项。
@@ -78,7 +79,7 @@ public class PlayerFragment extends BaseFragment {
         getSharedViewModel().timeToAddSlideListener.observe(getViewLifecycleOwner(), aBoolean -> {
             if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {
                 SlidingUpPanelLayout sliding = (SlidingUpPanelLayout) view.getParent().getParent();
-//                sliding.addPanelSlideListener(new PlayerSlideListener(mBinding, sliding));
+                sliding.addPanelSlideListener(new PlayerSlideListener((FragmentPlayerBinding) getBinding(), sliding));
                 sliding.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
                     @Override
                     public void onPanelSlide(View view, float v) {

@@ -25,4 +25,14 @@ public class IconBindingAdapter {
     public static void setIcon(MaterialIconView view, MaterialDrawableBuilder.IconValue iconValue) {
         view.setIcon(iconValue);
     }
+
+    @BindingAdapter(value = {"circleAlpha"}, requireAll = false)
+    public static void circleAlpha(PlayPauseView pauseView, int circleAlpha) {
+        pauseView.setCircleAlpah(circleAlpha);
+    }
+
+    @BindingAdapter(value = {"drawableColor"}, requireAll = false)
+    public static void drawableColor(PlayPauseView pauseView, int drawableColor) {
+        pauseView.setDrawableColor(drawableColor);
+    }
 }

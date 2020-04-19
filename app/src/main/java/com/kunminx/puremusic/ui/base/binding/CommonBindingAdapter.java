@@ -18,6 +18,7 @@ package com.kunminx.puremusic.ui.base.binding;
 
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -68,4 +69,17 @@ public class CommonBindingAdapter {
         ClickUtils.applySingleDebouncing(view, clickListener);
     }
 
+    @BindingAdapter(value = {"adjustWidth"})
+    public static void adjustWidth(View view, int adjustWidth) {
+        ViewGroup.LayoutParams params = view.getLayoutParams();
+        params.width = adjustWidth;
+        view.setLayoutParams(params);
+    }
+
+    @BindingAdapter(value = {"adjustHeight"})
+    public static void adjustHeight(View view, int adjustHeight) {
+        ViewGroup.LayoutParams params = view.getLayoutParams();
+        params.height = adjustHeight;
+        view.setLayoutParams(params);
+    }
 }
