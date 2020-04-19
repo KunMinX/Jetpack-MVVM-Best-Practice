@@ -107,7 +107,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected DataBindingConfig getDataBindingConfig() {
 
-        //TODO 2020.4.18:
+        //TODO tip:
         // 将 DataBinding 实例限制于 base 页面中，不上升为类成员，更不向子类暴露，
         // 通过这样的方式，来彻底解决 视图调用的一致性问题，
         // 如此，视图刷新的安全性将和基于函数式编程的 Jetpack Compose 持平。
@@ -116,7 +116,7 @@ public class MainActivity extends BaseActivity {
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
         return new DataBindingConfig(R.layout.activity_main, mMainActivityViewModel)
-                .setEventHandler(new EventHandler());
+                .addBindingParam(BR.event, new EventHandler());
     }
 
     @Override
@@ -146,7 +146,7 @@ public class MainActivity extends BaseActivity {
         getSharedViewModel().closeSlidePanelIfExpanded.setValue(true);
     }
 
-    public class EventHandler extends DataBindingConfig.EventHandler implements DrawerLayout.DrawerListener {
+    public class EventHandler implements DrawerLayout.DrawerListener {
         @Override
         public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
 

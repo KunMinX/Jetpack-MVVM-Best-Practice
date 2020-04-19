@@ -91,7 +91,7 @@ public abstract class BaseFragment extends Fragment {
 
         DataBindingConfig dataBindingConfig = getDataBindingConfig();
 
-        //TODO 2020.4.18: 将 DataBinding 实例限制于 base 页面中，不上升为类成员，更不向子类暴露，
+        //TODO tip: 将 DataBinding 实例限制于 base 页面中，不上升为类成员，更不向子类暴露，
         // 通过这样的方式，来彻底解决 视图调用的一致性问题，
         // 如此，视图刷新的安全性将和基于函数式编程的 Jetpack Compose 持平。
 
@@ -102,12 +102,8 @@ public abstract class BaseFragment extends Fragment {
         // 与此同时，由于有隐藏 DataBinding 实例的需要，以下通用必用的内容，都在 base 页面中以抽象方法向子类暴露。
         binding.setLifecycleOwner(this);
         binding.setVariable(BR.vm, dataBindingConfig.getStateViewModel());
-        binding.setVariable(BR.click, dataBindingConfig.getClickProxy());
-        if (dataBindingConfig.getEventHandler() != null) {
-            binding.setVariable(BR.event, dataBindingConfig.getEventHandler());
-        }
-        if (dataBindingConfig.getAdapter() != null) {
-            binding.setVariable(BR.adapter, dataBindingConfig.getAdapter());
+        for (int i = 0, length = dataBindingConfig.getBindingParams().size(); i < length; i++) {
+            binding.setVariable(dataBindingConfig.getBindingParams().keyAt(i), dataBindingConfig.getBindingParams().valueAt(i));
         }
         return binding.getRoot();
     }

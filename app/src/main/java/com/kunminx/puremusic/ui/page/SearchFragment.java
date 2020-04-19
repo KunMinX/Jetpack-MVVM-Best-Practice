@@ -23,6 +23,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.library.baseAdapters.BR;
 
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.bridge.request.DownloadViewModel;
@@ -58,7 +59,7 @@ public class SearchFragment extends BaseFragment {
     @Override
     protected DataBindingConfig getDataBindingConfig() {
 
-        //TODO 2020.4.18:
+        //TODO tip:
         // 将 DataBinding 实例限制于 base 页面中，不上升为类成员，更不向子类暴露，
         // 通过这样的方式，来彻底解决 视图调用的一致性问题，
         // 如此，视图刷新的安全性将和基于函数式编程的 Jetpack Compose 持平。
@@ -66,7 +67,8 @@ public class SearchFragment extends BaseFragment {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.fragment_search, mSearchViewModel).setClickProxy(new ClickProxy());
+        return new DataBindingConfig(R.layout.fragment_search, mSearchViewModel)
+                .addBindingParam(BR.click, new ClickProxy());
     }
 
     @Override
@@ -82,7 +84,7 @@ public class SearchFragment extends BaseFragment {
         });
     }
 
-    public class ClickProxy extends DataBindingConfig.ClickProxy {
+    public class ClickProxy {
 
         public void back() {
             nav().navigateUp();

@@ -16,11 +16,17 @@
 
 package com.kunminx.puremusic.ui.base;
 
+import android.util.SparseArray;
+import android.util.SparseIntArray;
+
 import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * TODO 2020.4.18:
+ * TODO tip:
  *  将 DataBinding 实例限制于 base 页面中，不上升为类成员，更不向子类暴露，
  *  通过这样的方式，来彻底解决 视图调用的一致性问题，
  *  如此，视图刷新的安全性将和基于函数式编程的 Jetpack Compose 持平。
@@ -36,11 +42,7 @@ public class DataBindingConfig {
 
     private ViewModel stateViewModel;
 
-    private ClickProxy clickProxy;
-
-    private EventHandler eventHandler;
-
-    private RecyclerView.Adapter adapter;
+    private SparseArray bindingParams = new SparseArray();
 
     public DataBindingConfig(int layout, ViewModel stateViewModel) {
         this.layout = layout;
@@ -55,16 +57,8 @@ public class DataBindingConfig {
         return stateViewModel;
     }
 
-    public ClickProxy getClickProxy() {
-        return clickProxy;
-    }
-
-    public EventHandler getEventHandler() {
-        return eventHandler;
-    }
-
-    public RecyclerView.Adapter getAdapter() {
-        return adapter;
+    public SparseArray getBindingParams() {
+        return bindingParams;
     }
 
     public DataBindingConfig setLayout(int layout) {
@@ -77,24 +71,10 @@ public class DataBindingConfig {
         return this;
     }
 
-    public DataBindingConfig setClickProxy(ClickProxy clickProxy) {
-        this.clickProxy = clickProxy;
+    public DataBindingConfig addBindingParam(int variableId, Object object) {
+        if (bindingParams.get(variableId) == null) {
+            bindingParams.put(variableId, object);
+        }
         return this;
-    }
-
-    public DataBindingConfig setEventHandler(EventHandler eventHandler) {
-        this.eventHandler = eventHandler;
-        return this;
-    }
-
-    public DataBindingConfig setAdapter(RecyclerView.Adapter adapter) {
-        this.adapter = adapter;
-        return this;
-    }
-
-    public abstract static class ClickProxy {
-    }
-
-    public abstract static class EventHandler {
     }
 }

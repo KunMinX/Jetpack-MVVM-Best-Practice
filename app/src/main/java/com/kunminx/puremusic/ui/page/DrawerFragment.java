@@ -24,6 +24,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.bridge.request.InfoRequestViewModel;
 import com.kunminx.puremusic.bridge.state.DrawerViewModel;
@@ -48,7 +49,7 @@ public class DrawerFragment extends BaseFragment {
     @Override
     protected DataBindingConfig getDataBindingConfig() {
 
-        //TODO 2020.4.18:
+        //TODO tip:
         // 将 DataBinding 实例限制于 base 页面中，不上升为类成员，更不向子类暴露，
         // 通过这样的方式，来彻底解决 视图调用的一致性问题，
         // 如此，视图刷新的安全性将和基于函数式编程的 Jetpack Compose 持平。
@@ -57,8 +58,8 @@ public class DrawerFragment extends BaseFragment {
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
         return new DataBindingConfig(R.layout.fragment_drawer, mDrawerViewModel)
-                .setClickProxy(new ClickProxy())
-                .setAdapter(new DrawerAdapter(getContext()));
+                .addBindingParam(BR.click, new ClickProxy())
+                .addBindingParam(BR.adapter, new DrawerAdapter(getContext()));
     }
 
     @Override
@@ -83,7 +84,7 @@ public class DrawerFragment extends BaseFragment {
         }
     }
 
-    public class ClickProxy extends DataBindingConfig.ClickProxy {
+    public class ClickProxy {
 
         public void logoClick() {
             String u = "https://github.com/KunMinX/Jetpack-MVVM-Best-Practice";

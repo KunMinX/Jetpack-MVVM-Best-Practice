@@ -24,12 +24,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.kunminx.player.PlayingInfoManager;
+import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.bridge.callback.SharedViewModel;
 import com.kunminx.puremusic.bridge.state.PlayerViewModel;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.base.BaseFragment;
 import com.kunminx.puremusic.ui.base.DataBindingConfig;
+import com.kunminx.puremusic.ui.view.PlayerSlideListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
@@ -49,7 +51,7 @@ public class PlayerFragment extends BaseFragment {
     @Override
     protected DataBindingConfig getDataBindingConfig() {
 
-        //TODO 2020.4.18:
+        //TODO tip:
         // 将 DataBinding 实例限制于 base 页面中，不上升为类成员，更不向子类暴露，
         // 通过这样的方式，来彻底解决 视图调用的一致性问题，
         // 如此，视图刷新的安全性将和基于函数式编程的 Jetpack Compose 持平。
@@ -58,8 +60,8 @@ public class PlayerFragment extends BaseFragment {
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
         return new DataBindingConfig(R.layout.fragment_player, mPlayerViewModel)
-                .setClickProxy(new ClickProxy())
-                .setEventHandler(new EventHandler());
+                .addBindingParam(BR.click, new ClickProxy())
+                .addBindingParam(BR.event, new EventHandler());
     }
 
     @Override
@@ -67,11 +69,11 @@ public class PlayerFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 
         //TODO tip N:
-        //getViewLifeCycleOwner 是 2020 年新增的特性，
+        // getViewLifeCycleOwner 是 2020 年新增的特性，
         // 主要是为了解决 getView() 的生命长度 比 fragment 短（仅存活于 onCreateView 之后和 onDestroyView 之前），
         // 导致某些时候 fragment 其他成员还活着，但 getView() 为 null 的 生命周期安全问题，
         // 也即，在 fragment 的场景下，请使用 getViewLifeCycleOwner 来作为 liveData 的观察者。
-        // 也即，Activity 不用改变。
+        // Activity 则不用改变。
 
         getSharedViewModel().timeToAddSlideListener.observe(getViewLifecycleOwner(), aBoolean -> {
             if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {
@@ -191,7 +193,7 @@ public class PlayerFragment extends BaseFragment {
     // 也即，有绑定就有绑定，没绑定也没什么大不了的，总之 不会因一致性问题造成 视图调用的空指针。
     // 如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
-    public class ClickProxy extends DataBindingConfig.ClickProxy {
+    public class ClickProxy {
 
         public void playMode() {
             PlayerManager.getInstance().changeMode();
@@ -221,7 +223,7 @@ public class PlayerFragment extends BaseFragment {
         }
     }
 
-    public static class EventHandler extends DataBindingConfig.EventHandler implements SeekBar.OnSeekBarChangeListener {
+    public static class EventHandler implements SeekBar.OnSeekBarChangeListener {
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
