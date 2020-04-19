@@ -61,16 +61,6 @@ public class DataBindingConfig {
         return bindingParams;
     }
 
-    public DataBindingConfig setLayout(int layout) {
-        this.layout = layout;
-        return this;
-    }
-
-    public DataBindingConfig setStateViewModel(ViewModel stateViewModel) {
-        this.stateViewModel = stateViewModel;
-        return this;
-    }
-
     public DataBindingConfig addBindingParam(int variableId, Object object) {
         if (bindingParams.get(variableId) == null) {
             bindingParams.put(variableId, object);

@@ -168,9 +168,4 @@ public abstract class BaseFragment extends Fragment {
         return mSharedViewModel;
     }
 
-    protected abstract static class ClickProxy {
-    }
-
-    protected abstract static class EventHandler {
-    }
 }
