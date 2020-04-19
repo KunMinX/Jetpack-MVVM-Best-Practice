@@ -50,14 +50,14 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
     private int contentNormalEndTranslationY;
     private int contentFullEndTranslationY;
 
-    private int markStartX;
+    private int modeStartX;
     private int previousStartX;
     private int playPauseStartX;
     private int nextStartX;
     private int playQueueStartX;
     private int playPauseEndX;
     private int previousEndX;
-    private int markEndX;
+    private int modeEndX;
     private int nextEndX;
     private int playQueueEndX;
     private int iconContainerStartY;
@@ -113,10 +113,10 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
         mBinding.playPause.setCircleAlpah(intEvaluator.evaluate(slideOffset, 0, 255));
         mBinding.playPause.setDrawableColor((int) colorEvaluator.evaluate(slideOffset, playPauseDrawableColor, nowPlayingCardColor));
         mBinding.previous.setX(intEvaluator.evaluate(slideOffset, previousStartX, previousEndX));
-        mBinding.mark.setX(intEvaluator.evaluate(slideOffset, markStartX, markEndX));
+        mBinding.mode.setX(intEvaluator.evaluate(slideOffset, modeStartX, modeEndX));
         mBinding.next.setX(intEvaluator.evaluate(slideOffset, nextStartX, nextEndX));
         mBinding.icPlayList.setX(intEvaluator.evaluate(slideOffset, playQueueStartX, playQueueEndX));
-        mBinding.mark.setAlpha(floatEvaluator.evaluate(slideOffset, 0, 1));
+        mBinding.mode.setAlpha(floatEvaluator.evaluate(slideOffset, 0, 1));
         mBinding.previous.setAlpha(floatEvaluator.evaluate(slideOffset, 0, 1));
         mBinding.iconContainer.setY(intEvaluator.evaluate(slideOffset, iconContainerStartY, iconContainerEndY));
 
@@ -133,8 +133,8 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
             if (mBinding.songProgressNormal.getVisibility() != View.INVISIBLE) {
                 mBinding.songProgressNormal.setVisibility(View.INVISIBLE);
             }
-            if (mBinding.mark.getVisibility() != View.VISIBLE) {
-                mBinding.mark.setVisibility(View.VISIBLE);
+            if (mBinding.mode.getVisibility() != View.VISIBLE) {
+                mBinding.mode.setVisibility(View.VISIBLE);
             }
             if (mBinding.previous.getVisibility() != View.VISIBLE) {
                 mBinding.previous.setVisibility(View.VISIBLE);
@@ -148,7 +148,7 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
         if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
             mStatus = Status.EXPANDED;
             toolbarSlideIn(panel.getContext());
-            mBinding.mark.setClickable(true);
+            mBinding.mode.setClickable(true);
             mBinding.previous.setClickable(true);
             mBinding.topContainer.setOnClickListener(v -> {
                 if (mStatus == Status.EXPANDED) {
@@ -164,8 +164,8 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
             if (mBinding.songProgressNormal.getVisibility() != View.VISIBLE) {
                 mBinding.songProgressNormal.setVisibility(View.VISIBLE);
             }
-            if (mBinding.mark.getVisibility() != View.GONE) {
-                mBinding.mark.setVisibility(View.GONE);
+            if (mBinding.mode.getVisibility() != View.GONE) {
+                mBinding.mode.setVisibility(View.GONE);
             }
             if (mBinding.previous.getVisibility() != View.GONE) {
                 mBinding.previous.setVisibility(View.GONE);
@@ -213,7 +213,7 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
     }
 
     private void calculateIcons() {
-        markStartX = mBinding.mark.getLeft();
+        modeStartX = mBinding.mode.getLeft();
         previousStartX = mBinding.previous.getLeft();
         playPauseStartX = mBinding.playPause.getLeft();
         nextStartX = mBinding.next.getLeft();
@@ -222,7 +222,7 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
         int gap = (screenWidth - 5 * (size)) / 6;
         playPauseEndX = (screenWidth / 2) - (size / 2);
         previousEndX = playPauseEndX - gap - size;
-        markEndX = previousEndX - gap - size;
+        modeEndX = previousEndX - gap - size;
         nextEndX = playPauseEndX + gap + size;
         playQueueEndX = nextEndX + gap + size;
         iconContainerStartY = mBinding.iconContainer.getTop();

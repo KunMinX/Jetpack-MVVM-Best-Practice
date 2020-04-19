@@ -179,6 +179,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginEnd="16dp"
                 android:layout_toStartOf="@+id/play_pause"
+                android:alpha="0"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:onClick="@{()->click.previous()}"
                 android:scaleType="center"
@@ -187,12 +188,13 @@
                 app:materialIconSize="28dp" />
 
             <net.steamcrafted.materialiconlib.MaterialIconView
-                android:id="@+id/mark"
+                android:id="@+id/mode"
                 mdIcon="@{vm.playModeIcon}"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_marginEnd="16dp"
                 android:layout_toStartOf="@id/previous"
+                android:alpha="0"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:onClick="@{()->click.playMode()}"
                 android:scaleType="center"
