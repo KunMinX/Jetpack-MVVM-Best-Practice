@@ -24,6 +24,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.kunminx.puremusic.bridge.callback.SharedViewModel;
 import com.kunminx.puremusic.bridge.state.MainActivityViewModel;
 import com.kunminx.puremusic.ui.base.BaseActivity;
 import com.kunminx.puremusic.ui.base.DataBindingConfig;
@@ -35,7 +36,7 @@ import com.kunminx.puremusic.ui.base.DataBindingConfig;
 public class MainActivity extends BaseActivity {
 
     private MainActivityViewModel mMainActivityViewModel;
-    private boolean isListened = false;
+    private boolean mIsListened = false;
 
     @Override
     protected void initViewModel() {
@@ -45,7 +46,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected DataBindingConfig getDataBindingConfig() {
 
-        //TODO tip:
+        //TODO tip: DataBinding 严格模式：
         // 将 DataBinding 实例限制于 base 页面中，默认不向子类暴露，
         // 通过这样的方式，来彻底解决 视图调用的一致性问题，
         // 如此，视图刷新的安全性将和基于函数式编程的 Jetpack Compose 持平。
@@ -53,8 +54,7 @@ public class MainActivity extends BaseActivity {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.activity_main, mMainActivityViewModel)
-                .addBindingParam(BR.event, new EventHandler());
+        return new DataBindingConfig(R.layout.activity_main, mMainActivityViewModel);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class MainActivity extends BaseActivity {
 
                 //TODO tip 6: 同 tip 5.
 
-            } else if (mMainActivityViewModel.isDrawerOpened) {
+            } else if (SharedViewModel.IS_DRAWER_OPENED.get()) {
                 getSharedViewModel().openOrCloseDrawer.setValue(false);
 
             } else {
@@ -121,7 +121,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if (!isListened) {
+        if (!mIsListened) {
 
             // TODO tip 2：此处演示通过 UnPeekLiveData 来发送 生命周期安全的、事件源可追溯的 通知。
 
@@ -133,7 +133,7 @@ public class MainActivity extends BaseActivity {
 
             getSharedViewModel().timeToAddSlideListener.setValue(true);
 
-            isListened = true;
+            mIsListened = true;
         }
     }
 
@@ -143,27 +143,5 @@ public class MainActivity extends BaseActivity {
         // TODO tip 3：同 tip 2
 
         getSharedViewModel().closeSlidePanelIfExpanded.setValue(true);
-    }
-
-    public class EventHandler implements DrawerLayout.DrawerListener {
-        @Override
-        public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-
-        }
-
-        @Override
-        public void onDrawerOpened(@NonNull View drawerView) {
-            mMainActivityViewModel.isDrawerOpened = true;
-        }
-
-        @Override
-        public void onDrawerClosed(@NonNull View drawerView) {
-            mMainActivityViewModel.isDrawerOpened = false;
-        }
-
-        @Override
-        public void onDrawerStateChanged(int newState) {
-
-        }
     }
 }

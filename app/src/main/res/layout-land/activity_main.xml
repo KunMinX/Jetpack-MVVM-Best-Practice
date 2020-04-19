@@ -23,10 +23,6 @@
             name="vm"
             type="com.kunminx.puremusic.bridge.state.MainActivityViewModel" />
 
-        <variable
-            name="event"
-            type="com.kunminx.puremusic.MainActivity.EventHandler" />
-
     </data>
 
 

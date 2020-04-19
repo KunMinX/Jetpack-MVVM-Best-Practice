@@ -20,6 +20,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.SparseArray;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -90,7 +91,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         initViewModel();
         DataBindingConfig dataBindingConfig = getDataBindingConfig();
 
-        //TODO tip: 将 DataBinding 实例限制于 base 页面中，默认不向子类暴露，
+        //TODO tip: DataBinding 严格模式：
+        // 将 DataBinding 实例限制于 base 页面中，默认不向子类暴露，
         // 通过这样的方式，来彻底解决 视图调用的一致性问题，
         // 如此，视图刷新的安全性将和基于函数式编程的 Jetpack Compose 持平。
 
@@ -99,8 +101,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         ViewDataBinding binding = DataBindingUtil.setContentView(this, dataBindingConfig.getLayout());
         binding.setLifecycleOwner(this);
         binding.setVariable(BR.vm, dataBindingConfig.getStateViewModel());
-        for (int i = 0, length = dataBindingConfig.getBindingParams().size(); i < length; i++) {
-            binding.setVariable(dataBindingConfig.getBindingParams().keyAt(i), dataBindingConfig.getBindingParams().valueAt(i));
+        SparseArray bindingParams = dataBindingConfig.getBindingParams();
+        for (int i = 0, length = bindingParams.size(); i < length; i++) {
+            binding.setVariable(bindingParams.keyAt(i), bindingParams.valueAt(i));
         }
         mBinding = binding;
     }

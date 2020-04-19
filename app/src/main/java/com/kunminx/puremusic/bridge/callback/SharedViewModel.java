@@ -16,6 +16,7 @@
 
 package com.kunminx.puremusic.bridge.callback;
 
+import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModel;
 
 import com.kunminx.architecture.bridge.callback.UnPeekLiveData;
@@ -46,6 +47,7 @@ public class SharedViewModel extends ViewModel {
     // 详见 https://xiaozhuanlan.com/topic/0168753249 和 https://xiaozhuanlan.com/topic/6257931840
 
     public static final List<String> TAG_OF_SECONDARY_PAGES = new ArrayList<>();
+    public static final ObservableBoolean IS_DRAWER_OPENED = new ObservableBoolean();
     public final UnPeekLiveData<Boolean> timeToAddSlideListener = new UnPeekLiveData<>();
     public final UnPeekLiveData<Boolean> closeSlidePanelIfExpanded = new UnPeekLiveData<>();
     public final UnPeekLiveData<Boolean> activityCanBeClosedDirectly = new UnPeekLiveData<>();
