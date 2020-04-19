@@ -43,4 +43,21 @@ public class DrawerBindingAdapter {
         });
     }
 
+    @BindingAdapter(value = {"listenDrawerState"}, requireAll = false)
+    public static void listenDrawerState(DrawerLayout drawerLayout, boolean listenDrawerState) {
+        drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                SharedViewModel.IS_DRAWER_OPENED.set(true);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                SharedViewModel.IS_DRAWER_OPENED.set(false);
+            }
+        });
+    }
+
 }

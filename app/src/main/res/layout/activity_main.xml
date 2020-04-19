@@ -15,6 +15,7 @@
         android:id="@+id/dl"
         allowDrawerOpen="@{vm.allowDrawerOpen}"
         isOpenDrawer="@{vm.openDrawer}"
+        listenDrawerState="@{vm.listenDrawerState}"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

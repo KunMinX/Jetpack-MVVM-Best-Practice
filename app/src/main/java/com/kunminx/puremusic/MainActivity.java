@@ -17,10 +17,7 @@
 package com.kunminx.puremusic;
 
 import android.os.Bundle;
-import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -46,7 +43,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected DataBindingConfig getDataBindingConfig() {
 
-        //TODO tip: DataBinding 严格模式：
+        //TODO tip 1: DataBinding 严格模式：
         // 将 DataBinding 实例限制于 base 页面中，默认不向子类暴露，
         // 通过这样的方式，来彻底解决 视图调用的一致性问题，
         // 如此，视图刷新的安全性将和基于函数式编程的 Jetpack Compose 持平。
@@ -66,9 +63,10 @@ public class MainActivity extends BaseActivity {
             if (nav.getCurrentDestination() != null && nav.getCurrentDestination().getId() != R.id.mainFragment) {
                 nav.navigateUp();
 
-                //TODO tip 6: 同 tip 5.
-
             } else if (SharedViewModel.IS_DRAWER_OPENED.get()) {
+
+                //TODO 同 tip 2
+
                 getSharedViewModel().openOrCloseDrawer.setValue(false);
 
             } else {
@@ -76,22 +74,19 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        // TODO tip 4：同 tip 2.
-
-        // TODO tip 5: 同 tip 1，这边我将 drawer 的 open 和 close 都放在 bindingAdapter 中操作，
-
-        // 规避了视图的一致性问题，因为 横屏布局 根本就没有 drawerLayout，此处如果用传统的视图调用方式，会很容易疏忽而造成空引用。
-
         getSharedViewModel().openOrCloseDrawer.observe(this, aBoolean -> {
-            //TODO yes:
 
-            //TODO 此处绑定的状态，使用 LiveData 而不是 ObservableField，主要是考虑到 ObservableField 具有防抖的特性，不适合该场景。
+            //TODO yes：同 tip 1: 此处将 drawer 的 open 和 close 都放在 drawerBindingAdapter 中操作，规避了视图调用的一致性问题，
+
+            //因为 横屏布局 根本就没有 drawerLayout。此处如果用传统的视图调用方式，会很容易因疏忽而造成空引用。
+
+            //TODO 此外，此处为 drawerLayout 绑定的状态 "openDrawer"，使用 LiveData 而不是 ObservableField，主要是考虑到 ObservableField 具有 "防抖" 的特性，不适合该场景。
 
             //如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
             mMainActivityViewModel.openDrawer.setValue(aBoolean);
 
-            //TODO do not:（容易因疏忽而埋下视图调用的一致性隐患）
+            //TODO do not:（容易因疏忽 而埋下视图调用的一致性隐患）
 
             /*if (mBinding.dl != null) {
                 if (aBoolean && !mBinding.dl.isDrawerOpen(GravityCompat.START)) {
@@ -104,11 +99,11 @@ public class MainActivity extends BaseActivity {
 
         getSharedViewModel().enableSwipeDrawer.observe(this, aBoolean -> {
 
-            //TODO yes:
+            //TODO yes: 同 tip 1
 
             mMainActivityViewModel.allowDrawerOpen.setValue(aBoolean);
 
-            // TODO tip 7: do not:（容易因疏忽而埋下视图调用的一致性隐患）
+            // TODO do not:（容易因疏忽 而埋下视图调用的一致性隐患）
 
             /*if (mBinding.dl != null) {
                 mBinding.dl.setDrawerLockMode(aBoolean
@@ -140,7 +135,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
 
-        // TODO tip 3：同 tip 2
+        // TODO 同 tip 2
 
         getSharedViewModel().closeSlidePanelIfExpanded.setValue(true);
     }

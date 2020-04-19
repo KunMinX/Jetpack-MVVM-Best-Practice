@@ -41,9 +41,10 @@ public class MainActivityViewModel extends ViewModel {
 
     public final MutableLiveData<Boolean> allowDrawerOpen = new MutableLiveData<>();
 
-    public boolean isDrawerOpened = false;
+    public final MutableLiveData<Boolean> listenDrawerState = new MutableLiveData<>();
 
     {
+        listenDrawerState.setValue(true);
         allowDrawerOpen.setValue(true);
         openDrawer.setValue(false);
     }
