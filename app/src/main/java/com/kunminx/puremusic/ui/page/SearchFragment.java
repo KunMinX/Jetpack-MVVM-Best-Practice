@@ -47,16 +47,6 @@ public class SearchFragment extends BaseFragment {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        getLifecycle().addObserver(DrawerCoordinateHelper.getInstance());
-
-        //TODO tip1：绑定跟随视图控制器生命周期的、可叫停的、单独放在 UseCase 中处理的业务
-        getLifecycle().addObserver(mDownloadViewModel.getCanBeStoppedUseCase());
-    }
-
-    @Override
     protected DataBindingConfig getDataBindingConfig() {
 
         //TODO tip: DataBinding 严格模式：
@@ -69,6 +59,16 @@ public class SearchFragment extends BaseFragment {
 
         return new DataBindingConfig(R.layout.fragment_search, mSearchViewModel)
                 .addBindingParam(BR.click, new ClickProxy());
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        getLifecycle().addObserver(DrawerCoordinateHelper.getInstance());
+
+        //TODO tip1：绑定跟随视图控制器生命周期的、可叫停的、单独放在 UseCase 中处理的业务
+        getLifecycle().addObserver(mDownloadViewModel.getCanBeStoppedUseCase());
     }
 
     @Override

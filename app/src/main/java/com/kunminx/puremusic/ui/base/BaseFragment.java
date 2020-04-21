@@ -44,6 +44,7 @@ import com.kunminx.architecture.data.manager.NetState;
 import com.kunminx.architecture.data.manager.NetworkStateManager;
 import com.kunminx.puremusic.App;
 import com.kunminx.puremusic.BR;
+import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.bridge.callback.SharedViewModel;
 
 
@@ -105,7 +106,7 @@ public abstract class BaseFragment extends Fragment {
                 mTvStrictModeTip.setAlpha(0.5f);
                 mTvStrictModeTip.setTextSize(16);
                 mTvStrictModeTip.setBackgroundColor(Color.WHITE);
-                mTvStrictModeTip.setText("Debug 提示：此 Fragment 未遵循 DataBinding 严格模式，存在 视图调用的 Null 安全风险");
+                mTvStrictModeTip.setText(R.string.debug_fragment_databinding_warning);
                 ((ViewGroup) mBinding.getRoot()).addView(mTvStrictModeTip);
             }
         }
