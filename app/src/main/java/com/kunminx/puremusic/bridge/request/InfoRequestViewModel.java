@@ -42,19 +42,19 @@ import java.util.List;
  */
 public class InfoRequestViewModel extends ViewModel {
 
-    private MutableLiveData<List<LibraryInfo>> libraryLiveData;
+    private MutableLiveData<List<LibraryInfo>> mLibraryLiveData;
 
     //TODO tip 向 ui 层提供的 request LiveData，使用抽象的 LiveData 而不是 MutableLiveData
     // 如此是为了来自数据层的数据，在 ui 层中只读，以避免团队新手不可预期的误用
 
     public LiveData<List<LibraryInfo>> getLibraryLiveData() {
-        if (libraryLiveData == null) {
-            libraryLiveData = new MutableLiveData<>();
+        if (mLibraryLiveData == null) {
+            mLibraryLiveData = new MutableLiveData<>();
         }
-        return libraryLiveData;
+        return mLibraryLiveData;
     }
 
     public void requestLibraryInfo() {
-        HttpRequestManager.getInstance().getLibraryInfo(libraryLiveData);
+        HttpRequestManager.getInstance().getLibraryInfo(mLibraryLiveData);
     }
 }

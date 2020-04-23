@@ -39,19 +39,19 @@ import com.kunminx.puremusic.data.repository.HttpRequestManager;
  */
 public class MusicRequestViewModel extends ViewModel {
 
-    private MutableLiveData<TestAlbum> freeMusicsLiveData;
+    private MutableLiveData<TestAlbum> mFreeMusicsLiveData;
 
     //TODO tip 向 ui 层提供的 request LiveData，使用抽象的 LiveData 而不是 MutableLiveData
     // 如此是为了来自数据层的数据，在 ui 层中只读，以避免团队新手不可预期的误用
 
     public LiveData<TestAlbum> getFreeMusicsLiveData() {
-        if (freeMusicsLiveData == null) {
-            freeMusicsLiveData = new MutableLiveData<>();
+        if (mFreeMusicsLiveData == null) {
+            mFreeMusicsLiveData = new MutableLiveData<>();
         }
-        return freeMusicsLiveData;
+        return mFreeMusicsLiveData;
     }
 
     public void requestFreeMusics() {
-        HttpRequestManager.getInstance().getFreeMusic(freeMusicsLiveData);
+        HttpRequestManager.getInstance().getFreeMusic(mFreeMusicsLiveData);
     }
 }

@@ -27,9 +27,9 @@ import com.kunminx.puremusic.data.usecase.CanBeStoppedUseCase;
  */
 public class DownloadRequestViewModel extends ViewModel {
 
-    private MutableLiveData<DownloadFile> downloadFileLiveData;
+    private MutableLiveData<DownloadFile> mDownloadFileLiveData;
 
-    private MutableLiveData<DownloadFile> downloadFileCanBeStoppedLiveData;
+    private MutableLiveData<DownloadFile> mDownloadFileCanBeStoppedLiveData;
 
     private CanBeStoppedUseCase mCanBeStoppedUseCase;
 
@@ -37,17 +37,17 @@ public class DownloadRequestViewModel extends ViewModel {
     // 如此是为了来自数据层的数据，在 ui 层中只读，以避免团队新手不可预期的误用
 
     public LiveData<DownloadFile> getDownloadFileLiveData() {
-        if (downloadFileLiveData == null) {
-            downloadFileLiveData = new MutableLiveData<>();
+        if (mDownloadFileLiveData == null) {
+            mDownloadFileLiveData = new MutableLiveData<>();
         }
-        return downloadFileLiveData;
+        return mDownloadFileLiveData;
     }
 
     public LiveData<DownloadFile> getDownloadFileCanBeStoppedLiveData() {
-        if (downloadFileCanBeStoppedLiveData == null) {
-            downloadFileCanBeStoppedLiveData = new MutableLiveData<>();
+        if (mDownloadFileCanBeStoppedLiveData == null) {
+            mDownloadFileCanBeStoppedLiveData = new MutableLiveData<>();
         }
-        return downloadFileCanBeStoppedLiveData;
+        return mDownloadFileCanBeStoppedLiveData;
     }
 
     public CanBeStoppedUseCase getCanBeStoppedUseCase() {
@@ -58,7 +58,7 @@ public class DownloadRequestViewModel extends ViewModel {
     }
 
     public void requestDownloadFile() {
-        HttpRequestManager.getInstance().downloadFile(downloadFileLiveData);
+        HttpRequestManager.getInstance().downloadFile(mDownloadFileLiveData);
     }
 
     //TODO tip2：
@@ -69,11 +69,11 @@ public class DownloadRequestViewModel extends ViewModel {
 
     public void requestCanBeStoppedDownloadFile() {
         UseCaseHandler.getInstance().execute(getCanBeStoppedUseCase(),
-                new CanBeStoppedUseCase.RequestValues(downloadFileCanBeStoppedLiveData),
+                new CanBeStoppedUseCase.RequestValues(mDownloadFileCanBeStoppedLiveData),
                 new UseCase.UseCaseCallback<CanBeStoppedUseCase.ResponseValue>() {
                     @Override
                     public void onSuccess(CanBeStoppedUseCase.ResponseValue response) {
-                        downloadFileCanBeStoppedLiveData.setValue(response.getLiveData().getValue());
+                        mDownloadFileCanBeStoppedLiveData.setValue(response.getLiveData().getValue());
                     }
 
                     @Override
