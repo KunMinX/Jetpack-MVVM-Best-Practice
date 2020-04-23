@@ -26,7 +26,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.library.baseAdapters.BR;
 
 import com.kunminx.puremusic.R;
-import com.kunminx.puremusic.bridge.request.DownloadViewModel;
+import com.kunminx.puremusic.bridge.request.DownloadRequestViewModel;
 import com.kunminx.puremusic.bridge.state.SearchViewModel;
 import com.kunminx.puremusic.ui.base.BaseFragment;
 import com.kunminx.puremusic.ui.base.DataBindingConfig;
@@ -38,11 +38,11 @@ import com.kunminx.puremusic.ui.helper.DrawerCoordinateHelper;
 public class SearchFragment extends BaseFragment {
 
     private SearchViewModel mSearchViewModel;
-    private DownloadViewModel mDownloadViewModel;
+    private DownloadRequestViewModel mDownloadRequestViewModel;
 
     @Override
     protected void initViewModel() {
-        mDownloadViewModel = getActivityViewModel(DownloadViewModel.class);
+        mDownloadRequestViewModel = getActivityViewModel(DownloadRequestViewModel.class);
         mSearchViewModel = getFragmentViewModel(SearchViewModel.class);
     }
 
@@ -68,18 +68,18 @@ public class SearchFragment extends BaseFragment {
         getLifecycle().addObserver(DrawerCoordinateHelper.getInstance());
 
         //TODO tip1：绑定跟随视图控制器生命周期的、可叫停的、单独放在 UseCase 中处理的业务
-        getLifecycle().addObserver(mDownloadViewModel.getCanBeStoppedUseCase());
+        getLifecycle().addObserver(mDownloadRequestViewModel.getCanBeStoppedUseCase());
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mDownloadViewModel.getDownloadFileLiveData().observe(getViewLifecycleOwner(), downloadFile -> {
+        mDownloadRequestViewModel.getDownloadFileLiveData().observe(getViewLifecycleOwner(), downloadFile -> {
             mSearchViewModel.progress.set(downloadFile.getProgress());
         });
 
-        mDownloadViewModel.getDownloadFileCanBeStoppedLiveData().observe(getViewLifecycleOwner(), downloadFile -> {
+        mDownloadRequestViewModel.getDownloadFileCanBeStoppedLiveData().observe(getViewLifecycleOwner(), downloadFile -> {
             mSearchViewModel.progress.set(downloadFile.getProgress());
         });
     }
@@ -105,13 +105,13 @@ public class SearchFragment extends BaseFragment {
         }
 
         public void testDownload() {
-            mDownloadViewModel.requestDownloadFile();
+            mDownloadRequestViewModel.requestDownloadFile();
         }
 
         //TODO tip2: 在 UseCase 中 执行可跟随生命周期中止的下载任务
 
         public void testLifecycleDownload() {
-            mDownloadViewModel.requestCanBeStoppedDownloadFile();
+            mDownloadRequestViewModel.requestCanBeStoppedDownloadFile();
         }
     }
 }

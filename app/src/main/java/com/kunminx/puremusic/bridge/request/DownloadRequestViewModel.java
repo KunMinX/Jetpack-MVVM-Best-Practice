@@ -25,7 +25,7 @@ import com.kunminx.puremusic.data.usecase.CanBeStoppedUseCase;
  *
  * Create by KunMinX at 20/03/18
  */
-public class DownloadViewModel extends ViewModel {
+public class DownloadRequestViewModel extends ViewModel {
 
     private MutableLiveData<DownloadFile> downloadFileLiveData;
 
