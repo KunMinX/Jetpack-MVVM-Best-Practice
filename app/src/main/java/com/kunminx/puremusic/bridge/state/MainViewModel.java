@@ -26,7 +26,7 @@ import com.kunminx.puremusic.data.bean.TestAlbum;
 import java.util.List;
 
 /**
- * TODO tip：每个页面都要单独准备一个 stateViewModel，
+ * TODO tip：每个页面都要单独准备一个 state-ViewModel，
  * 来托管 DataBinding 绑定的临时状态，以及视图控制器重建时状态的恢复。
  *
  * 此外，stateViewModel 的职责仅限于 状态托管，不建议在此处理 UI 逻辑，

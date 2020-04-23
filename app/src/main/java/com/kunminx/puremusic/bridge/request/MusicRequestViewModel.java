@@ -24,10 +24,10 @@ import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.data.repository.HttpRequestManager;
 
 /**
- * 音乐资源  RequestViewModel
+ * 音乐资源  Request-ViewModel
  *
- * TODO tip：RequestViewModel 通常按业务划分
- * 一个项目中通常存在多个 RequestViewModel
+ * TODO tip：Request-ViewModel 通常按业务划分
+ * 一个项目中通常存在多个 Request-ViewModel
  *
  * requestViewModel 的职责仅限于 数据请求，不建议在此处理 UI 逻辑，
  * UI 逻辑只适合在 Activity/Fragment 等视图控制器中完成，是 “数据驱动” 的一部分，

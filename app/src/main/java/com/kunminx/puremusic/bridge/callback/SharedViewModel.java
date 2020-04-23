@@ -26,7 +26,7 @@ import java.util.List;
 
 /**
  *
- * TODO tip：callback - ViewModel 的职责仅限于 页面通信，不建议在此处理 UI 逻辑，
+ * TODO tip：callback-ViewModel 的职责仅限于 页面通信，不建议在此处理 UI 逻辑，
  * UI 逻辑只适合在 Activity/Fragment 等视图控制器中完成，是 “数据驱动” 的一部分，
  * 将来升级到 Jetpack Compose 更是如此。
  *
