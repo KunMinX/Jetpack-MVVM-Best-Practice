@@ -31,7 +31,7 @@ import java.util.List;
  * TODO tip：Request-ViewModel 通常按业务划分
  * 一个项目中通常存在多个 Request-ViewModel
  *
- * requestViewModel 的职责仅限于 数据请求，不建议在此处理 UI 逻辑，
+ * request-ViewModel 的职责仅限于 数据请求，不建议在此处理 UI 逻辑，
  * UI 逻辑只适合在 Activity/Fragment 等视图控制器中完成，是 “数据驱动” 的一部分，
  * 将来升级到 Jetpack Compose 更是如此。
  *
