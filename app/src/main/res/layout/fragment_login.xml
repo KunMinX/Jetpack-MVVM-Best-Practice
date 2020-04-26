@@ -100,7 +100,9 @@
 
         <ProgressBar
             android:id="@+id/progress"
-            android:layout_width="match_parent"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            visible="@{vm.loadingVisible}"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_margin="24dp"
             android:indeterminate="true"

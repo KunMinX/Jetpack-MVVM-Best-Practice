@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="275dp"
                 android:fitsSystemWindows="true"
-                app:contentScrim="?attr/colorPrimary"
+                app:contentScrim="@color/transparent"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <androidx.appcompat.widget.AppCompatImageView

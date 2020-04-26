@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/transparent</item>
         <item name="colorPrimaryDark">@color/white</item>
-        <item name="colorAccent">@color/transparent</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
 </resources>

@@ -107,7 +107,7 @@
                 android:minHeight="4dp"
                 android:progress="@{vm.currentSeekPosition}"
                 android:progressDrawable="@drawable/progressbar_color"
-                android:progressTint="?colorAccent" />
+                android:progressTint="@color/transparent" />
 
             <TextView
                 android:id="@+id/title"
