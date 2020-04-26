@@ -35,7 +35,7 @@ import static java.util.Objects.requireNonNull;
 public class NetworkStateManager implements DefaultLifecycleObserver {
 
     private static final NetworkStateManager S_MANAGER = new NetworkStateManager();
-    public final UnPeekLiveData<NetState> mNetworkStateCallback = new UnPeekLiveData<>();
+    public final UnPeekLiveData<NetState> networkStateCallback = new UnPeekLiveData<>();
     private NetworkStateReceive mNetworkStateReceive;
 
     private NetworkStateManager() {

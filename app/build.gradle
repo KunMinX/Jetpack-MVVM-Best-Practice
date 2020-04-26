@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "com.kunminx.puremusic"
         minSdkVersion 23
@@ -61,7 +61,7 @@ dependencies {
     compileOnly 'androidx.lifecycle:lifecycle-viewmodel:2.2.0'
     compileOnly 'androidx.lifecycle:lifecycle-livedata:2.2.0'
 
-    compileOnly 'androidx.navigation:navigation-runtime:2.2.1'
+    compileOnly 'androidx.navigation:navigation-runtime:2.2.2'
 
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'

@@ -16,13 +16,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
         <net.steamcrafted.materialiconlib.MaterialIconView
             android:id="@+id/btn_back"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_margin="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:onClick="@{()->click.back()}"
             android:scaleType="center"
@@ -38,9 +40,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="120dp"
+            android:gravity="center"
             android:text="欢迎来到 Jetpack MVVM 的世界"
             android:textColor="@color/black"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -50,17 +53,19 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:text="Welcome to the world of Jetpack MVVM best practice"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="Welcome to the world of Jetpack MVVM best practice !"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="12sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
         <EditText
             android:id="@+id/et_name"
-            drawable_radius="@{20}"
-            drawable_strokeColor="@{0xff666666}"
+            drawable_radius="@{12}"
+            drawable_strokeColor="@{0xffeeeeee}"
             drawable_strokeWidth="@{1}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -68,6 +73,7 @@
             android:layout_marginTop="56dp"
             android:layout_marginEnd="24dp"
             android:hint="请输入用户名"
+            android:paddingStart="12dp"
             android:singleLine="true"
             android:text="@={vm.name}"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -76,15 +82,16 @@
 
         <EditText
             android:id="@+id/et_pwd"
-            drawable_radius="@{20}"
-            drawable_strokeColor="@{0xff666666}"
+            drawable_radius="@{12}"
+            drawable_strokeColor="@{0xffeeeeee}"
             drawable_strokeWidth="@{1}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
             android:hint="请输入密码"
+            android:paddingStart="12dp"
             android:singleLine="true"
             android:text="@={vm.password}"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -93,10 +100,10 @@
 
         <ProgressBar
             android:id="@+id/progress"
-            visible="@{vm.loadingVisible}"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="24dp"
+            android:indeterminate="true"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_pwd" />
@@ -104,12 +111,13 @@
         <Button
             android:id="@+id/btn_login"
             drawable_radius="@{25}"
-            drawable_strokeColor="@{0xffFF7055}"
+            drawable_solidColor="@{0xffFF7055}"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:onClick="@{()->click.login()}"
             android:text="登录"
+            android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"

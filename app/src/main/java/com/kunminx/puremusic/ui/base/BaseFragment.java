@@ -81,7 +81,7 @@ public abstract class BaseFragment extends Fragment {
 
         //TODO 注意 liveData 的 lambda 回调中不可为空，不然会出现 Cannot add the same observer with different lifecycles 的现象，
         // 详见：https://stackoverflow.com/questions/47025233/android-lifecycle-library-cannot-add-the-same-observer-with-different-lifecycle
-        NetworkStateManager.getInstance().mNetworkStateCallback.observe(this, this::onNetworkStateChanged);
+        NetworkStateManager.getInstance().networkStateCallback.observe(this, this::onNetworkStateChanged);
     }
 
     @SuppressWarnings("EmptyMethod")

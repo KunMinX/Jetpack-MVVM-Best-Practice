@@ -31,13 +31,10 @@ import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.data.bean.User;
 
-import java.io.File;
 import java.lang.reflect.Type;
-import java.sql.Time;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Handler;
 
 /**
  * Create by KunMinX at 19/10/29
@@ -147,7 +144,7 @@ public class HttpRequestManager implements ILocalRequest, IRemoteRequest {
                 NetState netState = new NetState();
                 netState.setSuccess(false);
                 netState.setResponseCode("404");
-                NetworkStateManager.getInstance().mNetworkStateCallback.setValue(netState);
+                NetworkStateManager.getInstance().networkStateCallback.postValue(netState);
             }
         };
 
