@@ -46,7 +46,6 @@ public class App extends Application implements ViewModelStoreOwner {
 
         mAppViewModelStore = new ViewModelStore();
 
-
         Utils.init(this);
         PlayerManager.getInstance().init(this);
 

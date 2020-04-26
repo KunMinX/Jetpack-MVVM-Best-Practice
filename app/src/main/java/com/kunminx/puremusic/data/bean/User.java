@@ -14,19 +14,37 @@
  * limitations under the License.
  */
 
-package com.kunminx.puremusic.data.config;
-
-import android.os.Environment;
-
-import com.kunminx.architecture.utils.Utils;
+package com.kunminx.puremusic.data.bean;
 
 /**
- * Create by KunMinX at 18/9/28
+ * Create by KunMinX at 20/04/26
  */
-public class Configs {
+public class User {
 
-    public static final String COVER_PATH = Utils.getApp().getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+    private String name;
+    private String password;
 
-    public static final String TOKEN = "token";
+    public User() {
+    }
 
+    public User(String name, String password) {
+        this.name = name;
+        this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

@@ -22,14 +22,18 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.kunminx.architecture.data.manager.NetState;
+import com.kunminx.architecture.data.manager.NetworkStateManager;
 import com.kunminx.architecture.utils.Utils;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.DownloadFile;
 import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.data.bean.TestAlbum;
+import com.kunminx.puremusic.data.bean.User;
 
 import java.io.File;
 import java.lang.reflect.Type;
+import java.sql.Time;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -120,6 +124,34 @@ public class HttpRequestManager implements ILocalRequest, IRemoteRequest {
         };
 
         timer.schedule(task, 100);
+    }
+
+    /**
+     * TODO 模拟登录的网络请求
+     *
+     * @param user     ui 层填写的用户信息
+     * @param liveData 模拟网络请求返回的 token
+     */
+    @Override
+    public void login(User user, MutableLiveData<String> liveData) {
+
+        Timer timer = new Timer();
+
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+
+                //模拟登录，假装花费了 1000 毫秒去提交用户信息，结果遭遇网络状况不良。
+                //这时候可以通过 NetworkState 去通知 UI 层做出变化。
+
+                NetState netState = new NetState();
+                netState.setSuccess(false);
+                netState.setResponseCode("404");
+                NetworkStateManager.getInstance().mNetworkStateCallback.setValue(netState);
+            }
+        };
+
+        timer.schedule(task, 1000);
     }
 
 }

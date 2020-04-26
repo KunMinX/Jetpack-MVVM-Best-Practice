@@ -19,7 +19,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_main"
     app:startDestination="@id/mainFragment">
-    
+
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.kunminx.puremusic.ui.page.MainFragment"
@@ -34,6 +34,14 @@
             app:popEnterAnim="@anim/h_fragment_pop_enter"
             app:popExitAnim="@anim/h_fragment_pop_exit" />
 
+        <action
+            android:id="@+id/action_mainFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/h_fragment_enter"
+            app:exitAnim="@anim/h_fragment_exit"
+            app:popEnterAnim="@anim/h_fragment_pop_enter"
+            app:popExitAnim="@anim/h_fragment_pop_exit" />
+
     </fragment>
 
     <fragment
@@ -43,5 +51,11 @@
         tools:layout="@layout/fragment_search">
 
     </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.kunminx.puremusic.ui.page.LoginFragment"
+        android:label="LoginFragment"
+        tools:layout="@layout/fragment_login" />
 
 </navigation>

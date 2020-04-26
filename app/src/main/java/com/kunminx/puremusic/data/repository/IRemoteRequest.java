@@ -21,6 +21,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.kunminx.puremusic.data.bean.DownloadFile;
 import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.data.bean.TestAlbum;
+import com.kunminx.puremusic.data.bean.User;
 
 import java.io.File;
 import java.util.List;
@@ -35,4 +36,6 @@ public interface IRemoteRequest {
     void getLibraryInfo(MutableLiveData<List<LibraryInfo>> liveData);
 
     void downloadFile(MutableLiveData<DownloadFile> liveData);
+
+    void login(User user, MutableLiveData<String> liveData);
 }

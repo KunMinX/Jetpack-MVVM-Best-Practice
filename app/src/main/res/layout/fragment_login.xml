@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.kunminx.puremusic.bridge.state.LoginViewModel" />
+
+        <variable
+            name="click"
+            type="com.kunminx.puremusic.ui.page.LoginFragment.ClickProxy" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <net.steamcrafted.materialiconlib.MaterialIconView
+            android:id="@+id/btn_back"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_margin="24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:onClick="@{()->click.back()}"
+            android:scaleType="center"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:materialIcon="arrow_left"
+            app:materialIconColor="@color/gray"
+            app:materialIconSize="28dp" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="120dp"
+            android:text="欢迎来到 Jetpack MVVM 的世界"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="Welcome to the world of Jetpack MVVM best practice"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+        <EditText
+            android:id="@+id/et_name"
+            drawable_radius="@{20}"
+            drawable_strokeColor="@{0xff666666}"
+            drawable_strokeWidth="@{1}"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="56dp"
+            android:layout_marginEnd="24dp"
+            android:hint="请输入用户名"
+            android:singleLine="true"
+            android:text="@={vm.name}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_content" />
+
+        <EditText
+            android:id="@+id/et_pwd"
+            drawable_radius="@{20}"
+            drawable_strokeColor="@{0xff666666}"
+            drawable_strokeWidth="@{1}"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:hint="请输入密码"
+            android:singleLine="true"
+            android:text="@={vm.password}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_name" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            visible="@{vm.loadingVisible}"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="24dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_pwd" />
+
+        <Button
+            android:id="@+id/btn_login"
+            drawable_radius="@{25}"
+            drawable_strokeColor="@{0xffFF7055}"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:onClick="@{()->click.login()}"
+            android:text="登录"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/progress"
+            app:layout_goneMarginTop="72dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

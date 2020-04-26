@@ -120,6 +120,10 @@ public class MainFragment extends BaseFragment {
             getSharedViewModel().openOrCloseDrawer.setValue(true);
         }
 
+        public void login() {
+            nav().navigate(R.id.action_mainFragment_to_loginFragment);
+        }
+
         public void search() {
             nav().navigate(R.id.action_mainFragment_to_searchFragment);
         }

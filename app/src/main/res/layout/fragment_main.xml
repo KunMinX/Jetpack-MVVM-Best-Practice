@@ -91,7 +91,7 @@
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/iv_icon"
-                        onClickWithDebouncing="@{()->click.search()}"
+                        onClickWithDebouncing="@{()->click.login()}"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:background="?attr/selectableItemBackgroundBorderless"
@@ -103,7 +103,7 @@
 
                     <TextView
                         android:id="@+id/tv_app"
-                        onClickWithDebouncing="@{()->click.search()}"
+                        onClickWithDebouncing="@{()->click.login()}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/app_name"
