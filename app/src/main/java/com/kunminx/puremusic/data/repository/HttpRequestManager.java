@@ -138,7 +138,7 @@ public class HttpRequestManager implements ILocalRequest, IRemoteRequest {
             @Override
             public void run() {
 
-                //模拟登录，假装花费了 1000 毫秒去提交用户信息，结果遭遇网络状况不良。
+                //模拟登录，假装花费了 2000 毫秒去提交用户信息，结果遭遇网络状况不良。
                 //这时候可以通过 NetworkState 去通知 UI 层做出变化。
 
                 NetState netState = new NetState();
@@ -148,7 +148,7 @@ public class HttpRequestManager implements ILocalRequest, IRemoteRequest {
             }
         };
 
-        timer.schedule(task, 1000);
+        timer.schedule(task, 2000);
     }
 
 }
