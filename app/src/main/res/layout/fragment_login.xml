@@ -91,6 +91,7 @@
             android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
             android:hint="@string/user_password"
+            android:inputType="textPassword"
             android:paddingStart="12dp"
             android:singleLine="true"
             android:text="@={vm.password}"

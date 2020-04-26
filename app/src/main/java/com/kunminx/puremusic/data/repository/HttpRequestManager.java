@@ -138,13 +138,18 @@ public class HttpRequestManager implements ILocalRequest, IRemoteRequest {
             @Override
             public void run() {
 
-                //模拟登录，假装花费了 2000 毫秒去提交用户信息，结果遭遇网络状况不良。
+                //TODO 模拟登录，假装花费了 2000 毫秒去提交用户信息，结果遭遇网络状况不良。
                 //这时候可以通过 NetworkState 去通知 UI 层做出变化。
 
                 NetState netState = new NetState();
                 netState.setSuccess(false);
                 netState.setResponseCode("404");
                 NetworkStateManager.getInstance().networkStateCallback.postValue(netState);
+
+                if (netState.isSuccess()) {
+                    //TODO 否则，网络状况好的情况下，可向 UI 层回传来自网络请求响应的 token 等其他信息
+                    liveData.postValue("token:xxxxxxxxxxxx");
+                }
             }
         };
 

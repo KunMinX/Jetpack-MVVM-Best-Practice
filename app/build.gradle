@@ -7,7 +7,7 @@ android {
         applicationId "com.kunminx.puremusic"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 20100
+        versionCode 20205
         versionName "2.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
