@@ -33,6 +33,7 @@ import com.kunminx.puremusic.data.bean.User;
 import com.kunminx.puremusic.data.config.Configs;
 import com.kunminx.puremusic.ui.base.BaseFragment;
 import com.kunminx.puremusic.ui.base.DataBindingConfig;
+import com.kunminx.puremusic.ui.helper.DrawerCoordinateHelper;
 
 /**
  * Create by KunMinX at 20/04/26
@@ -61,6 +62,13 @@ public class LoginFragment extends BaseFragment {
 
         return new DataBindingConfig(R.layout.fragment_login, mLoginViewModel)
                 .addBindingParam(BR.click, new ClickProxy());
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        getLifecycle().addObserver(DrawerCoordinateHelper.getInstance());
     }
 
     @Override
