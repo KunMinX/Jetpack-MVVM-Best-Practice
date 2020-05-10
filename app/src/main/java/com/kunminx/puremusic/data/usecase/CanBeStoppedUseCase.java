@@ -33,6 +33,12 @@ import static com.kunminx.puremusic.data.usecase.CanBeStoppedUseCase.ResponseVal
 /**
  * UseCase 示例，实现 LifeCycle 接口，单独服务于 有 “叫停” 需求 的业务
  *
+ * TODO tip：
+ *  同样是“下载”，我不是在数据层分别写两个方法，
+ *  而是遵循开闭原则，在 vm 和 数据层之间，插入一个 UseCase，来专门负责可叫停的情况，
+ *  除了开闭原则，使用 UseCase 还有个考虑就是避免内存泄漏，
+ * 具体缘由可详见 https://xiaozhuanlan.com/topic/6257931840 评论区 15 楼
+ *
  * Create by KunMinX at 19/11/25
  */
 public class CanBeStoppedUseCase extends UseCase<RequestValues, ResponseValue> implements DefaultLifecycleObserver {
