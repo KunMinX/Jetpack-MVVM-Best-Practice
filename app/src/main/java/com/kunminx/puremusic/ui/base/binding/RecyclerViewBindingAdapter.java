@@ -17,6 +17,7 @@
 package com.kunminx.puremusic.ui.base.binding;
 
 import androidx.databinding.BindingAdapter;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kunminx.architecture.ui.adapter.BaseBindingAdapter;
@@ -32,6 +33,19 @@ public class RecyclerViewBindingAdapter {
     public static void setAdapter(RecyclerView recyclerView, RecyclerView.Adapter adapter) {
         if (recyclerView != null && adapter != null) {
             recyclerView.setAdapter(adapter);
+        }
+    }
+
+    @BindingAdapter(value = {"setSpanCount"})
+    public static void setSpanCount(RecyclerView recyclerView, int spanCount) {
+        if (recyclerView != null) {
+            if (recyclerView.getLayoutManager() == null || !(recyclerView.getLayoutManager() instanceof GridLayoutManager)) {
+                recyclerView.setLayoutManager(new GridLayoutManager(recyclerView.getContext(), spanCount));
+            } else {
+                if (recyclerView.getLayoutManager() instanceof GridLayoutManager) {
+                    ((GridLayoutManager) recyclerView.getLayoutManager()).setSpanCount(spanCount);
+                }
+            }
         }
     }
 
