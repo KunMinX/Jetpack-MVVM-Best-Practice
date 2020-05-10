@@ -56,9 +56,7 @@ public abstract class BaseFragment extends Fragment {
     private static final Handler HANDLER = new Handler();
     protected AppCompatActivity mActivity;
     private SharedViewModel mSharedViewModel;
-    protected boolean mAnimationEnterLoaded;
     protected boolean mAnimationLoaded;
-    protected boolean mInitDataCame;
     private ViewModelProvider mFragmentProvider;
     private ViewModelProvider mActivityProvider;
     private ViewDataBinding mBinding;
@@ -140,10 +138,10 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     @Override
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        //TODO 错开动画转场与 UI 刷新的时机，避免掉帧卡顿的现象
         HANDLER.postDelayed(() -> {
-            mAnimationLoaded = true;
-            if (mInitDataCame && !mAnimationEnterLoaded) {
-                mAnimationEnterLoaded = true;
+            if (!mAnimationLoaded) {
+                mAnimationLoaded = true;
                 loadInitData();
             }
         }, 280);

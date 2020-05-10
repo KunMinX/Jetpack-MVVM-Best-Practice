@@ -67,7 +67,6 @@ public class DrawerFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 
         mInfoRequestViewModel.getLibraryLiveData().observe(getViewLifecycleOwner(), libraryInfos -> {
-            mInitDataCame = true;
             if (mAnimationLoaded && libraryInfos != null) {
                 mDrawerViewModel.list.setValue(libraryInfos);
             }
