@@ -39,15 +39,15 @@ import java.util.TimerTask;
 /**
  * Create by KunMinX at 19/10/29
  */
-public class HttpRequestManager implements ILocalRequest, IRemoteRequest {
+public class DataRepository implements ILocalRequest, IRemoteRequest {
 
-    private static final HttpRequestManager S_REQUEST_MANAGER = new HttpRequestManager();
+    private static final DataRepository S_REQUEST_MANAGER = new DataRepository();
     private MutableLiveData<String> responseCodeLiveData;
 
-    private HttpRequestManager() {
+    private DataRepository() {
     }
 
-    public static HttpRequestManager getInstance() {
+    public static DataRepository getInstance() {
         return S_REQUEST_MANAGER;
     }
 

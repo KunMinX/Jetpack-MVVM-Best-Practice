@@ -21,7 +21,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.kunminx.puremusic.data.bean.LibraryInfo;
-import com.kunminx.puremusic.data.repository.HttpRequestManager;
+import com.kunminx.puremusic.data.repository.DataRepository;
 
 import java.util.List;
 
@@ -55,6 +55,6 @@ public class InfoRequestViewModel extends ViewModel {
     }
 
     public void requestLibraryInfo() {
-        HttpRequestManager.getInstance().getLibraryInfo(mLibraryLiveData);
+        DataRepository.getInstance().getLibraryInfo(mLibraryLiveData);
     }
 }

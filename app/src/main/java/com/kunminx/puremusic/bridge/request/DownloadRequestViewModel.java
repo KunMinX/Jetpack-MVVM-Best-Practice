@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel;
 import com.kunminx.architecture.data.usecase.UseCase;
 import com.kunminx.architecture.data.usecase.UseCaseHandler;
 import com.kunminx.puremusic.data.bean.DownloadFile;
-import com.kunminx.puremusic.data.repository.HttpRequestManager;
+import com.kunminx.puremusic.data.repository.DataRepository;
 import com.kunminx.puremusic.data.usecase.CanBeStoppedUseCase;
 
 /**
@@ -58,7 +58,7 @@ public class DownloadRequestViewModel extends ViewModel {
     }
 
     public void requestDownloadFile() {
-        HttpRequestManager.getInstance().downloadFile(mDownloadFileLiveData);
+        DataRepository.getInstance().downloadFile(mDownloadFileLiveData);
     }
 
     //TODO tip2：

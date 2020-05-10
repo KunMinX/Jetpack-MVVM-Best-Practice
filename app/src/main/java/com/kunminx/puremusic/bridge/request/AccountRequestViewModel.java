@@ -22,7 +22,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.kunminx.puremusic.data.bean.User;
-import com.kunminx.puremusic.data.repository.HttpRequestManager;
+import com.kunminx.puremusic.data.repository.DataRepository;
 
 /**
  * 信息列表 Request-ViewModel
@@ -53,6 +53,6 @@ public class AccountRequestViewModel extends ViewModel {
     }
 
     public void requestLogin(User user) {
-        HttpRequestManager.getInstance().login(user, tokenLiveData);
+        DataRepository.getInstance().login(user, tokenLiveData);
     }
 }
