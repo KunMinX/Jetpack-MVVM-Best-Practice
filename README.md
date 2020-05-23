@@ -98,9 +98,9 @@
 
 [AndroidSlidingUpPanel](https://github.com/umano/AndroidSlidingUpPanel)
 
-项目中使用的 图片素材 来自 [UnSplash](https://unsplash.com/) 提供的 **无版权免费图片**。
+项目中使用的 图片素材 来自 [UnSplash](https://unsplash.com/) 提供的 **免费授权图片**。
 
-项目中使用的 音频素材 来自 [BenSound](https://www.bensound.com/) 提供的 **无版权免费音乐**。
+项目中使用的 音频素材 来自 [BenSound](https://www.bensound.com/) 提供的 **免费授权音乐**。
 
 &nbsp;
 &nbsp;
