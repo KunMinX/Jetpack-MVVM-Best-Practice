@@ -29,13 +29,6 @@ import java.util.List;
  */
 public class RecyclerViewBindingAdapter {
 
-    @BindingAdapter(value = {"adapter"})
-    public static void setAdapter(RecyclerView recyclerView, RecyclerView.Adapter adapter) {
-        if (recyclerView != null && adapter != null) {
-            recyclerView.setAdapter(adapter);
-        }
-    }
-
     @BindingAdapter(value = {"setSpanCount"})
     public static void setSpanCount(RecyclerView recyclerView, int spanCount) {
         if (recyclerView != null) {
@@ -49,11 +42,15 @@ public class RecyclerViewBindingAdapter {
         }
     }
 
-    @BindingAdapter(value = {"refreshList"})
-    public static void refreshList(RecyclerView recyclerView, List list) {
-        if (list != null) {
+    @BindingAdapter(value = {"adapter", "refreshList"}, requireAll = false)
+    public static void bindList(RecyclerView recyclerView, RecyclerView.Adapter adapter, List list) {
+        if (recyclerView != null && list != null) {
+            if (recyclerView.getAdapter() == null) {
+                recyclerView.setAdapter(adapter);
+            }
+
             ((BaseBindingAdapter) recyclerView.getAdapter()).setList(list);
-            
+
             //TODO 此处可通过 diffUtil 进一步优化用户体验
             recyclerView.getAdapter().notifyDataSetChanged();
         }
