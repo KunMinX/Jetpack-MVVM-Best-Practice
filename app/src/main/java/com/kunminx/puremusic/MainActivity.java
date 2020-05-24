@@ -17,7 +17,9 @@
 package com.kunminx.puremusic;
 
 import android.os.Bundle;
+import android.view.View;
 
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -51,7 +53,8 @@ public class MainActivity extends BaseActivity {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.activity_main, mMainActivityViewModel);
+        return new DataBindingConfig(R.layout.activity_main, mMainActivityViewModel)
+                .addBindingParam(BR.event, new EventHandler());
     }
 
     @Override
@@ -138,5 +141,19 @@ public class MainActivity extends BaseActivity {
         // TODO 同 tip 2
 
         getSharedViewModel().closeSlidePanelIfExpanded.setValue(true);
+    }
+
+    public static class EventHandler extends DrawerLayout.SimpleDrawerListener {
+        @Override
+        public void onDrawerOpened(View drawerView) {
+            super.onDrawerOpened(drawerView);
+            SharedViewModel.IS_DRAWER_OPENED.set(true);
+        }
+
+        @Override
+        public void onDrawerClosed(View drawerView) {
+            super.onDrawerClosed(drawerView);
+            SharedViewModel.IS_DRAWER_OPENED.set(false);
+        }
     }
 }
