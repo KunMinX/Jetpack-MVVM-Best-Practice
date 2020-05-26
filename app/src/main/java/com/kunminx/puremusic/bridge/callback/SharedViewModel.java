@@ -25,14 +25,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * TODO tip：callback-ViewModel 的职责仅限于 页面通信，不建议在此处理 UI 逻辑，
  * UI 逻辑只适合在 Activity/Fragment 等视图控制器中完成，是 “数据驱动” 的一部分，
  * 将来升级到 Jetpack Compose 更是如此。
- *
+ * <p>
  * 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/6257931840
- *
- *
+ * <p>
+ * <p>
  * Create by KunMinX at 19/10/16
  */
 public class SharedViewModel extends ViewModel {
@@ -47,7 +46,7 @@ public class SharedViewModel extends ViewModel {
     // 详见 https://xiaozhuanlan.com/topic/0168753249 和 https://xiaozhuanlan.com/topic/6257931840
 
     public static final List<String> TAG_OF_SECONDARY_PAGES = new ArrayList<>();
-    public static final ObservableBoolean IS_DRAWER_OPENED = new ObservableBoolean();
+    public final ObservableBoolean isDrawerOpened = new ObservableBoolean();
     public final UnPeekLiveData<Boolean> timeToAddSlideListener = new UnPeekLiveData<>();
     public final UnPeekLiveData<Boolean> closeSlidePanelIfExpanded = new UnPeekLiveData<>();
     public final UnPeekLiveData<Boolean> activityCanBeClosedDirectly = new UnPeekLiveData<>();
