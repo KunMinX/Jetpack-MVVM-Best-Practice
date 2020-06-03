@@ -1,4 +1,6 @@
-![slogan.png](https://upload-images.jianshu.io/upload_images/57036-896e7a8809a9a705.png)
+<p align="center">
+<img src="/previews/cover.png"/>
+</p>
 
 &nbsp;
 
