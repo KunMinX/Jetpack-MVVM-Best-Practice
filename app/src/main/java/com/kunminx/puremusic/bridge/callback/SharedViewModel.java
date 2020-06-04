@@ -17,10 +17,9 @@
 package com.kunminx.puremusic.bridge.callback;
 
 import androidx.databinding.ObservableBoolean;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.kunminx.architecture.bridge.callback.Event;
+import com.kunminx.architecture.bridge.callback.EventLiveData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +36,7 @@ import java.util.List;
  */
 public class SharedViewModel extends ViewModel {
 
-    // TODO tip 1：此处演示通过 MutableLiveData<Event<Object>> 配合 SharedViewModel 来发送 生命周期安全的、事件源可追溯的 通知。
+    // TODO tip 1：此处演示通过 EventLiveData<Event<Object>> 配合 SharedViewModel 来发送 生命周期安全的、事件源可追溯的 通知。
 
     //TODO tip 2：并且，在页面通信的场景下，使用全局 ViewModel，是因为它被封装在 base 页面中，避免页面之外的组件拿到，从而造成不可预期的推送，
     // 而且尽可能使用单例或 ViewModel 托管 liveData，这样调试时能根据内存中的 liveData 对象找到事件源，
@@ -48,11 +47,11 @@ public class SharedViewModel extends ViewModel {
 
     public static final List<String> TAG_OF_SECONDARY_PAGES = new ArrayList<>();
     public final ObservableBoolean isDrawerOpened = new ObservableBoolean();
-    public final MutableLiveData<Event<Boolean>> timeToAddSlideListener = new MutableLiveData<>();
-    public final MutableLiveData<Event<Boolean>> closeSlidePanelIfExpanded = new MutableLiveData<>();
-    public final MutableLiveData<Event<Boolean>> activityCanBeClosedDirectly = new MutableLiveData<>();
-    public final MutableLiveData<Event<Boolean>> openOrCloseDrawer = new MutableLiveData<>();
-    public final MutableLiveData<Event<Boolean>> enableSwipeDrawer = new MutableLiveData<>();
+    public final EventLiveData<Boolean> timeToAddSlideListener = new EventLiveData<>();
+    public final EventLiveData<Boolean> closeSlidePanelIfExpanded = new EventLiveData<>();
+    public final EventLiveData<Boolean> activityCanBeClosedDirectly = new EventLiveData<>();
+    public final EventLiveData<Boolean> openOrCloseDrawer = new EventLiveData<>();
+    public final EventLiveData<Boolean> enableSwipeDrawer = new EventLiveData<>();
 
 
 }
