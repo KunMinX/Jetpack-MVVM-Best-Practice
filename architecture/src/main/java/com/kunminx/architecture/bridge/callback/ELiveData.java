@@ -43,7 +43,7 @@ abstract class ELiveData<T> {
     @SuppressWarnings("WeakerAccess") /* synthetic access */
     static final Object NOT_SET = new Object();
 
-    private SafeIterableMap<Observer<T>, ObserverWrapper> mObservers = new SafeIterableMap<>();
+    private SafeIterableMap<EventObserver<T>, ObserverWrapper> mObservers = new SafeIterableMap<>();
 
     // how many observers are in active state
     @SuppressWarnings("WeakerAccess") /* synthetic access */
@@ -109,7 +109,7 @@ abstract class ELiveData<T> {
         observer.mLastVersion = mVersion;
         T data = (T) ((Event<T>) mData).getContent();
         if (data != null) {
-            observer.mObserver.onChanged(data);
+            observer.mEventObserver.onReceived(data);
         }
     }
 
@@ -126,7 +126,7 @@ abstract class ELiveData<T> {
                 considerNotify(initiator);
                 initiator = null;
             } else {
-                for (Iterator<Map.Entry<Observer<T>, ObserverWrapper>> iterator =
+                for (Iterator<Map.Entry<EventObserver<T>, ObserverWrapper>> iterator =
                      mObservers.iteratorWithAdditions(); iterator.hasNext(); ) {
                     considerNotify(iterator.next().getValue());
                     if (mDispatchInvalidated) {
@@ -164,17 +164,17 @@ abstract class ELiveData<T> {
      * {@link IllegalArgumentException}.
      *
      * @param owner    The LifecycleOwner which controls the observer
-     * @param observer The observer that will receive the events
+     * @param eventObserver The observer that will receive the events
      */
     @MainThread
-    public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<T> observer) {
+    public void observe(@NonNull LifecycleOwner owner, @NonNull EventObserver<T> eventObserver) {
         assertMainThread("observe");
         if (owner.getLifecycle().getCurrentState() == DESTROYED) {
             // ignore
             return;
         }
-        LifecycleBoundObserver wrapper = new LifecycleBoundObserver(owner, observer);
-        ObserverWrapper existing = mObservers.putIfAbsent(observer, wrapper);
+        LifecycleBoundObserver wrapper = new LifecycleBoundObserver(owner, eventObserver);
+        ObserverWrapper existing = mObservers.putIfAbsent(eventObserver, wrapper);
         if (existing != null && !existing.isAttachedTo(owner)) {
             throw new IllegalArgumentException("Cannot add the same observer"
                     + " with different lifecycles");
@@ -187,9 +187,9 @@ abstract class ELiveData<T> {
 
     /**
      * Adds the given observer to the observers list. This call is similar to
-     * {@link ELiveData#observe(LifecycleOwner, Observer)} with a LifecycleOwner, which
+     * {@link ELiveData#observe(LifecycleOwner, EventObserver)} with a LifecycleOwner, which
      * is always active. This means that the given observer will receive all events and will never
-     * be automatically removed. You should manually call {@link #removeObserver(Observer)} to stop
+     * be automatically removed. You should manually call {@link #removeObserver(EventObserver)} to stop
      * observing this LiveData.
      * While LiveData has one of such observers, it will be considered
      * as active.
@@ -197,13 +197,13 @@ abstract class ELiveData<T> {
      * If the observer was already added with an owner to this LiveData, LiveData throws an
      * {@link IllegalArgumentException}.
      *
-     * @param observer The observer that will receive the events
+     * @param eventObserver The observer that will receive the events
      */
     @MainThread
-    public void observeForever(@NonNull Observer<T> observer) {
+    public void observeForever(@NonNull EventObserver<T> eventObserver) {
         assertMainThread("observeForever");
-        AlwaysActiveObserver wrapper = new AlwaysActiveObserver(observer);
-        ObserverWrapper existing = mObservers.putIfAbsent(observer, wrapper);
+        AlwaysActiveObserver wrapper = new AlwaysActiveObserver(eventObserver);
+        ObserverWrapper existing = mObservers.putIfAbsent(eventObserver, wrapper);
         if (existing instanceof ELiveData.LifecycleBoundObserver) {
             throw new IllegalArgumentException("Cannot add the same observer"
                     + " with different lifecycles");
@@ -217,12 +217,12 @@ abstract class ELiveData<T> {
     /**
      * Removes the given observer from the observers list.
      *
-     * @param observer The Observer to receive events.
+     * @param eventObserver The Observer to receive events.
      */
     @MainThread
-    public void removeObserver(@NonNull final Observer<T> observer) {
+    public void removeObserver(@NonNull final EventObserver<T> eventObserver) {
         assertMainThread("removeObserver");
-        ObserverWrapper removed = mObservers.remove(observer);
+        ObserverWrapper removed = mObservers.remove(eventObserver);
         if (removed == null) {
             return;
         }
@@ -239,7 +239,7 @@ abstract class ELiveData<T> {
     @MainThread
     public void removeObservers(@NonNull final LifecycleOwner owner) {
         assertMainThread("removeObservers");
-        for (Map.Entry<Observer<T>, ObserverWrapper> entry : mObservers) {
+        for (Map.Entry<EventObserver<T>, ObserverWrapper> entry : mObservers) {
             if (entry.getValue().isAttachedTo(owner)) {
                 removeObserver(entry.getKey());
             }
@@ -357,8 +357,8 @@ abstract class ELiveData<T> {
         @NonNull
         final LifecycleOwner mOwner;
 
-        LifecycleBoundObserver(@NonNull LifecycleOwner owner, Observer<T> observer) {
-            super(observer);
+        LifecycleBoundObserver(@NonNull LifecycleOwner owner, EventObserver<T> eventObserver) {
+            super(eventObserver);
             mOwner = owner;
         }
 
@@ -371,7 +371,7 @@ abstract class ELiveData<T> {
         public void onStateChanged(@NonNull LifecycleOwner source,
                                    @NonNull Lifecycle.Event event) {
             if (mOwner.getLifecycle().getCurrentState() == DESTROYED) {
-                removeObserver(mObserver);
+                removeObserver(mEventObserver);
                 return;
             }
             activeStateChanged(shouldBeActive());
@@ -389,12 +389,12 @@ abstract class ELiveData<T> {
     }
 
     private abstract class ObserverWrapper {
-        final Observer<T> mObserver;
+        final EventObserver<T> mEventObserver;
         boolean mActive;
         int mLastVersion = START_VERSION;
 
-        ObserverWrapper(Observer<T> observer) {
-            mObserver = observer;
+        ObserverWrapper(EventObserver<T> eventObserver) {
+            mEventObserver = eventObserver;
         }
 
         abstract boolean shouldBeActive();
@@ -429,8 +429,8 @@ abstract class ELiveData<T> {
 
     private class AlwaysActiveObserver extends ObserverWrapper {
 
-        AlwaysActiveObserver(Observer<T> observer) {
-            super(observer);
+        AlwaysActiveObserver(EventObserver<T> eventObserver) {
+            super(eventObserver);
         }
 
         @Override

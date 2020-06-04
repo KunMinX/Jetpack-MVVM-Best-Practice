@@ -21,7 +21,7 @@ package com.kunminx.architecture.bridge.callback;
  * <p>
  * Create by KunMinX at 2020/6/3
  */
-public interface Observer<T> {
+public interface EventObserver<T> {
 
-    void onChanged(T t);
+    void onReceived(T t);
 }
