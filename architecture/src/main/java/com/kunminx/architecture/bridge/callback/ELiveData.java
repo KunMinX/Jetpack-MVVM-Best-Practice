@@ -36,7 +36,7 @@ import static androidx.lifecycle.Lifecycle.State.STARTED;
  * <p>
  * Create by KunMinX at 2020/6/3
  */
-public abstract class ELiveData<T> {
+abstract class ELiveData<T> {
     @SuppressWarnings("WeakerAccess") /* synthetic access */
     final Object mDataLock = new Object();
     static final int START_VERSION = -1;
