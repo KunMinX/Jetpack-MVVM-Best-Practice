@@ -22,6 +22,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.kunminx.architecture.bridge.callback.Event;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.bridge.request.MusicRequestViewModel;
@@ -117,7 +118,7 @@ public class MainFragment extends BaseFragment {
             // Activity 内部的事情在 Activity 内部消化，不要试图在 fragment 中调用和操纵 Activity 内部的东西。
             // 因为 Activity 端的处理后续可能会改变，并且可受用于更多的 fragment，而不单单是本 fragment。
 
-            getSharedViewModel().openOrCloseDrawer.setValue(true);
+            getSharedViewModel().openOrCloseDrawer.setValue(new Event<>(true));
         }
 
         public void login() {

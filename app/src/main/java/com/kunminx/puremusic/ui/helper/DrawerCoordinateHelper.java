@@ -20,16 +20,16 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.kunminx.architecture.bridge.callback.UnPeekLiveData;
+import com.kunminx.architecture.bridge.callback.Event;
 import com.kunminx.puremusic.bridge.callback.SharedViewModel;
 import com.kunminx.puremusic.ui.base.BaseFragment;
 
 /**
  * TODO tip：通过 Lifecycle 来解决抽屉侧滑禁用与否的判断的 一致性问题，
- *
+ * <p>
  * 每个需要注册和监听生命周期来判断的视图控制器，无需在各自内部手动书写解绑等操作。
  * 如果这样说还不理解，详见 https://xiaozhuanlan.com/topic/3684721950
- *
+ * <p>
  * Create by KunMinX at 19/11/3
  */
 public class DrawerCoordinateHelper implements DefaultLifecycleObserver {
@@ -49,7 +49,7 @@ public class DrawerCoordinateHelper implements DefaultLifecycleObserver {
         SharedViewModel.TAG_OF_SECONDARY_PAGES.add(owner.getClass().getSimpleName());
 
         ((BaseFragment) owner).getSharedViewModel()
-                .enableSwipeDrawer.setValue(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
+                .enableSwipeDrawer.setValue(new Event<>(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0));
     }
 
     @Override
@@ -58,7 +58,7 @@ public class DrawerCoordinateHelper implements DefaultLifecycleObserver {
         SharedViewModel.TAG_OF_SECONDARY_PAGES.remove(owner.getClass().getSimpleName());
 
         ((BaseFragment) owner).getSharedViewModel()
-                .enableSwipeDrawer.setValue(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
+                .enableSwipeDrawer.setValue(new Event<>(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0));
     }
 
 }

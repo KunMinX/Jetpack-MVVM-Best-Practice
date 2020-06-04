@@ -22,6 +22,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.kunminx.architecture.bridge.callback.Event;
 import com.kunminx.architecture.data.manager.NetState;
 import com.kunminx.architecture.data.manager.NetworkStateManager;
 import com.kunminx.architecture.utils.Utils;
@@ -144,7 +145,7 @@ public class DataRepository implements ILocalRequest, IRemoteRequest {
                 NetState netState = new NetState();
                 netState.setSuccess(false);
                 netState.setResponseCode("404");
-                NetworkStateManager.getInstance().networkStateCallback.postValue(netState);
+                NetworkStateManager.getInstance().networkStateCallback.postValue(new Event<>(netState));
 
                 if (netState.isSuccess()) {
                     //TODO 否则，网络状况好的情况下，可向 UI 层回传来自网络请求响应的 token 等其他信息

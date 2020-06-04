@@ -30,8 +30,12 @@ import java.util.Map;
  * 仅分发 owner observe 后 才新拿到的数据
  * 可避免共享作用域 VM 下 liveData 被 observe 时旧数据倒灌的情况
  * <p>
+ * <p>
+ * 已废弃，建议使用 Event 事件包装器
+ * <p>
  * Create by KunMinX at 19/9/23
  */
+@Deprecated
 public class UnPeekLiveData<T> extends MutableLiveData<T> {
 
     @Override

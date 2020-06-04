@@ -23,6 +23,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.kunminx.architecture.bridge.callback.Event;
 import com.kunminx.puremusic.bridge.state.MainActivityViewModel;
 import com.kunminx.puremusic.ui.base.BaseActivity;
 import com.kunminx.puremusic.ui.base.DataBindingConfig;
@@ -60,7 +61,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getSharedViewModel().activityCanBeClosedDirectly.observe(this, aBoolean -> {
+        getSharedViewModel().activityCanBeClosedDirectly.observe(this, booleanEvent -> {
             NavController nav = Navigation.findNavController(this, R.id.main_fragment_host);
             if (nav.getCurrentDestination() != null && nav.getCurrentDestination().getId() != R.id.mainFragment) {
                 nav.navigateUp();
@@ -69,14 +70,14 @@ public class MainActivity extends BaseActivity {
 
                 //TODO 同 tip 2
 
-                getSharedViewModel().openOrCloseDrawer.setValue(false);
+                getSharedViewModel().openOrCloseDrawer.setValue(new Event<>(false));
 
             } else {
                 super.onBackPressed();
             }
         });
 
-        getSharedViewModel().openOrCloseDrawer.observe(this, aBoolean -> {
+        getSharedViewModel().openOrCloseDrawer.observe(this, booleanEvent -> {
 
             //TODO yes：同 tip 1: 此处将 drawer 的 open 和 close 都放在 drawerBindingAdapter 中操作，规避了视图调用的一致性问题，
 
@@ -86,7 +87,10 @@ public class MainActivity extends BaseActivity {
 
             //如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
-            mMainActivityViewModel.openDrawer.setValue(aBoolean);
+            Boolean enable = booleanEvent.getContent();
+            if (enable != null) {
+                mMainActivityViewModel.openDrawer.setValue(enable);
+            }
 
             //TODO do not:（容易因疏忽 而埋下视图调用的一致性隐患）
 
@@ -99,11 +103,14 @@ public class MainActivity extends BaseActivity {
             }*/
         });
 
-        getSharedViewModel().enableSwipeDrawer.observe(this, aBoolean -> {
+        getSharedViewModel().enableSwipeDrawer.observe(this, booleanEvent -> {
 
             //TODO yes: 同 tip 1
 
-            mMainActivityViewModel.allowDrawerOpen.setValue(aBoolean);
+            Boolean enable = booleanEvent.getContent();
+            if (enable != null) {
+                mMainActivityViewModel.allowDrawerOpen.setValue(enable);
+            }
 
             // TODO do not:（容易因疏忽 而埋下视图调用的一致性隐患）
 
@@ -128,7 +135,7 @@ public class MainActivity extends BaseActivity {
             // fragment 内部的事情在 fragment 内部消化，不要试图在 Activity 中调用和操纵 Fragment 内部的东西。
             // 因为 fragment 端的处理后续可能会改变，并且可受用于更多的 Activity，而不单单是本 Activity。
 
-            getSharedViewModel().timeToAddSlideListener.setValue(true);
+            getSharedViewModel().timeToAddSlideListener.setValue(new Event<>(true));
 
             mIsListened = true;
         }
@@ -139,7 +146,7 @@ public class MainActivity extends BaseActivity {
 
         // TODO 同 tip 2
 
-        getSharedViewModel().closeSlidePanelIfExpanded.setValue(true);
+        getSharedViewModel().closeSlidePanelIfExpanded.setValue(new Event<>(true));
     }
 
     public class EventHandler extends DrawerLayout.SimpleDrawerListener {
