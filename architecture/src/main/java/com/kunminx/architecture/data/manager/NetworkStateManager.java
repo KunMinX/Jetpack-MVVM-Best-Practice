@@ -24,9 +24,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.MutableLiveData;
 
-import com.kunminx.architecture.bridge.callback.Event;
+import com.kunminx.architecture.bridge.callback.EventLiveData;
 
 import static java.util.Objects.requireNonNull;
 
@@ -36,7 +35,7 @@ import static java.util.Objects.requireNonNull;
 public class NetworkStateManager implements DefaultLifecycleObserver {
 
     private static final NetworkStateManager S_MANAGER = new NetworkStateManager();
-    public final MutableLiveData<Event<NetState>> networkStateCallback = new MutableLiveData<>();
+    public final EventLiveData<NetState> networkStateCallback = new EventLiveData<>();
     private NetworkStateReceive mNetworkStateReceive;
 
     private NetworkStateManager() {
