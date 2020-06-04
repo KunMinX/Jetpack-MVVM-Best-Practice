@@ -19,7 +19,9 @@
 package com.kunminx.architecture.bridge.callback;
 
 /**
- * TODO: 用于 callback 的情况，配合 MutableLiveData & SharedViewModel 的使用
+ * TODO: 用于 callback 的情况，配合 EventLiveData & SharedViewModel 的使用
+ * <p>
+ * 建议使用良好封装的 EventLiveData，而不要通过 MutableLiveData 套一个 Event 的方式，避免在 java 环境下造成 null 安全的一致性问题
  * <p>
  * Create by KunMinX at 2020/6/2
  */
