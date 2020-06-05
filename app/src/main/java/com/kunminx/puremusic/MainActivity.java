@@ -23,7 +23,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.kunminx.architecture.bridge.callback.Event;
 import com.kunminx.puremusic.bridge.state.MainActivityViewModel;
 import com.kunminx.puremusic.ui.base.BaseActivity;
 import com.kunminx.puremusic.ui.base.DataBindingConfig;
@@ -70,7 +69,7 @@ public class MainActivity extends BaseActivity {
 
                 //TODO 同 tip 2
 
-                getSharedViewModel().openOrCloseDrawer.setValue(new Event<>(false));
+                getSharedViewModel().openOrCloseDrawer.setValue(false);
 
             } else {
                 super.onBackPressed();
@@ -129,7 +128,7 @@ public class MainActivity extends BaseActivity {
             // fragment 内部的事情在 fragment 内部消化，不要试图在 Activity 中调用和操纵 Fragment 内部的东西。
             // 因为 fragment 端的处理后续可能会改变，并且可受用于更多的 Activity，而不单单是本 Activity。
 
-            getSharedViewModel().timeToAddSlideListener.setValue(new Event<>(true));
+            getSharedViewModel().timeToAddSlideListener.setValue(true);
 
             mIsListened = true;
         }
@@ -140,7 +139,7 @@ public class MainActivity extends BaseActivity {
 
         // TODO 同 tip 2
 
-        getSharedViewModel().closeSlidePanelIfExpanded.setValue(new Event<>(true));
+        getSharedViewModel().closeSlidePanelIfExpanded.setValue(true);
     }
 
     public class EventHandler extends DrawerLayout.SimpleDrawerListener {

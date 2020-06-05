@@ -23,7 +23,6 @@ import android.widget.SeekBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.kunminx.architecture.bridge.callback.Event;
 import com.kunminx.player.PlayingInfoManager;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
@@ -96,7 +95,7 @@ public class PlayerFragment extends BaseFragment {
                         } else {
                             SharedViewModel.TAG_OF_SECONDARY_PAGES.remove(this.getClass().getSimpleName());
                         }
-                        getSharedViewModel().enableSwipeDrawer.setValue(new Event<>(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0));
+                        getSharedViewModel().enableSwipeDrawer.setValue(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
                     }
                 });
             }
@@ -178,13 +177,13 @@ public class PlayerFragment extends BaseFragment {
                     // 因为 Activity 端的处理后续可能会改变，并且可受用于更多的 fragment，而不单单是本 fragment。
 
                     // TODO: yes:
-                    getSharedViewModel().activityCanBeClosedDirectly.setValue(new Event<>(true));
+                    getSharedViewModel().activityCanBeClosedDirectly.setValue(true);
 
                     // TODO: do not:
                     // mActivity.finish();
                 }
             } else {
-                getSharedViewModel().activityCanBeClosedDirectly.setValue(new Event<>(true));
+                getSharedViewModel().activityCanBeClosedDirectly.setValue(true);
             }
         });
 
@@ -218,7 +217,7 @@ public class PlayerFragment extends BaseFragment {
         }
 
         public void slideDown() {
-            getSharedViewModel().closeSlidePanelIfExpanded.setValue(new Event<>(true));
+            getSharedViewModel().closeSlidePanelIfExpanded.setValue(true);
         }
 
         public void more() {

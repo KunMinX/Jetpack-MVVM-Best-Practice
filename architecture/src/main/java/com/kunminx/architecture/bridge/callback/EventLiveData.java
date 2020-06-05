@@ -40,13 +40,11 @@ public class EventLiveData<T> extends ELiveData<T> {
         super();
     }
 
-    @Override
-    public void postValue(Event<T> value) {
-        super.postValue(value);
+    public void postValue(T value) {
+        super.postEvent(new Event<>(value));
     }
 
-    @Override
-    public void setValue(Event<T> value) {
-        super.setValue(value);
+    public void setValue(T value) {
+        super.setEvent(new Event<>(value));
     }
 }
