@@ -27,11 +27,15 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
- * 仅分发 owner observe 后 才新拿到的数据
+ * TODO：仅分发 owner observe 后 才新拿到的数据
  * 可避免共享作用域 VM 下 liveData 被 observe 时旧数据倒灌的情况
+ * <p>
+ * 已废弃，建议使用 Event 事件包装器，具体缘由详见《Jetpack MVVM 精讲》中的最新补充
+ * https://juejin.im/post/5dafc49b6fb9a04e17209922
  * <p>
  * Create by KunMinX at 19/9/23
  */
+@Deprecated
 public class UnPeekLiveData<T> extends MutableLiveData<T> {
 
     @Override

@@ -25,7 +25,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.kunminx.architecture.bridge.callback.UnPeekLiveData;
+import com.kunminx.architecture.bridge.callback.EventLiveData;
 
 import static java.util.Objects.requireNonNull;
 
@@ -35,7 +35,7 @@ import static java.util.Objects.requireNonNull;
 public class NetworkStateManager implements DefaultLifecycleObserver {
 
     private static final NetworkStateManager S_MANAGER = new NetworkStateManager();
-    public final UnPeekLiveData<NetState> networkStateCallback = new UnPeekLiveData<>();
+    public final EventLiveData<NetState> networkStateCallback = new EventLiveData<>();
     private NetworkStateReceive mNetworkStateReceive;
 
     private NetworkStateManager() {

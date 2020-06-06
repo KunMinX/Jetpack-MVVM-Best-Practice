@@ -23,7 +23,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.kunminx.puremusic.bridge.callback.SharedViewModel;
 import com.kunminx.puremusic.bridge.state.MainActivityViewModel;
 import com.kunminx.puremusic.ui.base.BaseActivity;
 import com.kunminx.puremusic.ui.base.DataBindingConfig;
@@ -66,7 +65,7 @@ public class MainActivity extends BaseActivity {
             if (nav.getCurrentDestination() != null && nav.getCurrentDestination().getId() != R.id.mainFragment) {
                 nav.navigateUp();
 
-            } else if (SharedViewModel.IS_DRAWER_OPENED.get()) {
+            } else if (getSharedViewModel().isDrawerOpened.get()) {
 
                 //TODO 同 tip 2
 
@@ -143,17 +142,18 @@ public class MainActivity extends BaseActivity {
         getSharedViewModel().closeSlidePanelIfExpanded.setValue(true);
     }
 
-    public static class EventHandler extends DrawerLayout.SimpleDrawerListener {
+    public class EventHandler extends DrawerLayout.SimpleDrawerListener {
         @Override
         public void onDrawerOpened(View drawerView) {
             super.onDrawerOpened(drawerView);
-            SharedViewModel.IS_DRAWER_OPENED.set(true);
+            getSharedViewModel().isDrawerOpened.set(true);
         }
 
         @Override
         public void onDrawerClosed(View drawerView) {
             super.onDrawerClosed(drawerView);
-            SharedViewModel.IS_DRAWER_OPENED.set(false);
+            getSharedViewModel().isDrawerOpened.set(false);
+            mMainActivityViewModel.openDrawer.setValue(false);
         }
     }
 }
