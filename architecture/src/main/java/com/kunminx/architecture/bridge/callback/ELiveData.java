@@ -107,7 +107,9 @@ abstract class ELiveData<T> {
             return;
         }
         observer.mLastVersion = mVersion;
-        observer.mEventObserver.onReceived(data);
+        if (data != null) {
+            observer.mEventObserver.onReceived(data);
+        }
     }
 
     @SuppressWarnings("WeakerAccess") /* synthetic access */
