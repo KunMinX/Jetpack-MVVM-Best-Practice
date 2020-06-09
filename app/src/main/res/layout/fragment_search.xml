@@ -174,5 +174,21 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_test_lifecycle_download" />
 
+        <SeekBar
+            android:id="@+id/pb_2"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/transparent"
+            android:progress="@{vm.canBeStopProgress}"
+            android:progressDrawable="@drawable/progressbar_color"
+            android:thumb="@color/transparent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pb" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

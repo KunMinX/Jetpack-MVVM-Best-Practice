@@ -80,7 +80,7 @@ public class SearchFragment extends BaseFragment {
         });
 
         mDownloadRequestViewModel.getDownloadFileCanBeStoppedLiveData().observe(getViewLifecycleOwner(), downloadFile -> {
-            mSearchViewModel.progress.set(downloadFile.getProgress());
+            mSearchViewModel.canBeStopProgress.set(downloadFile.getProgress());
         });
     }
 

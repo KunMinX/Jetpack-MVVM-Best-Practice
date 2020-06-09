@@ -48,7 +48,6 @@ public class CanBeStoppedUseCase extends UseCase<RequestValues, ResponseValue> i
         if (getRequestValues() != null && getRequestValues().liveData != null) {
             DownloadFile downloadFile = getRequestValues().liveData.getValue();
             downloadFile.setForgive(true);
-            getRequestValues().liveData.setValue(downloadFile);
             getUseCaseCallback().onSuccess(new ResponseValue(getRequestValues().liveData));
         }
     }
