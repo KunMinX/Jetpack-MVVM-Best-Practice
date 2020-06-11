@@ -126,6 +126,7 @@ abstract class ELiveData<T> {
                 initiator = null;
             } else {
                 T data = (T) ((Event<T>) mData).getContent();
+                ((Event<T>) mData).setContentNull();
                 if (data != null) {
                     for (Iterator<Map.Entry<EventObserver<T>, ObserverWrapper>> iterator =
                          mObservers.iteratorWithAdditions(); iterator.hasNext(); ) {
