@@ -23,7 +23,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.kunminx.architecture.data.manager.NetState;
+import com.kunminx.architecture.domain.manager.NetState;
 import com.kunminx.architecture.utils.SPUtils;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;

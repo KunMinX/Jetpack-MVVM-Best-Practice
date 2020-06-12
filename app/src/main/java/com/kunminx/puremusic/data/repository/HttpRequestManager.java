@@ -29,7 +29,7 @@ import com.kunminx.puremusic.data.bean.SingerImg;
 import com.kunminx.puremusic.data.bean.SongInfo;
 import com.kunminx.puremusic.data.bean.SongResult;
 import com.kunminx.puremusic.data.bean.SongUrl;
-import com.kunminx.architecture.data.convert.JsonCallback;
+import com.kunminx.architecture.domain.convert.JsonCallback;
 import com.kunminx.architecture.utils.Utils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;

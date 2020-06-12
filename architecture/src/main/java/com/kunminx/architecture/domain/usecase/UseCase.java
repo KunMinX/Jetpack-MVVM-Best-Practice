@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kunminx.architecture.data.usecase;
+package com.kunminx.architecture.domain.usecase;
 
 /**
  * Use cases are the entry points to the domain layer.

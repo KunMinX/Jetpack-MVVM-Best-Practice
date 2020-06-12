@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kunminx.architecture.bridge.callback;
+package com.kunminx.architecture.ui.callback;
 
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;

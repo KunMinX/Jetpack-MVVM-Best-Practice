@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2019 KunMinX
+ * Copyright 2018-2020 KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,18 @@
  * limitations under the License.
  */
 
-package com.kunminx.architecture.data.manager;
+package com.kunminx.architecture.domain.usecase;
 
 /**
- * Create by KunMinX at 19/10/11
+ * Interface for schedulers, see {@link UseCaseThreadPoolScheduler}.
  */
-public class NetState {
+public interface UseCaseScheduler {
 
-    private String responseCode;
-    private boolean success = true;
+    void execute(Runnable runnable);
 
-    public String getResponseCode() {
-        return responseCode;
-    }
+    <V extends UseCase.ResponseValue> void notifyResponse(final V response,
+                                                          final UseCase.UseCaseCallback<V> useCaseCallback);
 
-    public void setResponseCode(String responseCode) {
-        this.responseCode = responseCode;
-    }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
+    <V extends UseCase.ResponseValue> void onError(
+            final UseCase.UseCaseCallback<V> useCaseCallback);
 }

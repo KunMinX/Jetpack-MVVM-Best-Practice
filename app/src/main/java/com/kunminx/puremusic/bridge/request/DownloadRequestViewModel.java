@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.kunminx.architecture.data.usecase.UseCase;
-import com.kunminx.architecture.data.usecase.UseCaseHandler;
+import com.kunminx.architecture.domain.usecase.UseCase;
+import com.kunminx.architecture.domain.usecase.UseCaseHandler;
 import com.kunminx.puremusic.data.bean.DownloadFile;
 import com.kunminx.puremusic.data.repository.DataRepository;
 import com.kunminx.puremusic.data.usecase.CanBeStoppedUseCase;

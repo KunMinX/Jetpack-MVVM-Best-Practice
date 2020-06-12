@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kunminx.architecture.bridge.callback;
+package com.kunminx.architecture.ui.callback;
 
 /**
  * TODO: 专为 Event LiveData 改造的底层 LiveData 支持

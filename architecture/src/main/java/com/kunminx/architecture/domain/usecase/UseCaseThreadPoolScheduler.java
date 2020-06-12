@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kunminx.architecture.data.usecase;
+package com.kunminx.architecture.domain.usecase;
 
 import android.os.Handler;
 

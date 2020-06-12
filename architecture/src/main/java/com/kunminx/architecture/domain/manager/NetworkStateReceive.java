@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kunminx.architecture.data.manager;
+package com.kunminx.architecture.domain.manager;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

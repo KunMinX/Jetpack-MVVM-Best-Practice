@@ -18,7 +18,7 @@ package com.kunminx.puremusic.bridge.callback;
 
 import androidx.lifecycle.ViewModel;
 
-import com.kunminx.architecture.bridge.callback.UnPeekLiveData;
+import com.kunminx.architecture.ui.callback.UnPeekLiveData;
 
 /**
  * Create by KunMinX at 19/10/16

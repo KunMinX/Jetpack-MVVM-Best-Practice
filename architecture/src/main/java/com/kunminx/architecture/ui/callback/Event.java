@@ -16,7 +16,7 @@
  *
  */
 
-package com.kunminx.architecture.bridge.callback;
+package com.kunminx.architecture.ui.callback;
 
 /**
  * TODO: 用于 callback 的情况，配合 EventLiveData & SharedViewModel 的使用
