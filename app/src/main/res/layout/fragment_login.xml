@@ -6,7 +6,7 @@
 
         <variable
             name="vm"
-            type="com.kunminx.puremusic.bridge.state.LoginViewModel" />
+            type="com.kunminx.puremusic.domain.state.LoginViewModel" />
 
         <variable
             name="click"

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kunminx.puremusic.bridge.request;
+package com.kunminx.puremusic.domain.request;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

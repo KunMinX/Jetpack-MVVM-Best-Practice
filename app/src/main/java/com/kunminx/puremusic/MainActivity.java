@@ -23,7 +23,7 @@ import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.kunminx.puremusic.bridge.status.MainActivityViewModel;
+import com.kunminx.puremusic.domain.status.MainActivityViewModel;
 import com.kunminx.puremusic.databinding.ActivityMainBinding;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.player.notification.PlayerService;

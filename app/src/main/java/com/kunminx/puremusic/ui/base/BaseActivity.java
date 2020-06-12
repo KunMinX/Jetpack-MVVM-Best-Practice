@@ -28,7 +28,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.kunminx.architecture.utils.BarUtils;
 import com.kunminx.puremusic.App;
-import com.kunminx.puremusic.bridge.callback.SharedViewModel;
+import com.kunminx.puremusic.ui.callback.SharedViewModel;
 import com.kunminx.architecture.utils.AdaptScreenUtils;
 import com.kunminx.architecture.utils.ScreenUtils;
 

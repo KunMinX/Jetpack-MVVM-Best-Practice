@@ -14,16 +14,11 @@
  * limitations under the License.
  */
 
-package com.kunminx.puremusic.bridge.state;
+package com.kunminx.puremusic.ui.state;
 
 import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import com.kunminx.puremusic.data.bean.TestAlbum;
-
-import java.util.List;
 
 /**
  * TODO tip：每个页面都要单独准备一个 state-ViewModel，
@@ -35,22 +30,14 @@ import java.util.List;
  *
  * 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
  *
- * Create by KunMinX at 19/10/29
+ * Create by KunMinX at 20/04/26
  */
-public class MainViewModel extends ViewModel {
+public class LoginViewModel extends ViewModel {
 
-    public final ObservableBoolean initTabAndPage = new ObservableBoolean();
+    public final ObservableField<String> name = new ObservableField<>();
 
-    public final ObservableField<String> pageAssetPath = new ObservableField<>();
+    public final ObservableField<String> password = new ObservableField<>();
 
-    //TODO 此处用于绑定的状态，使用 LiveData 而不是 ObservableField，主要是考虑到 ObservableField 具有防抖的特性，不适合该场景。
+    public final ObservableBoolean loadingVisible = new ObservableBoolean();
 
-    //如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
-
-    public final MutableLiveData<List<TestAlbum.TestMusic>> list = new MutableLiveData<>();
-
-    {
-        initTabAndPage.set(true);
-        pageAssetPath.set("summary.html");
-    }
 }

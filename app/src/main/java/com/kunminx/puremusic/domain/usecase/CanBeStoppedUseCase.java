@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kunminx.puremusic.data.usecase;
+package com.kunminx.puremusic.domain.usecase;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
@@ -26,8 +26,8 @@ import com.kunminx.architecture.domain.usecase.UseCase;
 import com.kunminx.puremusic.data.bean.DownloadFile;
 import com.kunminx.puremusic.data.repository.DataRepository;
 
-import static com.kunminx.puremusic.data.usecase.CanBeStoppedUseCase.RequestValues;
-import static com.kunminx.puremusic.data.usecase.CanBeStoppedUseCase.ResponseValue;
+import static com.kunminx.puremusic.domain.usecase.CanBeStoppedUseCase.RequestValues;
+import static com.kunminx.puremusic.domain.usecase.CanBeStoppedUseCase.ResponseValue;
 
 
 /**

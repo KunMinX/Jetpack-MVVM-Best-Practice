@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package com.kunminx.puremusic.bridge.state;
+package com.kunminx.puremusic.ui.state;
 
-import androidx.databinding.ObservableBoolean;
-import androidx.databinding.ObservableField;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 /**
@@ -30,14 +29,20 @@ import androidx.lifecycle.ViewModel;
  *
  * 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
  *
- * Create by KunMinX at 20/04/26
+ * Create by KunMinX at 19/10/29
  */
-public class LoginViewModel extends ViewModel {
+public class MainActivityViewModel extends ViewModel {
 
-    public final ObservableField<String> name = new ObservableField<>();
+    //TODO 演示 LiveData 来用作 DataBinding 数据绑定的情况。
+    // 记得在视图控制器中要加入 mBinding.setLifecycleOwner(this);
+    //详见 https://xiaozhuanlan.com/topic/9816742350
 
-    public final ObservableField<String> password = new ObservableField<>();
+    public final MutableLiveData<Boolean> openDrawer = new MutableLiveData<>();
 
-    public final ObservableBoolean loadingVisible = new ObservableBoolean();
+    public final MutableLiveData<Boolean> allowDrawerOpen = new MutableLiveData<>();
 
+    {
+        allowDrawerOpen.setValue(true);
+        openDrawer.setValue(false);
+    }
 }

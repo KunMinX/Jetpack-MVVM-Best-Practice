@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="com.kunminx.puremusic.bridge.status.MainActivityViewModel" />
+            type="com.kunminx.puremusic.domain.status.MainActivityViewModel" />
 
     </data>
 

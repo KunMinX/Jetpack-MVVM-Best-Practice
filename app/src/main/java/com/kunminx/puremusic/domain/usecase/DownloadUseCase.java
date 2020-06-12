@@ -1,4 +1,4 @@
-package com.kunminx.puremusic.data.usecase;
+package com.kunminx.puremusic.domain.usecase;
 
 import com.kunminx.architecture.domain.usecase.UseCase;
 import com.kunminx.puremusic.data.config.Configs;

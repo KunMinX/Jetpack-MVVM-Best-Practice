@@ -30,7 +30,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.kunminx.puremusic.App;
-import com.kunminx.puremusic.bridge.callback.SharedViewModel;
+import com.kunminx.puremusic.ui.callback.SharedViewModel;
 
 
 /**

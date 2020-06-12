@@ -28,8 +28,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.kunminx.puremusic.R;
-import com.kunminx.puremusic.bridge.request.MusicRequestViewModel;
-import com.kunminx.puremusic.bridge.status.MainViewModel;
+import com.kunminx.puremusic.domain.request.MusicRequestViewModel;
+import com.kunminx.puremusic.domain.status.MainViewModel;
 import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.databinding.AdapterPlayItemBinding;
 import com.kunminx.puremusic.databinding.FragmentMainBinding;

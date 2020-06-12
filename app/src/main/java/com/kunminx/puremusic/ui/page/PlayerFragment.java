@@ -26,11 +26,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.kunminx.player.PlayerController;
 import com.kunminx.player.dto.FreeMusic;
 import com.kunminx.player.dto.MusicAlbum;
 import com.kunminx.puremusic.R;
-import com.kunminx.puremusic.bridge.status.PlayerViewModel;
+import com.kunminx.puremusic.domain.status.PlayerViewModel;
 import com.kunminx.puremusic.databinding.FragmentPlayerBinding;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.base.BaseFragment;
