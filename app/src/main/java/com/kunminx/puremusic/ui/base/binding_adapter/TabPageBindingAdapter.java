@@ -1,4 +1,4 @@
-package com.kunminx.puremusic.ui.base.binding;
+package com.kunminx.puremusic.ui.base.binding_adapter;
 
 import androidx.databinding.BindingAdapter;
 import androidx.viewpager.widget.ViewPager;

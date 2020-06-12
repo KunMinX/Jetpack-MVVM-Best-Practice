@@ -1,6 +1,4 @@
-package com.kunminx.puremusic.ui.base.binding;
-
-import android.view.View;
+package com.kunminx.puremusic.ui.base.binding_adapter;
 
 import androidx.core.view.GravityCompat;
 import androidx.databinding.BindingAdapter;

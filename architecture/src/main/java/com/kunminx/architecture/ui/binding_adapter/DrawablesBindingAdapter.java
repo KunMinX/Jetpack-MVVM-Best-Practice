@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package com.kunminx.architecture.ui.binding;
+package com.kunminx.architecture.ui.binding_adapter;
 
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.InsetDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.view.View;
 
 import androidx.annotation.ColorInt;
@@ -38,7 +39,7 @@ import static java.lang.annotation.ElementType.PARAMETER;
  * Created by linjiang on 2018/9/5.
  */
 
-public class Drawables {
+public class DrawablesBindingAdapter {
     private static final String TAG = "Drawables";
 
     private static final int INVALID = 0;
@@ -998,5 +999,22 @@ public class Drawables {
     @Retention(RetentionPolicy.SOURCE)
     @Target({PARAMETER, FIELD})
     @interface DP {
+    }
+
+    public static class ProxyDrawable extends StateListDrawable {
+
+        private Drawable originDrawable;
+
+        @Override
+        public void addState(int[] stateSet, Drawable drawable) {
+            if (stateSet != null && stateSet.length == 1 && stateSet[0] == 0) {
+                originDrawable = drawable;
+            }
+            super.addState(stateSet, drawable);
+        }
+
+        Drawable getOriginDrawable() {
+            return originDrawable;
+        }
     }
 }
