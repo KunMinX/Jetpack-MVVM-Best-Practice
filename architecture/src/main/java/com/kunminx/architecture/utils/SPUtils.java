@@ -1,3 +1,19 @@
+/*
+ * Copyright 2018-2019 KunMinX
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.kunminx.architecture.utils;
 
 import android.annotation.SuppressLint;
@@ -23,15 +39,7 @@ import java.util.Set;
 public final class SPUtils {
 
     private static final Map<String, SPUtils> SP_UTILS_MAP = new HashMap<>();
-    private final SharedPreferences sp;
-
-    private SPUtils(final String spName) {
-        sp = Utils.getApp().getSharedPreferences(spName, Context.MODE_PRIVATE);
-    }
-
-    private SPUtils(final String spName, final int mode) {
-        sp = Utils.getApp().getSharedPreferences(spName, mode);
-    }
+    private SharedPreferences sp;
 
     /**
      * Return the single {@link SPUtils} instance
@@ -70,9 +78,7 @@ public final class SPUtils {
      * @return the single {@link SPUtils} instance
      */
     public static SPUtils getInstance(String spName, final int mode) {
-        if (isSpace(spName)) {
-            spName = "spUtils";
-        }
+        if (isSpace(spName)) spName = "spUtils";
         SPUtils spUtils = SP_UTILS_MAP.get(spName);
         if (spUtils == null) {
             synchronized (SPUtils.class) {
@@ -86,16 +92,12 @@ public final class SPUtils {
         return spUtils;
     }
 
-    private static boolean isSpace(final String s) {
-        if (s == null) {
-            return true;
-        }
-        for (int i = 0, len = s.length(); i < len; ++i) {
-            if (!Character.isWhitespace(s.charAt(i))) {
-                return false;
-            }
-        }
-        return true;
+    private SPUtils(final String spName) {
+        sp = Utils.getApp().getSharedPreferences(spName, Context.MODE_PRIVATE);
+    }
+
+    private SPUtils(final String spName, final int mode) {
+        sp = Utils.getApp().getSharedPreferences(spName, mode);
     }
 
     /**
@@ -369,7 +371,7 @@ public final class SPUtils {
      * or {@code Collections.<String>emptySet()} otherwise
      */
     public Set<String> getStringSet(@NonNull final String key) {
-        return getStringSet(key, Collections.emptySet());
+        return getStringSet(key, Collections.<String>emptySet());
     }
 
     /**
@@ -446,5 +448,15 @@ public final class SPUtils {
         } else {
             sp.edit().clear().apply();
         }
+    }
+
+    private static boolean isSpace(final String s) {
+        if (s == null) return true;
+        for (int i = 0, len = s.length(); i < len; ++i) {
+            if (!Character.isWhitespace(s.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 }

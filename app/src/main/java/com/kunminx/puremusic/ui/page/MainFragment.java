@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-2019 KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,67 +17,91 @@
 package com.kunminx.puremusic.ui.page;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.kunminx.puremusic.BR;
+import com.bumptech.glide.Glide;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.bridge.request.MusicRequestViewModel;
-import com.kunminx.puremusic.bridge.state.MainViewModel;
+import com.kunminx.puremusic.bridge.status.MainViewModel;
+import com.kunminx.puremusic.data.bean.TestAlbum;
+import com.kunminx.puremusic.databinding.AdapterPlayItemBinding;
+import com.kunminx.puremusic.databinding.FragmentMainBinding;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.base.BaseFragment;
-import com.kunminx.puremusic.ui.base.DataBindingConfig;
-import com.kunminx.puremusic.ui.page.adapter.PlaylistAdapter;
+import com.kunminx.architecture.ui.adapter.SimpleBaseBindingAdapter;
 
 /**
  * Create by KunMinX at 19/10/29
  */
 public class MainFragment extends BaseFragment {
 
+
+    private FragmentMainBinding mBinding;
     private MainViewModel mMainViewModel;
     private MusicRequestViewModel mMusicRequestViewModel;
+    private SimpleBaseBindingAdapter<TestAlbum.TestMusic, AdapterPlayItemBinding> mAdapter;
 
     @Override
-    protected void initViewModel() {
-        mMainViewModel = getFragmentViewModel(MainViewModel.class);
-        mMusicRequestViewModel = getFragmentViewModel(MusicRequestViewModel.class);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mMusicRequestViewModel = ViewModelProviders.of(this).get(MusicRequestViewModel.class);
     }
 
+    @Nullable
     @Override
-    protected DataBindingConfig getDataBindingConfig() {
-
-        //TODO tip: DataBinding 严格模式：
-        // 将 DataBinding 实例限制于 base 页面中，默认不向子类暴露，
-        // 通过这样的方式，来彻底解决 视图调用的一致性问题，
-        // 如此，视图刷新的安全性将和基于函数式编程的 Jetpack Compose 持平。
-        // 而 DataBindingConfig 就是在这样的背景下，用于为 base 页面中的 DataBinding 提供绑定项。
-
-        // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
-
-        return new DataBindingConfig(R.layout.fragment_main, mMainViewModel)
-                .addBindingParam(BR.click, new ClickProxy())
-                .addBindingParam(BR.adapter, new PlaylistAdapter(getContext()));
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        mBinding = FragmentMainBinding.bind(view);
+        mBinding.setClick(new ClickProxy());
+        mBinding.setVm(mMainViewModel);
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        PlayerManager.getInstance().getChangeMusicLiveData().observe(getViewLifecycleOwner(), changeMusic -> {
+        mMainViewModel.initTabAndPage.set(true);
 
-            // TODO tip 1：所有播放状态的改变，都要通过这个 作为 唯一可信源 的 PlayerManager 来统一分发，
+        mAdapter = new SimpleBaseBindingAdapter<TestAlbum.TestMusic, AdapterPlayItemBinding>(getContext(), R.layout.adapter_play_item) {
+            @Override
+            protected void onSimpleBindItem(AdapterPlayItemBinding binding, TestAlbum.TestMusic item, RecyclerView.ViewHolder holder) {
+                binding.tvTitle.setText(item.getTitle());
+                binding.tvArtist.setText(item.getArtist().getName());
+                Glide.with(binding.ivCover.getContext()).load(item.getCoverImg()).into(binding.ivCover);
+                int currentIndex = PlayerManager.getInstance().getAlbumIndex();
+                binding.ivPlayStatus.setImageDrawable(getResources().getDrawable(
+                        currentIndex == holder.getAdapterPosition() ? R.drawable.ic_music_gray_48dp : R.color.transparent));
+                binding.getRoot().setOnClickListener(v -> {
+                    PlayerManager.getInstance().playAudio(holder.getAdapterPosition());
+                });
+            }
+        };
+
+        mBinding.rv.setAdapter(mAdapter);
+
+        PlayerManager.getInstance().getChangeMusicLiveData().observe(this, changeMusic -> {
+
+            // TODO tip 1：所有播放状态的改变，都要通过这个 作为 唯一可信源 的 PlayerController 来统一分发，
 
             // 如此才能方便 追溯事件源，以及 避免 不可预期的 推送和错误。
             // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/0168753249
 
-            mMainViewModel.list.setValue(PlayerManager.getInstance().getAlbum().getMusics());
+            mAdapter.notifyDataSetChanged();
         });
 
-        mMusicRequestViewModel.getFreeMusicsLiveData().observe(getViewLifecycleOwner(), musicAlbum -> {
+        mMusicRequestViewModel.getFreeMusicsLiveData().observe(this, musicAlbum -> {
             if (musicAlbum != null && musicAlbum.getMusics() != null) {
-                mMainViewModel.list.setValue(musicAlbum.getMusics());
+                mAdapter.setList(musicAlbum.getMusics());
+                mAdapter.notifyDataSetChanged();
 
                 // TODO tip 4：未作 UnPeek 处理的 用于 request 的 LiveData，在视图控制器重建时会自动倒灌数据
 
@@ -95,10 +119,10 @@ public class MainFragment extends BaseFragment {
         if (PlayerManager.getInstance().getAlbum() == null) {
             mMusicRequestViewModel.requestFreeMusics();
         } else {
-            mMainViewModel.list.setValue(PlayerManager.getInstance().getAlbum().getMusics());
+            mAdapter.setList(PlayerManager.getInstance().getAlbum().getMusics());
+            mAdapter.notifyDataSetChanged();
         }
     }
-
 
     // TODO tip 2：此处通过 DataBinding 来规避 在 setOnClickListener 时存在的 视图调用的一致性问题，
 
@@ -117,17 +141,12 @@ public class MainFragment extends BaseFragment {
             // Activity 内部的事情在 Activity 内部消化，不要试图在 fragment 中调用和操纵 Activity 内部的东西。
             // 因为 Activity 端的处理后续可能会改变，并且可受用于更多的 fragment，而不单单是本 fragment。
 
-            getSharedViewModel().openOrCloseDrawer.setValue(true);
-        }
-
-        public void login() {
-            nav().navigate(R.id.action_mainFragment_to_loginFragment);
+            mSharedViewModel.openOrCloseDrawer.setValue(true);
         }
 
         public void search() {
-            nav().navigate(R.id.action_mainFragment_to_searchFragment);
-        }
 
+        }
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-2019 KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,14 +28,13 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public abstract class SimpleBaseBindingAdapter<M, B extends ViewDataBinding> extends BaseBindingAdapter {
 
-    private final int layout;
+    private int layout;
 
     public SimpleBaseBindingAdapter(Context context, int layout) {
         super(context);
         this.layout = layout;
     }
 
-    @Override
     protected @LayoutRes
     int getLayoutResId(int viewType) {
         return this.layout;
@@ -45,7 +44,6 @@ public abstract class SimpleBaseBindingAdapter<M, B extends ViewDataBinding> ext
 
     @Override
     protected void onBindItem(ViewDataBinding binding, Object item, RecyclerView.ViewHolder holder) {
-        //noinspection unchecked
         onSimpleBindItem((B) binding, (M) item, holder);
     }
 }

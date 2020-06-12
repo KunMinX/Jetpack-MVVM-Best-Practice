@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-2019 KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,101 +17,81 @@
 package com.kunminx.puremusic.ui.page;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 
-import com.kunminx.player.PlayingInfoManager;
-import com.kunminx.puremusic.BR;
+import com.kunminx.player.PlayerController;
+import com.kunminx.player.dto.FreeMusic;
+import com.kunminx.player.dto.MusicAlbum;
 import com.kunminx.puremusic.R;
-import com.kunminx.puremusic.bridge.callback.SharedViewModel;
-import com.kunminx.puremusic.bridge.state.PlayerViewModel;
+import com.kunminx.puremusic.bridge.status.PlayerViewModel;
 import com.kunminx.puremusic.databinding.FragmentPlayerBinding;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.base.BaseFragment;
-import com.kunminx.puremusic.ui.base.DataBindingConfig;
 import com.kunminx.puremusic.ui.view.PlayerSlideListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-
-import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
 
 /**
  * Create by KunMinX at 19/10/29
  */
 public class PlayerFragment extends BaseFragment {
 
+    private FragmentPlayerBinding mBinding;
     private PlayerViewModel mPlayerViewModel;
 
     @Override
-    protected void initViewModel() {
-        mPlayerViewModel = getFragmentViewModel(PlayerViewModel.class);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mPlayerViewModel = ViewModelProviders.of(this).get(PlayerViewModel.class);
     }
 
+    @Nullable
     @Override
-    protected DataBindingConfig getDataBindingConfig() {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_player, container, false);
 
-        //TODO tip: DataBinding 严格模式：
-        // 将 DataBinding 实例限制于 base 页面中，默认不向子类暴露，
-        // 通过这样的方式，来彻底解决 视图调用的一致性问题，
-        // 如此，视图刷新的安全性将和基于函数式编程的 Jetpack Compose 持平。
-        // 而 DataBindingConfig 就是在这样的背景下，用于为 base 页面中的 DataBinding 提供绑定项。
+        // TODO tip 1: 此处通过 DataBinding 来规避 潜在的 视图调用的一致性问题，
 
-        // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
+        // 因为本项目采用 横、竖 两套布局，且不同布局的控件存在差异，
+        // 在 DataBinding 的适配器模式加持下，有绑定就有绑定，没绑定也没什么大不了的，
+        // 总之 不会因一致性问题造成 视图调用的空指针。
 
-        return new DataBindingConfig(R.layout.fragment_player, mPlayerViewModel)
-                .addBindingParam(BR.click, new ClickProxy())
-                .addBindingParam(BR.event, new EventHandler());
+        // 如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
+
+        mBinding = FragmentPlayerBinding.bind(view);
+        mBinding.setClick(new ClickProxy());
+        mBinding.setVm(mPlayerViewModel);
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //TODO tip 7:
-        // getViewLifeCycleOwner 是 2020 年新增的特性，
-        // 主要是为了解决 getView() 的生命长度 比 fragment 短（仅存活于 onCreateView 之后和 onDestroyView 之前），
-        // 导致某些时候 fragment 其他成员还活着，但 getView() 为 null 的 生命周期安全问题，
-        // 也即，在 fragment 的场景下，请使用 getViewLifeCycleOwner 来作为 liveData 的观察者。
-        // Activity 则不用改变。
-
-        getSharedViewModel().timeToAddSlideListener.observe(getViewLifecycleOwner(), aBoolean -> {
+        mSharedViewModel.timeToAddSlideListener.observe(this, aBoolean -> {
             if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {
                 SlidingUpPanelLayout sliding = (SlidingUpPanelLayout) view.getParent().getParent();
-                sliding.addPanelSlideListener(new PlayerSlideListener((FragmentPlayerBinding) getBinding(), sliding));
-                sliding.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
-                    @Override
-                    public void onPanelSlide(View view, float v) {
-
-                    }
-
-                    @Override
-                    public void onPanelStateChanged(View view, SlidingUpPanelLayout.PanelState panelState,
-                                                    SlidingUpPanelLayout.PanelState panelState1) {
-
-                        if (panelState1 == SlidingUpPanelLayout.PanelState.EXPANDED) {
-                            SharedViewModel.TAG_OF_SECONDARY_PAGES.add(this.getClass().getSimpleName());
-                        } else {
-                            SharedViewModel.TAG_OF_SECONDARY_PAGES.remove(this.getClass().getSimpleName());
-                        }
-                        getSharedViewModel().enableSwipeDrawer.setValue(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
-                    }
-                });
+                sliding.addPanelSlideListener(new PlayerSlideListener(mBinding, sliding));
             }
         });
 
-        PlayerManager.getInstance().getChangeMusicLiveData().observe(getViewLifecycleOwner(), changeMusic -> {
+        PlayerManager.getInstance().getChangeMusicLiveData().observe(this, changeMusic -> {
 
             // TODO tip 3：同 tip 2.
 
             // 切歌时，音乐的标题、作者、封面 状态的改变
             mPlayerViewModel.title.set(changeMusic.getTitle());
-            mPlayerViewModel.artist.set(changeMusic.getSummary());
-            mPlayerViewModel.coverImg.set(changeMusic.getImg());
+            mPlayerViewModel.artist.set(changeMusic.getContent());
+            mPlayerViewModel.img.set(changeMusic.getImg());
         });
 
-        PlayerManager.getInstance().getPlayingMusicLiveData().observe(getViewLifecycleOwner(), playingMusic -> {
+        PlayerManager.getInstance().getPlayingMusicLiveData().observe(this, playingMusic -> {
 
             // TODO tip 4：同 tip 2.
 
@@ -120,9 +100,9 @@ public class PlayerFragment extends BaseFragment {
             mPlayerViewModel.currentSeekPosition.set(playingMusic.getPlayerPosition());
         });
 
-        PlayerManager.getInstance().getPauseLiveData().observe(getViewLifecycleOwner(), aBoolean -> {
+        PlayerManager.getInstance().getPauseLiveData().observe(this, aBoolean -> {
 
-            // TODO tip 2：所有播放状态的改变，都要通过这个 作为 唯一可信源 的 PlayerManager 来统一分发，
+            // TODO tip 2：所有播放状态的改变，都要通过这个 作为 唯一可信源 的 PlayerController 来统一分发，
 
             // 如此才能方便 追溯事件源、保证 全应用范围内 所有状态的正确和及时，以及 避免 不可预期的 推送和错误。
 
@@ -134,27 +114,29 @@ public class PlayerFragment extends BaseFragment {
             mPlayerViewModel.isPlaying.set(!aBoolean);
         });
 
-        PlayerManager.getInstance().getPlayModeLiveData().observe(getViewLifecycleOwner(), anEnum -> {
-            int tip;
-            if (anEnum == PlayingInfoManager.RepeatMode.LIST_LOOP) {
-                mPlayerViewModel.playModeIcon.set(MaterialDrawableBuilder.IconValue.REPEAT);
-                tip = R.string.play_repeat;
-            } else if (anEnum == PlayingInfoManager.RepeatMode.ONE_LOOP) {
-                mPlayerViewModel.playModeIcon.set(MaterialDrawableBuilder.IconValue.REPEAT_ONCE);
-                tip = R.string.play_repeat_once;
-            } else {
-                mPlayerViewModel.playModeIcon.set(MaterialDrawableBuilder.IconValue.SHUFFLE);
-                tip = R.string.play_shuffle;
+
+        // TODO tip 5：尽量不要在 视图控制器 中直接调用视图。只有在万不得已的情况下，才用这种土办法，不然容易埋下各种隐患
+
+        // 如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
+
+        mBinding.seekBottom.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
             }
-            if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {
-                SlidingUpPanelLayout sliding = (SlidingUpPanelLayout) view.getParent().getParent();
-                if (sliding.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
-                    showShortToast(tip);
-                }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                PlayerManager.getInstance().setSeek(seekBar.getProgress());
             }
         });
 
-        getSharedViewModel().closeSlidePanelIfExpanded.observe(getViewLifecycleOwner(), aBoolean -> {
+        mSharedViewModel.closeSlidePanelIfExpanded.observe(this, aBoolean -> {
 
             // 按下返回键，如果此时 slide 面板是展开的，那么只对面板进行 slide down
 
@@ -168,8 +150,6 @@ public class PlayerFragment extends BaseFragment {
 
                     // TODO tip 6：此处演示通过 UnPeekLiveData 来发送 生命周期安全的、事件源可追溯的 通知。
 
-                    // fragment 与 Activity 的交互，同属于页面通信的范畴，适合统一地以 页面通信 的方式实现。
-
                     // 如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/0168753249
                     // --------
                     // 与此同时，此处传达的另一个思想是 最少知道原则，
@@ -177,15 +157,14 @@ public class PlayerFragment extends BaseFragment {
                     // 因为 Activity 端的处理后续可能会改变，并且可受用于更多的 fragment，而不单单是本 fragment。
 
                     // TODO: yes:
-                    getSharedViewModel().activityCanBeClosedDirectly.setValue(true);
+                    mSharedViewModel.activityCanBeClosedDirectly.setValue(true);
 
                     // TODO: do not:
                     // mActivity.finish();
                 }
-            } else {
-                getSharedViewModel().activityCanBeClosedDirectly.setValue(true);
             }
         });
+
 
     }
 
@@ -196,8 +175,8 @@ public class PlayerFragment extends BaseFragment {
 
     public class ClickProxy {
 
-        public void playMode() {
-            PlayerManager.getInstance().changeMode();
+        public void mark() {
+            showShortToast(R.string.unfinished);
         }
 
         public void previous() {
@@ -217,28 +196,11 @@ public class PlayerFragment extends BaseFragment {
         }
 
         public void slideDown() {
-            getSharedViewModel().closeSlidePanelIfExpanded.setValue(true);
+            mSharedViewModel.closeSlidePanelIfExpanded.setValue(true);
         }
 
         public void more() {
-        }
-    }
-
-    public static class EventHandler implements SeekBar.OnSeekBarChangeListener {
-
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-        }
-
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-
-        }
-
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-            PlayerManager.getInstance().setSeek(seekBar.getProgress());
+            showShortToast(R.string.unfinished);
         }
     }
 

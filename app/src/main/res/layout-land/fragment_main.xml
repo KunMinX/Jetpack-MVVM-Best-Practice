@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2018-2020 KunMinX
+  ~ Copyright 2018-2019 KunMinX
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -25,11 +25,7 @@
 
         <variable
             name="vm"
-            type="com.kunminx.puremusic.bridge.state.MainViewModel" />
-
-        <variable
-            name="adapter"
-            type="androidx.recyclerview.widget.RecyclerView.Adapter" />
+            type="com.kunminx.puremusic.bridge.status.MainViewModel" />
 
     </data>
 
@@ -81,19 +77,14 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv"
-                adapter="@{adapter}"
-                refreshList="@{vm.list}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clipToPadding="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             <WebView
                 android:id="@+id/web_view"
-                pageAssetPath="@{vm.pageAssetPath}"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false" />
+                android:layout_height="match_parent" />
 
         </androidx.viewpager.widget.ViewPager>
 

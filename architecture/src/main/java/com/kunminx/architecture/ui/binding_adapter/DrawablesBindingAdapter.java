@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-2019 KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ public class DrawablesBindingAdapter {
     private static final String TAG = "Drawables";
 
     private static final int INVALID = 0;
-    private static final int[] TMP_PADDING = new int[4];
+    private static final int[] tmpPadding = new int[4];
 
 
     // normal, checked, checkable, enabled, focused, pressed, selected
@@ -732,7 +732,6 @@ public class DrawablesBindingAdapter {
         if (selectedDrawable != null) {
             count++;
         }
-        //noinspection StatementWithEmptyBody
         if (count < 1) {
             // impossible，因为该方法被调用说明至少声明了一条属性
         } else {
@@ -740,10 +739,10 @@ public class DrawablesBindingAdapter {
             if (isDefaultNull || count == 1) {
                 // 当设置了margin（非view的margin）时，InsetDrawable会导致view本身的padding失效
                 needReSetPadding = true;
-                TMP_PADDING[0] = view.getPaddingLeft();
-                TMP_PADDING[1] = view.getPaddingTop();
-                TMP_PADDING[2] = view.getPaddingRight();
-                TMP_PADDING[3] = view.getPaddingBottom();
+                tmpPadding[0] = view.getPaddingLeft();
+                tmpPadding[1] = view.getPaddingTop();
+                tmpPadding[2] = view.getPaddingRight();
+                tmpPadding[3] = view.getPaddingBottom();
             }
             if (count == 1 && !isDefaultNull) {
                 view.setBackground(defaultDrawable);
@@ -781,7 +780,7 @@ public class DrawablesBindingAdapter {
                 view.setBackground(listDrawable);
             }
             if (needReSetPadding) {
-                view.setPadding(TMP_PADDING[0], TMP_PADDING[1], TMP_PADDING[2], TMP_PADDING[3]);
+                view.setPadding(tmpPadding[0], tmpPadding[1], tmpPadding[2], tmpPadding[3]);
             }
         }
     }
@@ -891,8 +890,6 @@ public class DrawablesBindingAdapter {
                 return GradientDrawable.Orientation.TOP_BOTTOM;
             case Orientation.TR_BL:
                 return GradientDrawable.Orientation.TR_BL;
-            default:
-                break;
         }
         return GradientDrawable.Orientation.TOP_BOTTOM;
     }
@@ -927,7 +924,9 @@ public class DrawablesBindingAdapter {
                 mInnerRadiusRatio.setAccessible(true);
                 mInnerRadiusRatio.setFloat(mGradientState.get(drawable), dip2px(innerRadiusRatio));
             }
-        } catch (NoSuchFieldException | IllegalAccessException t) {
+        } catch (NoSuchFieldException t) {
+            t.printStackTrace();
+        } catch (IllegalAccessException t) {
             t.printStackTrace();
         }
     }

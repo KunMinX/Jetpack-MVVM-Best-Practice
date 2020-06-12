@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-2019 KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,16 +32,16 @@ import android.widget.RemoteViews;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
-import com.kunminx.architecture.data.usecase.UseCase;
-import com.kunminx.architecture.data.usecase.UseCaseHandler;
-import com.kunminx.architecture.utils.ImageUtils;
+import com.kunminx.player.utils.ImageUtils;
 import com.kunminx.puremusic.MainActivity;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.data.config.Configs;
-import com.kunminx.puremusic.data.usecase.DownloadUseCase;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.player.helper.PlayerCallHelper;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.FileCallback;
+import com.lzy.okgo.model.Response;
 
 import java.io.File;
 
@@ -50,15 +50,16 @@ import java.io.File;
  */
 public class PlayerService extends Service {
 
+    private static final String GROUP_ID = "group_001";
+    private static final String CHANNEL_ID = "channel_001";
+
     public static final String NOTIFY_PREVIOUS = "pure_music.kunminx.previous";
     public static final String NOTIFY_CLOSE = "pure_music.kunminx.close";
     public static final String NOTIFY_PAUSE = "pure_music.kunminx.pause";
     public static final String NOTIFY_PLAY = "pure_music.kunminx.play";
     public static final String NOTIFY_NEXT = "pure_music.kunminx.next";
-    private static final String GROUP_ID = "group_001";
-    private static final String CHANNEL_ID = "channel_001";
+
     private PlayerCallHelper mPlayerCallHelper;
-    private DownloadUseCase mDownloadUseCase;
 
 
     @Override
@@ -109,7 +110,7 @@ public class PlayerService extends Service {
             RemoteViews simpleContentView = new RemoteViews(
                     getApplicationContext().getPackageName(), R.layout.notify_player_small);
 
-            RemoteViews expandedView;
+            RemoteViews expandedView = null;
             expandedView = new RemoteViews(
                     getApplicationContext().getPackageName(), R.layout.notify_player_big);
 
@@ -163,7 +164,7 @@ public class PlayerService extends Service {
             notification.bigContentView.setTextViewText(R.id.player_author_name, summary);
             notification.flags |= Notification.FLAG_ONGOING_EVENT;
 
-            String coverPath = Configs.COVER_PATH + File.separator + testMusic.getMusicId() + ".jpg";
+            String coverPath = Configs.MUSIC_DOWNLOAD_PATH + testMusic.getMusicId() + ".jpg";
             Bitmap bitmap = ImageUtils.getBitmap(coverPath);
 
             if (bitmap != null) {
@@ -213,21 +214,11 @@ public class PlayerService extends Service {
     }
 
     private void requestAlbumCover(String coverUrl, String musicId) {
-        if (mDownloadUseCase == null) {
-            mDownloadUseCase = new DownloadUseCase();
-        }
-
-        UseCaseHandler.getInstance().execute(mDownloadUseCase,
-                new DownloadUseCase.RequestValues(coverUrl, musicId + ".jpg"),
-                new UseCase.UseCaseCallback<DownloadUseCase.ResponseValue>() {
+        OkGo.<File>get(coverUrl)
+                .execute(new FileCallback(Configs.MUSIC_DOWNLOAD_PATH, musicId + ".jpg") {
                     @Override
-                    public void onSuccess(DownloadUseCase.ResponseValue response) {
+                    public void onSuccess(Response<File> response) {
                         startService(new Intent(getApplicationContext(), PlayerService.class));
-                    }
-
-                    @Override
-                    public void onError() {
-
                     }
                 });
     }

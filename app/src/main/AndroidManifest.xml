@@ -3,10 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.kunminx.puremusic">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -17,11 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:ignore="AllowBackup,GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:name">
 
-        <activity
-            android:name=".MainActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,9 +25,7 @@
 
         <service android:name=".player.notification.PlayerService" />
 
-        <receiver
-            android:name=".player.notification.PlayerReceiver"
-            tools:ignore="ExportedReceiver">
+        <receiver android:name=".player.notification.PlayerReceiver">
             <intent-filter>
                 <action android:name="pure_music.kunminx.close" />
                 <action android:name="pure_music.kunminx.pause" />
@@ -46,5 +38,8 @@
         </receiver>
 
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
 </manifest>

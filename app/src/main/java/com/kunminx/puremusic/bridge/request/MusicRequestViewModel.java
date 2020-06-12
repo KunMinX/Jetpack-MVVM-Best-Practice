@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-2019 KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,42 +16,103 @@
 
 package com.kunminx.puremusic.bridge.request;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.kunminx.puremusic.data.bean.TestAlbum;
-import com.kunminx.puremusic.data.repository.DataRepository;
+import com.kunminx.puremusic.data.bean.AlbumResult;
+import com.kunminx.player.dto.MusicAlbum;
+import com.kunminx.puremusic.data.bean.SingerImg;
+import com.kunminx.puremusic.data.bean.SongInfo;
+import com.kunminx.puremusic.data.bean.SongResult;
+import com.kunminx.puremusic.data.repository.HttpRequestManager;
 
 /**
- * 音乐资源  Request-ViewModel
- *
- * TODO tip：Request-ViewModel 通常按业务划分
- * 一个项目中通常存在多个 Request-ViewModel
- *
- * request-ViewModel 的职责仅限于 数据请求，不建议在此处理 UI 逻辑，
- * UI 逻辑只适合在 Activity/Fragment 等视图控制器中完成，是 “数据驱动” 的一部分，
- * 将来升级到 Jetpack Compose 更是如此。
- *
- * 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/6257931840
- *
+ * 音乐资源  RequestViewModel
+ * <p>
+ * TODO tip：RequestViewModel 通常按业务划分
+ * 一个项目中通常存在多个 RequestViewModel
+ * 对 Jetpack ViewModel 的知识点感兴趣可详见 https://xiaozhuanlan.com/topic/6257931840
+ * <p>
  * Create by KunMinX at 19/10/29
  */
 public class MusicRequestViewModel extends ViewModel {
 
-    private MutableLiveData<TestAlbum> mFreeMusicsLiveData;
+    private MutableLiveData<SongResult.DataBean.SongsResult> songResultLiveData;
 
-    //TODO tip 向 ui 层提供的 request LiveData，使用抽象的 LiveData 而不是 MutableLiveData
-    // 如此是为了来自数据层的数据，在 ui 层中只读，以避免团队新手不可预期的误用
+    private MutableLiveData<AlbumResult.DataBean.AlbumsResult> albumResultLiveData;
 
-    public LiveData<TestAlbum> getFreeMusicsLiveData() {
-        if (mFreeMusicsLiveData == null) {
-            mFreeMusicsLiveData = new MutableLiveData<>();
+    private MutableLiveData<SingerImg.SingerResult> singleImgLiveData;
+
+    private MutableLiveData<SongInfo.DataBean> songInfoLiveData;
+
+    private MutableLiveData<String> songUrlLiveData;
+
+    private MutableLiveData<MusicAlbum> freeMusicLiveData;
+
+    public MutableLiveData<SongResult.DataBean.SongsResult> getSongResultLiveData() {
+        if (songResultLiveData == null) {
+            songResultLiveData = new MutableLiveData<>();
         }
-        return mFreeMusicsLiveData;
+        return songResultLiveData;
     }
 
-    public void requestFreeMusics() {
-        DataRepository.getInstance().getFreeMusic(mFreeMusicsLiveData);
+    public MutableLiveData<AlbumResult.DataBean.AlbumsResult> getAlbumResultLiveData() {
+        if (albumResultLiveData == null) {
+            albumResultLiveData = new MutableLiveData<>();
+        }
+        return albumResultLiveData;
     }
+
+    public MutableLiveData<SingerImg.SingerResult> getSingleImgLiveData() {
+        if (singleImgLiveData == null) {
+            singleImgLiveData = new MutableLiveData<>();
+        }
+        return singleImgLiveData;
+    }
+
+    public MutableLiveData<SongInfo.DataBean> getSongInfoLiveData() {
+        if (songInfoLiveData == null) {
+            songInfoLiveData = new MutableLiveData<>();
+        }
+        return songInfoLiveData;
+    }
+
+    public MutableLiveData<String> getSongUrlLiveData() {
+        if (songUrlLiveData == null) {
+            songUrlLiveData = new MutableLiveData<>();
+        }
+        return songUrlLiveData;
+    }
+
+    public MutableLiveData<MusicAlbum> getFreeMusicLiveData() {
+        if (freeMusicLiveData == null) {
+            freeMusicLiveData = new MutableLiveData<>();
+        }
+        return freeMusicLiveData;
+    }
+
+    public void requestSongsResult(String keyword) {
+        HttpRequestManager.getInstance().getSongsResult(getSongResultLiveData(), keyword);
+    }
+
+    public void requestAlbumsResult(String keyword) {
+        HttpRequestManager.getInstance().getAlbumsResult(getAlbumResultLiveData(), keyword);
+    }
+
+    public void requestSingerImg(String singerName) {
+        HttpRequestManager.getInstance().getSingerImg(getSingleImgLiveData(), singerName);
+    }
+
+    public void requestSongInfo(String albumMid) {
+        HttpRequestManager.getInstance().getSongInfo(getSongInfoLiveData(), albumMid);
+    }
+
+    public void requestSongUrl(String songMid) {
+        HttpRequestManager.getInstance().getSongUrl(getSongUrlLiveData(), songMid);
+    }
+
+    public void requestFreeMusic() {
+        HttpRequestManager.getInstance().getFreeMusic(getFreeMusicLiveData());
+    }
+
 }

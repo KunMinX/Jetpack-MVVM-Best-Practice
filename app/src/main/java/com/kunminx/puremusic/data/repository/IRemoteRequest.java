@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-2019 KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,24 +18,27 @@ package com.kunminx.puremusic.data.repository;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.kunminx.puremusic.data.bean.DownloadFile;
-import com.kunminx.puremusic.data.bean.LibraryInfo;
-import com.kunminx.puremusic.data.bean.TestAlbum;
-import com.kunminx.puremusic.data.bean.User;
-
-import java.io.File;
-import java.util.List;
+import com.kunminx.puremusic.data.bean.AlbumResult;
+import com.kunminx.player.dto.MusicAlbum;
+import com.kunminx.puremusic.data.bean.SingerImg;
+import com.kunminx.puremusic.data.bean.SongInfo;
+import com.kunminx.puremusic.data.bean.SongResult;
 
 /**
  * Create by KunMinX at 19/10/29
  */
 public interface IRemoteRequest {
 
-    void getFreeMusic(MutableLiveData<TestAlbum> liveData);
+    void getSongsResult(MutableLiveData<SongResult.DataBean.SongsResult> liveData, String keyword);
 
-    void getLibraryInfo(MutableLiveData<List<LibraryInfo>> liveData);
+    void getAlbumsResult(MutableLiveData<AlbumResult.DataBean.AlbumsResult> liveData, String keyword);
 
-    void downloadFile(MutableLiveData<DownloadFile> liveData);
+    void getSingerImg(MutableLiveData<SingerImg.SingerResult> liveData, String singerName);
 
-    void login(User user, MutableLiveData<String> liveData);
+    void getSongInfo(MutableLiveData<SongInfo.DataBean> liveData, String albumMid);
+
+    void getSongUrl(MutableLiveData<String> liveData, String songMid);
+
+    void getFreeMusic(MutableLiveData<MusicAlbum> liveData);
+
 }

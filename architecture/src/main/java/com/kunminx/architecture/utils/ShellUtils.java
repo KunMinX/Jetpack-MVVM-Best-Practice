@@ -1,12 +1,25 @@
-package com.kunminx.architecture.utils;
+/*
+ * Copyright 2018-2019 KunMinX
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import androidx.annotation.NonNull;
+package com.kunminx.architecture.utils;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -113,9 +126,7 @@ public final class ShellUtils {
             process = Runtime.getRuntime().exec(isRooted ? "su" : "sh");
             os = new DataOutputStream(process.getOutputStream());
             for (String command : commands) {
-                if (command == null) {
-                    continue;
-                }
+                if (command == null) continue;
                 os.write(command.getBytes());
                 os.writeBytes(LINE_SEP);
                 os.flush();
@@ -127,10 +138,10 @@ public final class ShellUtils {
                 successMsg = new StringBuilder();
                 errorMsg = new StringBuilder();
                 successResult = new BufferedReader(
-                        new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8)
+                        new InputStreamReader(process.getInputStream(), "UTF-8")
                 );
                 errorResult = new BufferedReader(
-                        new InputStreamReader(process.getErrorStream(), StandardCharsets.UTF_8)
+                        new InputStreamReader(process.getErrorStream(), "UTF-8")
                 );
                 String line;
                 if ((line = successResult.readLine()) != null) {
@@ -185,9 +196,9 @@ public final class ShellUtils {
      * The result of command.
      */
     public static class CommandResult {
-        public final int result;
-        public final String successMsg;
-        public final String errorMsg;
+        public int    result;
+        public String successMsg;
+        public String errorMsg;
 
         public CommandResult(final int result, final String successMsg, final String errorMsg) {
             this.result = result;
@@ -196,7 +207,6 @@ public final class ShellUtils {
         }
 
         @Override
-        @NonNull
         public String toString() {
             return "result: " + result + "\n" +
                     "successMsg: " + successMsg + "\n" +

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2018-2020 KunMinX
+  ~ Copyright 2018-2019 KunMinX
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -26,12 +26,8 @@
             type="com.kunminx.puremusic.ui.page.PlayerFragment.ClickProxy" />
 
         <variable
-            name="event"
-            type="com.kunminx.puremusic.ui.page.PlayerFragment.EventHandler" />
-
-        <variable
             name="vm"
-            type="com.kunminx.puremusic.bridge.state.PlayerViewModel" />
+            type="com.kunminx.puremusic.bridge.status.PlayerViewModel" />
 
     </data>
 
@@ -41,9 +37,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="top">
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <com.kunminx.puremusic.ui.view.ForegroundImageView
             android:id="@+id/album_art"
-            imageUrl="@{vm.coverImg}"
+            imageUrl="@{vm.img}"
             placeHolder="@{vm.placeHolder}"
             android:layout_width="@dimen/sliding_up_header"
             android:layout_height="@dimen/sliding_up_header"
@@ -55,42 +51,43 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_gravity="top"
-            android:layout_marginTop="37dp"
+            android:layout_marginTop="24dp"
             android:orientation="horizontal"
             android:visibility="invisible">
 
-            <net.steamcrafted.materialiconlib.MaterialIconView
-                android:id="@+id/btn_close"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/upIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="16dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
                 android:onClick="@{()->click.slideDown()}"
-                android:scaleType="center"
-                app:materialIcon="chevron_down"
-                app:materialIconColor="@color/white"
-                app:materialIconSize="28dp" />
+                app:srcCompat="@drawable/ic_panel_back" />
 
-            <net.steamcrafted.materialiconlib.MaterialIconView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/popup_menu"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="16dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:onClick="@{()->click.more()}"
-                android:scaleType="center"
-                app:materialIcon="dots_vertical"
-                app:materialIconColor="@color/white"
-                app:materialIconSize="28dp" />
+                android:padding="0dp"
+                android:tint="#ffffff"
+                app:srcCompat="@drawable/ic_more_gray_48dp" />
 
         </RelativeLayout>
 
+        <com.kunminx.puremusic.ui.view.LyricView
+            android:id="@+id/lyric_view"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:visibility="gone" />
+
         <LinearLayout
-            android:id="@+id/summary"
+            android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="@dimen/sliding_up_header"
             android:layout_gravity="top"
@@ -103,11 +100,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:max="@{vm.maxSeekDuration}"
                 android:minHeight="4dp"
+                android:max="@{vm.maxSeekDuration}"
                 android:progress="@{vm.currentSeekPosition}"
                 android:progressDrawable="@drawable/progressbar_color"
-                android:progressTint="@color/transparent" />
+                android:progressTint="?colorAccent" />
 
             <TextView
                 android:id="@+id/title"
@@ -160,13 +157,13 @@
 
             <com.kunminx.puremusic.ui.view.PlayPauseView
                 android:id="@+id/play_pause"
-                isPlaying="@{vm.isPlaying}"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_marginEnd="16dp"
                 android:layout_toStartOf="@id/next"
                 android:clickable="true"
                 android:focusable="true"
+                isPlaying="@{vm.isPlaying}"
                 android:foreground="?attr/selectableItemBackground"
                 android:onClick="@{()->click.togglePlay()}"
                 playpauseview:circleAlpha="0"
@@ -188,16 +185,16 @@
                 app:materialIconSize="28dp" />
 
             <net.steamcrafted.materialiconlib.MaterialIconView
-                android:id="@+id/mode"
-                mdIcon="@{vm.playModeIcon}"
+                android:id="@+id/mark"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_marginEnd="16dp"
                 android:layout_toStartOf="@id/previous"
                 android:alpha="0"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:onClick="@{()->click.playMode()}"
+                android:onClick="@{()->click.mark()}"
                 android:scaleType="center"
+                app:materialIcon="heart"
                 app:materialIconColor="@android:color/black"
                 app:materialIconSize="28dp" />
 
@@ -230,7 +227,7 @@
             android:progress="@{vm.currentSeekPosition}"
             android:progressDrawable="@drawable/progressbar_color"
             android:thumb="@null"
-            app:onSeekBarChangeListener="@{event}" />
+            android:visibility="visible" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

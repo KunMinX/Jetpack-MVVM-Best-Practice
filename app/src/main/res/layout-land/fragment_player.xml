@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2018-2020 KunMinX
+  ~ Copyright 2018-2019 KunMinX
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -25,12 +25,8 @@
             type="com.kunminx.puremusic.ui.page.PlayerFragment.ClickProxy" />
 
         <variable
-            name="event"
-            type="com.kunminx.puremusic.ui.page.PlayerFragment.EventHandler" />
-
-        <variable
             name="vm"
-            type="com.kunminx.puremusic.bridge.state.PlayerViewModel" />
+            type="com.kunminx.puremusic.bridge.status.PlayerViewModel" />
 
     </data>
 
@@ -42,7 +38,7 @@
 
         <com.kunminx.puremusic.ui.view.ForegroundImageView
             android:id="@+id/album_art"
-            imageUrl="@{vm.coverImg}"
+            imageUrl="@{vm.img}"
             placeHolder="@{vm.placeHolder}"
             android:layout_width="@dimen/sliding_up_header_land"
             android:layout_height="@dimen/sliding_up_header_land"
@@ -128,8 +124,7 @@
             android:progress="@{vm.currentSeekPosition}"
             android:progressDrawable="@drawable/progressbar_color"
             android:thumb="@null"
-            android:visibility="visible"
-            app:onSeekBarChangeListener="@{event}" />
+            android:visibility="visible" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
