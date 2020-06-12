@@ -35,7 +35,7 @@ import com.kunminx.puremusic.databinding.AdapterPlayItemBinding;
 import com.kunminx.puremusic.databinding.FragmentMainBinding;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.base.BaseFragment;
-import com.kunminx.architecture.ui.adapter.SimpleBaseBindingAdapter;
+import com.kunminx.architecture.ui.adapter.SimpleDataBindingAdapter;
 
 /**
  * Create by KunMinX at 19/10/29
@@ -46,7 +46,7 @@ public class MainFragment extends BaseFragment {
     private FragmentMainBinding mBinding;
     private MainViewModel mMainViewModel;
     private MusicRequestViewModel mMusicRequestViewModel;
-    private SimpleBaseBindingAdapter<TestAlbum.TestMusic, AdapterPlayItemBinding> mAdapter;
+    private SimpleDataBindingAdapter<TestAlbum.TestMusic, AdapterPlayItemBinding> mAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,7 +71,7 @@ public class MainFragment extends BaseFragment {
 
         mMainViewModel.initTabAndPage.set(true);
 
-        mAdapter = new SimpleBaseBindingAdapter<TestAlbum.TestMusic, AdapterPlayItemBinding>(getContext(), R.layout.adapter_play_item) {
+        mAdapter = new SimpleDataBindingAdapter<TestAlbum.TestMusic, AdapterPlayItemBinding>(getContext(), R.layout.adapter_play_item) {
             @Override
             protected void onSimpleBindItem(AdapterPlayItemBinding binding, TestAlbum.TestMusic item, RecyclerView.ViewHolder holder) {
                 binding.tvTitle.setText(item.getTitle());

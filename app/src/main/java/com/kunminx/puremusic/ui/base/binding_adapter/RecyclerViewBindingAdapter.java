@@ -20,7 +20,7 @@ import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.kunminx.architecture.ui.adapter.BaseBindingAdapter;
+import com.kunminx.architecture.ui.adapter.BaseDataBindingAdapter;
 
 import java.util.List;
 
@@ -49,7 +49,7 @@ public class RecyclerViewBindingAdapter {
                 recyclerView.setAdapter(adapter);
             }
 
-            ((BaseBindingAdapter) recyclerView.getAdapter()).setList(list);
+            ((BaseDataBindingAdapter) recyclerView.getAdapter()).setList(list);
 
             //TODO 此处可通过 diffUtil 进一步优化用户体验
             recyclerView.getAdapter().notifyDataSetChanged();

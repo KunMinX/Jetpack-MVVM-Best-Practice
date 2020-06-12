@@ -22,7 +22,7 @@ import android.net.Uri;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.kunminx.architecture.ui.adapter.SimpleBaseBindingAdapter;
+import com.kunminx.architecture.ui.adapter.SimpleDataBindingAdapter;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.databinding.AdapterLibraryBinding;
@@ -30,9 +30,9 @@ import com.kunminx.puremusic.databinding.AdapterLibraryBinding;
 /**
  * Create by KunMinX at 20/4/19
  */
-public class DrawerAdapter extends SimpleBaseBindingAdapter<LibraryInfo, AdapterLibraryBinding> {
+public class DrawerAdapterData extends SimpleDataBindingAdapter<LibraryInfo, AdapterLibraryBinding> {
 
-    public DrawerAdapter(Context context) {
+    public DrawerAdapterData(Context context) {
         super(context, R.layout.adapter_library);
     }
 

@@ -33,7 +33,7 @@ import java.util.List;
  * @author KunMinX
  * Create at 2018/6/30
  */
-public abstract class BaseBindingAdapter<M, B extends ViewDataBinding> extends RecyclerView.Adapter {
+public abstract class BaseDataBindingAdapter<M, B extends ViewDataBinding> extends RecyclerView.Adapter {
 
     protected Context mContext;
     protected List<M> mList = new ArrayList<>();
@@ -42,7 +42,7 @@ public abstract class BaseBindingAdapter<M, B extends ViewDataBinding> extends R
         return mList;
     }
 
-    public BaseBindingAdapter(Context context) {
+    public BaseDataBindingAdapter(Context context) {
         this.mContext = context;
     }
 
