@@ -20,6 +20,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kunminx.architecture.ui.adapter.SimpleDataBindingAdapter;
@@ -30,19 +32,30 @@ import com.kunminx.puremusic.databinding.AdapterLibraryBinding;
 /**
  * Create by KunMinX at 20/4/19
  */
-public class DrawerAdapterData extends SimpleDataBindingAdapter<LibraryInfo, AdapterLibraryBinding> {
+public class DrawerAdapter extends SimpleDataBindingAdapter<LibraryInfo, AdapterLibraryBinding> {
 
-    public DrawerAdapterData(Context context) {
-        super(context, R.layout.adapter_library);
+    public DrawerAdapter(Context context) {
+        super(context, R.layout.adapter_library, new DiffUtil.ItemCallback<LibraryInfo>() {
+            @Override
+            public boolean areItemsTheSame(@NonNull LibraryInfo oldItem, @NonNull LibraryInfo newItem) {
+                return oldItem.equals(newItem);
+            }
+
+            @Override
+            public boolean areContentsTheSame(@NonNull LibraryInfo oldItem, @NonNull LibraryInfo newItem) {
+                return oldItem.getTitle().equals(newItem.getTitle());
+            }
+        });
+
+        setOnItemClickListener((item, position) -> {
+            Uri uri = Uri.parse(item.getUrl());
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            mContext.startActivity(intent);
+        });
     }
 
     @Override
-    protected void onSimpleBindItem(AdapterLibraryBinding binding, LibraryInfo item, RecyclerView.ViewHolder holder) {
+    protected void onBindItem(AdapterLibraryBinding binding, LibraryInfo item, RecyclerView.ViewHolder holder) {
         binding.setInfo(item);
-        binding.getRoot().setOnClickListener(v -> {
-            Uri uri = Uri.parse(item.getUrl());
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            binding.getRoot().getContext().startActivity(intent);
-        });
     }
 }

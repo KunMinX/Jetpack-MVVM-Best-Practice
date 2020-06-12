@@ -32,6 +32,7 @@ import java.util.Map;
  * <p>
  * Create by KunMinX at 19/9/23
  */
+@Deprecated
 public class UnPeekLiveData<T> extends MutableLiveData<T> {
 
     @Override
