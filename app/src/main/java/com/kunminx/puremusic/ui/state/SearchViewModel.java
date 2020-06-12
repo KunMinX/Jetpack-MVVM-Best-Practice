@@ -17,7 +17,13 @@
 package com.kunminx.puremusic.ui.state;
 
 import androidx.databinding.ObservableField;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.kunminx.puremusic.data.bean.DownloadFile;
+import com.kunminx.puremusic.domain.request.DownloadRequest;
+import com.kunminx.puremusic.domain.request.Request;
+import com.kunminx.puremusic.domain.usecase.CanBeStoppedUseCase;
 
 /**
  * TODO tip：每个页面都要单独准备一个 state-ViewModel，
@@ -31,9 +37,27 @@ import androidx.lifecycle.ViewModel;
  * <p>
  * Create by KunMinX at 19/10/29
  */
-public class SearchViewModel extends ViewModel {
+public class SearchViewModel extends ViewModel implements Request.ICanBeStoppedDownloadRequest {
 
     public final ObservableField<Integer> progress = new ObservableField<>();
-    public final ObservableField<Integer> canBeStopProgress = new ObservableField<>();
 
+    public final ObservableField<Integer> progress_cancelable = new ObservableField<>();
+
+    private DownloadRequest mDownloadRequest = new DownloadRequest();
+
+
+    @Override
+    public LiveData<DownloadFile> getDownloadFileCanBeStoppedLiveData() {
+        return mDownloadRequest.getDownloadFileCanBeStoppedLiveData();
+    }
+
+    @Override
+    public CanBeStoppedUseCase getCanBeStoppedUseCase() {
+        return mDownloadRequest.getCanBeStoppedUseCase();
+    }
+
+    @Override
+    public void requestCanBeStoppedDownloadFile() {
+        mDownloadRequest.requestCanBeStoppedDownloadFile();
+    }
 }

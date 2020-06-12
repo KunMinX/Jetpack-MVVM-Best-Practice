@@ -17,10 +17,8 @@
 package com.kunminx.puremusic.ui.base.binding_adapter;
 
 import androidx.databinding.BindingAdapter;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.kunminx.architecture.ui.adapter.BaseDataBindingAdapter;
 
 import java.util.List;
 
@@ -29,7 +27,7 @@ import java.util.List;
  */
 public class RecyclerViewBindingAdapter {
 
-    @BindingAdapter(value = {"setSpanCount"})
+    /*@BindingAdapter(value = {"setSpanCount"})
     public static void setSpanCount(RecyclerView recyclerView, int spanCount) {
         if (recyclerView != null) {
             if (recyclerView.getLayoutManager() == null || !(recyclerView.getLayoutManager() instanceof GridLayoutManager)) {
@@ -40,18 +38,35 @@ public class RecyclerViewBindingAdapter {
                 }
             }
         }
-    }
+    }*/
 
-    @BindingAdapter(value = {"adapter", "refreshList"}, requireAll = false)
-    public static void bindList(RecyclerView recyclerView, RecyclerView.Adapter adapter, List list) {
+    @BindingAdapter(value = {"adapter", "submitList", "autoScrollToTopWhenInsert", "autoScrollToBottomWhenInsert"}, requireAll = false)
+    public static void bindList(RecyclerView recyclerView, ListAdapter adapter, List list,
+                                boolean autoScrollToTopWhenInsert, boolean autoScrollToBottomWhenInsert) {
+
         if (recyclerView != null && list != null) {
             if (recyclerView.getAdapter() == null) {
                 recyclerView.setAdapter(adapter);
+
+                adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                    @Override
+                    public void onItemRangeInserted(int positionStart, int itemCount) {
+                        if (autoScrollToTopWhenInsert) {
+                            recyclerView.scrollToPosition(0);
+                        } else if (autoScrollToBottomWhenInsert) {
+                            recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount());
+                        }
+                    }
+                });
             }
 
-            ((BaseDataBindingAdapter) recyclerView.getAdapter()).setList(list);
+            adapter.submitList(list);
+        }
+    }
 
-            //TODO 此处可通过 diffUtil 进一步优化用户体验
+    @BindingAdapter(value = {"notifyCurrentListChanged"})
+    public static void notifyListChanged(RecyclerView recyclerView, boolean notify) {
+        if (notify && recyclerView != null && recyclerView.getAdapter() != null) {
             recyclerView.getAdapter().notifyDataSetChanged();
         }
     }

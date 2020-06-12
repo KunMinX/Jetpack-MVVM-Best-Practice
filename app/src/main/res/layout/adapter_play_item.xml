@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2018-2019 KunMinX
+  ~ Copyright 2018-2020 KunMinX
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -20,9 +20,14 @@
 
     <data>
 
+        <variable
+            name="album"
+            type="com.kunminx.puremusic.data.bean.TestAlbum.TestMusic" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/root_view"
         android:layout_width="match_parent"
         android:layout_height="72dp"
         android:orientation="vertical"
@@ -30,6 +35,7 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_cover"
+            imageUrl="@{album.coverImg}"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_marginStart="12dp"
@@ -52,6 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
+                android:text="@{album.title}"
                 android:textSize="18sp"
                 tools:text="title" />
 
@@ -61,20 +68,25 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="4dp"
+                android:text="@{album.artist.name}"
                 android:textSize="14sp"
-                tools:text="content" />
+                tools:text="summary" />
 
         </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <net.steamcrafted.materialiconlib.MaterialIconView
             android:id="@+id/iv_play_status"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_marginEnd="12dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:scaleType="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_music_gray_48dp" />
+            app:materialIcon="music_note"
+            app:materialIconColor="@color/gray"
+            app:materialIconSize="28dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

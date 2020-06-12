@@ -27,13 +27,12 @@ import com.kunminx.architecture.domain.manager.NetState;
 import com.kunminx.architecture.utils.SPUtils;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
-import com.kunminx.puremusic.domain.request.AccountRequestViewModel;
-import com.kunminx.puremusic.ui.state.LoginViewModel;
 import com.kunminx.puremusic.data.bean.User;
 import com.kunminx.puremusic.data.config.Configs;
 import com.kunminx.puremusic.ui.base.BaseFragment;
 import com.kunminx.puremusic.ui.base.DataBindingConfig;
 import com.kunminx.puremusic.ui.helper.DrawerCoordinateHelper;
+import com.kunminx.puremusic.ui.state.LoginViewModel;
 
 /**
  * Create by KunMinX at 20/04/26
@@ -41,12 +40,10 @@ import com.kunminx.puremusic.ui.helper.DrawerCoordinateHelper;
 public class LoginFragment extends BaseFragment {
 
     private LoginViewModel mLoginViewModel;
-    private AccountRequestViewModel mAccountRequestViewModel;
 
     @Override
     protected void initViewModel() {
         mLoginViewModel = getFragmentViewModel(LoginViewModel.class);
-        mAccountRequestViewModel = getFragmentViewModel(AccountRequestViewModel.class);
     }
 
     @Override
@@ -78,7 +75,7 @@ public class LoginFragment extends BaseFragment {
         //TODO tip: request-ViewModel 和 state-ViewModel 边界分明、点到为止、各司其职，
         //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/6257931840
 
-        mAccountRequestViewModel.getTokenLiveData().observe(getViewLifecycleOwner(), s -> {
+        mLoginViewModel.getTokenLiveData().observe(getViewLifecycleOwner(), s -> {
             SPUtils.getInstance().put(Configs.TOKEN, s);
             mLoginViewModel.loadingVisible.set(false);
 
@@ -115,7 +112,7 @@ public class LoginFragment extends BaseFragment {
                 return;
             }
             User user = new User(mLoginViewModel.name.get(), mLoginViewModel.password.get());
-            mAccountRequestViewModel.requestLogin(user);
+            mLoginViewModel.requestLogin(user);
             mLoginViewModel.loadingVisible.set(true);
         }
 

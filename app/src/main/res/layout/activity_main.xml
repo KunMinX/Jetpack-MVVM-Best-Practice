@@ -7,23 +7,26 @@
 
         <variable
             name="vm"
-            type="com.kunminx.puremusic.domain.status.MainActivityViewModel" />
+            type="com.kunminx.puremusic.ui.state.MainActivityViewModel" />
+
+        <variable
+            name="event"
+            type="com.kunminx.puremusic.MainActivity.EventHandler" />
 
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/dl"
+        allowDrawerOpen="@{vm.allowDrawerOpen}"
+        bindDrawerListener="@{event}"
         isOpenDrawer="@{vm.openDrawer}"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="-25dp"
-        android:fitsSystemWindows="true">
+        android:layout_height="match_parent">
 
         <com.sothree.slidinguppanel.SlidingUpPanelLayout
             android:id="@+id/sliding_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
             android:gravity="bottom"
             sothree:umanoDragView="@+id/slide_fragment_host"
             sothree:umanoOverlay="false"
@@ -53,7 +56,7 @@
         <fragment
             android:id="@+id/drawer_fragment_host"
             android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="300dp"
+            android:layout_width="330dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"

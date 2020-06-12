@@ -39,7 +39,7 @@ import java.util.TimerTask;
 /**
  * Create by KunMinX at 19/10/29
  */
-public class DataRepository implements ILocalRequest, IRemoteRequest {
+public class DataRepository implements ILocalSource, IRemoteSource {
 
     private static final DataRepository S_REQUEST_MANAGER = new DataRepository();
     private MutableLiveData<String> responseCodeLiveData;

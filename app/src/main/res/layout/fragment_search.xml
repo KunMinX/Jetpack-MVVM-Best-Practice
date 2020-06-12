@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2018-2019 KunMinX
+  ~ Copyright 2018-2020 KunMinX
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -19,39 +19,175 @@
 
     <data>
 
+        <variable
+            name="click"
+            type="com.kunminx.puremusic.ui.page.SearchFragment.ClickProxy" />
+
+        <variable
+            name="vm"
+            type="com.kunminx.puremusic.ui.state.SearchViewModel" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:background="@color/white">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <net.steamcrafted.materialiconlib.MaterialIconView
+            android:id="@+id/btn_back"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="37dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:onClick="@{()->click.back()}"
+            android:scaleType="center"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:materialIcon="arrow_left"
+            app:materialIconColor="@color/gray"
+            app:materialIconSize="28dp" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="37dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:text="@string/relearn_android"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tv_content"
+            app:layout_constraintLeft_toRightOf="@+id/btn_back"
+            app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/et_search"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginBottom="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:text="@string/learn_more_friends"
+            android:textColor="@color/light_gray"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toRightOf="@+id/btn_back"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/btn_subsribe"
+            drawable_radius="@{25}"
+            drawable_solidColor="@{0xffFF7055}"
+            android:layout_width="100dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="37dp"
+            android:layout_marginEnd="20dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:onClick="@{()->click.subscribe()}"
+            android:text="@string/learn_more"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.cardview.widget.CardView>
+        <net.steamcrafted.materialiconlib.MaterialIconView
+            android:id="@+id/ic"
+            android:layout_width="242dp"
+            android:layout_height="242dp"
+            android:layout_marginTop="24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:onClick="@{()->click.testNav()}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_content"
+            app:materialIcon="magnify"
+            app:materialIconColor="@color/light_gray"
+            app:materialIconSize="28dp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        <TextView
+            android:id="@+id/tv_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:onClick="@{()->click.testNav()}"
+            android:text="@string/search_page_tip"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ic" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/tv_test_download"
+            drawable_radius="@{25}"
+            drawable_solidColor="@{0xffFF7055}"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:onClick="@{()->click.testDownload()}"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:text="@string/test_download"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_tip" />
+
+        <TextView
+            android:id="@+id/tv_test_lifecycle_download"
+            drawable_radius="@{25}"
+            drawable_solidColor="@{0xffFF7055}"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginTop="12dp"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:onClick="@{()->click.testLifecycleDownload()}"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:text="@string/test_lifecycle_download"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_test_download" />
+
+        <SeekBar
+            android:id="@+id/pb"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/transparent"
+            android:progress="@{vm.progress}"
+            android:progressDrawable="@drawable/progressbar_color"
+            android:thumb="@color/transparent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_test_lifecycle_download" />
+
+        <SeekBar
+            android:id="@+id/pb_cancelable"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/transparent"
+            android:progress="@{vm.progress_cancelable}"
+            android:progressDrawable="@drawable/progressbar_color"
+            android:thumb="@color/transparent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pb" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

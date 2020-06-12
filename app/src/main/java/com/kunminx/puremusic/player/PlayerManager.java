@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2019 KunMinX
+ * Copyright 2018-2020 KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +17,17 @@
 package com.kunminx.puremusic.player;
 
 import android.content.Context;
+import android.content.Intent;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.kunminx.player.contract.IPlayController;
 import com.kunminx.player.PlayerController;
 import com.kunminx.player.bean.dto.ChangeMusic;
 import com.kunminx.player.bean.dto.PlayingMusic;
+import com.kunminx.player.contract.IPlayController;
+import com.kunminx.player.contract.IServiceNotifier;
 import com.kunminx.puremusic.data.bean.TestAlbum;
+import com.kunminx.puremusic.player.notification.PlayerService;
 
 import java.util.List;
 
@@ -33,9 +36,9 @@ import java.util.List;
  */
 public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestMusic> {
 
-    private static PlayerManager sManager = new PlayerManager();
+    private static final PlayerManager S_MANAGER = new PlayerManager();
 
-    private PlayerController<TestAlbum, TestAlbum.TestMusic> mController;
+    private final PlayerController<TestAlbum, TestAlbum.TestMusic> mController;
 
     private Context mContext;
 
@@ -44,13 +47,24 @@ public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestM
     }
 
     public static PlayerManager getInstance() {
-        return sManager;
+        return S_MANAGER;
+    }
+
+    public void init(Context context) {
+        init(context, null);
     }
 
     @Override
-    public void init(Context context) {
+    public void init(Context context, IServiceNotifier iServiceNotifier) {
         mContext = context.getApplicationContext();
-        mController.init(mContext);
+        mController.init(mContext, null, startOrStop -> {
+            Intent intent = new Intent(mContext, PlayerService.class);
+            if (startOrStop) {
+                mContext.startService(intent);
+            } else {
+                mContext.stopService(intent);
+            }
+        });
     }
 
     @Override
@@ -158,21 +172,19 @@ public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestM
         return mController.getAlbumIndex();
     }
 
+    @Override
     public MutableLiveData<ChangeMusic> getChangeMusicLiveData() {
         return mController.getChangeMusicLiveData();
     }
 
+    @Override
     public MutableLiveData<PlayingMusic> getPlayingMusicLiveData() {
         return mController.getPlayingMusicLiveData();
     }
 
+    @Override
     public MutableLiveData<Boolean> getPauseLiveData() {
         return mController.getPauseLiveData();
-    }
-
-    @Override
-    public MutableLiveData<Boolean> getStartService() {
-        return mController.getStartForegroundService();
     }
 
     @Override

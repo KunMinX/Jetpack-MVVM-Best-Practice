@@ -1,21 +1,6 @@
-/*
- * Copyright 2018-2019 KunMinX
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.kunminx.architecture.utils;
 
+import android.annotation.SuppressLint;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
@@ -152,24 +137,6 @@ public final class ScreenUtils {
     }
 
     /**
-     * Set the screen to landscape.
-     *
-     * @param activity The activity.
-     */
-    public static void setLandscape(@NonNull final AppCompatActivity activity) {
-        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-    }
-
-    /**
-     * Set the screen to portrait.
-     *
-     * @param activity The activity.
-     */
-    public static void setPortrait(@NonNull final AppCompatActivity activity) {
-        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-    }
-
-    /**
      * Return whether screen is landscape.
      *
      * @return {@code true}: yes<br>{@code false}: no
@@ -177,6 +144,15 @@ public final class ScreenUtils {
     public static boolean isLandscape() {
         return Utils.getApp().getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_LANDSCAPE;
+    }
+
+    /**
+     * Set the screen to landscape.
+     *
+     * @param activity The activity.
+     */
+    public static void setLandscape(@NonNull final AppCompatActivity activity) {
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 
     /**
@@ -190,15 +166,23 @@ public final class ScreenUtils {
     }
 
     /**
+     * Set the screen to portrait.
+     *
+     * @param activity The activity.
+     */
+    public static void setPortrait(@NonNull final AppCompatActivity activity) {
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+
+    /**
      * Return the rotation of screen.
      *
      * @param activity The activity.
      * @return the rotation of screen
      */
+    @SuppressLint("SwitchIntDef")
     public static int getScreenRotation(@NonNull final AppCompatActivity activity) {
         switch (activity.getWindowManager().getDefaultDisplay().getRotation()) {
-            case Surface.ROTATION_0:
-                return 0;
             case Surface.ROTATION_90:
                 return 90;
             case Surface.ROTATION_180:
@@ -232,7 +216,9 @@ public final class ScreenUtils {
         decorView.setDrawingCacheEnabled(true);
         decorView.setWillNotCacheDrawing(false);
         Bitmap bmp = decorView.getDrawingCache();
-        if (bmp == null) return null;
+        if (bmp == null) {
+            return null;
+        }
         DisplayMetrics dm = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
         Bitmap ret;
@@ -267,21 +253,6 @@ public final class ScreenUtils {
     }
 
     /**
-     * Set the duration of sleep.
-     * <p>Must hold {@code <uses-permission android:name="android.permission.WRITE_SETTINGS" />}</p>
-     *
-     * @param duration The duration.
-     */
-    @RequiresPermission(WRITE_SETTINGS)
-    public static void setSleepDuration(final int duration) {
-        Settings.System.putInt(
-                Utils.getApp().getContentResolver(),
-                Settings.System.SCREEN_OFF_TIMEOUT,
-                duration
-        );
-    }
-
-    /**
      * Return the duration of sleep.
      *
      * @return the duration of sleep.
@@ -296,6 +267,21 @@ public final class ScreenUtils {
             e.printStackTrace();
             return -123;
         }
+    }
+
+    /**
+     * Set the duration of sleep.
+     * <p>Must hold {@code <uses-permission android:name="android.permission.WRITE_SETTINGS" />}</p>
+     *
+     * @param duration The duration.
+     */
+    @RequiresPermission(WRITE_SETTINGS)
+    public static void setSleepDuration(final int duration) {
+        Settings.System.putInt(
+                Utils.getApp().getContentResolver(),
+                Settings.System.SCREEN_OFF_TIMEOUT,
+                duration
+        );
     }
 
     /**

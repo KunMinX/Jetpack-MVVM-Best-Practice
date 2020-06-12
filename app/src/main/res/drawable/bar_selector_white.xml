@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2018-2019 KunMinX
+  ~ Copyright 2018-2020 KunMinX
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -14,8 +14,7 @@
   ~ limitations under the License.
   -->
 
-<selector
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
             <solid android:color="#40ffffff" />
