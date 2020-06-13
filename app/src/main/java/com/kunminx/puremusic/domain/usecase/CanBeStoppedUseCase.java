@@ -41,7 +41,7 @@ import static com.kunminx.puremusic.domain.usecase.CanBeStoppedUseCase.ResponseV
  *
  * Create by KunMinX at 19/11/25
  */
-public class CanBeStoppedUseCase extends UseCase<RequestValues, ResponseValue> implements DefaultLifecycleObserver {
+public class CanBeStoppedUseCase extends UseCase<CanBeStoppedUseCase.RequestValues, CanBeStoppedUseCase.ResponseValue> implements DefaultLifecycleObserver {
 
     @Override
     public void onStop(@NonNull LifecycleOwner owner) {
