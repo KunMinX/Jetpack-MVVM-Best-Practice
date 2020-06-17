@@ -18,14 +18,11 @@ package com.kunminx.puremusic.ui.state;
 
 import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
-
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.domain.request.MusicRequest;
-import com.kunminx.puremusic.domain.request.Request;
 
 import java.util.List;
 
@@ -41,7 +38,7 @@ import java.util.List;
  * <p>
  * Create by KunMinX at 19/10/29
  */
-public class MainViewModel extends ViewModel implements Request.IMusicRequest {
+public class MainViewModel extends ViewModel {
 
     public final ObservableBoolean initTabAndPage = new ObservableBoolean();
 
@@ -55,20 +52,11 @@ public class MainViewModel extends ViewModel implements Request.IMusicRequest {
 
     public final MutableLiveData<Boolean> notifyCurrentListChanged = new MutableLiveData<>();
 
-    private MusicRequest mMusicRequest = new MusicRequest();
+    public final MusicRequest musicRequest = new MusicRequest();
 
     {
         initTabAndPage.set(true);
         pageAssetPath.set("summary.html");
     }
 
-    @Override
-    public LiveData<TestAlbum> getFreeMusicsLiveData() {
-        return mMusicRequest.getFreeMusicsLiveData();
-    }
-
-    @Override
-    public void requestFreeMusics() {
-        mMusicRequest.requestFreeMusics();
-    }
 }

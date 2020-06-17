@@ -37,14 +37,13 @@ import com.kunminx.puremusic.data.repository.DataRepository;
  * <p>
  * Create by KunMinX at 19/10/29
  */
-public class MusicRequest implements Request.IMusicRequest {
+public class MusicRequest {
 
     private MutableLiveData<TestAlbum> mFreeMusicsLiveData;
 
     //TODO tip 向 ui 层提供的 request LiveData，使用抽象的 LiveData 而不是 MutableLiveData
     // 如此是为了来自数据层的数据，在 ui 层中只读，以避免团队新手不可预期的误用
 
-    @Override
     public LiveData<TestAlbum> getFreeMusicsLiveData() {
         if (mFreeMusicsLiveData == null) {
             mFreeMusicsLiveData = new MutableLiveData<>();
@@ -52,7 +51,6 @@ public class MusicRequest implements Request.IMusicRequest {
         return mFreeMusicsLiveData;
     }
 
-    @Override
     public void requestFreeMusics() {
         DataRepository.getInstance().getFreeMusic(mFreeMusicsLiveData);
     }

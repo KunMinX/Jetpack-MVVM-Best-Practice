@@ -24,7 +24,7 @@ import com.kunminx.puremusic.domain.usecase.CanBeStoppedUseCase;
  * <p>
  * Create by KunMinX at 20/03/18
  */
-public class DownloadRequest implements Request.IDownloadRequest, Request.ICanBeStoppedDownloadRequest {
+public class DownloadRequest  {
 
     private MutableLiveData<DownloadFile> mDownloadFileLiveData;
 
@@ -35,7 +35,6 @@ public class DownloadRequest implements Request.IDownloadRequest, Request.ICanBe
     //TODO tip 向 ui 层提供的 request LiveData，使用抽象的 LiveData 而不是 MutableLiveData
     // 如此是为了来自数据层的数据，在 ui 层中只读，以避免团队新手不可预期的误用
 
-    @Override
     public LiveData<DownloadFile> getDownloadFileLiveData() {
         if (mDownloadFileLiveData == null) {
             mDownloadFileLiveData = new MutableLiveData<>();
@@ -43,7 +42,6 @@ public class DownloadRequest implements Request.IDownloadRequest, Request.ICanBe
         return mDownloadFileLiveData;
     }
 
-    @Override
     public LiveData<DownloadFile> getDownloadFileCanBeStoppedLiveData() {
         if (mDownloadFileCanBeStoppedLiveData == null) {
             mDownloadFileCanBeStoppedLiveData = new MutableLiveData<>();
@@ -51,7 +49,6 @@ public class DownloadRequest implements Request.IDownloadRequest, Request.ICanBe
         return mDownloadFileCanBeStoppedLiveData;
     }
 
-    @Override
     public CanBeStoppedUseCase getCanBeStoppedUseCase() {
         if (mCanBeStoppedUseCase == null) {
             mCanBeStoppedUseCase = new CanBeStoppedUseCase();
@@ -59,7 +56,6 @@ public class DownloadRequest implements Request.IDownloadRequest, Request.ICanBe
         return mCanBeStoppedUseCase;
     }
 
-    @Override
     public void requestDownloadFile() {
         DataRepository.getInstance().downloadFile(mDownloadFileLiveData);
     }
@@ -70,7 +66,6 @@ public class DownloadRequest implements Request.IDownloadRequest, Request.ICanBe
     // 除了开闭原则，使用 UseCase 还有个考虑就是避免内存泄漏，
     // 具体缘由可详见 https://xiaozhuanlan.com/topic/6257931840 评论区 15 楼
 
-    @Override
     public void requestCanBeStoppedDownloadFile() {
         UseCaseHandler.getInstance().execute(getCanBeStoppedUseCase(),
                 new CanBeStoppedUseCase.RequestValues(mDownloadFileCanBeStoppedLiveData),

@@ -37,14 +37,13 @@ import com.kunminx.puremusic.data.repository.DataRepository;
  * <p>
  * Create by KunMinX at 20/04/26
  */
-public class AccountRequest implements Request.IAccountRequest {
+public class AccountRequest {
 
     private MutableLiveData<String> tokenLiveData;
 
     //TODO tip 向 ui 层提供的 request LiveData，使用抽象的 LiveData 而不是 MutableLiveData
     // 如此是为了来自数据层的数据，在 ui 层中只读，以避免团队新手不可预期的误用
 
-    @Override
     public LiveData<String> getTokenLiveData() {
         if (tokenLiveData == null) {
             tokenLiveData = new MutableLiveData<>();
@@ -52,7 +51,6 @@ public class AccountRequest implements Request.IAccountRequest {
         return tokenLiveData;
     }
 
-    @Override
     public void requestLogin(User user) {
         DataRepository.getInstance().login(user, tokenLiveData);
     }

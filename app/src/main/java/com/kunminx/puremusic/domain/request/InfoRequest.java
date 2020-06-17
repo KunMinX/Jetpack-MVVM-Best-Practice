@@ -40,14 +40,13 @@ import java.util.List;
  * <p>
  * Create by KunMinX at 19/11/2
  */
-public class InfoRequest implements Request.IInfoRequest {
+public class InfoRequest {
 
     private MutableLiveData<List<LibraryInfo>> mLibraryLiveData;
 
     //TODO tip 向 ui 层提供的 request LiveData，使用抽象的 LiveData 而不是 MutableLiveData
     // 如此是为了来自数据层的数据，在 ui 层中只读，以避免团队新手不可预期的误用
 
-    @Override
     public LiveData<List<LibraryInfo>> getLibraryLiveData() {
         if (mLibraryLiveData == null) {
             mLibraryLiveData = new MutableLiveData<>();
@@ -55,7 +54,6 @@ public class InfoRequest implements Request.IInfoRequest {
         return mLibraryLiveData;
     }
 
-    @Override
     public void requestLibraryInfo() {
         DataRepository.getInstance().getLibraryInfo(mLibraryLiveData);
     }

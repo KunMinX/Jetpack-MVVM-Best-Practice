@@ -63,20 +63,20 @@ public class DrawerFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mDrawerViewModel.getLibraryLiveData().observe(getViewLifecycleOwner(), libraryInfos -> {
+        mDrawerViewModel.infoRequest.getLibraryLiveData().observe(getViewLifecycleOwner(), libraryInfos -> {
             if (mAnimationLoaded && libraryInfos != null) {
                 mDrawerViewModel.list.setValue(libraryInfos);
             }
         });
 
-        mDrawerViewModel.requestLibraryInfo();
+        mDrawerViewModel.infoRequest.requestLibraryInfo();
     }
 
     @Override
     public void loadInitData() {
         super.loadInitData();
-        if (mDrawerViewModel.getLibraryLiveData().getValue() != null) {
-            mDrawerViewModel.list.setValue(mDrawerViewModel.getLibraryLiveData().getValue());
+        if (mDrawerViewModel.infoRequest.getLibraryLiveData().getValue() != null) {
+            mDrawerViewModel.list.setValue(mDrawerViewModel.infoRequest.getLibraryLiveData().getValue());
         }
     }
 

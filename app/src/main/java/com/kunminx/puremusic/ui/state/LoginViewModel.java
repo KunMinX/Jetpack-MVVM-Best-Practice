@@ -18,12 +18,9 @@ package com.kunminx.puremusic.ui.state;
 
 import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.kunminx.puremusic.data.bean.User;
 import com.kunminx.puremusic.domain.request.AccountRequest;
-import com.kunminx.puremusic.domain.request.Request;
 
 /**
  * TODO tip：每个页面都要单独准备一个 state-ViewModel，
@@ -37,7 +34,7 @@ import com.kunminx.puremusic.domain.request.Request;
  * <p>
  * Create by KunMinX at 20/04/26
  */
-public class LoginViewModel extends ViewModel implements Request.IAccountRequest {
+public class LoginViewModel extends ViewModel {
 
     public final ObservableField<String> name = new ObservableField<>();
 
@@ -45,15 +42,6 @@ public class LoginViewModel extends ViewModel implements Request.IAccountRequest
 
     public final ObservableBoolean loadingVisible = new ObservableBoolean();
 
-    private AccountRequest mAccountRequest = new AccountRequest();
+    public final AccountRequest accountRequest = new AccountRequest();
 
-    @Override
-    public LiveData<String> getTokenLiveData() {
-        return mAccountRequest.getTokenLiveData();
-    }
-
-    @Override
-    public void requestLogin(User user) {
-        mAccountRequest.requestLogin(user);
-    }
 }

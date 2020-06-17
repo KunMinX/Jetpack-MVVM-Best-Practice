@@ -72,7 +72,7 @@ public class MainFragment extends BaseFragment {
             mMainViewModel.notifyCurrentListChanged.setValue(true);
         });
 
-        mMainViewModel.getFreeMusicsLiveData().observe(getViewLifecycleOwner(), musicAlbum -> {
+        mMainViewModel.musicRequest.getFreeMusicsLiveData().observe(getViewLifecycleOwner(), musicAlbum -> {
             if (musicAlbum != null && musicAlbum.getMusics() != null) {
                 mMainViewModel.list.setValue(musicAlbum.getMusics());
 
@@ -90,7 +90,7 @@ public class MainFragment extends BaseFragment {
         });
 
         if (PlayerManager.getInstance().getAlbum() == null) {
-            mMainViewModel.requestFreeMusics();
+            mMainViewModel.musicRequest.requestFreeMusics();
         } else {
             mMainViewModel.list.setValue(PlayerManager.getInstance().getAlbum().getMusics());
         }

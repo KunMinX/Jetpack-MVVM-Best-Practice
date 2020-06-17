@@ -68,18 +68,18 @@ public class SearchFragment extends BaseFragment {
         getLifecycle().addObserver(DrawerCoordinateHelper.getInstance());
 
         //TODO tip1：绑定跟随视图控制器生命周期的、可叫停的、单独放在 UseCase 中处理的业务
-        getLifecycle().addObserver(mSearchViewModel.getCanBeStoppedUseCase());
+        getLifecycle().addObserver(mSearchViewModel.downloadRequest.getCanBeStoppedUseCase());
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mMainActivityViewModel.getDownloadFileLiveData().observe(getViewLifecycleOwner(), downloadFile -> {
+        mMainActivityViewModel.downloadRequest.getDownloadFileLiveData().observe(getViewLifecycleOwner(), downloadFile -> {
             mSearchViewModel.progress.set(downloadFile.getProgress());
         });
 
-        mSearchViewModel.getDownloadFileCanBeStoppedLiveData().observe(getViewLifecycleOwner(), downloadFile -> {
+        mSearchViewModel.downloadRequest.getDownloadFileCanBeStoppedLiveData().observe(getViewLifecycleOwner(), downloadFile -> {
             mSearchViewModel.progress_cancelable.set(downloadFile.getProgress());
         });
     }
@@ -105,13 +105,13 @@ public class SearchFragment extends BaseFragment {
         }
 
         public void testDownload() {
-            mMainActivityViewModel.requestDownloadFile();
+            mMainActivityViewModel.downloadRequest.requestDownloadFile();
         }
 
         //TODO tip2: 在 UseCase 中 执行可跟随生命周期中止的下载任务
 
         public void testLifecycleDownload() {
-            mSearchViewModel.requestCanBeStoppedDownloadFile();
+            mSearchViewModel.downloadRequest.requestCanBeStoppedDownloadFile();
         }
     }
 }
