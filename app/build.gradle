@@ -51,7 +51,7 @@ dependencies {
     implementation 'com.kunminx.player:player:1.1.6'
 
     compileOnly 'androidx.appcompat:appcompat:1.1.0'
-    compileOnly 'androidx.constraintlayout:constraintlayout:2.0.0-beta6'
+    compileOnly 'androidx.constraintlayout:constraintlayout:2.0.0-beta7'
     implementation 'com.google.android.material:material:1.3.0-alpha01'
     compileOnly 'androidx.recyclerview:recyclerview:1.2.0-alpha03'
 
