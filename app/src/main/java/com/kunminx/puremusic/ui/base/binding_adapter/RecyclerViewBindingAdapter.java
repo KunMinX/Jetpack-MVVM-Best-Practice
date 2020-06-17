@@ -76,6 +76,7 @@ public class RecyclerViewBindingAdapter {
         }
     }
 
+
     @BindingAdapter(value = {"notifyCurrentListChanged"})
     public static void notifyListChanged(RecyclerView recyclerView, boolean notify) {
         if (notify && recyclerView != null && recyclerView.getAdapter() != null) {
