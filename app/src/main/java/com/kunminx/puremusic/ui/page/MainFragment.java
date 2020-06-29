@@ -90,6 +90,10 @@ public class MainFragment extends BaseFragment {
         });
 
         if (PlayerManager.getInstance().getAlbum() == null) {
+
+            //TODO 将 request 作为 ViewModel 的成员暴露给 Activity/Fragment，
+            // 如此便于语义的明确，以及实现多个 request 在 ViewModel 中的组合和复用。
+
             mMainViewModel.musicRequest.requestFreeMusics();
         } else {
             mMainViewModel.list.setValue(PlayerManager.getInstance().getAlbum().getMusics());
