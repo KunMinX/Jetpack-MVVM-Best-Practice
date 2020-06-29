@@ -47,4 +47,14 @@ public class EventLiveData<T> extends ELiveData<T> {
     public void setValue(T value) {
         super.setEvent(new Event<>(value));
     }
+
+    /**
+     * 有时候只需要简单的发送一个消息，因为没有对监听到的值操作的需求，不想再发送的时候再传一个值，可以调用该方法
+     * 所以使用该方法需要注意的是，在liveData监听值变化的时候，不能去使用监听的值，因为它会是个null
+     * 之前 xxxViewModel.xxx.postValue(false)
+     * 现在 xxxViewModel.xxx.call()
+     */
+    public void call(){
+        super.postEvent(new Event<>(null));
+    }
 }

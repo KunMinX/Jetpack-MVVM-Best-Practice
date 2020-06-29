@@ -107,9 +107,7 @@ abstract class ELiveData<T> {
             return;
         }
         observer.mLastVersion = mVersion;
-        if (data != null) {
-            observer.mEventObserver.onReceived(data);
-        }
+        observer.mEventObserver.onReceived(data);
     }
 
     @SuppressWarnings("WeakerAccess") /* synthetic access */
@@ -127,13 +125,11 @@ abstract class ELiveData<T> {
             } else {
                 T data = (T) ((Event<T>) mData).getContent();
                 ((Event<T>) mData).setContentNull();
-                if (data != null) {
-                    for (Iterator<Map.Entry<EventObserver<T>, ObserverWrapper>> iterator =
-                         mObservers.iteratorWithAdditions(); iterator.hasNext(); ) {
-                        considerNotify(iterator.next().getValue(), data);
-                        if (mDispatchInvalidated) {
-                            break;
-                        }
+                for (Iterator<Map.Entry<EventObserver<T>, ObserverWrapper>> iterator =
+                     mObservers.iteratorWithAdditions(); iterator.hasNext(); ) {
+                    considerNotify(iterator.next().getValue(), data);
+                    if (mDispatchInvalidated) {
+                        break;
                     }
                 }
             }
