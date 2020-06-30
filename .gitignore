@@ -19,7 +19,7 @@ out
 target
 
 *.class
-*.ctxt
+*.txt
 *.ear
 *.iml
 *.jar
