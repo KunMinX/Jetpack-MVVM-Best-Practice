@@ -16,6 +16,8 @@
 
 package com.kunminx.puremusic.ui.base;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
@@ -55,10 +57,11 @@ public abstract class BaseFragment extends Fragment {
 
     private static final Handler HANDLER = new Handler();
     protected AppCompatActivity mActivity;
-    private SharedViewModel mSharedViewModel;
     protected boolean mAnimationLoaded;
+    private SharedViewModel mSharedViewModel;
     private ViewModelProvider mFragmentProvider;
     private ViewModelProvider mActivityProvider;
+    private ViewModelProvider.Factory mFactory;
     private ViewDataBinding mBinding;
     private TextView mTvStrictModeTip;
 
@@ -73,7 +76,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSharedViewModel = ((App) mActivity.getApplicationContext()).getAppViewModelProvider(mActivity).get(SharedViewModel.class);
+        mSharedViewModel = getAppViewModelProvider(mActivity).get(SharedViewModel.class);
 
         initViewModel();
     }
@@ -190,6 +193,36 @@ public abstract class BaseFragment extends Fragment {
             mActivityProvider = new ViewModelProvider(mActivity);
         }
         return mActivityProvider.get(modelClass);
+    }
+
+    protected ViewModelProvider getAppViewModelProvider(Activity activity) {
+        return new ViewModelProvider((App) activity.getApplicationContext(),
+                getAppFactory(activity));
+    }
+
+    private ViewModelProvider.Factory getAppFactory(Activity activity) {
+        checkActivity(this);
+        Application application = checkApplication(activity);
+        if (mFactory == null) {
+            mFactory = ViewModelProvider.AndroidViewModelFactory.getInstance(application);
+        }
+        return mFactory;
+    }
+
+    private Application checkApplication(Activity activity) {
+        Application application = activity.getApplication();
+        if (application == null) {
+            throw new IllegalStateException("Your activity/fragment is not yet attached to "
+                    + "Application. You can't request ViewModel before onCreate call.");
+        }
+        return application;
+    }
+
+    private void checkActivity(Fragment fragment) {
+        Activity activity = fragment.getActivity();
+        if (activity == null) {
+            throw new IllegalStateException("Can't create ViewModelProvider for detached fragment");
+        }
     }
 
     protected NavController nav() {

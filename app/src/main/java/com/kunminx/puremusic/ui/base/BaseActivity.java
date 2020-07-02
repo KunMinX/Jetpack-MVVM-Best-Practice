@@ -16,6 +16,8 @@
 
 package com.kunminx.puremusic.ui.base;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.pm.ApplicationInfo;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -49,6 +51,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private SharedViewModel mSharedViewModel;
     private ViewModelProvider mActivityProvider;
+    private ViewModelProvider.Factory mFactory;
     private ViewDataBinding mBinding;
     private TextView mTvStrictModeTip;
 
@@ -85,7 +88,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         BarUtils.setStatusBarColor(this, Color.TRANSPARENT);
         BarUtils.setStatusBarLightMode(this, true);
 
-        mSharedViewModel = ((App) getApplicationContext()).getAppViewModelProvider(this).get(SharedViewModel.class);
+        mSharedViewModel = getAppViewModelProvider(this).get(SharedViewModel.class);
 
         getLifecycle().addObserver(NetworkStateManager.getInstance());
 
@@ -144,6 +147,28 @@ public abstract class BaseActivity extends AppCompatActivity {
             mActivityProvider = new ViewModelProvider(this);
         }
         return mActivityProvider.get(modelClass);
+    }
+
+    protected ViewModelProvider getAppViewModelProvider(Activity activity) {
+        return new ViewModelProvider((App) activity.getApplicationContext(),
+                getAppFactory(activity));
+    }
+
+    private ViewModelProvider.Factory getAppFactory(Activity activity) {
+        Application application = checkApplication(activity);
+        if (mFactory == null) {
+            mFactory = ViewModelProvider.AndroidViewModelFactory.getInstance(application);
+        }
+        return mFactory;
+    }
+
+    private Application checkApplication(Activity activity) {
+        Application application = activity.getApplication();
+        if (application == null) {
+            throw new IllegalStateException("Your activity/fragment is not yet attached to "
+                    + "Application. You can't request ViewModel before onCreate call.");
+        }
+        return application;
     }
 
     public SharedViewModel getSharedViewModel() {
