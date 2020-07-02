@@ -1,11 +1,11 @@
 /*
- * Copyright (C) 2017 The Android Open Source Project
+ * Copyright 2020-present KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,7 +32,7 @@ import static androidx.lifecycle.Lifecycle.State.DESTROYED;
 import static androidx.lifecycle.Lifecycle.State.STARTED;
 
 /**
- * TODO: 专为 Event LiveData 改造的底层 LiveData 支持
+ * base LiveData support specially modified for Event LiveData
  * <p>
  * Create by KunMinX at 2020/6/3
  */
@@ -90,7 +90,7 @@ abstract class ELiveData<T> {
     }
 
     @SuppressWarnings("unchecked")
-    private void considerNotify(ObserverWrapper observer, T data) {
+    private void considerNotify(ObserverWrapper observer) {
         if (!observer.mActive) {
             return;
         }
@@ -107,6 +107,7 @@ abstract class ELiveData<T> {
             return;
         }
         observer.mLastVersion = mVersion;
+        T data = (T) ((Event<T>) mData).getContent();
         if (data != null) {
             observer.mEventObserver.onReceived(data);
         }
@@ -122,18 +123,14 @@ abstract class ELiveData<T> {
         do {
             mDispatchInvalidated = false;
             if (initiator != null) {
-                considerNotify(initiator, null);
+                considerNotify(initiator);
                 initiator = null;
             } else {
-                T data = (T) ((Event<T>) mData).getContent();
-                ((Event<T>) mData).setContentNull();
-                if (data != null) {
-                    for (Iterator<Map.Entry<EventObserver<T>, ObserverWrapper>> iterator =
-                         mObservers.iteratorWithAdditions(); iterator.hasNext(); ) {
-                        considerNotify(iterator.next().getValue(), data);
-                        if (mDispatchInvalidated) {
-                            break;
-                        }
+                for (Iterator<Map.Entry<EventObserver<T>, ObserverWrapper>> iterator =
+                     mObservers.iteratorWithAdditions(); iterator.hasNext(); ) {
+                    considerNotify(iterator.next().getValue());
+                    if (mDispatchInvalidated) {
+                        break;
                     }
                 }
             }

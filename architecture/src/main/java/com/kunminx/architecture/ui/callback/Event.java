@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2020-present KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,29 +16,43 @@
 
 package com.kunminx.architecture.ui.callback;
 
+import androidx.annotation.Nullable;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
- * TODO: 用于 callback 的情况，配合 MutableLiveData & SharedViewModel 的使用
- * <p>
  * Create by KunMinX at 2020/6/2
  */
 public class Event<T> {
 
     private T content;
     private boolean hasHandled;
+    private boolean isDelaying;
 
     public Event(T content) {
         this.content = content;
     }
 
+    public @Nullable
     T getContent() {
-        if (hasHandled) {
+        if (!hasHandled) {
+            hasHandled = true;
+            isDelaying = true;
+            Timer timer = new Timer();
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    content = null;
+                    isDelaying = false;
+                }
+            };
+            timer.schedule(task, 1000);
+            return content;
+        } else if (isDelaying) {
+            return content;
+        } else {
             return null;
         }
-        hasHandled = true;
-        return content;
-    }
-
-    void setContentNull() {
-        content = null;
     }
 }
