@@ -56,7 +56,7 @@ public class MainFragment extends BaseFragment {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.fragment_main, mMainViewModel)
+        return new DataBindingConfig(R.layout.fragment_main, BR.vm, mMainViewModel)
                 .addBindingParam(BR.click, new ClickProxy())
                 .addBindingParam(BR.adapter, new PlaylistAdapter(getContext()));
     }

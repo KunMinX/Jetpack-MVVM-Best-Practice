@@ -133,7 +133,7 @@ public abstract class BaseFragment extends Fragment {
 
         ViewDataBinding binding = DataBindingUtil.inflate(inflater, dataBindingConfig.getLayout(), container, false);
         binding.setLifecycleOwner(this);
-        binding.setVariable(BR.vm, dataBindingConfig.getStateViewModel());
+        binding.setVariable(dataBindingConfig.getVmVariableId(), dataBindingConfig.getStateViewModel());
         SparseArray bindingParams = dataBindingConfig.getBindingParams();
         for (int i = 0, length = bindingParams.size(); i < length; i++) {
             binding.setVariable(bindingParams.keyAt(i), bindingParams.valueAt(i));

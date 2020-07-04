@@ -62,7 +62,7 @@ public class PlayerFragment extends BaseFragment {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.fragment_player, mPlayerViewModel)
+        return new DataBindingConfig(R.layout.fragment_player, BR.vm, mPlayerViewModel)
                 .addBindingParam(BR.click, new ClickProxy())
                 .addBindingParam(BR.event, new EventHandler());
     }
