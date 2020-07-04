@@ -1,20 +1,22 @@
 /*
- * Copyright 2018-2020 KunMinX
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  * Copyright 2018-2020 KunMinX
+ *  *
+ *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  * you may not use this file except in compliance with the License.
+ *  * You may obtain a copy of the License at
+ *  *
+ *  *    http://www.apache.org/licenses/LICENSE-2.0
+ *  *
+ *  * Unless required by applicable law or agreed to in writing, software
+ *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  * See the License for the specific language governing permissions and
+ *  * limitations under the License.
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
-package com.kunminx.puremusic.ui.base;
+package com.kunminx.architecture.ui.page;
 
 import android.app.Activity;
 import android.app.Application;
@@ -36,21 +38,18 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.kunminx.architecture.BaseApplication;
+import com.kunminx.architecture.R;
 import com.kunminx.architecture.domain.manager.NetworkStateManager;
 import com.kunminx.architecture.utils.AdaptScreenUtils;
 import com.kunminx.architecture.utils.BarUtils;
 import com.kunminx.architecture.utils.ScreenUtils;
-import com.kunminx.puremusic.App;
-import com.kunminx.puremusic.BR;
-import com.kunminx.puremusic.R;
-import com.kunminx.puremusic.ui.callback.SharedViewModel;
+
 
 /**
  * Create by KunMinX at 19/8/1
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
-    private SharedViewModel mSharedViewModel;
     private ViewModelProvider mActivityProvider;
     private ViewModelProvider.Factory mFactory;
     private ViewDataBinding mBinding;

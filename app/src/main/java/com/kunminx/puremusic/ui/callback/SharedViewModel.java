@@ -46,11 +46,11 @@ public class SharedViewModel extends ViewModel {
     // 详见 https://xiaozhuanlan.com/topic/0168753249 和 https://xiaozhuanlan.com/topic/6257931840
 
     public static final List<String> TAG_OF_SECONDARY_PAGES = new ArrayList<>();
+    public static final EventLiveData<Boolean> ENABLE_SWIPE_DRAWER = new EventLiveData<>();
     public final ObservableBoolean isDrawerOpened = new ObservableBoolean();
     public final EventLiveData<Boolean> timeToAddSlideListener = new EventLiveData<>();
     public final EventLiveData<Boolean> closeSlidePanelIfExpanded = new EventLiveData<>();
     public final EventLiveData<Boolean> activityCanBeClosedDirectly = new EventLiveData<>();
     public final EventLiveData<Boolean> openOrCloseDrawer = new EventLiveData<>();
-    public final EventLiveData<Boolean> enableSwipeDrawer = new EventLiveData<>();
 
 }

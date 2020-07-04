@@ -33,8 +33,7 @@
     <string name="relearn_android">《重学安卓》</string>
     <string name="learn_more_friends">付费读者加微信进群 myatejx</string>
     <string name="learn_more">Learn More</string>
-    <string name="debug_fragment_databinding_warning">Debug 提示：此 Fragment 未遵循 DataBinding 严格模式，存在 视图调用的 Null 安全风险</string>
-    <string name="debug_activity_databinding_warning">Debug 提示：此 Activity 未遵循 DataBinding 严格模式，存在 视图调用的 Null 安全风险</string>
+
     <string name="login_title">欢迎来到 Jetpack MVVM 的世界</string>
     <string name="login_content">Welcome to the world of Jetpack MVVM best practice !</string>
     <string name="user_name">请输入用户名</string>

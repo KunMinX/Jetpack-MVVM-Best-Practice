@@ -23,8 +23,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.kunminx.puremusic.ui.base.BaseActivity;
-import com.kunminx.puremusic.ui.base.DataBindingConfig;
+import com.kunminx.architecture.ui.page.BaseActivity;
+import com.kunminx.architecture.ui.page.DataBindingConfig;
 import com.kunminx.puremusic.ui.callback.SharedViewModel;
 import com.kunminx.puremusic.ui.state.MainActivityViewModel;
 
@@ -102,7 +102,7 @@ public class MainActivity extends BaseActivity {
             }*/
         });
 
-        mSharedViewModel.enableSwipeDrawer.observe(this, aBoolean -> {
+        SharedViewModel.ENABLE_SWIPE_DRAWER.observe(this, aBoolean -> {
 
             //TODO yes: 同 tip 1
 
