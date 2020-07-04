@@ -95,7 +95,7 @@ public class PlayerFragment extends BaseFragment {
                         } else {
                             SharedViewModel.TAG_OF_SECONDARY_PAGES.remove(this.getClass().getSimpleName());
                         }
-                        getSharedViewModel().enableSwipeDrawer.setValue(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
+                        getSharedViewModel().enableSwipeDrawer.setEvent(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
                     }
                 });
             }
@@ -178,13 +178,13 @@ public class PlayerFragment extends BaseFragment {
 
                     // TODO: yes:
 
-                    getSharedViewModel().activityCanBeClosedDirectly.setValue(true);
+                    getSharedViewModel().activityCanBeClosedDirectly.setEvent(true);
 
                     // TODO: do not:
                     // mActivity.finish();
                 }
             } else {
-                getSharedViewModel().activityCanBeClosedDirectly.setValue(true);
+                getSharedViewModel().activityCanBeClosedDirectly.setEvent(true);
             }
         });
 
@@ -218,7 +218,7 @@ public class PlayerFragment extends BaseFragment {
         }
 
         public void slideDown() {
-            getSharedViewModel().closeSlidePanelIfExpanded.setValue(true);
+            getSharedViewModel().closeSlidePanelIfExpanded.setEvent(true);
         }
 
         public void more() {
