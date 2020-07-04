@@ -42,6 +42,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.kunminx.architecture.BaseApplication;
 import com.kunminx.architecture.domain.manager.NetState;
 import com.kunminx.architecture.domain.manager.NetworkStateManager;
 import com.kunminx.puremusic.App;
@@ -58,7 +59,6 @@ public abstract class BaseFragment extends Fragment {
     private static final Handler HANDLER = new Handler();
     protected AppCompatActivity mActivity;
     protected boolean mAnimationLoaded;
-    private SharedViewModel mSharedViewModel;
     private ViewModelProvider mFragmentProvider;
     private ViewModelProvider mActivityProvider;
     private ViewModelProvider.Factory mFactory;
@@ -76,7 +76,6 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSharedViewModel = getAppViewModelProvider(mActivity).get(SharedViewModel.class);
 
         initViewModel();
     }
@@ -195,9 +194,9 @@ public abstract class BaseFragment extends Fragment {
         return mActivityProvider.get(modelClass);
     }
 
-    protected ViewModelProvider getAppViewModelProvider(Activity activity) {
-        return new ViewModelProvider((App) activity.getApplicationContext(),
-                getAppFactory(activity));
+    protected ViewModelProvider getAppViewModelProvider() {
+        return new ViewModelProvider((BaseApplication) mActivity.getApplicationContext(),
+                getAppFactory(mActivity));
     }
 
     private ViewModelProvider.Factory getAppFactory(Activity activity) {
@@ -227,10 +226,6 @@ public abstract class BaseFragment extends Fragment {
 
     protected NavController nav() {
         return NavHostFragment.findNavController(this);
-    }
-
-    public SharedViewModel getSharedViewModel() {
-        return mSharedViewModel;
     }
 
 }

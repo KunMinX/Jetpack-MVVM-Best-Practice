@@ -35,6 +35,7 @@ import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.kunminx.architecture.BaseApplication;
 import com.kunminx.architecture.domain.manager.NetworkStateManager;
 import com.kunminx.architecture.utils.AdaptScreenUtils;
 import com.kunminx.architecture.utils.BarUtils;
@@ -87,8 +88,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         BarUtils.setStatusBarColor(this, Color.TRANSPARENT);
         BarUtils.setStatusBarLightMode(this, true);
-
-        mSharedViewModel = getAppViewModelProvider(this).get(SharedViewModel.class);
 
         getLifecycle().addObserver(NetworkStateManager.getInstance());
 
@@ -149,9 +148,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         return mActivityProvider.get(modelClass);
     }
 
-    protected ViewModelProvider getAppViewModelProvider(Activity activity) {
-        return new ViewModelProvider((App) activity.getApplicationContext(),
-                getAppFactory(activity));
+    protected ViewModelProvider getAppViewModelProvider() {
+        return new ViewModelProvider((BaseApplication) this.getApplicationContext(),
+                getAppFactory(this));
     }
 
     private ViewModelProvider.Factory getAppFactory(Activity activity) {
@@ -171,7 +170,4 @@ public abstract class BaseActivity extends AppCompatActivity {
         return application;
     }
 
-    public SharedViewModel getSharedViewModel() {
-        return mSharedViewModel;
-    }
 }

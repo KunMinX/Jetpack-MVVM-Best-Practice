@@ -28,6 +28,7 @@ import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.ui.base.BaseFragment;
 import com.kunminx.puremusic.ui.base.DataBindingConfig;
+import com.kunminx.puremusic.ui.callback.SharedViewModel;
 import com.kunminx.puremusic.ui.page.adapter.DrawerAdapter;
 import com.kunminx.puremusic.ui.state.DrawerViewModel;
 

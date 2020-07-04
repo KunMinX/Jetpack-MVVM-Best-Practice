@@ -23,34 +23,24 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStore;
 import androidx.lifecycle.ViewModelStoreOwner;
 
+import com.kunminx.architecture.BaseApplication;
 import com.kunminx.architecture.utils.Utils;
 import com.kunminx.puremusic.player.PlayerManager;
 
 /**
  * Create by KunMinX at 19/10/29
  */
-public class App extends Application implements ViewModelStoreOwner {
+public class App extends BaseApplication {
 
     //TODO tip：可借助 Application 来管理一个应用级 的 SharedViewModel，
     // 实现全应用范围内的 生命周期安全 且 事件源可追溯的 视图控制器 事件通知。
-
-    private ViewModelStore mAppViewModelStore;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        mAppViewModelStore = new ViewModelStore();
-
         Utils.init(this);
         PlayerManager.getInstance().init(this);
-
-    }
-
-    @NonNull
-    @Override
-    public ViewModelStore getViewModelStore() {
-        return mAppViewModelStore;
     }
 
 }
