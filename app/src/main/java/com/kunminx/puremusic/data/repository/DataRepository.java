@@ -144,7 +144,7 @@ public class DataRepository implements ILocalSource, IRemoteSource {
                 NetState netState = new NetState();
                 netState.setSuccess(false);
                 netState.setResponseCode("404");
-                NetworkStateManager.getInstance().networkStateCallback.postEvent(netState);
+                NetworkStateManager.getInstance().networkStateCallback.postValue(netState);
 
                 if (netState.isSuccess()) {
                     //TODO 否则，网络状况好的情况下，可向 UI 层回传来自网络请求响应的 token 等其他信息

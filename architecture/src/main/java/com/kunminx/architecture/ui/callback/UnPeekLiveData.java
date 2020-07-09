@@ -83,16 +83,19 @@ public class UnPeekLiveData<T> extends MutableLiveData<T> {
 
     public static class Builder<T> {
 
-        private int delayToClearEvent = 1000;
+        /**
+         * time of event's life
+         */
+        private int eventLiveTime = 1000;
 
-        public Builder<T> setDelayToClearEvent(int delayToClearEvent) {
-            this.delayToClearEvent = delayToClearEvent;
+        public Builder<T> setEventLiveTime(int eventLiveTime) {
+            this.eventLiveTime = eventLiveTime;
             return this;
         }
 
         public UnPeekLiveData<T> create() {
             UnPeekLiveData<T> liveData = new UnPeekLiveData<>();
-            liveData.DELAY_TO_CLEAR_EVENT = this.delayToClearEvent;
+            liveData.DELAY_TO_CLEAR_EVENT = this.eventLiveTime;
             return liveData;
         }
     }

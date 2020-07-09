@@ -47,7 +47,7 @@ public class DrawerCoordinateHelper implements DefaultLifecycleObserver {
         SharedViewModel.TAG_OF_SECONDARY_PAGES.add(owner.getClass().getSimpleName());
 
         SharedViewModel.ENABLE_SWIPE_DRAWER
-                .setEvent(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
+                .setValue(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
 
     }
 
@@ -57,7 +57,7 @@ public class DrawerCoordinateHelper implements DefaultLifecycleObserver {
         SharedViewModel.TAG_OF_SECONDARY_PAGES.remove(owner.getClass().getSimpleName());
 
         SharedViewModel.ENABLE_SWIPE_DRAWER
-                .setEvent(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
+                .setValue(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
 
     }
 

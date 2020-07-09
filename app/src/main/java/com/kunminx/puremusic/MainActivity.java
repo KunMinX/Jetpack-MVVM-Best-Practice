@@ -72,7 +72,7 @@ public class MainActivity extends BaseActivity {
 
                 //TODO 同 tip 2
 
-                mSharedViewModel.openOrCloseDrawer.setEvent(false);
+                mSharedViewModel.openOrCloseDrawer.setValue(false);
 
             } else {
                 super.onBackPressed();
@@ -131,7 +131,7 @@ public class MainActivity extends BaseActivity {
             // fragment 内部的事情在 fragment 内部消化，不要试图在 Activity 中调用和操纵 Fragment 内部的东西。
             // 因为 fragment 端的处理后续可能会改变，并且可受用于更多的 Activity，而不单单是本 Activity。
 
-            mSharedViewModel.timeToAddSlideListener.setEvent(true);
+            mSharedViewModel.timeToAddSlideListener.setValue(true);
 
             mIsListened = true;
         }
@@ -142,7 +142,7 @@ public class MainActivity extends BaseActivity {
 
         // TODO 同 tip 2
 
-        mSharedViewModel.closeSlidePanelIfExpanded.setEvent(true);
+        mSharedViewModel.closeSlidePanelIfExpanded.setValue(true);
     }
 
     public class EventHandler extends DrawerLayout.SimpleDrawerListener {
