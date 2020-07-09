@@ -18,73 +18,82 @@ package com.kunminx.architecture.ui.callback;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
- * 仅分发 owner observe 后 才新拿到的数据
- * 可避免共享作用域 VM 下 liveData 被 observe 时旧数据倒灌的情况
- *
- * Deprecated：已废弃，缘由详见《Jetpack MVVM 精讲》的最新补充
- *
+ * TODO：UnPeekLiveData 的存在是为了在 "重回二级页面" 的场景下，解决 "数据倒灌" 的问题。
+ * 对 "数据倒灌" 的状况不理解的小伙伴，可参考《jetpack MVVM 精讲》的解析
+ * <p>
  * https://juejin.im/post/5dafc49b6fb9a04e17209922
+ * <p>
+ * 本类参考了官方 SingleEventLive 的非入侵设计，
+ * TODO：并创新性地引入了 "延迟清空消息" 的设计，
+ * 如此可确保：
+ * 1.一条消息能被多个观察者消费
+ * 2.延迟期结束，消息能从内存中释放，避免内存溢出等问题
+ *
+ *
  * <p>
  * Create by KunMinX at 19/9/23
  */
-@Deprecated
 public class UnPeekLiveData<T> extends MutableLiveData<T> {
+
+    private boolean hasHandled;
+    private boolean isDelaying;
+    private int DELAY_TO_CLEAR_EVENT = 1000;
 
     @Override
     public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super T> observer) {
-        super.observe(owner, observer);
-        hook(observer);
-    }
 
-    private void hook(Observer<? super T> observer) {
-        Class<LiveData> liveDataClass = LiveData.class;
-        try {
-            //获取field private SafeIterableMap<Observer<T>, ObserverWrapper> mObservers
-            Field mObservers = liveDataClass.getDeclaredField("mObservers");
-            mObservers.setAccessible(true);
-            //获取SafeIterableMap集合mObservers
-            Object observers = mObservers.get(this);
-            Class<?> observersClass = observers.getClass();
-            //获取SafeIterableMap的get(Object obj)方法
-            Method methodGet = observersClass.getDeclaredMethod("get", Object.class);
-            methodGet.setAccessible(true);
-            //获取到observer在集合中对应的ObserverWrapper对象
-            Object objectWrapperEntry = methodGet.invoke(observers, observer);
-            Object objectWrapper = null;
-            if (objectWrapperEntry instanceof Map.Entry) {
-                objectWrapper = ((Map.Entry) objectWrapperEntry).getValue();
-            }
-            if (objectWrapper == null) {
-                throw new NullPointerException("ObserverWrapper can not be null");
-            }
-            //获取ObserverWrapper的Class对象  LifecycleBoundObserver extends ObserverWrapper
-            Class<?> wrapperClass = objectWrapper.getClass().getSuperclass();
-            //获取ObserverWrapper的field mLastVersion
-            Field mLastVersion = wrapperClass.getDeclaredField("mLastVersion");
-            mLastVersion.setAccessible(true);
-            //获取liveData的field mVersion
-            Field mVersion = liveDataClass.getDeclaredField("mVersion");
-            mVersion.setAccessible(true);
-            Object mV = mVersion.get(this);
-            //把当前ListData的mVersion赋值给 ObserverWrapper的field mLastVersion
-            mLastVersion.set(objectWrapper, mV);
-
-            mObservers.setAccessible(false);
-            methodGet.setAccessible(false);
-            mLastVersion.setAccessible(false);
-            mVersion.setAccessible(false);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (!hasHandled) {
+            hasHandled = true;
+            isDelaying = true;
+            Timer timer = new Timer();
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    isDelaying = false;
+                    UnPeekLiveData.super.setValue(null);
+                }
+            };
+            timer.schedule(task, DELAY_TO_CLEAR_EVENT);
+            super.observe(owner, observer);
+        } else if (isDelaying) {
+            super.observe(owner, observer);
         }
     }
 
+    @Override
+    public void setValue(T value) {
+        hasHandled = false;
+        isDelaying = false;
+        super.setValue(value);
+    }
+
+    @Override
+    public void postValue(T value) {
+        hasHandled = false;
+        isDelaying = false;
+        super.postValue(value);
+    }
+
+    public static class Builder<T> {
+
+        private int delayToClearEvent = 1000;
+
+        public Builder<T> setDelayToClearEvent(int delayToClearEvent) {
+            this.delayToClearEvent = delayToClearEvent;
+            return this;
+        }
+
+        public UnPeekLiveData<T> create() {
+            UnPeekLiveData<T> liveData = new UnPeekLiveData<>();
+            liveData.DELAY_TO_CLEAR_EVENT = this.delayToClearEvent;
+            return liveData;
+        }
+    }
 }
