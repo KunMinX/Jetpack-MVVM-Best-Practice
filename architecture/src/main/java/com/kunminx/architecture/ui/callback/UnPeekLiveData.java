@@ -42,12 +42,19 @@ import java.util.TimerTask;
  */
 public class UnPeekLiveData<T> extends MutableLiveData<T> {
 
+    private boolean hasInit;
     private boolean hasHandled;
     private boolean isDelaying;
     private int DELAY_TO_CLEAR_EVENT = 1000;
 
     @Override
     public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super T> observer) {
+
+        if (!hasInit) {
+            super.observe(owner, observer);
+            hasInit = true;
+            return;
+        }
 
         if (!hasHandled) {
             hasHandled = true;
@@ -57,7 +64,7 @@ public class UnPeekLiveData<T> extends MutableLiveData<T> {
                 @Override
                 public void run() {
                     isDelaying = false;
-                    UnPeekLiveData.super.setValue(null);
+                    UnPeekLiveData.super.postValue(null);
                 }
             };
             timer.schedule(task, DELAY_TO_CLEAR_EVENT);
