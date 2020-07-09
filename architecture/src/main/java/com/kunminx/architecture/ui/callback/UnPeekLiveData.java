@@ -34,7 +34,8 @@ import java.util.TimerTask;
  * TODO：并创新性地引入了 "延迟清空消息" 的设计，
  * 如此可确保：
  * 1.一条消息能被多个观察者消费
- * 2.延迟期结束，消息能从内存中释放，避免内存溢出等问题
+ * 2.延迟期结束，不再能够收到旧消息的推送
+ * 3.并且旧消息在延迟期结束时能从内存中释放，避免内存溢出等问题
  *
  *
  * <p>
@@ -42,6 +43,7 @@ import java.util.TimerTask;
  */
 public class UnPeekLiveData<T> extends MutableLiveData<T> {
 
+    private boolean isCleaning;
     private boolean hasHandled = true;
     private boolean isDelaying;
     private int DELAY_TO_CLEAR_EVENT = 1000;
@@ -50,6 +52,14 @@ public class UnPeekLiveData<T> extends MutableLiveData<T> {
     public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super T> observer) {
 
         super.observe(owner, t -> {
+
+            if (isCleaning) {
+                hasHandled = true;
+                isDelaying = false;
+                isCleaning = false;
+                return;
+            }
+
             if (!hasHandled) {
                 hasHandled = true;
                 isDelaying = true;
@@ -57,8 +67,7 @@ public class UnPeekLiveData<T> extends MutableLiveData<T> {
                 TimerTask task = new TimerTask() {
                     @Override
                     public void run() {
-                        isDelaying = false;
-//                        UnPeekLiveData.super.postValue(null);
+                        clear();
                     }
                 };
                 timer.schedule(task, DELAY_TO_CLEAR_EVENT);
@@ -76,11 +85,9 @@ public class UnPeekLiveData<T> extends MutableLiveData<T> {
         super.setValue(value);
     }
 
-    @Override
-    public void postValue(T value) {
-        hasHandled = false;
-        isDelaying = false;
-        super.postValue(value);
+    private void clear() {
+        isCleaning = true;
+        super.postValue(null);
     }
 
     public static class Builder<T> {
