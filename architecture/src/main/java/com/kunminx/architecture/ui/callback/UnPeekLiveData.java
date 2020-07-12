@@ -49,6 +49,7 @@ public class UnPeekLiveData<T> extends MutableLiveData<T> {
     private int DELAY_TO_CLEAR_EVENT = 1000;
     private Timer mTimer = new Timer();
     private TimerTask mTask;
+    private boolean isAllowNullValue;
 
     @Override
     public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super T> observer) {
@@ -73,7 +74,45 @@ public class UnPeekLiveData<T> extends MutableLiveData<T> {
     }
 
     @Override
+    public void observeForever(@NonNull Observer<? super T> observer) {
+
+        super.observeForever(t -> {
+
+            if (isCleaning) {
+                hasHandled = true;
+                isDelaying = false;
+                isCleaning = false;
+                return;
+            }
+
+            if (!hasHandled) {
+                hasHandled = true;
+                isDelaying = true;
+                observer.onChanged(t);
+            } else if (isDelaying) {
+                observer.onChanged(t);
+            }
+        });
+    }
+
+    /**
+     * 重写的 setValue 方法，默认不接收 null
+     * 可通过 Builder 配置允许接收
+     * 可通过 Builder 配置消息延时清理的时间
+     * <p>
+     * override setValue, do not receive null by default
+     * You can configure to allow receiving through Builder
+     * And also, You can configure the delay time of message clearing through Builder
+     *
+     * @param value
+     */
+    @Override
     public void setValue(T value) {
+
+        if (!isAllowNullValue && value == null && !isCleaning) {
+            return;
+        }
+
         hasHandled = false;
         isDelaying = false;
         super.setValue(value);
@@ -100,18 +139,29 @@ public class UnPeekLiveData<T> extends MutableLiveData<T> {
     public static class Builder<T> {
 
         /**
-         * time of event's life
+         * 消息的生存时长
          */
-        private int eventLiveTime = 1000;
+        private int eventSurvivalTime = 1000;
 
-        public Builder<T> setEventLiveTime(int eventLiveTime) {
-            this.eventLiveTime = eventLiveTime;
+        /**
+         * 是否允许传入 null value
+         */
+        private boolean isAllowNullValue;
+
+        public Builder<T> setEventSurvivalTime(int eventSurvivalTime) {
+            this.eventSurvivalTime = eventSurvivalTime;
+            return this;
+        }
+
+        public Builder<T> setAllowNullValue(boolean allowNullValue) {
+            this.isAllowNullValue = allowNullValue;
             return this;
         }
 
         public UnPeekLiveData<T> create() {
             UnPeekLiveData<T> liveData = new UnPeekLiveData<>();
-            liveData.DELAY_TO_CLEAR_EVENT = this.eventLiveTime;
+            liveData.DELAY_TO_CLEAR_EVENT = this.eventSurvivalTime;
+            liveData.isAllowNullValue = this.isAllowNullValue;
             return liveData;
         }
     }
