@@ -49,7 +49,7 @@ public class SharedViewModel extends ViewModel {
 
     //TODO：可以通过构造器的方式来赋予 UnPeekLiveData 消息生存期
     public static final UnPeekLiveData<Boolean> ENABLE_SWIPE_DRAWER =
-            new UnPeekLiveData.Builder<Boolean>().setEventLiveTime(500).create();
+            new UnPeekLiveData.Builder<Boolean>().setEventSurvivalTime(500).create();
 
     public final ObservableBoolean isDrawerOpened = new ObservableBoolean();
     public final UnPeekLiveData<Boolean> timeToAddSlideListener = new UnPeekLiveData<>();
