@@ -87,7 +87,7 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
         screenHeight = ScreenUtils.getScreenHeight();
         playPauseDrawableColor = Color.BLACK;
         nowPlayingCardColor = Color.WHITE;
-        caculateTitleAndArtist();
+        calculateTitleAndArtist();
         calculateIcons();
         mBinding.playPause.setDrawableColor(playPauseDrawableColor);
     }
@@ -183,7 +183,7 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
 
     }
 
-    private void caculateTitleAndArtist() {
+    private void calculateTitleAndArtist() {
         Rect titleBounds = new Rect();
         mBinding.title.getPaint().getTextBounds(mBinding.title.getText().toString(), 0,
                 mBinding.title.getText().length(), titleBounds);
