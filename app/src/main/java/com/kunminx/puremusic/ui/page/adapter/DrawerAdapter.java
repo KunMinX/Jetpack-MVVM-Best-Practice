@@ -35,17 +35,7 @@ import com.kunminx.puremusic.databinding.AdapterLibraryBinding;
 public class DrawerAdapter extends SimpleDataBindingAdapter<LibraryInfo, AdapterLibraryBinding> {
 
     public DrawerAdapter(Context context) {
-        super(context, R.layout.adapter_library, new DiffUtil.ItemCallback<LibraryInfo>() {
-            @Override
-            public boolean areItemsTheSame(@NonNull LibraryInfo oldItem, @NonNull LibraryInfo newItem) {
-                return oldItem.equals(newItem);
-            }
-
-            @Override
-            public boolean areContentsTheSame(@NonNull LibraryInfo oldItem, @NonNull LibraryInfo newItem) {
-                return oldItem.getTitle().equals(newItem.getTitle());
-            }
-        });
+        super(context, R.layout.adapter_library, DiffUtils.getInstance().getLibraryInfoItemCallback());
 
         setOnItemClickListener((item, position) -> {
             Uri uri = Uri.parse(item.getUrl());
