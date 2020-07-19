@@ -16,13 +16,6 @@
 
 package com.kunminx.puremusic;
 
-import android.app.Application;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStore;
-import androidx.lifecycle.ViewModelStoreOwner;
-
 import com.kunminx.architecture.BaseApplication;
 import com.kunminx.architecture.utils.Utils;
 import com.kunminx.puremusic.player.PlayerManager;

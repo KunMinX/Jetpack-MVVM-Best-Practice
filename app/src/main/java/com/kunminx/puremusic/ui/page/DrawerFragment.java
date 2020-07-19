@@ -24,10 +24,10 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.kunminx.puremusic.BR;
-import com.kunminx.puremusic.R;
 import com.kunminx.architecture.ui.page.BaseFragment;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
+import com.kunminx.puremusic.BR;
+import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.ui.page.adapter.DrawerAdapter;
 import com.kunminx.puremusic.ui.state.DrawerViewModel;
 

@@ -21,7 +21,7 @@ import android.graphics.Color;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.kunminx.architecture.ui.adapter.SimpleDataBindingAdapter;
+import com.kunminx.binding_recyclerview.adapter.SimpleDataBindingAdapter;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.databinding.AdapterPlayItemBinding;
