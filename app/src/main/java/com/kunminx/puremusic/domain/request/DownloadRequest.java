@@ -7,7 +7,7 @@ import com.kunminx.architecture.domain.usecase.UseCase;
 import com.kunminx.architecture.domain.usecase.UseCaseHandler;
 import com.kunminx.puremusic.data.bean.DownloadFile;
 import com.kunminx.puremusic.data.repository.DataRepository;
-import com.kunminx.puremusic.data.repository.DataResult;
+import com.kunminx.architecture.data.repository.DataResult;
 import com.kunminx.puremusic.domain.usecase.CanBeStoppedUseCase;
 
 /**
@@ -25,7 +25,7 @@ import com.kunminx.puremusic.domain.usecase.CanBeStoppedUseCase;
  * <p>
  * Create by KunMinX at 20/03/18
  */
-public class DownloadRequest  {
+public class DownloadRequest {
 
     private MutableLiveData<DownloadFile> mDownloadFileLiveData;
 
@@ -58,7 +58,7 @@ public class DownloadRequest  {
     }
 
     public void requestDownloadFile() {
-        DataRepository.getInstance().downloadFile(new DataResult<>(downloadFile -> {
+        DataRepository.getInstance().downloadFile(new DataResult<>((downloadFile, netState) -> {
             mDownloadFileLiveData.postValue(downloadFile);
         }));
     }

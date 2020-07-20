@@ -22,6 +22,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.kunminx.architecture.data.repository.DataResult;
 import com.kunminx.architecture.domain.manager.NetState;
 import com.kunminx.architecture.domain.manager.NetworkStateManager;
 import com.kunminx.architecture.utils.Utils;
@@ -66,7 +67,7 @@ public class DataRepository implements ILocalSource, IRemoteSource {
         }.getType();
         TestAlbum testAlbum = gson.fromJson(Utils.getApp().getString(R.string.free_music_json), type);
 
-        result.setResult(testAlbum);
+        result.setResult(testAlbum, new NetState());
     }
 
     @Override
@@ -76,7 +77,7 @@ public class DataRepository implements ILocalSource, IRemoteSource {
         }.getType();
         List<LibraryInfo> list = gson.fromJson(Utils.getApp().getString(R.string.library_json), type);
 
-        result.setResult(list);
+        result.setResult(list, new NetState());
     }
 
     /**
@@ -115,7 +116,7 @@ public class DataRepository implements ILocalSource, IRemoteSource {
                     downloadFile.setForgive(false);
                     return;
                 }
-                result.setResult(downloadFile);
+                result.setResult(downloadFile, new NetState());
                 downloadFile(result);
             }
         };
@@ -144,11 +145,10 @@ public class DataRepository implements ILocalSource, IRemoteSource {
                 NetState netState = new NetState();
                 netState.setSuccess(false);
                 netState.setResponseCode("404");
-                NetworkStateManager.getInstance().networkStateCallback.postValue(netState);
 
                 if (netState.isSuccess()) {
                     //TODO 否则，网络状况好的情况下，可向 UI 层回传来自网络请求响应的 token 等其他信息
-                    result.setResult("token:xxxxxxxxxxxx");
+                    result.setResult("token:xxxxxxxxxxxx", netState);
                 }
             }
         };

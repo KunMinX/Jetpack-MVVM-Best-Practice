@@ -17,18 +17,10 @@
 package com.kunminx.architecture.ui.page;
 
 import android.app.Activity;
-import android.os.Bundle;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
-
-import com.kunminx.architecture.domain.manager.NetState;
-import com.kunminx.architecture.domain.manager.NetworkStateManager;
-import com.kunminx.architecture.ui.page.DataBindingFragment;
 
 
 /**
@@ -42,25 +34,6 @@ public abstract class BaseFragment extends DataBindingFragment {
     // 如此，视图刷新的安全性将和基于函数式编程的 Jetpack Compose 持平。
 
     // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        //TODO 注意 liveData 的 lambda 回调中不可空实现，不然会出现 Cannot add the same observer with different lifecycles 的现象，
-        // 详见：https://stackoverflow.com/questions/47025233/android-lifecycle-library-cannot-add-the-same-observer-with-different-lifecycle
-        NetworkStateManager.getInstance().networkStateCallback.observe(getViewLifecycleOwner(), netState -> {
-            if (!isHidden()) {
-                onNetworkStateChanged(netState);
-            }
-        });
-    }
-
-    @SuppressWarnings("EmptyMethod")
-    protected void onNetworkStateChanged(NetState netState) {
-        //TODO 子类可以重写该方法，统一的网络状态通知和处理
-
-    }
 
     protected NavController nav() {
         return NavHostFragment.findNavController(this);

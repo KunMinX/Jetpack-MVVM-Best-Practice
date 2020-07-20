@@ -24,6 +24,14 @@ public class NetState {
     private String responseCode;
     private boolean success = true;
 
+    public NetState(String responseCode, boolean success) {
+        this.responseCode = responseCode;
+        this.success = success;
+    }
+
+    public NetState() {
+    }
+
     public String getResponseCode() {
         return responseCode;
     }
