@@ -22,6 +22,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.data.repository.DataRepository;
+import com.kunminx.puremusic.data.repository.DataResult;
 
 import java.util.List;
 
@@ -55,6 +56,8 @@ public class InfoRequest {
     }
 
     public void requestLibraryInfo() {
-        DataRepository.getInstance().getLibraryInfo(mLibraryLiveData);
+        DataRepository.getInstance().getLibraryInfo(new DataResult<>(libraryInfos -> {
+            mLibraryLiveData.setValue(libraryInfos);
+        }));
     }
 }

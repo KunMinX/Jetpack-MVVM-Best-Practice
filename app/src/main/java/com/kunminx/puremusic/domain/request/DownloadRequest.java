@@ -7,6 +7,7 @@ import com.kunminx.architecture.domain.usecase.UseCase;
 import com.kunminx.architecture.domain.usecase.UseCaseHandler;
 import com.kunminx.puremusic.data.bean.DownloadFile;
 import com.kunminx.puremusic.data.repository.DataRepository;
+import com.kunminx.puremusic.data.repository.DataResult;
 import com.kunminx.puremusic.domain.usecase.CanBeStoppedUseCase;
 
 /**
@@ -57,7 +58,9 @@ public class DownloadRequest  {
     }
 
     public void requestDownloadFile() {
-        DataRepository.getInstance().downloadFile(mDownloadFileLiveData);
+        DataRepository.getInstance().downloadFile(new DataResult<>(downloadFile -> {
+            mDownloadFileLiveData.postValue(downloadFile);
+        }));
     }
 
     //TODO tip2：

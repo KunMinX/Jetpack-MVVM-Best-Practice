@@ -22,6 +22,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.data.repository.DataRepository;
+import com.kunminx.puremusic.data.repository.DataResult;
 
 /**
  * 音乐资源  Request
@@ -52,6 +53,8 @@ public class MusicRequest {
     }
 
     public void requestFreeMusics() {
-        DataRepository.getInstance().getFreeMusic(mFreeMusicsLiveData);
+        DataRepository.getInstance().getFreeMusic(new DataResult<>(testAlbum -> {
+            mFreeMusicsLiveData.setValue(testAlbum);
+        }));
     }
 }

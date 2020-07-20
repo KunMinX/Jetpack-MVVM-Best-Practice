@@ -22,6 +22,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.kunminx.puremusic.data.bean.User;
 import com.kunminx.puremusic.data.repository.DataRepository;
+import com.kunminx.puremusic.data.repository.DataResult;
 
 /**
  * 信息列表 Request
@@ -52,6 +53,8 @@ public class AccountRequest {
     }
 
     public void requestLogin(User user) {
-        DataRepository.getInstance().login(user, tokenLiveData);
+        DataRepository.getInstance().login(user, new DataResult<>(s -> {
+            tokenLiveData.setValue(s);
+        }));
     }
 }
