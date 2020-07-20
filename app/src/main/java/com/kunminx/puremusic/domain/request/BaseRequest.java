@@ -18,9 +18,17 @@
 
 package com.kunminx.puremusic.domain.request;
 
+import com.kunminx.architecture.domain.manager.NetState;
+import com.kunminx.architecture.ui.callback.UnPeekLiveData;
+
 /**
  * Create by KunMinX at 2020/7/20
  */
 public class BaseRequest {
 
+    protected final UnPeekLiveData<NetState> netStateEvent = new UnPeekLiveData<>();
+
+    public UnPeekLiveData<NetState> getNetStateEvent() {
+        return netStateEvent;
+    }
 }

@@ -20,9 +20,9 @@ package com.kunminx.puremusic.domain.request;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.kunminx.architecture.data.repository.DataResult;
 import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.data.repository.DataRepository;
-import com.kunminx.architecture.data.repository.DataResult;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ import java.util.List;
  * <p>
  * Create by KunMinX at 19/11/2
  */
-public class InfoRequest {
+public class InfoRequest extends BaseRequest {
 
     private MutableLiveData<List<LibraryInfo>> mLibraryLiveData;
 

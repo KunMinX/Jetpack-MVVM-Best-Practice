@@ -82,19 +82,14 @@ public class LoginFragment extends BaseFragment {
             //TODO 登录成功后进行的下一步操作...
             nav().navigateUp();
         });
+
+        mLoginViewModel.accountRequest.getNetStateEvent().observe(getViewLifecycleOwner(), netState -> {
+            mLoginViewModel.loadingVisible.set(false);
+            if (!netState.isSuccess()) {
+                showLongToast("网络状态不佳，请重试");
+            }
+        });
     }
-
-    //TODO tip: 网络状态的通知统一埋在 base 页面，有需要就在子类页面中重写
-
-    /*@Override
-    protected void onNetworkStateChanged(NetState netState) {
-        super.onNetworkStateChanged(netState);
-
-        mLoginViewModel.loadingVisible.set(false);
-        if (!netState.isSuccess()) {
-            showLongToast("网络状态不佳，请重试");
-        }
-    }*/
 
     public class ClickProxy {
 

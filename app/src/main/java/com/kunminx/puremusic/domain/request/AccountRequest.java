@@ -38,7 +38,7 @@ import com.kunminx.architecture.data.repository.DataResult;
  * <p>
  * Create by KunMinX at 20/04/26
  */
-public class AccountRequest {
+public class AccountRequest extends BaseRequest {
 
     private MutableLiveData<String> tokenLiveData;
 
@@ -55,6 +55,7 @@ public class AccountRequest {
     public void requestLogin(User user) {
         DataRepository.getInstance().login(user, new DataResult<>((s, netState) -> {
             tokenLiveData.setValue(s);
+            netStateEvent.postValue(netState);
         }));
     }
 }
