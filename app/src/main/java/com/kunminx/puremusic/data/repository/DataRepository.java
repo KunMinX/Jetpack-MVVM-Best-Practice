@@ -149,6 +149,8 @@ public class DataRepository implements ILocalSource, IRemoteSource {
                 if (netState.isSuccess()) {
                     //TODO 否则，网络状况好的情况下，可向 UI 层回传来自网络请求响应的 token 等其他信息
                     result.setResult("token:xxxxxxxxxxxx", netState);
+                } else {
+                    result.setResult("", netState);
                 }
             }
         };

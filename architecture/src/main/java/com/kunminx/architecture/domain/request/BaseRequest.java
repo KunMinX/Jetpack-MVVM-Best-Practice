@@ -16,7 +16,7 @@
  *
  */
 
-package com.kunminx.puremusic.domain.request;
+package com.kunminx.architecture.domain.request;
 
 import com.kunminx.architecture.domain.manager.NetState;
 import com.kunminx.architecture.ui.callback.UnPeekLiveData;

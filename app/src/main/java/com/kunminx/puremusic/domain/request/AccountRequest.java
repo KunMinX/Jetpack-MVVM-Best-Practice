@@ -17,9 +17,12 @@
 package com.kunminx.puremusic.domain.request;
 
 
+import android.text.TextUtils;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.kunminx.architecture.domain.request.BaseRequest;
 import com.kunminx.puremusic.data.bean.User;
 import com.kunminx.puremusic.data.repository.DataRepository;
 import com.kunminx.architecture.data.repository.DataResult;
@@ -54,7 +57,9 @@ public class AccountRequest extends BaseRequest {
 
     public void requestLogin(User user) {
         DataRepository.getInstance().login(user, new DataResult<>((s, netState) -> {
-            tokenLiveData.setValue(s);
+            if (!TextUtils.isEmpty(s)) {
+                tokenLiveData.postValue(s);
+            }
             netStateEvent.postValue(netState);
         }));
     }
