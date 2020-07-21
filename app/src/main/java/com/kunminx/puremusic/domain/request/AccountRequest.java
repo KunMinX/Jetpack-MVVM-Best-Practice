@@ -57,9 +57,7 @@ public class AccountRequest extends BaseRequest {
 
     public void requestLogin(User user) {
         DataRepository.getInstance().login(user, new DataResult<>((s, netState) -> {
-            if (!TextUtils.isEmpty(s)) {
-                tokenLiveData.postValue(s);
-            }
+            tokenLiveData.postValue(s);
             netStateEvent.postValue(netState);
         }));
     }

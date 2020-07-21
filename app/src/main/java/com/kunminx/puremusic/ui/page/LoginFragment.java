@@ -76,6 +76,9 @@ public class LoginFragment extends BaseFragment {
         //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/6257931840
 
         mLoginViewModel.accountRequest.getTokenLiveData().observe(getViewLifecycleOwner(), s -> {
+            if (TextUtils.isEmpty(s)) {
+                return;
+            }
             SPUtils.getInstance().put(Configs.TOKEN, s);
             mLoginViewModel.loadingVisible.set(false);
 
