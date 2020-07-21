@@ -59,7 +59,7 @@ dependencies {
     compileOnly 'androidx.lifecycle:lifecycle-livedata:2.2.0'
     compileOnly 'androidx.navigation:navigation-runtime:2.3.0'
 
-    compileOnly 'com.kunminx.archi:unpeek-livedata:2.9.9-beta5'
+    compileOnly 'com.kunminx.archi:unpeek-livedata:3.0.9-beta6'
     compileOnly 'com.kunminx.archi:smooth-navigation:2.9.7-beta4'
     compileOnly 'com.kunminx.archi:strict-databinding:3.0.2-beta1'
     implementation 'com.kunminx.archi:binding-recyclerview:3.0.2-beta2'

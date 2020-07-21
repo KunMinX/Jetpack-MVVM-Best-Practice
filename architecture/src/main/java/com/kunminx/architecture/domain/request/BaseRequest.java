@@ -19,6 +19,7 @@
 package com.kunminx.architecture.domain.request;
 
 import com.kunminx.architecture.domain.manager.NetState;
+import com.kunminx.architecture.ui.callback.ProtectedUnPeekLiveData;
 import com.kunminx.architecture.ui.callback.UnPeekLiveData;
 
 /**
@@ -28,7 +29,7 @@ public class BaseRequest {
 
     protected final UnPeekLiveData<NetState> netStateEvent = new UnPeekLiveData<>();
 
-    public UnPeekLiveData<NetState> getNetStateEvent() {
+    public ProtectedUnPeekLiveData<NetState> getNetStateEvent() {
         return netStateEvent;
     }
 }
