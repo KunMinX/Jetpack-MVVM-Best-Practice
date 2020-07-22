@@ -28,7 +28,7 @@ public class IconBindingAdapter {
 
     @BindingAdapter(value = {"circleAlpha"}, requireAll = false)
     public static void circleAlpha(PlayPauseView pauseView, int circleAlpha) {
-        pauseView.setCircleAlpah(circleAlpha);
+        pauseView.setCircleAlpha(circleAlpha);
     }
 
     @BindingAdapter(value = {"drawableColor"}, requireAll = false)

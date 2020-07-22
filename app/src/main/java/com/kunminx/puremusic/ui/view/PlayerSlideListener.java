@@ -110,7 +110,7 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
 
         //aniamte icons
         mBinding.playPause.setX(intEvaluator.evaluate(slideOffset, playPauseStartX, playPauseEndX));
-        mBinding.playPause.setCircleAlpah(intEvaluator.evaluate(slideOffset, 0, 255));
+        mBinding.playPause.setCircleAlpha(intEvaluator.evaluate(slideOffset, 0, 255));
         mBinding.playPause.setDrawableColor((int) colorEvaluator.evaluate(slideOffset, playPauseDrawableColor, nowPlayingCardColor));
         mBinding.previous.setX(intEvaluator.evaluate(slideOffset, previousStartX, previousEndX));
         mBinding.mode.setX(intEvaluator.evaluate(slideOffset, modeStartX, modeEndX));
