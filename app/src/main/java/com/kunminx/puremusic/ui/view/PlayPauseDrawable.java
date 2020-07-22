@@ -71,8 +71,8 @@ public class PlayPauseDrawable extends Drawable {
         return a + (b - a) * t;
     }
 
-    public void setIsPlay(boolean mIsPlay) {
-        this.mIsPlay = mIsPlay;
+    public void setIsPlay(boolean isPlay) {
+        this.mIsPlay = isPlay;
     }
 
     @Override

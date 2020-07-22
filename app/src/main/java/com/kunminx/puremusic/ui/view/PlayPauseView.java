@@ -14,6 +14,7 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Property;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 import android.view.animation.DecelerateInterpolator;
@@ -26,6 +27,18 @@ import com.kunminx.puremusic.R;
 
 
 public class PlayPauseView extends FrameLayout {
+
+    private static final Property<PlayPauseView, Integer> COLOR = new Property<PlayPauseView, Integer>(Integer.class, "color") {
+        @Override
+        public Integer get(PlayPauseView v) {
+            return v.getCircleColor();
+        }
+
+        @Override
+        public void set(PlayPauseView v, Integer value) {
+            v.setCircleColor(value);
+        }
+    };
 
     private static final long PLAY_PAUSE_ANIMATION_DURATION = 200;
     public final boolean isDrawCircle;
@@ -65,14 +78,16 @@ public class PlayPauseView extends FrameLayout {
         mWidth = w;
         mHeight = h;
 
-        setOutlineProvider(new ViewOutlineProvider() {
-            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public void getOutline(View view, Outline outline) {
-                outline.setOval(0, 0, view.getWidth(), view.getHeight());
-            }
-        });
-        setClipToOutline(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setOutlineProvider(new ViewOutlineProvider() {
+                @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public void getOutline(View view, Outline outline) {
+                    outline.setOval(0, 0, view.getWidth(), view.getHeight());
+                }
+            });
+            setClipToOutline(true);
+        }
     }
 
     public void setCircleAlpha(int alpah) {
