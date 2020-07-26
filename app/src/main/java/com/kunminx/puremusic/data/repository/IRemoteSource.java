@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-present KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,7 @@
 
 package com.kunminx.puremusic.data.repository;
 
-import androidx.lifecycle.MutableLiveData;
-
+import com.kunminx.architecture.data.repository.DataResult;
 import com.kunminx.puremusic.data.bean.DownloadFile;
 import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.data.bean.TestAlbum;
@@ -30,11 +29,11 @@ import java.util.List;
  */
 public interface IRemoteSource {
 
-    void getFreeMusic(MutableLiveData<TestAlbum> liveData);
+    void getFreeMusic(DataResult<TestAlbum> result);
 
-    void getLibraryInfo(MutableLiveData<List<LibraryInfo>> liveData);
+    void getLibraryInfo(DataResult<List<LibraryInfo>> result);
 
-    void downloadFile(MutableLiveData<DownloadFile> liveData);
+    void downloadFile(DataResult<DownloadFile> result);
 
-    void login(User user, MutableLiveData<String> liveData);
+    void login(User user, DataResult<String> result);
 }

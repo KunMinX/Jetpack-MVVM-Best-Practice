@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-present KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,13 +24,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.kunminx.architecture.domain.manager.NetState;
+import com.kunminx.architecture.ui.page.BaseFragment;
+import com.kunminx.architecture.ui.page.DataBindingConfig;
 import com.kunminx.architecture.utils.SPUtils;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.User;
 import com.kunminx.puremusic.data.config.Configs;
-import com.kunminx.architecture.ui.page.BaseFragment;
-import com.kunminx.architecture.ui.page.DataBindingConfig;
 import com.kunminx.puremusic.ui.helper.DrawerCoordinateHelper;
 import com.kunminx.puremusic.ui.state.LoginViewModel;
 
@@ -76,24 +76,22 @@ public class LoginFragment extends BaseFragment {
         //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/6257931840
 
         mLoginViewModel.accountRequest.getTokenLiveData().observe(getViewLifecycleOwner(), s -> {
+            if (TextUtils.isEmpty(s)) {
+                return;
+            }
             SPUtils.getInstance().put(Configs.TOKEN, s);
             mLoginViewModel.loadingVisible.set(false);
 
             //TODO 登录成功后进行的下一步操作...
             nav().navigateUp();
         });
-    }
 
-    //TODO tip: 网络状态的通知统一埋在 base 页面，有需要就在子类页面中重写
-
-    @Override
-    protected void onNetworkStateChanged(NetState netState) {
-        super.onNetworkStateChanged(netState);
-
-        mLoginViewModel.loadingVisible.set(false);
-        if (!netState.isSuccess()) {
-            showLongToast("网络状态不佳，请重试");
-        }
+        mLoginViewModel.accountRequest.getNetStateEvent().observe(getViewLifecycleOwner(), netState -> {
+            mLoginViewModel.loadingVisible.set(false);
+            if (!netState.isSuccess()) {
+                showLongToast("网络状态不佳，请重试");
+            }
+        });
     }
 
     public class ClickProxy {

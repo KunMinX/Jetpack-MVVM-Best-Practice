@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2018-2020 KunMinX
+  ~ Copyright 2018-present KunMinX
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="top">
 
-        <com.kunminx.puremusic.ui.view.ForegroundImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/album_art"
             imageUrl="@{vm.coverImg}"
             placeHolder="@{vm.placeHolder}"
@@ -50,12 +50,6 @@
             android:layout_marginTop="48dp"
             android:scaleType="centerCrop"
             android:src="@drawable/bg_album_default" />
-
-        <com.kunminx.puremusic.ui.view.LyricView
-            android:id="@+id/lyric_view"
-            android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:visibility="gone" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/icon_container"

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-present KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package com.kunminx.puremusic.ui.callback;
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModel;
 
-import com.kunminx.event.EventLiveData;
+import com.kunminx.architecture.ui.callback.UnPeekLiveData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ import java.util.List;
  */
 public class SharedViewModel extends ViewModel {
 
-    // TODO tip 1：此处演示通过 EventLiveData<Event<Object>> 配合 SharedViewModel 来发送 生命周期安全的、事件源可追溯的 通知。
+    // TODO tip 1：此处演示通过 UnPeekLiveData 配合 SharedViewModel 来发送 生命周期安全的、事件源可追溯的 通知。
 
     //TODO tip 2：并且，在页面通信的场景下，使用全局 ViewModel，是因为它被封装在 base 页面中，避免页面之外的组件拿到，从而造成不可预期的推送，
     // 而且尽可能使用单例或 ViewModel 托管 liveData，这样调试时能根据内存中的 liveData 对象找到事件源，
@@ -46,11 +46,15 @@ public class SharedViewModel extends ViewModel {
     // 详见 https://xiaozhuanlan.com/topic/0168753249 和 https://xiaozhuanlan.com/topic/6257931840
 
     public static final List<String> TAG_OF_SECONDARY_PAGES = new ArrayList<>();
-    public static final EventLiveData<Boolean> ENABLE_SWIPE_DRAWER = new EventLiveData<>();
+
+    //TODO：可以通过构造器的方式来赋予 UnPeekLiveData 消息生存期
+    public static final UnPeekLiveData<Boolean> ENABLE_SWIPE_DRAWER =
+            new UnPeekLiveData.Builder<Boolean>().setEventSurvivalTime(500).create();
+
     public final ObservableBoolean isDrawerOpened = new ObservableBoolean();
-    public final EventLiveData<Boolean> timeToAddSlideListener = new EventLiveData<>();
-    public final EventLiveData<Boolean> closeSlidePanelIfExpanded = new EventLiveData<>();
-    public final EventLiveData<Boolean> activityCanBeClosedDirectly = new EventLiveData<>();
-    public final EventLiveData<Boolean> openOrCloseDrawer = new EventLiveData<>();
+    public final UnPeekLiveData<Boolean> timeToAddSlideListener = new UnPeekLiveData<>();
+    public final UnPeekLiveData<Boolean> closeSlidePanelIfExpanded = new UnPeekLiveData<>();
+    public final UnPeekLiveData<Boolean> activityCanBeClosedDirectly = new UnPeekLiveData<>();
+    public final UnPeekLiveData<Boolean> openOrCloseDrawer = new UnPeekLiveData<>();
 
 }

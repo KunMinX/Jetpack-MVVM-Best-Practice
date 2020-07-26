@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-present KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ public class DrawerCoordinateHelper implements DefaultLifecycleObserver {
         SharedViewModel.TAG_OF_SECONDARY_PAGES.add(owner.getClass().getSimpleName());
 
         SharedViewModel.ENABLE_SWIPE_DRAWER
-                .setEvent(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
+                .setValue(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
 
     }
 
@@ -57,7 +57,7 @@ public class DrawerCoordinateHelper implements DefaultLifecycleObserver {
         SharedViewModel.TAG_OF_SECONDARY_PAGES.remove(owner.getClass().getSimpleName());
 
         SharedViewModel.ENABLE_SWIPE_DRAWER
-                .setEvent(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
+                .setValue(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
 
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-present KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,8 @@ package com.kunminx.puremusic.domain.request;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.kunminx.architecture.data.repository.DataResult;
+import com.kunminx.architecture.domain.request.BaseRequest;
 import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.data.repository.DataRepository;
 
@@ -37,7 +39,7 @@ import com.kunminx.puremusic.data.repository.DataRepository;
  * <p>
  * Create by KunMinX at 19/10/29
  */
-public class MusicRequest {
+public class MusicRequest extends BaseRequest {
 
     private MutableLiveData<TestAlbum> mFreeMusicsLiveData;
 
@@ -52,6 +54,8 @@ public class MusicRequest {
     }
 
     public void requestFreeMusics() {
-        DataRepository.getInstance().getFreeMusic(mFreeMusicsLiveData);
+        DataRepository.getInstance().getFreeMusic(new DataResult<>((testAlbum, netState) -> {
+            mFreeMusicsLiveData.setValue(testAlbum);
+        }));
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-present KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,14 @@ public class NetState {
 
     private String responseCode;
     private boolean success = true;
+
+    public NetState(String responseCode, boolean success) {
+        this.responseCode = responseCode;
+        this.success = success;
+    }
+
+    public NetState() {
+    }
 
     public String getResponseCode() {
         return responseCode;

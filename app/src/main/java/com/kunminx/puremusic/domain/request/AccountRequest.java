@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-present KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,15 @@
 package com.kunminx.puremusic.domain.request;
 
 
+import android.text.TextUtils;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.kunminx.architecture.domain.request.BaseRequest;
 import com.kunminx.puremusic.data.bean.User;
 import com.kunminx.puremusic.data.repository.DataRepository;
+import com.kunminx.architecture.data.repository.DataResult;
 
 /**
  * 信息列表 Request
@@ -37,7 +41,7 @@ import com.kunminx.puremusic.data.repository.DataRepository;
  * <p>
  * Create by KunMinX at 20/04/26
  */
-public class AccountRequest {
+public class AccountRequest extends BaseRequest {
 
     private MutableLiveData<String> tokenLiveData;
 
@@ -52,6 +56,9 @@ public class AccountRequest {
     }
 
     public void requestLogin(User user) {
-        DataRepository.getInstance().login(user, tokenLiveData);
+        DataRepository.getInstance().login(user, new DataResult<>((s, netState) -> {
+            tokenLiveData.postValue(s);
+            netStateEvent.postValue(netState);
+        }));
     }
 }

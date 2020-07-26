@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-present KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,10 +24,10 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.kunminx.puremusic.BR;
-import com.kunminx.puremusic.R;
 import com.kunminx.architecture.ui.page.BaseFragment;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
+import com.kunminx.puremusic.BR;
+import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.ui.page.adapter.DrawerAdapter;
 import com.kunminx.puremusic.ui.state.DrawerViewModel;
 

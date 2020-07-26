@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-present KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,14 +57,11 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'androidx.appcompat:appcompat:1.1.0'
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta7'
-    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha04'
 
     implementation 'androidx.lifecycle:lifecycle-runtime:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-common-java8:2.2.0'
@@ -72,5 +69,9 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-livedata:2.2.0'
     implementation 'androidx.navigation:navigation-runtime:2.3.0'
-    implementation 'com.kunminx.event:eventlivedata:1.1.2'
+
+    implementation 'com.kunminx.archi:unpeek-livedata:3.0.9-beta6'
+    implementation 'com.kunminx.archi:smooth-navigation:2.9.7-beta4'
+    implementation 'com.kunminx.archi:strict-databinding:3.0.2-beta1'
+
 }

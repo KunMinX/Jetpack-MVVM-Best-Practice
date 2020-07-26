@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-present KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,13 +23,13 @@ import android.widget.SeekBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.kunminx.architecture.ui.page.BaseFragment;
+import com.kunminx.architecture.ui.page.DataBindingConfig;
 import com.kunminx.player.PlayingInfoManager;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.databinding.FragmentPlayerBinding;
 import com.kunminx.puremusic.player.PlayerManager;
-import com.kunminx.architecture.ui.page.BaseFragment;
-import com.kunminx.architecture.ui.page.DataBindingConfig;
 import com.kunminx.puremusic.ui.callback.SharedViewModel;
 import com.kunminx.puremusic.ui.state.PlayerViewModel;
 import com.kunminx.puremusic.ui.view.PlayerSlideListener;
@@ -97,7 +97,7 @@ public class PlayerFragment extends BaseFragment {
                         } else {
                             SharedViewModel.TAG_OF_SECONDARY_PAGES.remove(this.getClass().getSimpleName());
                         }
-                        SharedViewModel.ENABLE_SWIPE_DRAWER.setEvent(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
+                        SharedViewModel.ENABLE_SWIPE_DRAWER.setValue(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
                     }
                 });
             }
@@ -180,13 +180,13 @@ public class PlayerFragment extends BaseFragment {
 
                     // TODO: yes:
 
-                    mSharedViewModel.activityCanBeClosedDirectly.setEvent(true);
+                    mSharedViewModel.activityCanBeClosedDirectly.setValue(true);
 
                     // TODO: do not:
                     // mActivity.finish();
                 }
             } else {
-                mSharedViewModel.activityCanBeClosedDirectly.setEvent(true);
+                mSharedViewModel.activityCanBeClosedDirectly.setValue(true);
             }
         });
 
@@ -220,7 +220,7 @@ public class PlayerFragment extends BaseFragment {
         }
 
         public void slideDown() {
-            mSharedViewModel.closeSlidePanelIfExpanded.setEvent(true);
+            mSharedViewModel.closeSlidePanelIfExpanded.setValue(true);
         }
 
         public void more() {

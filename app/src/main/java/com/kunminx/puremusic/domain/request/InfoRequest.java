@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-present KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,8 @@ package com.kunminx.puremusic.domain.request;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.kunminx.architecture.data.repository.DataResult;
+import com.kunminx.architecture.domain.request.BaseRequest;
 import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.data.repository.DataRepository;
 
@@ -40,7 +42,7 @@ import java.util.List;
  * <p>
  * Create by KunMinX at 19/11/2
  */
-public class InfoRequest {
+public class InfoRequest extends BaseRequest {
 
     private MutableLiveData<List<LibraryInfo>> mLibraryLiveData;
 
@@ -55,6 +57,8 @@ public class InfoRequest {
     }
 
     public void requestLibraryInfo() {
-        DataRepository.getInstance().getLibraryInfo(mLibraryLiveData);
+        DataRepository.getInstance().getLibraryInfo(new DataResult<>((libraryInfos, netState) -> {
+            mLibraryLiveData.setValue(libraryInfos);
+        }));
     }
 }
