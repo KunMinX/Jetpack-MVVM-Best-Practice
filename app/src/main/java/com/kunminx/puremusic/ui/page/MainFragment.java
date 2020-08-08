@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-present KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,11 +22,12 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.kunminx.architecture.ui.page.BaseFragment;
+import com.kunminx.architecture.ui.page.DataBindingConfig;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.player.PlayerManager;
-import com.kunminx.puremusic.ui.base.BaseFragment;
-import com.kunminx.puremusic.ui.base.DataBindingConfig;
+import com.kunminx.puremusic.ui.callback.SharedViewModel;
 import com.kunminx.puremusic.ui.page.adapter.PlaylistAdapter;
 import com.kunminx.puremusic.ui.state.MainViewModel;
 
@@ -36,10 +37,12 @@ import com.kunminx.puremusic.ui.state.MainViewModel;
 public class MainFragment extends BaseFragment {
 
     private MainViewModel mMainViewModel;
+    private SharedViewModel mSharedViewModel;
 
     @Override
     protected void initViewModel() {
         mMainViewModel = getFragmentViewModel(MainViewModel.class);
+        mSharedViewModel = getAppViewModelProvider().get(SharedViewModel.class);
     }
 
     @Override
@@ -53,7 +56,7 @@ public class MainFragment extends BaseFragment {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.fragment_main, mMainViewModel)
+        return new DataBindingConfig(R.layout.fragment_main, BR.vm, mMainViewModel)
                 .addBindingParam(BR.click, new ClickProxy())
                 .addBindingParam(BR.adapter, new PlaylistAdapter(getContext()));
     }
@@ -118,7 +121,7 @@ public class MainFragment extends BaseFragment {
             // Activity 内部的事情在 Activity 内部消化，不要试图在 fragment 中调用和操纵 Activity 内部的东西。
             // 因为 Activity 端的处理后续可能会改变，并且可受用于更多的 fragment，而不单单是本 fragment。
 
-            getSharedViewModel().openOrCloseDrawer.setValue(true);
+            mSharedViewModel.openOrCloseDrawer.setValue(true);
         }
 
         public void login() {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-present KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -87,7 +87,7 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
         screenHeight = ScreenUtils.getScreenHeight();
         playPauseDrawableColor = Color.BLACK;
         nowPlayingCardColor = Color.WHITE;
-        caculateTitleAndArtist();
+        calculateTitleAndArtist();
         calculateIcons();
         mBinding.playPause.setDrawableColor(playPauseDrawableColor);
     }
@@ -110,7 +110,7 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
 
         //aniamte icons
         mBinding.playPause.setX(intEvaluator.evaluate(slideOffset, playPauseStartX, playPauseEndX));
-        mBinding.playPause.setCircleAlpah(intEvaluator.evaluate(slideOffset, 0, 255));
+        mBinding.playPause.setCircleAlpha(intEvaluator.evaluate(slideOffset, 0, 255));
         mBinding.playPause.setDrawableColor((int) colorEvaluator.evaluate(slideOffset, playPauseDrawableColor, nowPlayingCardColor));
         mBinding.previous.setX(intEvaluator.evaluate(slideOffset, previousStartX, previousEndX));
         mBinding.mode.setX(intEvaluator.evaluate(slideOffset, modeStartX, modeEndX));
@@ -183,7 +183,7 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
 
     }
 
-    private void caculateTitleAndArtist() {
+    private void calculateTitleAndArtist() {
         Rect titleBounds = new Rect();
         mBinding.title.getPaint().getTextBounds(mBinding.title.getText().toString(), 0,
                 mBinding.title.getText().length(), titleBounds);

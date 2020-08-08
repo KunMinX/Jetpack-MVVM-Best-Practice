@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-present KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.kunminx.architecture.ui.adapter.SimpleDataBindingAdapter;
+import com.kunminx.binding_recyclerview.adapter.SimpleDataBindingAdapter;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.databinding.AdapterLibraryBinding;
@@ -35,17 +33,7 @@ import com.kunminx.puremusic.databinding.AdapterLibraryBinding;
 public class DrawerAdapter extends SimpleDataBindingAdapter<LibraryInfo, AdapterLibraryBinding> {
 
     public DrawerAdapter(Context context) {
-        super(context, R.layout.adapter_library, new DiffUtil.ItemCallback<LibraryInfo>() {
-            @Override
-            public boolean areItemsTheSame(@NonNull LibraryInfo oldItem, @NonNull LibraryInfo newItem) {
-                return oldItem.equals(newItem);
-            }
-
-            @Override
-            public boolean areContentsTheSame(@NonNull LibraryInfo oldItem, @NonNull LibraryInfo newItem) {
-                return oldItem.getTitle().equals(newItem.getTitle());
-            }
-        });
+        super(context, R.layout.adapter_library, DiffUtils.getInstance().getLibraryInfoItemCallback());
 
         setOnItemClickListener((item, position) -> {
             Uri uri = Uri.parse(item.getUrl());

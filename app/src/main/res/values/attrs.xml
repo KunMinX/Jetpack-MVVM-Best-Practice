@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2018-2020 KunMinX
+  ~ Copyright 2018-present KunMinX
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -16,26 +16,11 @@
 
 <resources>
 
-    <declare-styleable name="ForegroundImageView">
-        <attr name="android:foreground" />
-    </declare-styleable>
-
-
-    <declare-styleable name="PlayPause">
+    <declare-styleable name="PlayPauseView">
         <attr name="isCircleDraw" format="boolean" />
         <attr name="circleAlpha" format="integer" />
         <attr name="backgroundColor" format="reference|color" />
         <attr name="drawableColor" format="reference|color" />
-    </declare-styleable>
-
-    <declare-styleable name="DialogFragmentNavigator">
-        <attr name="android:name" />
-    </declare-styleable>
-    <declare-styleable name="FragmentNavigator">
-        <attr name="android:name" />
-    </declare-styleable>
-    <declare-styleable name="NavHostFragment">
-        <attr name="defaultNavHost" format="boolean" />
     </declare-styleable>
 
 </resources>

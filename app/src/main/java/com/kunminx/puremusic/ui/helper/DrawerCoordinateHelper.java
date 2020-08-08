@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-present KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.kunminx.puremusic.ui.base.BaseFragment;
 import com.kunminx.puremusic.ui.callback.SharedViewModel;
 
 /**
@@ -47,8 +46,9 @@ public class DrawerCoordinateHelper implements DefaultLifecycleObserver {
 
         SharedViewModel.TAG_OF_SECONDARY_PAGES.add(owner.getClass().getSimpleName());
 
-        ((BaseFragment) owner).getSharedViewModel()
-                .enableSwipeDrawer.setValue(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
+        SharedViewModel.ENABLE_SWIPE_DRAWER
+                .setValue(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
+
     }
 
     @Override
@@ -56,8 +56,9 @@ public class DrawerCoordinateHelper implements DefaultLifecycleObserver {
 
         SharedViewModel.TAG_OF_SECONDARY_PAGES.remove(owner.getClass().getSimpleName());
 
-        ((BaseFragment) owner).getSharedViewModel()
-                .enableSwipeDrawer.setValue(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
+        SharedViewModel.ENABLE_SWIPE_DRAWER
+                .setValue(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
+
     }
 
 }

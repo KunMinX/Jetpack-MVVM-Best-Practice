@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 KunMinX
+ * Copyright 2018-present KunMinX
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.kunminx.architecture.ui.callback.EventLiveData;
 import com.kunminx.architecture.utils.Utils;
 
 /**
@@ -32,7 +31,6 @@ import com.kunminx.architecture.utils.Utils;
 public class NetworkStateManager implements DefaultLifecycleObserver {
 
     private static final NetworkStateManager S_MANAGER = new NetworkStateManager();
-    public final EventLiveData<NetState> networkStateCallback = new EventLiveData<>();
     private NetworkStateReceive mNetworkStateReceive;
 
     private NetworkStateManager() {
