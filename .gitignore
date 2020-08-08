@@ -19,7 +19,7 @@ out
 target
 
 *.class
-*.ctxt
+*.txt
 *.ear
 *.iml
 *.jar
@@ -30,3 +30,4 @@ target
 *.tar.gz
 *.war
 *.zip
+*.apk

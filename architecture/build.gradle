@@ -18,8 +18,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.3"
-
+    buildToolsVersion "30.0.1"
 
     defaultConfig {
         minSdkVersion 23
@@ -28,30 +27,16 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles 'consumer-rules.pro'
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    lintOptions {
-        checkReleaseBuilds false
-        abortOnError false
+    buildFeatures {
+        dataBinding true
     }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
-    dataBinding {
-        enabled = true
-    }
-
 }
 
 dependencies {
@@ -61,17 +46,16 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    api 'androidx.appcompat:appcompat:1.2.0'
 
-    implementation 'androidx.lifecycle:lifecycle-runtime:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-common-java8:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-livedata:2.2.0'
-    implementation 'androidx.navigation:navigation-runtime:2.3.0'
+    api 'androidx.lifecycle:lifecycle-runtime:2.2.0'
+    api 'androidx.lifecycle:lifecycle-common-java8:2.2.0'
+    api 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    api 'androidx.lifecycle:lifecycle-viewmodel:2.2.0'
+    api 'androidx.lifecycle:lifecycle-livedata:2.2.0'
+    api 'androidx.navigation:navigation-runtime:2.3.0'
 
-    implementation 'com.kunminx.archi:unpeek-livedata:3.2.2-beta8'
-    implementation 'com.kunminx.archi:smooth-navigation:2.9.7-beta4'
-    implementation 'com.kunminx.archi:strict-databinding:3.0.2-beta1'
-
+    api 'com.kunminx.archi:unpeek-livedata:3.2.2-beta8'
+    api 'com.kunminx.archi:smooth-navigation:2.9.7-beta4'
+    api 'com.kunminx.archi:strict-databinding:3.0.2-beta1'
 }
