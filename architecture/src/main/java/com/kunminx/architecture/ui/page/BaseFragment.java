@@ -19,6 +19,9 @@ package com.kunminx.architecture.ui.page;
 import android.app.Activity;
 import android.view.inputmethod.InputMethodManager;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -34,6 +37,18 @@ public abstract class BaseFragment extends DataBindingFragment {
     // 如此，视图刷新的安全性将和基于函数式编程的 Jetpack Compose 持平。
 
     // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
+
+    protected <T extends ViewModel> T getFragmentViewModel(@NonNull Class<T> modelClass) {
+        return super.getFragmentViewModel(modelClass);
+    }
+
+    protected <T extends ViewModel> T getActivityViewModel(@NonNull Class<T> modelClass) {
+        return super.getActivityViewModel(modelClass);
+    }
+
+    protected ViewModelProvider getAppViewModelProvider() {
+        return super.getAppViewModelProvider();
+    }
 
     protected NavController nav() {
         return NavHostFragment.findNavController(this);
