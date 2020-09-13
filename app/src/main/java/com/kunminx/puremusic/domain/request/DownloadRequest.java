@@ -76,7 +76,8 @@ public class DownloadRequest extends BaseRequest {
                 new UseCase.UseCaseCallback<CanBeStoppedUseCase.ResponseValue>() {
                     @Override
                     public void onSuccess(CanBeStoppedUseCase.ResponseValue response) {
-                        mDownloadFileCanBeStoppedLiveData.setValue(response.getLiveData().getValue());
+                        mDownloadFileCanBeStoppedLiveData.setValue(
+                                response.getLiveData().getValue());
                     }
 
                     @Override
