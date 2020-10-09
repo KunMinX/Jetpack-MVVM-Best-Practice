@@ -17,15 +17,13 @@
 package com.kunminx.puremusic.domain.request;
 
 
-import android.text.TextUtils;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.kunminx.architecture.data.repository.DataResult;
 import com.kunminx.architecture.domain.request.BaseRequest;
 import com.kunminx.puremusic.data.bean.User;
 import com.kunminx.puremusic.data.repository.DataRepository;
-import com.kunminx.architecture.data.repository.DataResult;
 
 /**
  * 信息列表 Request
@@ -38,6 +36,8 @@ import com.kunminx.architecture.data.repository.DataResult;
  * 将来升级到 Jetpack Compose 更是如此。
  * <p>
  * 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/6257931840
+ * 以及《如何让同事爱上架构模式、少写 bug 多注释》的解析
+ * https://xiaozhuanlan.com/topic/8204519736
  * <p>
  * Create by KunMinX at 20/04/26
  */

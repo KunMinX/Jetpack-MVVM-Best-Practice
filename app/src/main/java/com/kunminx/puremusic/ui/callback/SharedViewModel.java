@@ -48,6 +48,10 @@ public class SharedViewModel extends ViewModel {
     public static final List<String> TAG_OF_SECONDARY_PAGES = new ArrayList<>();
 
     //TODO：可以通过构造器的方式来赋予 UnPeekLiveData 消息生存期
+
+    // 具体存在有缘和使用方式可详见《LiveData 数据倒灌 背景缘由全貌 独家解析》
+    // https://xiaozhuanlan.com/topic/6719328450
+
     public static final UnPeekLiveData<Boolean> ENABLE_SWIPE_DRAWER =
             new UnPeekLiveData.Builder<Boolean>().setEventSurvivalTime(500).create();
 

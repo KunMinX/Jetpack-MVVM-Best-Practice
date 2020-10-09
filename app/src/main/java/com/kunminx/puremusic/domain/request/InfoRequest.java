@@ -38,6 +38,8 @@ import java.util.List;
  * 将来升级到 Jetpack Compose 更是如此。
  * <p>
  * 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/6257931840
+ * 以及《如何让同事爱上架构模式、少写 bug 多注释》的解析
+ * https://xiaozhuanlan.com/topic/8204519736
  * <p>
  * <p>
  * Create by KunMinX at 19/11/2
