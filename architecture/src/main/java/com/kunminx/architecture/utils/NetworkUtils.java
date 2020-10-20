@@ -104,7 +104,6 @@ public final class NetworkUtils {
 
     @RequiresPermission(INTERNET)
     public static void isAvailableByDns(String ip) {
-
     }
 
     /**

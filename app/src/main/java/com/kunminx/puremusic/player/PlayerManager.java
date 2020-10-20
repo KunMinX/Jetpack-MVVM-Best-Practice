@@ -16,6 +16,7 @@
 
 package com.kunminx.puremusic.player;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 
@@ -36,6 +37,7 @@ import java.util.List;
  */
 public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestMusic> {
 
+    @SuppressLint("StaticFieldLeak")
     private static final PlayerManager S_MANAGER = new PlayerManager();
 
     private final PlayerController<TestAlbum, TestAlbum.TestMusic> mController;

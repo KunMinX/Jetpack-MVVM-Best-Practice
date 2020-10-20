@@ -15,7 +15,7 @@
             </shape>
         </scale>
     </item>
-    <item android:id="@+id/secondaryProgress">
+    <item>
         <scale
             android:scaleWidth="100%"
             android:scaleGravity="fill_horizontal">

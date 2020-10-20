@@ -23,7 +23,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.kunminx.architecture.domain.manager.NetState;
 import com.kunminx.architecture.ui.page.BaseFragment;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
 import com.kunminx.architecture.utils.SPUtils;

@@ -19,7 +19,6 @@ package com.kunminx.puremusic.data.api;
 /**
  * Create by KunMinX at 19/10/29
  */
-@SuppressWarnings("unused")
 public class APIs {
 
     // TODO - tip 1：为保护资源方的权益，已对 APIs 的内容做了删除：

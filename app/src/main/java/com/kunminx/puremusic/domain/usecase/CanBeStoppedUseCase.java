@@ -22,10 +22,10 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.kunminx.architecture.data.repository.DataResult;
 import com.kunminx.architecture.domain.usecase.UseCase;
 import com.kunminx.puremusic.data.bean.DownloadFile;
 import com.kunminx.puremusic.data.repository.DataRepository;
-import com.kunminx.architecture.data.repository.DataResult;
 
 
 /**
@@ -57,10 +57,9 @@ public class CanBeStoppedUseCase extends UseCase<CanBeStoppedUseCase.RequestValu
 
         //访问数据层资源，在 UseCase 中处理带叫停性质的业务
 
-        DataRepository.getInstance().downloadFile(new DataResult<>((downloadFile, netState) -> {
-            requestValues.liveData.postValue(downloadFile);
-        }));
-
+        DataRepository.getInstance().downloadFile(new DataResult<>((downloadFile, netState) ->
+                requestValues.liveData.postValue(downloadFile))
+        );
     }
 
     public static final class RequestValues implements UseCase.RequestValues {

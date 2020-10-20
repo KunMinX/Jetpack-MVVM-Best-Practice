@@ -29,7 +29,7 @@ import com.kunminx.architecture.domain.manager.NetState;
  * <p>
  * 如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
  * https://xiaozhuanlan.com/topic/8204519736
- *
+ * <p>
  * Create by KunMinX at 2020/7/20
  */
 public class DataResult<T> {

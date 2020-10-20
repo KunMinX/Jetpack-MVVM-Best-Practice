@@ -1,5 +1,3 @@
-
-
 package com.kunminx.puremusic.ui.view;
 
 import android.animation.Animator;
@@ -78,16 +76,14 @@ public class PlayPauseView extends FrameLayout {
         mWidth = w;
         mHeight = h;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setOutlineProvider(new ViewOutlineProvider() {
-                @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-                @Override
-                public void getOutline(View view, Outline outline) {
-                    outline.setOval(0, 0, view.getWidth(), view.getHeight());
-                }
-            });
-            setClipToOutline(true);
-        }
+        setOutlineProvider(new ViewOutlineProvider() {
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void getOutline(View view, Outline outline) {
+                outline.setOval(0, 0, view.getWidth(), view.getHeight());
+            }
+        });
+        setClipToOutline(true);
     }
 
     public void setCircleAlpha(int alpah) {

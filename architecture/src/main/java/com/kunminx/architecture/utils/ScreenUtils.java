@@ -8,7 +8,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Point;
-import android.os.Build;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.view.Surface;
@@ -44,13 +43,7 @@ public final class ScreenUtils {
     public static int getScreenWidth() {
         WindowManager wm = (WindowManager) Utils.getApp().getSystemService(Context.WINDOW_SERVICE);
         Point point = new Point();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            //noinspection ConstantConditions
-            wm.getDefaultDisplay().getRealSize(point);
-        } else {
-            //noinspection ConstantConditions
-            wm.getDefaultDisplay().getSize(point);
-        }
+        wm.getDefaultDisplay().getRealSize(point);
         return point.x;
     }
 
@@ -62,13 +55,7 @@ public final class ScreenUtils {
     public static int getScreenHeight() {
         WindowManager wm = (WindowManager) Utils.getApp().getSystemService(Context.WINDOW_SERVICE);
         Point point = new Point();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            //noinspection ConstantConditions
-            wm.getDefaultDisplay().getRealSize(point);
-        } else {
-            //noinspection ConstantConditions
-            wm.getDefaultDisplay().getSize(point);
-        }
+        wm.getDefaultDisplay().getRealSize(point);
         return point.y;
     }
 
@@ -248,7 +235,6 @@ public final class ScreenUtils {
     public static boolean isScreenLock() {
         KeyguardManager km =
                 (KeyguardManager) Utils.getApp().getSystemService(Context.KEYGUARD_SERVICE);
-        //noinspection ConstantConditions
         return km.inKeyguardRestrictedInputMode();
     }
 

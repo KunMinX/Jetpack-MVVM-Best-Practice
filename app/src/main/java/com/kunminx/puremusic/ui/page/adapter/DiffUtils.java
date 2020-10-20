@@ -34,10 +34,10 @@ public class DiffUtils {
     private DiffUtils() {
     }
 
-    private static DiffUtils sDiffUtils = new DiffUtils();
+    private static final DiffUtils S_DIFF_UTILS = new DiffUtils();
 
     public static DiffUtils getInstance() {
-        return sDiffUtils;
+        return S_DIFF_UTILS;
     }
 
     public DiffUtil.ItemCallback<LibraryInfo> getLibraryInfoItemCallback() {

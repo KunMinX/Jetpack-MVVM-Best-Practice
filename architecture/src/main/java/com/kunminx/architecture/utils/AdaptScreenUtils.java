@@ -6,7 +6,6 @@ import android.util.Log;
 
 import java.lang.reflect.Field;
 
-@SuppressWarnings("unused")
 public final class AdaptScreenUtils {
 
     private static boolean isInitMiui = false;
