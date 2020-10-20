@@ -53,7 +53,7 @@ public class SharedViewModel extends ViewModel {
     // https://xiaozhuanlan.com/topic/6719328450
 
     public static final UnPeekLiveData<Boolean> ENABLE_SWIPE_DRAWER =
-            new UnPeekLiveData.Builder<Boolean>().setEventSurvivalTime(500).create();
+            new UnPeekLiveData.Builder<Boolean>().setAllowNullValue(false).create();
 
     public final ObservableBoolean isDrawerOpened = new ObservableBoolean();
     public final UnPeekLiveData<Boolean> timeToAddSlideListener = new UnPeekLiveData<>();

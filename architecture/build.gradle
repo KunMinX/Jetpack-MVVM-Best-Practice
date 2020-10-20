@@ -42,7 +42,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
@@ -52,9 +52,9 @@ dependencies {
     api 'androidx.lifecycle:lifecycle-common-java8:2.2.0'
     api 'androidx.lifecycle:lifecycle-viewmodel:2.2.0'
     api 'androidx.lifecycle:lifecycle-livedata:2.2.0'
-    api 'androidx.navigation:navigation-runtime:2.3.0'
+    api 'androidx.navigation:navigation-runtime:2.3.1'
 
-    api 'com.kunminx.archi:unpeek-livedata:3.2.3-beta10'
+    api 'com.kunminx.archi:unpeek-livedata:4.2.0-beta1'
     api 'com.kunminx.archi:smooth-navigation:3.3.2-beta5'
     api 'com.kunminx.archi:strict-databinding:3.3.2-beta2'
 }

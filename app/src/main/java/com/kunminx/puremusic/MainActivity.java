@@ -17,6 +17,7 @@
 package com.kunminx.puremusic;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -63,7 +64,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mSharedViewModel.activityCanBeClosedDirectly.observe(this, aBoolean -> {
+        mSharedViewModel.activityCanBeClosedDirectly.observeInActivity(this, aBoolean -> {
             NavController nav = Navigation.findNavController(this, R.id.main_fragment_host);
             if (nav.getCurrentDestination() != null && nav.getCurrentDestination().getId() != R.id.mainFragment) {
                 nav.navigateUp();
@@ -79,7 +80,7 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        mSharedViewModel.openOrCloseDrawer.observe(this, aBoolean -> {
+        mSharedViewModel.openOrCloseDrawer.observeInActivity(this, aBoolean -> {
 
             //TODO yes：同 tip 1: 此处将 drawer 的 open 和 close 都放在 drawerBindingAdapter 中操作，规避了视图调用的一致性问题，
 
@@ -102,7 +103,7 @@ public class MainActivity extends BaseActivity {
             }*/
         });
 
-        SharedViewModel.ENABLE_SWIPE_DRAWER.observe(this, aBoolean -> {
+        SharedViewModel.ENABLE_SWIPE_DRAWER.observeInActivity(this, aBoolean -> {
 
             //TODO yes: 同 tip 1
 
