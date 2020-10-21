@@ -40,8 +40,8 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
  */
 public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListener {
 
-    private FragmentPlayerBinding mBinding;
-    private SlidingUpPanelLayout mSlidingUpPanelLayout;
+    private final FragmentPlayerBinding mBinding;
+    private final SlidingUpPanelLayout mSlidingUpPanelLayout;
 
     private int titleEndTranslationX;
     private int artistEndTranslationX;
@@ -63,15 +63,15 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
     private int iconContainerStartY;
     private int iconContainerEndY;
 
-    private int screenWidth;
-    private int screenHeight;
+    private final int screenWidth;
+    private final int screenHeight;
 
-    private IntEvaluator intEvaluator = new IntEvaluator();
-    private FloatEvaluator floatEvaluator = new FloatEvaluator();
-    private ArgbEvaluator colorEvaluator = new ArgbEvaluator();
+    private final IntEvaluator intEvaluator = new IntEvaluator();
+    private final FloatEvaluator floatEvaluator = new FloatEvaluator();
+    private final ArgbEvaluator colorEvaluator = new ArgbEvaluator();
 
-    private int nowPlayingCardColor;
-    private int playPauseDrawableColor;
+    private final int nowPlayingCardColor;
+    private final int playPauseDrawableColor;
     private Status mStatus = Status.COLLAPSED;
 
     public enum Status {
@@ -267,6 +267,7 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
         mStatus = Status.FULLSCREEN;
     }
 
+    @SuppressWarnings("SuspiciousNameCombination")
     private void animateToNormal() {
         //album art
         CoordinatorLayout.LayoutParams imageLayout = (CoordinatorLayout.LayoutParams) mBinding.albumArt.getLayoutParams();

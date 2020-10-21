@@ -1250,11 +1250,7 @@ public final class ImageUtils {
         paint.setColorFilter(filter);
         canvas.scale(scale, scale);
         canvas.drawBitmap(scaleBitmap, 0, 0, paint);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            scaleBitmap = renderScriptBlur(scaleBitmap, radius, recycle);
-        } else {
-            scaleBitmap = stackBlur(scaleBitmap, (int) radius, recycle);
-        }
+        scaleBitmap = renderScriptBlur(scaleBitmap, radius, recycle);
         if (scale == 1 || isReturnScale) {
             if (recycle && !src.isRecycled() && scaleBitmap != src) {
                 src.recycle();

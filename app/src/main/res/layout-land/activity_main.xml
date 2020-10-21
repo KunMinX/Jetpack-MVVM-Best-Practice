@@ -32,7 +32,7 @@
         android:baselineAligned="false"
         android:orientation="horizontal">
 
-        <fragment
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/main_fragment_host"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="0dp"
@@ -43,7 +43,7 @@
             app:defaultNavHost="true"
             app:navGraph="@navigation/nav_main" />
 
-        <fragment
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/slide_fragment_host"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="0dp"

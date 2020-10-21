@@ -1,15 +1,11 @@
 package com.kunminx.architecture.utils;
 
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
-import android.os.Build;
 import android.util.StateSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -214,28 +210,11 @@ public class ClickUtils {
     }
 
     private static Drawable createAlphaDrawable(Drawable drawable, float alpha) {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT
-                && !(drawable instanceof ColorDrawable)) {
-            Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-            Canvas myCanvas = new Canvas(bitmap);
-            drawable.setAlpha((int) (alpha * 255));
-            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-            drawable.draw(myCanvas);
-            return new BitmapDrawable(Resources.getSystem(), bitmap);
-        }
         drawable.setAlpha((int) (alpha * 255));
         return drawable;
     }
 
     private static Drawable createDarkDrawable(Drawable drawable, float alpha) {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT && !(drawable instanceof ColorDrawable)) {
-            Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-            Canvas myCanvas = new Canvas(bitmap);
-            drawable.setColorFilter(getDarkColorFilter(alpha));
-            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-            drawable.draw(myCanvas);
-            return new BitmapDrawable(Resources.getSystem(), bitmap);
-        }
         drawable.setColorFilter(getDarkColorFilter(alpha));
         return drawable;
     }

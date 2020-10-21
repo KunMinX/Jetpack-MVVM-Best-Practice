@@ -78,7 +78,6 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/player_albumname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"

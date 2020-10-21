@@ -17,7 +17,6 @@
 package com.kunminx.puremusic;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.drawerlayout.widget.DrawerLayout;

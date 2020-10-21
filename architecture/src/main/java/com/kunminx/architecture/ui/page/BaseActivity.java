@@ -22,10 +22,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.inputmethod.InputMethodManager;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.kunminx.architecture.domain.manager.NetworkStateManager;
 import com.kunminx.architecture.utils.AdaptScreenUtils;
@@ -54,14 +51,6 @@ public abstract class BaseActivity extends DataBindingActivity {
         // 如此，视图刷新的安全性将和基于函数式编程的 Jetpack Compose 持平。
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
-    }
-
-    protected <T extends ViewModel> T getActivityViewModel(@NonNull Class<T> modelClass) {
-        return super.getActivityViewModel(modelClass);
-    }
-
-    protected ViewModelProvider getAppViewModelProvider() {
-        return super.getAppViewModelProvider();
     }
 
     @Override

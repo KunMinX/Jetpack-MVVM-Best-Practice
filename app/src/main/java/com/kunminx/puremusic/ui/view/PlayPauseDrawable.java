@@ -1,5 +1,3 @@
-
-
 package com.kunminx.puremusic.ui.view;
 
 import android.animation.Animator;
