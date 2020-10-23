@@ -85,7 +85,7 @@ public class LoginFragment extends BaseFragment {
             nav().navigateUp();
         });
 
-        mLoginViewModel.accountRequest.getNetStateEvent().observe(getViewLifecycleOwner(), netState -> {
+        mLoginViewModel.accountRequest.getNetStateEvent().observeInFragment(this, netState -> {
             mLoginViewModel.loadingVisible.set(false);
             if (!netState.isSuccess()) {
                 showLongToast("网络状态不佳，请重试");
