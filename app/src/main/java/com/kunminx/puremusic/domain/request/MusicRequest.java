@@ -56,8 +56,8 @@ public class MusicRequest extends BaseRequest {
     }
 
     public void requestFreeMusics() {
-        DataRepository.getInstance().getFreeMusic(new DataResult<>((testAlbum, netState) ->
-                mFreeMusicsLiveData.setValue(testAlbum))
-        );
+        DataRepository.getInstance().getFreeMusic(new DataResult<>((testAlbum, netState) -> {
+            mFreeMusicsLiveData.setValue(testAlbum);
+        }));
     }
 }

@@ -59,8 +59,8 @@ public class InfoRequest extends BaseRequest {
     }
 
     public void requestLibraryInfo() {
-        DataRepository.getInstance().getLibraryInfo(new DataResult<>((libraryInfos, netState) ->
-                mLibraryLiveData.setValue(libraryInfos))
-        );
+        DataRepository.getInstance().getLibraryInfo(new DataResult<>((libraryInfos, netState) -> {
+            mLibraryLiveData.setValue(libraryInfos);
+        }));
     }
 }

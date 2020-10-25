@@ -57,9 +57,10 @@ public class CanBeStoppedUseCase extends UseCase<CanBeStoppedUseCase.RequestValu
 
         //访问数据层资源，在 UseCase 中处理带叫停性质的业务
 
-        DataRepository.getInstance().downloadFile(new DataResult<>((downloadFile, netState) ->
-                requestValues.liveData.postValue(downloadFile))
-        );
+        DataRepository.getInstance().downloadFile(new DataResult<>((downloadFile, netState) -> {
+            requestValues.liveData.postValue(downloadFile);
+        }));
+
     }
 
     public static final class RequestValues implements UseCase.RequestValues {
