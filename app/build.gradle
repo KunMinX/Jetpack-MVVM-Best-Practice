@@ -12,7 +12,16 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            manifestPlaceholders = [
+                    APP_NAME      : "@string/app_name_debug",
+            ]
+        }
         release {
+            manifestPlaceholders = [
+                    APP_NAME      : "@string/app_name",
+            ]
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
