@@ -25,7 +25,6 @@ import android.graphics.Rect;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.Transformation;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
@@ -46,9 +45,7 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
     private int titleEndTranslationX;
     private int artistEndTranslationX;
     private int artistNormalEndTranslationY;
-    private int artistFullEndTranslationY;
     private int contentNormalEndTranslationY;
-    private int contentFullEndTranslationY;
 
     private int modeStartX;
     private int previousStartX;
@@ -139,10 +136,6 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
             if (mBinding.previous.getVisibility() != View.VISIBLE) {
                 mBinding.previous.setVisibility(View.VISIBLE);
             }
-        } else if (previousState == SlidingUpPanelLayout.PanelState.EXPANDED) {
-            if (mStatus == Status.FULLSCREEN) {
-                animateToNormal();
-            }
         }
 
         if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
@@ -150,15 +143,6 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
             toolbarSlideIn(panel.getContext());
             mBinding.mode.setClickable(true);
             mBinding.previous.setClickable(true);
-            mBinding.topContainer.setOnClickListener(v -> {
-                if (mStatus == Status.EXPANDED) {
-                    animateToFullscreen();
-                } else if (mStatus == Status.FULLSCREEN) {
-                    animateToNormal();
-                } else {
-                    mSlidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                }
-            });
         } else if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
             mStatus = Status.COLLAPSED;
             if (mBinding.songProgressNormal.getVisibility() != View.VISIBLE) {
@@ -198,10 +182,8 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
 
         artistEndTranslationX = (screenWidth / 2) - (artistWidth / 2) - DisplayUtils.dp2px(67);
         artistNormalEndTranslationY = DisplayUtils.dp2px(12);
-        artistFullEndTranslationY = 0;
 
         contentNormalEndTranslationY = screenWidth + DisplayUtils.dp2px(32);
-        contentFullEndTranslationY = DisplayUtils.dp2px(32);
 
         if (mStatus == Status.COLLAPSED) {
             mBinding.title.setTranslationX(0);
@@ -251,43 +233,5 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
             mBinding.customToolbar.startAnimation(animation);
         });
     }
-
-    private void animateToFullscreen() {
-        //animate title and artist
-        Animation contentAnimation = new Animation() {
-            @Override
-            protected void applyTransformation(float interpolatedTime, Transformation t) {
-                mBinding.summary.setTranslationY(contentNormalEndTranslationY - (contentNormalEndTranslationY - contentFullEndTranslationY) * interpolatedTime);
-                mBinding.artist.setTranslationY(artistNormalEndTranslationY - (artistNormalEndTranslationY - artistFullEndTranslationY) * interpolatedTime);
-            }
-        };
-        contentAnimation.setDuration(150);
-        mBinding.artist.startAnimation(contentAnimation);
-
-        mStatus = Status.FULLSCREEN;
-    }
-
-    @SuppressWarnings("SuspiciousNameCombination")
-    private void animateToNormal() {
-        //album art
-        CoordinatorLayout.LayoutParams imageLayout = (CoordinatorLayout.LayoutParams) mBinding.albumArt.getLayoutParams();
-        imageLayout.height = screenWidth;
-        imageLayout.width = screenWidth;
-        mBinding.albumArt.setLayoutParams(imageLayout);
-
-        //animate title and artist
-        Animation contentAnimation = new Animation() {
-            @Override
-            protected void applyTransformation(float interpolatedTime, Transformation t) {
-                mBinding.summary.setTranslationY(contentFullEndTranslationY + (contentNormalEndTranslationY - contentFullEndTranslationY) * interpolatedTime);
-                mBinding.artist.setTranslationY(artistFullEndTranslationY + (artistNormalEndTranslationY - artistFullEndTranslationY) * interpolatedTime);
-            }
-        };
-        contentAnimation.setDuration(300);
-        mBinding.artist.startAnimation(contentAnimation);
-
-        mStatus = Status.EXPANDED;
-    }
-
 
 }
