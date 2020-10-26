@@ -4,7 +4,10 @@ buildscript {
     repositories {
         google()
         jcenter()
-//        maven { url "https://maven.aliyun.com/repository/public" }
+
+        //默认使用 jcenter，以便在依赖库有紧急更新时能第一时间获取
+        //如对日常的拉取速度有追求，可考虑使用以下远程仓库（是对 jcenter 的国内同步仓库，存在 1 天左右的时差）
+        //maven { url "https://maven.aliyun.com/repository/public" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.0'
@@ -15,7 +18,8 @@ allprojects {
     repositories {
         google()
         jcenter()
-//        maven { url "https://maven.aliyun.com/repository/public" }
+        //maven { url "https://maven.aliyun.com/repository/public" }
+
         flatDir { dirs 'libs' }
     }
 }
