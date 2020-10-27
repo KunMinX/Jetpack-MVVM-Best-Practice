@@ -20,13 +20,26 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.kunminx.architecture.ui.callback.ProtectedUnPeekLiveData;
+import com.kunminx.architecture.ui.callback.UnPeekLiveData;
 import com.kunminx.puremusic.ui.callback.SharedViewModel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * TODO tip：通过 Lifecycle 来解决抽屉侧滑禁用与否的判断的 一致性问题，
+ * TODO tip 1：通过 Lifecycle 来解决抽屉侧滑禁用与否的判断的 一致性问题，
  * <p>
  * 每个需要注册和监听生命周期来判断的视图控制器，无需在各自内部手动书写解绑等操作。
- * 如果这样说还不理解，详见 https://xiaozhuanlan.com/topic/3684721950
+ * 如果这样说还不理解，详见《为你还原一个真实的 Jetpack Lifecycle》
+ * https://xiaozhuanlan.com/topic/3684721950
+ * <p>
+ * TODO tip 2：与此同时，作为用于 "跨页面通信" 的单例，本类也承担了 "唯一可信源" 的职责，
+ * 所有对 Drawer 状态协调相关的请求都交由本单例处理，并统一分发给所有订阅者页面。
+ * <p>
+ * 如果这样说还不理解的话，详见《LiveData 鲜为人知的 身世背景 和 独特使命》中结合实际场合 对"唯一可信源"本质的解析。
+ * https://xiaozhuanlan.com/topic/0168753249
+ * <p>
  * <p>
  * Create by KunMinX at 19/11/3
  */
@@ -41,23 +54,36 @@ public class DrawerCoordinateHelper implements DefaultLifecycleObserver {
         return S_HELPER;
     }
 
+    public static final List<String> TAG_OF_SECONDARY_PAGES = new ArrayList<>();
+
+    private UnPeekLiveData<Boolean> enableSwipeDrawer;
+
+    public ProtectedUnPeekLiveData<Boolean> isEnableSwipeDrawer() {
+        if (enableSwipeDrawer == null) {
+            enableSwipeDrawer = new UnPeekLiveData<>();
+        }
+        return enableSwipeDrawer;
+    }
+
+    public void requestToUpdateDrawerMode() {
+        enableSwipeDrawer.setValue(TAG_OF_SECONDARY_PAGES.size() == 0);
+    }
+
     @Override
     public void onCreate(@NonNull LifecycleOwner owner) {
 
-        SharedViewModel.TAG_OF_SECONDARY_PAGES.add(owner.getClass().getSimpleName());
+        TAG_OF_SECONDARY_PAGES.add(owner.getClass().getSimpleName());
 
-        SharedViewModel.ENABLE_SWIPE_DRAWER
-                .setValue(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
+        enableSwipeDrawer.setValue(TAG_OF_SECONDARY_PAGES.size() == 0);
 
     }
 
     @Override
     public void onDestroy(@NonNull LifecycleOwner owner) {
 
-        SharedViewModel.TAG_OF_SECONDARY_PAGES.remove(owner.getClass().getSimpleName());
+        TAG_OF_SECONDARY_PAGES.remove(owner.getClass().getSimpleName());
 
-        SharedViewModel.ENABLE_SWIPE_DRAWER
-                .setValue(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
+        enableSwipeDrawer.setValue(TAG_OF_SECONDARY_PAGES.size() == 0);
 
     }
 

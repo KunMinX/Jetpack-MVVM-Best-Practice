@@ -22,7 +22,7 @@ import androidx.lifecycle.ViewModel;
 import com.kunminx.puremusic.domain.request.DownloadRequest;
 
 /**
- * TODO tip：每个页面都要单独准备一个 state-ViewModel，
+ * TODO tip 1：每个页面都要单独准备一个 state-ViewModel，
  * 来托管 DataBinding 绑定的临时状态，以及视图控制器重建时状态的恢复。
  * <p>
  * 此外，state-ViewModel 的职责仅限于 状态托管，不建议在此处理 UI 逻辑，
@@ -39,7 +39,7 @@ public class SearchViewModel extends ViewModel {
 
     public final ObservableField<Integer> progress_cancelable = new ObservableField<>();
 
-    //TODO 将 request 作为 ViewModel 的成员暴露给 Activity/Fragment，
+    //TODO tip 2：将 request 作为 ViewModel 的成员暴露给 Activity/Fragment，
     // 如此便于语义的明确，以及实现多个 request 在 ViewModel 中的组合和复用。
 
     public final DownloadRequest downloadRequest = new DownloadRequest();

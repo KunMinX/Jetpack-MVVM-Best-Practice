@@ -31,6 +31,7 @@ import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.databinding.FragmentPlayerBinding;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.callback.SharedViewModel;
+import com.kunminx.puremusic.ui.helper.DrawerCoordinateHelper;
 import com.kunminx.puremusic.ui.state.PlayerViewModel;
 import com.kunminx.puremusic.ui.view.PlayerSlideListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -78,7 +79,7 @@ public class PlayerFragment extends BaseFragment {
         // 也即，在 fragment 的场景下，请使用 getViewLifeCycleOwner 来作为 liveData 的观察者。
         // Activity 则不用改变。
 
-        mSharedViewModel.timeToAddSlideListener.observeInFragment(this, aBoolean -> {
+        mSharedViewModel.isToAddSlideListener().observeInFragment(this, aBoolean -> {
             if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {
                 SlidingUpPanelLayout sliding = (SlidingUpPanelLayout) view.getParent().getParent();
                 sliding.addPanelSlideListener(new PlayerSlideListener((FragmentPlayerBinding) getBinding(), sliding));
@@ -93,11 +94,11 @@ public class PlayerFragment extends BaseFragment {
                                                     SlidingUpPanelLayout.PanelState panelState1) {
 
                         if (panelState1 == SlidingUpPanelLayout.PanelState.EXPANDED) {
-                            SharedViewModel.TAG_OF_SECONDARY_PAGES.add(this.getClass().getSimpleName());
+                            DrawerCoordinateHelper.TAG_OF_SECONDARY_PAGES.add(this.getClass().getSimpleName());
                         } else {
-                            SharedViewModel.TAG_OF_SECONDARY_PAGES.remove(this.getClass().getSimpleName());
+                            DrawerCoordinateHelper.TAG_OF_SECONDARY_PAGES.remove(this.getClass().getSimpleName());
                         }
-                        SharedViewModel.ENABLE_SWIPE_DRAWER.setValue(SharedViewModel.TAG_OF_SECONDARY_PAGES.size() == 0);
+                        DrawerCoordinateHelper.getInstance().requestToUpdateDrawerMode();
                     }
                 });
             }
@@ -156,7 +157,7 @@ public class PlayerFragment extends BaseFragment {
             }
         });
 
-        mSharedViewModel.closeSlidePanelIfExpanded.observeInFragment(this, aBoolean -> {
+        mSharedViewModel.isToCloseSlidePanelIfExpanded().observeInFragment(this, aBoolean -> {
 
             // 按下返回键，如果此时 slide 面板是展开的，那么只对面板进行 slide down
 
@@ -180,13 +181,13 @@ public class PlayerFragment extends BaseFragment {
 
                     // TODO: yes:
 
-                    mSharedViewModel.activityCanBeClosedDirectly.setValue(true);
+                    mSharedViewModel.requestToCloseActivityIfAllowed(true);
 
                     // TODO: do not:
                     // mActivity.finish();
                 }
             } else {
-                mSharedViewModel.activityCanBeClosedDirectly.setValue(true);
+                mSharedViewModel.requestToCloseActivityIfAllowed(true);
             }
         });
 
@@ -220,7 +221,7 @@ public class PlayerFragment extends BaseFragment {
         }
 
         public void slideDown() {
-            mSharedViewModel.closeSlidePanelIfExpanded.setValue(true);
+            mSharedViewModel.requestToCloseSlidePanelIfExpanded(true);
         }
 
         public void more() {
