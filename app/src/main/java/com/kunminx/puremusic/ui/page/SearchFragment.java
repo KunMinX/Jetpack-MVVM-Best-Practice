@@ -16,8 +16,6 @@
 
 package com.kunminx.puremusic.ui.page;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -37,13 +35,13 @@ import com.kunminx.puremusic.ui.state.SearchViewModel;
  */
 public class SearchFragment extends BaseFragment {
 
-    private SearchViewModel mSearchViewModel;
-    private MainActivityViewModel mMainActivityViewModel;
+    private SearchViewModel mSearchState;
+    private MainActivityViewModel mMainActivityState;
 
     @Override
     protected void initViewModel() {
-        mSearchViewModel = getFragmentViewModel(SearchViewModel.class);
-        mMainActivityViewModel = getActivityViewModel(MainActivityViewModel.class);
+        mSearchState = getFragmentViewModel(SearchViewModel.class);
+        mMainActivityState = getActivityViewModel(MainActivityViewModel.class);
     }
 
     @Override
@@ -57,7 +55,7 @@ public class SearchFragment extends BaseFragment {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.fragment_search, BR.vm, mSearchViewModel)
+        return new DataBindingConfig(R.layout.fragment_search, BR.vm, mSearchState)
                 .addBindingParam(BR.click, new ClickProxy());
     }
 
@@ -68,7 +66,7 @@ public class SearchFragment extends BaseFragment {
         getLifecycle().addObserver(DrawerCoordinateHelper.getInstance());
 
         //TODO tip 2：绑定跟随视图控制器生命周期的、可叫停的、单独放在 UseCase 中处理的业务
-        getLifecycle().addObserver(mSearchViewModel.downloadRequest.getCanBeStoppedUseCase());
+        getLifecycle().addObserver(mSearchState.downloadRequest.getCanBeStoppedUseCase());
     }
 
     @Override
@@ -81,12 +79,12 @@ public class SearchFragment extends BaseFragment {
         //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
         //https://xiaozhuanlan.com/topic/8204519736
 
-        mMainActivityViewModel.downloadRequest.getDownloadFileLiveData().observe(getViewLifecycleOwner(), downloadFile -> {
-            mSearchViewModel.progress.set(downloadFile.getProgress());
+        mMainActivityState.downloadRequest.getDownloadFileLiveData().observe(getViewLifecycleOwner(), downloadFile -> {
+            mSearchState.progress.set(downloadFile.getProgress());
         });
 
-        mSearchViewModel.downloadRequest.getDownloadFileCanBeStoppedLiveData().observe(getViewLifecycleOwner(), downloadFile -> {
-            mSearchViewModel.progress_cancelable.set(downloadFile.getProgress());
+        mSearchState.downloadRequest.getDownloadFileCanBeStoppedLiveData().observe(getViewLifecycleOwner(), downloadFile -> {
+            mSearchState.progress_cancelable.set(downloadFile.getProgress());
         });
     }
 
@@ -97,27 +95,21 @@ public class SearchFragment extends BaseFragment {
         }
 
         public void testNav() {
-            String u = "https://xiaozhuanlan.com/topic/5860149732";
-            Uri uri = Uri.parse(u);
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            startActivity(intent);
+            openUrlInBrowser("https://xiaozhuanlan.com/topic/5860149732");
         }
 
         public void subscribe() {
-            String u = "https://xiaozhuanlan.com/kunminx";
-            Uri uri = Uri.parse(u);
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            startActivity(intent);
+            openUrlInBrowser("https://xiaozhuanlan.com/topic/5860149732");
         }
 
         public void testDownload() {
-            mMainActivityViewModel.downloadRequest.requestDownloadFile();
+            mMainActivityState.downloadRequest.requestDownloadFile();
         }
 
         //TODO tip 4: 在 UseCase 中 执行可跟随生命周期中止的下载任务
 
         public void testLifecycleDownload() {
-            mSearchViewModel.downloadRequest.requestCanBeStoppedDownloadFile();
+            mSearchState.downloadRequest.requestCanBeStoppedDownloadFile();
         }
     }
 }

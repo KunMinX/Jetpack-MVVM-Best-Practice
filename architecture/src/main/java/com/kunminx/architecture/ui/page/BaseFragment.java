@@ -17,6 +17,8 @@
 package com.kunminx.architecture.ui.page;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
@@ -64,5 +66,11 @@ public abstract class BaseFragment extends DataBindingFragment {
     protected void toggleSoftInput() {
         InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    protected void openUrlInBrowser(String url) {
+        Uri uri = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
     }
 }

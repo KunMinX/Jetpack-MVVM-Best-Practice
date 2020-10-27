@@ -40,5 +40,7 @@
     <string name="user_name">请输入用户名</string>
     <string name="user_password">请输入密码</string>
     <string name="login">登录</string>
+    <string name="username_or_pwd_incomplete">用户名或密码不完整</string>
+    <string name="network_state_retry">网络状态不佳，请重试</string>
 
 </resources>

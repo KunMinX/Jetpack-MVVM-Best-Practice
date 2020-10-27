@@ -17,8 +17,10 @@
 package com.kunminx.architecture.ui.page;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.inputmethod.InputMethodManager;
 
@@ -83,5 +85,11 @@ public abstract class BaseActivity extends DataBindingActivity {
     protected void toggleSoftInput() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    protected void openUrlInBrowser(String url) {
+        Uri uri = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
     }
 }

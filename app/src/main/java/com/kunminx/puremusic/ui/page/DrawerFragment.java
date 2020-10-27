@@ -16,8 +16,6 @@
 
 package com.kunminx.puremusic.ui.page;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -36,11 +34,11 @@ import com.kunminx.puremusic.ui.state.DrawerViewModel;
  */
 public class DrawerFragment extends BaseFragment {
 
-    private DrawerViewModel mDrawerViewModel;
+    private DrawerViewModel mDrawerState;
 
     @Override
     protected void initViewModel() {
-        mDrawerViewModel = getFragmentViewModel(DrawerViewModel.class);
+        mDrawerState = getFragmentViewModel(DrawerViewModel.class);
     }
 
     @Override
@@ -54,7 +52,7 @@ public class DrawerFragment extends BaseFragment {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.fragment_drawer, BR.vm, mDrawerViewModel)
+        return new DataBindingConfig(R.layout.fragment_drawer, BR.vm, mDrawerState)
                 .addBindingParam(BR.click, new ClickProxy())
                 .addBindingParam(BR.adapter, new DrawerAdapter(getContext()));
     }
@@ -69,8 +67,8 @@ public class DrawerFragment extends BaseFragment {
         //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
         //https://xiaozhuanlan.com/topic/8204519736
 
-        mDrawerViewModel.infoRequest.getLibraryLiveData().observe(getViewLifecycleOwner(), libraryInfos -> {
-            if (mAnimationLoaded && libraryInfos != null) {
+        mDrawerState.infoRequest.getLibraryLiveData().observe(getViewLifecycleOwner(), libraryInfoList -> {
+            if (mAnimationLoaded && libraryInfoList != null) {
 
                 //TODO tip 3："唯一可信源"的理念仅适用于"跨域通信"的场景，
                 // state-ViewModel 与"跨域通信"的场景无关，其所持有的 LiveData 仅用于"无防抖加持"的视图状态绑定用途
@@ -80,28 +78,25 @@ public class DrawerFragment extends BaseFragment {
                 // 如果这样说还不理解的话，详见《LiveData》篇和《DataBinding》篇的解析
                 // https://xiaozhuanlan.com/topic/0168753249、https://xiaozhuanlan.com/topic/9816742350
 
-                mDrawerViewModel.list.setValue(libraryInfos);
+                mDrawerState.list.setValue(libraryInfoList);
             }
         });
 
-        mDrawerViewModel.infoRequest.requestLibraryInfo();
+        mDrawerState.infoRequest.requestLibraryInfo();
     }
 
     @Override
     public void loadInitData() {
         super.loadInitData();
-        if (mDrawerViewModel.infoRequest.getLibraryLiveData().getValue() != null) {
-            mDrawerViewModel.list.setValue(mDrawerViewModel.infoRequest.getLibraryLiveData().getValue());
+        if (mDrawerState.infoRequest.getLibraryLiveData().getValue() != null) {
+            mDrawerState.list.setValue(mDrawerState.infoRequest.getLibraryLiveData().getValue());
         }
     }
 
     public class ClickProxy {
 
         public void logoClick() {
-            String u = "https://github.com/KunMinX/Jetpack-MVVM-Best-Practice";
-            Uri uri = Uri.parse(u);
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            startActivity(intent);
+            openUrlInBrowser("https://github.com/KunMinX/Jetpack-MVVM-Best-Practice");
         }
     }
 

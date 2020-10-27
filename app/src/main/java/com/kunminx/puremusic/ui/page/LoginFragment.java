@@ -38,11 +38,11 @@ import com.kunminx.puremusic.ui.state.LoginViewModel;
  */
 public class LoginFragment extends BaseFragment {
 
-    private LoginViewModel mLoginViewModel;
+    private LoginViewModel mLoginState;
 
     @Override
     protected void initViewModel() {
-        mLoginViewModel = getFragmentViewModel(LoginViewModel.class);
+        mLoginState = getFragmentViewModel(LoginViewModel.class);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class LoginFragment extends BaseFragment {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.fragment_login, BR.vm, mLoginViewModel)
+        return new DataBindingConfig(R.layout.fragment_login, BR.vm, mLoginState)
                 .addBindingParam(BR.click, new ClickProxy());
     }
 
@@ -77,21 +77,21 @@ public class LoginFragment extends BaseFragment {
         //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
         //https://xiaozhuanlan.com/topic/8204519736
 
-        mLoginViewModel.accountRequest.getTokenLiveData().observe(getViewLifecycleOwner(), s -> {
+        mLoginState.accountRequest.getTokenLiveData().observe(getViewLifecycleOwner(), s -> {
             if (TextUtils.isEmpty(s)) {
                 return;
             }
             SPUtils.getInstance().put(Configs.TOKEN, s);
-            mLoginViewModel.loadingVisible.set(false);
+            mLoginState.loadingVisible.set(false);
 
             //TODO 登录成功后进行的下一步操作...
             nav().navigateUp();
         });
 
-        mLoginViewModel.accountRequest.getNetStateEvent().observeInFragment(this, netState -> {
-            mLoginViewModel.loadingVisible.set(false);
+        mLoginState.accountRequest.getNetStateEvent().observeInFragment(this, netState -> {
+            mLoginState.loadingVisible.set(false);
             if (!netState.isSuccess()) {
-                showLongToast("网络状态不佳，请重试");
+                showLongToast(getString(R.string.network_state_retry));
             }
         });
     }
@@ -109,13 +109,13 @@ public class LoginFragment extends BaseFragment {
 
             //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
-            if (TextUtils.isEmpty(mLoginViewModel.name.get()) || TextUtils.isEmpty(mLoginViewModel.password.get())) {
-                showLongToast("用户名或密码不完整");
+            if (TextUtils.isEmpty(mLoginState.name.get()) || TextUtils.isEmpty(mLoginState.password.get())) {
+                showLongToast(getString(R.string.username_or_pwd_incomplete));
                 return;
             }
-            User user = new User(mLoginViewModel.name.get(), mLoginViewModel.password.get());
-            mLoginViewModel.accountRequest.requestLogin(user);
-            mLoginViewModel.loadingVisible.set(true);
+            User user = new User(mLoginState.name.get(), mLoginState.password.get());
+            mLoginState.accountRequest.requestLogin(user);
+            mLoginState.loadingVisible.set(true);
         }
 
     }
