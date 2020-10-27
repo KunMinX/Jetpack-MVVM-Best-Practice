@@ -71,8 +71,11 @@ public class LoginFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //TODO tip: request-ViewModel 和 state-ViewModel 边界分明、点到为止、各司其职，
-        //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/6257931840
+        //TODO tip 2：将 request 作为 state-ViewModel 的成员暴露给 Activity/Fragment，
+        // 如此便于语义的明确，以及实现多个 request 在 state-ViewModel 中的组合和复用。
+
+        //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
+        //https://xiaozhuanlan.com/topic/8204519736
 
         mLoginViewModel.accountRequest.getTokenLiveData().observe(getViewLifecycleOwner(), s -> {
             if (TextUtils.isEmpty(s)) {
@@ -101,7 +104,9 @@ public class LoginFragment extends BaseFragment {
 
         public void login() {
 
-            //TODO 通过 xml 中的双向绑定，使得能够通过 stateViewModel 中与控件发生绑定的可观察数据 拿到控件的数据。避免直接接触控件实例而埋下一致性隐患。
+            //TODO tip 3：通过 xml 中的双向绑定，使得能够通过 state-ViewModel 中与控件发生绑定的"可观察数据"拿到控件的数据，
+            // 避免直接接触控件实例而埋下视图调用的一致性隐患。
+
             //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
             if (TextUtils.isEmpty(mLoginViewModel.name.get()) || TextUtils.isEmpty(mLoginViewModel.password.get())) {

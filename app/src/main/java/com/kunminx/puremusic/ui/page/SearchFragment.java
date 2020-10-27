@@ -49,7 +49,7 @@ public class SearchFragment extends BaseFragment {
     @Override
     protected DataBindingConfig getDataBindingConfig() {
 
-        //TODO tip: DataBinding 严格模式：
+        //TODO tip 1: DataBinding 严格模式：
         // 将 DataBinding 实例限制于 base 页面中，默认不向子类暴露，
         // 通过这样的方式，来彻底解决 视图调用的一致性问题，
         // 如此，视图刷新的安全性将和基于函数式编程的 Jetpack Compose 持平。
@@ -67,7 +67,7 @@ public class SearchFragment extends BaseFragment {
 
         getLifecycle().addObserver(DrawerCoordinateHelper.getInstance());
 
-        //TODO tip1：绑定跟随视图控制器生命周期的、可叫停的、单独放在 UseCase 中处理的业务
+        //TODO tip 2：绑定跟随视图控制器生命周期的、可叫停的、单独放在 UseCase 中处理的业务
         getLifecycle().addObserver(mSearchViewModel.downloadRequest.getCanBeStoppedUseCase());
     }
 
@@ -75,8 +75,11 @@ public class SearchFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //TODO 将 request 作为 ViewModel 的成员暴露给 Activity/Fragment，
-        // 如此便于语义的明确，以及实现多个 request 在 ViewModel 中的组合和复用。
+        //TODO tip 3：将 request 作为 state-ViewModel 的成员暴露给 Activity/Fragment，
+        // 如此便于语义的明确，以及实现多个 request 在 state-ViewModel 中的组合和复用。
+
+        //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
+        //https://xiaozhuanlan.com/topic/8204519736
 
         mMainActivityViewModel.downloadRequest.getDownloadFileLiveData().observe(getViewLifecycleOwner(), downloadFile -> {
             mSearchViewModel.progress.set(downloadFile.getProgress());
@@ -111,7 +114,7 @@ public class SearchFragment extends BaseFragment {
             mMainActivityViewModel.downloadRequest.requestDownloadFile();
         }
 
-        //TODO tip2: 在 UseCase 中 执行可跟随生命周期中止的下载任务
+        //TODO tip 4: 在 UseCase 中 执行可跟随生命周期中止的下载任务
 
         public void testLifecycleDownload() {
             mSearchViewModel.downloadRequest.requestCanBeStoppedDownloadFile();

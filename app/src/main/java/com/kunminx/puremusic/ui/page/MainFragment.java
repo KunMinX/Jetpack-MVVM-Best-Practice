@@ -94,11 +94,24 @@ public class MainFragment extends BaseFragment {
 
         if (PlayerManager.getInstance().getAlbum() == null) {
 
-            //TODO 将 request 作为 ViewModel 的成员暴露给 Activity/Fragment，
-            // 如此便于语义的明确，以及实现多个 request 在 ViewModel 中的组合和复用。
+            //TODO tip 5：将 request 作为 state-ViewModel 的成员暴露给 Activity/Fragment，
+            // 如此便于语义的明确，以及实现多个 request 在 state-ViewModel 中的组合和复用。
+
+            //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
+            //https://xiaozhuanlan.com/topic/8204519736
 
             mMainViewModel.musicRequest.requestFreeMusics();
+
         } else {
+
+            //TODO tip 6："唯一可信源"的理念仅适用于"跨域通信"的场景，
+            // state-ViewModel 与"跨域通信"的场景无关，其所持有的 LiveData 仅用于"无防抖加持"的视图状态绑定用途
+            // （也即它是用于在不适合防抖加持的场景下替代"自带防抖特性的 ObservableField"），
+            // 因而此处 LiveData 可以直接在页面内 setValue：所通知的目标不包含其他页面的状态，而是当前页内部的状态。
+
+            // 如果这样说还不理解的话，详见《LiveData》篇和《DataBinding》篇的解析
+            // https://xiaozhuanlan.com/topic/0168753249、https://xiaozhuanlan.com/topic/9816742350
+
             mMainViewModel.list.setValue(PlayerManager.getInstance().getAlbum().getMusics());
         }
     }

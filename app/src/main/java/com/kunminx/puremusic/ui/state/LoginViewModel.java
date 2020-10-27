@@ -42,8 +42,11 @@ public class LoginViewModel extends ViewModel {
 
     public final ObservableBoolean loadingVisible = new ObservableBoolean();
 
-    //TODO 将 request 作为 ViewModel 的成员暴露给 Activity/Fragment，
+    //TODO tip 2：将 request 作为 ViewModel 的成员暴露给 Activity/Fragment，
     // 如此便于语义的明确，以及实现多个 request 在 ViewModel 中的组合和复用。
+
+    //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
+    //https://xiaozhuanlan.com/topic/8204519736
 
     public final AccountRequest accountRequest = new AccountRequest();
 
