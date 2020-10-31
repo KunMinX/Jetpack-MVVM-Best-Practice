@@ -38,7 +38,7 @@ public class DrawerFragment extends BaseFragment {
 
     @Override
     protected void initViewModel() {
-        mDrawerState = getFragmentViewModel(DrawerViewModel.class);
+        mDrawerState = getFragmentScopeViewModel(DrawerViewModel.class);
     }
 
     @Override

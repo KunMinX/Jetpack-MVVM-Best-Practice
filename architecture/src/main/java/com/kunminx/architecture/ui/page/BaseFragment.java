@@ -23,7 +23,6 @@ import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -47,16 +46,16 @@ public abstract class BaseFragment extends DataBindingFragment {
 
     //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/6257931840
 
-    protected <T extends ViewModel> T getFragmentViewModel(@NonNull Class<T> modelClass) {
-        return super.getFragmentViewModel(modelClass);
+    protected <T extends ViewModel> T getFragmentScopeViewModel(@NonNull Class<T> modelClass) {
+        return super.getFragmentScopeViewModel(modelClass);
     }
 
-    protected <T extends ViewModel> T getActivityViewModel(@NonNull Class<T> modelClass) {
-        return super.getActivityViewModel(modelClass);
+    protected <T extends ViewModel> T getActivityScopeViewModel(@NonNull Class<T> modelClass) {
+        return super.getActivityScopeViewModel(modelClass);
     }
 
-    protected ViewModelProvider getAppViewModelProvider() {
-        return super.getAppViewModelProvider();
+    protected <T extends ViewModel> T getApplicationScopeViewModel(@NonNull Class<T> modelClass) {
+        return super.getApplicationScopeViewModel(modelClass);
     }
 
     protected NavController nav() {

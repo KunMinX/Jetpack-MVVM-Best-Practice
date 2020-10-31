@@ -41,8 +41,8 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initViewModel() {
-        mMainActivityViewModel = getActivityViewModel(MainActivityViewModel.class);
-        mSharedViewModel = getAppViewModelProvider().get(SharedViewModel.class);
+        mMainActivityViewModel = getActivityScopeViewModel(MainActivityViewModel.class);
+        mSharedViewModel = getApplicationScopeViewModel(SharedViewModel.class);
     }
 
     @Override

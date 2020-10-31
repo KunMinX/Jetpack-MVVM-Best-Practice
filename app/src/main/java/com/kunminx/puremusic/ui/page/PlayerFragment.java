@@ -53,8 +53,8 @@ public class PlayerFragment extends BaseFragment {
 
     @Override
     protected void initViewModel() {
-        mPlayerState = getFragmentViewModel(PlayerViewModel.class);
-        mPageCallback = getAppViewModelProvider().get(SharedViewModel.class);
+        mPlayerState = getFragmentScopeViewModel(PlayerViewModel.class);
+        mPageCallback = getApplicationScopeViewModel(SharedViewModel.class);
     }
 
     @Override

@@ -56,5 +56,5 @@ dependencies {
 
     api 'com.kunminx.archi:unpeek-livedata:4.4.1-beta1'
     api 'com.kunminx.archi:smooth-navigation:3.3.2-beta5'
-    api 'com.kunminx.archi:strict-databinding:3.3.2-beta2'
+    api 'com.kunminx.archi:strict-databinding:3.5.1-beta1'
 }

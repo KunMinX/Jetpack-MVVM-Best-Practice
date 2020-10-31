@@ -46,8 +46,8 @@ public class MainFragment extends BaseFragment {
 
     @Override
     protected void initViewModel() {
-        mMainState = getFragmentViewModel(MainViewModel.class);
-        mPageCallback = getAppViewModelProvider().get(SharedViewModel.class);
+        mMainState = getFragmentScopeViewModel(MainViewModel.class);
+        mPageCallback = getApplicationScopeViewModel(SharedViewModel.class);
     }
 
     @Override

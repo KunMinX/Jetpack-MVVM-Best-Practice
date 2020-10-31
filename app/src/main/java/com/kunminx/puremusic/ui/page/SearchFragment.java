@@ -40,8 +40,8 @@ public class SearchFragment extends BaseFragment {
 
     @Override
     protected void initViewModel() {
-        mSearchState = getFragmentViewModel(SearchViewModel.class);
-        mMainActivityState = getActivityViewModel(MainActivityViewModel.class);
+        mSearchState = getFragmentScopeViewModel(SearchViewModel.class);
+        mMainActivityState = getActivityScopeViewModel(MainActivityViewModel.class);
     }
 
     @Override

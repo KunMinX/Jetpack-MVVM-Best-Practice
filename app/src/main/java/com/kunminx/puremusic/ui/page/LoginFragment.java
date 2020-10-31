@@ -42,7 +42,7 @@ public class LoginFragment extends BaseFragment {
 
     @Override
     protected void initViewModel() {
-        mLoginState = getFragmentViewModel(LoginViewModel.class);
+        mLoginState = getFragmentScopeViewModel(LoginViewModel.class);
     }
 
     @Override
