@@ -20,7 +20,7 @@ package com.kunminx.puremusic.domain.request;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.kunminx.architecture.data.repository.DataResult;
+import com.kunminx.architecture.data.response.DataResult;
 import com.kunminx.architecture.domain.request.BaseRequest;
 import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.data.repository.DataRepository;

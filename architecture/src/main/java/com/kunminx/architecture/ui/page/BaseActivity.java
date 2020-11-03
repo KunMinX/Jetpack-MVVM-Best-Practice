@@ -28,7 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModel;
 
-import com.kunminx.architecture.domain.manager.NetworkStateManager;
+import com.kunminx.architecture.data.response.manager.NetworkStateManager;
 import com.kunminx.architecture.utils.AdaptScreenUtils;
 import com.kunminx.architecture.utils.BarUtils;
 import com.kunminx.architecture.utils.ScreenUtils;

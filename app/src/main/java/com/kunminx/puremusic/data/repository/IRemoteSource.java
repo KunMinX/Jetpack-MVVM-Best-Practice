@@ -16,7 +16,7 @@
 
 package com.kunminx.puremusic.data.repository;
 
-import com.kunminx.architecture.data.repository.DataResult;
+import com.kunminx.architecture.data.response.DataResult;
 import com.kunminx.puremusic.data.bean.DownloadFile;
 import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.data.bean.TestAlbum;

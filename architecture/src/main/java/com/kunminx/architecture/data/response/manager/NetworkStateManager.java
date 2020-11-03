@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kunminx.architecture.domain.manager;
+package com.kunminx.architecture.data.response.manager;
 
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;

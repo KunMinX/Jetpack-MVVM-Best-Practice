@@ -22,8 +22,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.kunminx.architecture.data.repository.DataResult;
-import com.kunminx.architecture.domain.manager.NetState;
+import com.kunminx.architecture.data.response.DataResult;
+import com.kunminx.architecture.data.response.NetState;
 import com.kunminx.architecture.utils.Utils;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.DownloadFile;
