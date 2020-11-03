@@ -19,9 +19,12 @@ package com.kunminx.architecture.ui.page;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
+import android.view.animation.Animation;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModel;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -31,6 +34,9 @@ import androidx.navigation.fragment.NavHostFragment;
  * Create by KunMinX at 19/7/11
  */
 public abstract class BaseFragment extends DataBindingFragment {
+
+    private static final Handler HANDLER = new Handler();
+    protected boolean mAnimationLoaded;
 
     //TODO tip 1: DataBinding 严格模式（详见 DataBindingFragment - - - - - ）：
     // 将 DataBinding 实例限制于 base 页面中，默认不向子类暴露，
@@ -60,6 +66,23 @@ public abstract class BaseFragment extends DataBindingFragment {
 
     protected NavController nav() {
         return NavHostFragment.findNavController(this);
+    }
+
+    @Nullable
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        //TODO 错开动画转场与 UI 刷新的时机，避免掉帧卡顿的现象
+        HANDLER.postDelayed(() -> {
+            if (!mAnimationLoaded) {
+                mAnimationLoaded = true;
+                loadInitData();
+            }
+        }, 280);
+        return super.onCreateAnimation(transit, enter, nextAnim);
+    }
+
+    protected void loadInitData() {
+
     }
 
     protected void toggleSoftInput() {
