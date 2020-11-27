@@ -8,12 +8,7 @@
 .settings
 .cxx
 
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
+/.idea
 
 local.properties
 maven-repository

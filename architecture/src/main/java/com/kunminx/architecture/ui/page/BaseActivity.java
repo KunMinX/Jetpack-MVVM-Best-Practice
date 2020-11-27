@@ -17,17 +17,21 @@
 package com.kunminx.architecture.ui.page;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.kunminx.architecture.BaseApplication;
 import com.kunminx.architecture.data.response.manager.NetworkStateManager;
 import com.kunminx.architecture.utils.AdaptScreenUtils;
 import com.kunminx.architecture.utils.BarUtils;
@@ -38,6 +42,9 @@ import com.kunminx.architecture.utils.ScreenUtils;
  * Create by KunMinX at 19/8/1
  */
 public abstract class BaseActivity extends DataBindingActivity {
+
+    private ViewModelProvider mActivityProvider;
+    private ViewModelProvider mApplicationProvider;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,7 +59,7 @@ public abstract class BaseActivity extends DataBindingActivity {
         //TODO tip 1: DataBinding 严格模式（详见 DataBindingActivity - - - - - ）：
         // 将 DataBinding 实例限制于 base 页面中，默认不向子类暴露，
         // 通过这样的方式，来彻底解决 视图调用的一致性问题，
-        // 如此，视图刷新的安全性将和基于函数式编程的 Jetpack Compose 持平。
+        // 如此，视图调用的安全性将和基于函数式编程思想的 Jetpack Compose 持平。
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
     }
@@ -65,11 +72,32 @@ public abstract class BaseActivity extends DataBindingActivity {
     //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/6257931840
 
     protected <T extends ViewModel> T getActivityScopeViewModel(@NonNull Class<T> modelClass) {
-        return super.getActivityScopeViewModel(modelClass);
+        if (mActivityProvider == null) {
+            mActivityProvider = new ViewModelProvider(this);
+        }
+        return mActivityProvider.get(modelClass);
     }
 
     protected <T extends ViewModel> T getApplicationScopeViewModel(@NonNull Class<T> modelClass) {
-        return super.getApplicationScopeViewModel(modelClass);
+        if (mApplicationProvider == null) {
+            mApplicationProvider = new ViewModelProvider((BaseApplication) this.getApplicationContext(),
+                    getAppFactory(this));
+        }
+        return mApplicationProvider.get(modelClass);
+    }
+
+    private ViewModelProvider.Factory getAppFactory(Activity activity) {
+        Application application = checkApplication(activity);
+        return ViewModelProvider.AndroidViewModelFactory.getInstance(application);
+    }
+
+    private Application checkApplication(Activity activity) {
+        Application application = activity.getApplication();
+        if (application == null) {
+            throw new IllegalStateException("Your activity/fragment is not yet attached to "
+                    + "Application. You can't request ViewModel before onCreate call.");
+        }
+        return application;
     }
 
     @Override
@@ -90,5 +118,21 @@ public abstract class BaseActivity extends DataBindingActivity {
         Uri uri = Uri.parse(url);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);
+    }
+
+    protected void showLongToast(String text) {
+        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+    }
+
+    protected void showShortToast(String text) {
+        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+    }
+
+    protected void showLongToast(int stringRes) {
+        showLongToast(getApplicationContext().getString(stringRes));
+    }
+
+    protected void showShortToast(int stringRes) {
+        showShortToast(getApplicationContext().getString(stringRes));
     }
 }
