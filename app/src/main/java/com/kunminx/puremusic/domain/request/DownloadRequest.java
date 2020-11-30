@@ -43,6 +43,15 @@ public class DownloadRequest extends BaseRequest {
     //https://xiaozhuanlan.com/topic/0168753249
 
     public LiveData<DataResult<DownloadFile>> getDownloadFileLiveData() {
+
+        //TODO tip 3：与此同时，为了方便语义上的理解，故而直接将 DataResult 作为 LiveData value 回推给 UI 层，
+        //而不是将 DataResult 的泛型实体拆下来单独回推，如此
+        //一方面使 UI 层有机会基于 DataResult 的 resultState 来分别处理 请求成功或失败的情况下的 UI 表现，
+        //另一方面从语义上强调了 该数据是请求得来的结果，是只读的，从而方便团队开发者巩固 "读写分离" 的良好开发习惯。
+
+        //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》中对 "只读数据" 和 "可变状态" 的区分的解析。
+        //https://xiaozhuanlan.com/topic/8204519736
+
         return mDownloadFileLiveData;
     }
 
