@@ -44,7 +44,8 @@ public class MainViewModel extends ViewModel {
 
     public final ObservableField<String> pageAssetPath = new ObservableField<>();
 
-    //TODO 此处用于绑定的状态，使用 LiveData 而不是 ObservableField，主要是考虑到 ObservableField 具有防抖的特性，不适合该场景。
+    //TODO 此处用于绑定的状态，使用 LiveData 而不是 ObservableField，
+    // 主要是考虑到 ObservableField 具有防抖的特性，不适合该场景。
 
     //如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
