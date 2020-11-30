@@ -35,13 +35,13 @@ import com.kunminx.puremusic.ui.state.SearchViewModel;
  */
 public class SearchFragment extends BaseFragment {
 
-    private SearchViewModel mSearchState;
-    private MainActivityViewModel mMainActivityState;
+    private SearchViewModel mState;
+    private MainActivityViewModel mActivityScopeState;
 
     @Override
     protected void initViewModel() {
-        mSearchState = getFragmentScopeViewModel(SearchViewModel.class);
-        mMainActivityState = getActivityScopeViewModel(MainActivityViewModel.class);
+        mState = getFragmentScopeViewModel(SearchViewModel.class);
+        mActivityScopeState = getActivityScopeViewModel(MainActivityViewModel.class);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class SearchFragment extends BaseFragment {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.fragment_search, BR.vm, mSearchState)
+        return new DataBindingConfig(R.layout.fragment_search, BR.vm, mState)
                 .addBindingParam(BR.click, new ClickProxy());
     }
 
@@ -66,7 +66,7 @@ public class SearchFragment extends BaseFragment {
         getLifecycle().addObserver(DrawerCoordinateHelper.getInstance());
 
         //TODO tip 2：绑定跟随视图控制器生命周期的、可叫停的、单独放在 UseCase 中处理的业务
-        getLifecycle().addObserver(mSearchState.downloadRequest.getCanBeStoppedUseCase());
+        getLifecycle().addObserver(mState.downloadRequest.getCanBeStoppedUseCase());
     }
 
     @Override
@@ -79,12 +79,12 @@ public class SearchFragment extends BaseFragment {
         //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
         //https://xiaozhuanlan.com/topic/8204519736
 
-        mMainActivityState.downloadRequest.getDownloadFileLiveData().observe(getViewLifecycleOwner(), downloadFile -> {
-            mSearchState.progress.set(downloadFile.getProgress());
+        mActivityScopeState.downloadRequest.getDownloadFileLiveData().observe(getViewLifecycleOwner(), downloadFile -> {
+            mState.progress.set(downloadFile.getProgress());
         });
 
-        mSearchState.downloadRequest.getDownloadFileCanBeStoppedLiveData().observe(getViewLifecycleOwner(), downloadFile -> {
-            mSearchState.progress_cancelable.set(downloadFile.getProgress());
+        mState.downloadRequest.getDownloadFileCanBeStoppedLiveData().observe(getViewLifecycleOwner(), downloadFile -> {
+            mState.progress_cancelable.set(downloadFile.getProgress());
         });
     }
 
@@ -103,13 +103,13 @@ public class SearchFragment extends BaseFragment {
         }
 
         public void testDownload() {
-            mMainActivityState.downloadRequest.requestDownloadFile();
+            mActivityScopeState.downloadRequest.requestDownloadFile();
         }
 
         //TODO tip 4: 在 UseCase 中 执行可跟随生命周期中止的下载任务
 
         public void testLifecycleDownload() {
-            mSearchState.downloadRequest.requestCanBeStoppedDownloadFile();
+            mState.downloadRequest.requestCanBeStoppedDownloadFile();
         }
     }
 }

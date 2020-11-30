@@ -34,11 +34,11 @@ import com.kunminx.puremusic.ui.state.DrawerViewModel;
  */
 public class DrawerFragment extends BaseFragment {
 
-    private DrawerViewModel mDrawerState;
+    private DrawerViewModel mState;
 
     @Override
     protected void initViewModel() {
-        mDrawerState = getFragmentScopeViewModel(DrawerViewModel.class);
+        mState = getFragmentScopeViewModel(DrawerViewModel.class);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class DrawerFragment extends BaseFragment {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.fragment_drawer, BR.vm, mDrawerState)
+        return new DataBindingConfig(R.layout.fragment_drawer, BR.vm, mState)
                 .addBindingParam(BR.click, new ClickProxy())
                 .addBindingParam(BR.adapter, new DrawerAdapter(getContext()));
     }
@@ -67,7 +67,7 @@ public class DrawerFragment extends BaseFragment {
         //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
         //https://xiaozhuanlan.com/topic/8204519736
 
-        mDrawerState.infoRequest.getLibraryLiveData().observe(getViewLifecycleOwner(), libraryInfoList -> {
+        mState.infoRequest.getLibraryLiveData().observe(getViewLifecycleOwner(), libraryInfoList -> {
             if (mAnimationLoaded && libraryInfoList != null) {
 
                 //TODO tip 3："唯一可信源"的理念仅适用于"跨域通信"的场景，
@@ -78,18 +78,18 @@ public class DrawerFragment extends BaseFragment {
                 // 如果这样说还不理解的话，详见《LiveData》篇和《DataBinding》篇的解析
                 // https://xiaozhuanlan.com/topic/0168753249、https://xiaozhuanlan.com/topic/9816742350
 
-                mDrawerState.list.setValue(libraryInfoList);
+                mState.list.setValue(libraryInfoList);
             }
         });
 
-        mDrawerState.infoRequest.requestLibraryInfo();
+        mState.infoRequest.requestLibraryInfo();
     }
 
     @Override
     public void loadInitData() {
         super.loadInitData();
-        if (mDrawerState.infoRequest.getLibraryLiveData().getValue() != null) {
-            mDrawerState.list.setValue(mDrawerState.infoRequest.getLibraryLiveData().getValue());
+        if (mState.infoRequest.getLibraryLiveData().getValue() != null) {
+            mState.list.setValue(mState.infoRequest.getLibraryLiveData().getValue());
         }
     }
 

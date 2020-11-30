@@ -48,12 +48,12 @@ public class PlayerFragment extends BaseFragment {
 
     //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/6257931840
 
-    private PlayerViewModel mPlayerState;
+    private PlayerViewModel mState;
     private SharedViewModel mPageCallback;
 
     @Override
     protected void initViewModel() {
-        mPlayerState = getFragmentScopeViewModel(PlayerViewModel.class);
+        mState = getFragmentScopeViewModel(PlayerViewModel.class);
         mPageCallback = getApplicationScopeViewModel(SharedViewModel.class);
     }
 
@@ -68,7 +68,7 @@ public class PlayerFragment extends BaseFragment {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.fragment_player, BR.vm, mPlayerState)
+        return new DataBindingConfig(R.layout.fragment_player, BR.vm, mState)
                 .addBindingParam(BR.click, new ClickProxy())
                 .addBindingParam(BR.event, new EventHandler());
     }
@@ -114,9 +114,9 @@ public class PlayerFragment extends BaseFragment {
             // TODO tip 3：同 tip 2.
 
             // 切歌时，音乐的标题、作者、封面 状态的改变
-            mPlayerState.title.set(changeMusic.getTitle());
-            mPlayerState.artist.set(changeMusic.getSummary());
-            mPlayerState.coverImg.set(changeMusic.getImg());
+            mState.title.set(changeMusic.getTitle());
+            mState.artist.set(changeMusic.getSummary());
+            mState.coverImg.set(changeMusic.getImg());
         });
 
         PlayerManager.getInstance().getPlayingMusicLiveData().observe(getViewLifecycleOwner(), playingMusic -> {
@@ -124,8 +124,8 @@ public class PlayerFragment extends BaseFragment {
             // TODO tip 4：同 tip 2.
 
             // 播放进度 状态的改变
-            mPlayerState.maxSeekDuration.set(playingMusic.getDuration());
-            mPlayerState.currentSeekPosition.set(playingMusic.getPlayerPosition());
+            mState.maxSeekDuration.set(playingMusic.getDuration());
+            mState.currentSeekPosition.set(playingMusic.getPlayerPosition());
         });
 
         PlayerManager.getInstance().getPauseLiveData().observe(getViewLifecycleOwner(), aBoolean -> {
@@ -139,19 +139,19 @@ public class PlayerFragment extends BaseFragment {
             // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/0168753249
 
             // 播放按钮 状态的改变
-            mPlayerState.isPlaying.set(!aBoolean);
+            mState.isPlaying.set(!aBoolean);
         });
 
         PlayerManager.getInstance().getPlayModeLiveData().observe(getViewLifecycleOwner(), anEnum -> {
             int tip;
             if (anEnum == PlayingInfoManager.RepeatMode.LIST_LOOP) {
-                mPlayerState.playModeIcon.set(MaterialDrawableBuilder.IconValue.REPEAT);
+                mState.playModeIcon.set(MaterialDrawableBuilder.IconValue.REPEAT);
                 tip = R.string.play_repeat;
             } else if (anEnum == PlayingInfoManager.RepeatMode.ONE_LOOP) {
-                mPlayerState.playModeIcon.set(MaterialDrawableBuilder.IconValue.REPEAT_ONCE);
+                mState.playModeIcon.set(MaterialDrawableBuilder.IconValue.REPEAT_ONCE);
                 tip = R.string.play_repeat_once;
             } else {
-                mPlayerState.playModeIcon.set(MaterialDrawableBuilder.IconValue.SHUFFLE);
+                mState.playModeIcon.set(MaterialDrawableBuilder.IconValue.SHUFFLE);
                 tip = R.string.play_shuffle;
             }
             if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {

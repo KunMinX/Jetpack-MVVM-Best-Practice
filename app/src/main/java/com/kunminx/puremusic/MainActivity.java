@@ -35,14 +35,14 @@ import com.kunminx.puremusic.ui.state.MainActivityViewModel;
 
 public class MainActivity extends BaseActivity {
 
-    private MainActivityViewModel mMainActivityViewModel;
-    private SharedViewModel mSharedViewModel;
+    private MainActivityViewModel mState;
+    private SharedViewModel mPageCallback;
     private boolean mIsListened = false;
 
     @Override
     protected void initViewModel() {
-        mMainActivityViewModel = getActivityScopeViewModel(MainActivityViewModel.class);
-        mSharedViewModel = getApplicationScopeViewModel(SharedViewModel.class);
+        mState = getActivityScopeViewModel(MainActivityViewModel.class);
+        mPageCallback = getApplicationScopeViewModel(SharedViewModel.class);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class MainActivity extends BaseActivity {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.activity_main, BR.vm, mMainActivityViewModel)
+        return new DataBindingConfig(R.layout.activity_main, BR.vm, mState)
                 .addBindingParam(BR.event, new EventHandler());
     }
 
@@ -64,23 +64,23 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mSharedViewModel.isToCloseActivityIfAllowed().observeInActivity(this, aBoolean -> {
+        mPageCallback.isToCloseActivityIfAllowed().observeInActivity(this, aBoolean -> {
             NavController nav = Navigation.findNavController(this, R.id.main_fragment_host);
             if (nav.getCurrentDestination() != null && nav.getCurrentDestination().getId() != R.id.mainFragment) {
                 nav.navigateUp();
 
-            } else if (mMainActivityViewModel.isDrawerOpened.get()) {
+            } else if (mState.isDrawerOpened.get()) {
 
                 //TODO 同 tip 2
 
-                mSharedViewModel.requestToOpenOrCloseDrawer(false);
+                mPageCallback.requestToOpenOrCloseDrawer(false);
 
             } else {
                 super.onBackPressed();
             }
         });
 
-        mSharedViewModel.isToOpenOrCloseDrawer().observeInActivity(this, aBoolean -> {
+        mPageCallback.isToOpenOrCloseDrawer().observeInActivity(this, aBoolean -> {
 
             //TODO yes：同 tip 1: 此处将 drawer 的 open 和 close 都放在 drawerBindingAdapter 中操作，规避了视图调用的一致性问题，
 
@@ -90,7 +90,7 @@ public class MainActivity extends BaseActivity {
 
             //如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
-            mMainActivityViewModel.openDrawer.setValue(aBoolean);
+            mState.openDrawer.setValue(aBoolean);
 
             //TODO do not:（容易因疏忽 而埋下视图调用的一致性隐患）
 
@@ -107,7 +107,7 @@ public class MainActivity extends BaseActivity {
 
             //TODO yes: 同 tip 1
 
-            mMainActivityViewModel.allowDrawerOpen.setValue(aBoolean);
+            mState.allowDrawerOpen.setValue(aBoolean);
 
             // TODO do not:（容易因疏忽 而埋下视图调用的一致性隐患）
 
@@ -132,7 +132,7 @@ public class MainActivity extends BaseActivity {
             // fragment 内部的事情在 fragment 内部消化，不要试图在 Activity 中调用和操纵 Fragment 内部的东西。
             // 因为 fragment 端的处理后续可能会改变，并且可受用于更多的 Activity，而不单单是本 Activity。
 
-            mSharedViewModel.requestToAddSlideListener(true);
+            mPageCallback.requestToAddSlideListener(true);
 
             mIsListened = true;
         }
@@ -143,21 +143,21 @@ public class MainActivity extends BaseActivity {
 
         // TODO 同 tip 2
 
-        mSharedViewModel.requestToCloseSlidePanelIfExpanded(true);
+        mPageCallback.requestToCloseSlidePanelIfExpanded(true);
     }
 
     public class EventHandler extends DrawerLayout.SimpleDrawerListener {
         @Override
         public void onDrawerOpened(View drawerView) {
             super.onDrawerOpened(drawerView);
-            mMainActivityViewModel.isDrawerOpened.set(true);
+            mState.isDrawerOpened.set(true);
         }
 
         @Override
         public void onDrawerClosed(View drawerView) {
             super.onDrawerClosed(drawerView);
-            mMainActivityViewModel.isDrawerOpened.set(false);
-            mMainActivityViewModel.openDrawer.setValue(false);
+            mState.isDrawerOpened.set(false);
+            mState.openDrawer.setValue(false);
         }
     }
 }

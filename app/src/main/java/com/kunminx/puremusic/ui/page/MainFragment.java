@@ -41,12 +41,12 @@ public class MainFragment extends BaseFragment {
 
     //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/6257931840
 
-    private MainViewModel mMainState;
+    private MainViewModel mState;
     private SharedViewModel mPageCallback;
 
     @Override
     protected void initViewModel() {
-        mMainState = getFragmentScopeViewModel(MainViewModel.class);
+        mState = getFragmentScopeViewModel(MainViewModel.class);
         mPageCallback = getApplicationScopeViewModel(SharedViewModel.class);
     }
 
@@ -61,7 +61,7 @@ public class MainFragment extends BaseFragment {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.fragment_main, BR.vm, mMainState)
+        return new DataBindingConfig(R.layout.fragment_main, BR.vm, mState)
                 .addBindingParam(BR.click, new ClickProxy())
                 .addBindingParam(BR.adapter, new PlaylistAdapter(getContext()));
     }
@@ -77,12 +77,12 @@ public class MainFragment extends BaseFragment {
             // 如此才能方便 追溯事件源，以及 避免 不可预期的 推送和错误。
             // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/0168753249
 
-            mMainState.notifyCurrentListChanged.setValue(true);
+            mState.notifyCurrentListChanged.setValue(true);
         });
 
-        mMainState.musicRequest.getFreeMusicsLiveData().observe(getViewLifecycleOwner(), musicAlbum -> {
+        mState.musicRequest.getFreeMusicsLiveData().observe(getViewLifecycleOwner(), musicAlbum -> {
             if (musicAlbum != null && musicAlbum.getMusics() != null) {
-                mMainState.list.setValue(musicAlbum.getMusics());
+                mState.list.setValue(musicAlbum.getMusics());
 
                 // TODO tip 4：未作 UnPeek 处理的 用于 request 的 LiveData，在视图控制器重建时会自动倒灌数据
 
@@ -105,7 +105,7 @@ public class MainFragment extends BaseFragment {
             //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
             //https://xiaozhuanlan.com/topic/8204519736
 
-            mMainState.musicRequest.requestFreeMusics();
+            mState.musicRequest.requestFreeMusics();
 
         } else {
 
@@ -117,7 +117,7 @@ public class MainFragment extends BaseFragment {
             // 如果这样说还不理解的话，详见《LiveData》篇和《DataBinding》篇的解析
             // https://xiaozhuanlan.com/topic/0168753249、https://xiaozhuanlan.com/topic/9816742350
 
-            mMainState.list.setValue(PlayerManager.getInstance().getAlbum().getMusics());
+            mState.list.setValue(PlayerManager.getInstance().getAlbum().getMusics());
         }
     }
 

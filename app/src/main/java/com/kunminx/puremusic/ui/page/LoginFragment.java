@@ -38,11 +38,11 @@ import com.kunminx.puremusic.ui.state.LoginViewModel;
  */
 public class LoginFragment extends BaseFragment {
 
-    private LoginViewModel mLoginState;
+    private LoginViewModel mState;
 
     @Override
     protected void initViewModel() {
-        mLoginState = getFragmentScopeViewModel(LoginViewModel.class);
+        mState = getFragmentScopeViewModel(LoginViewModel.class);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class LoginFragment extends BaseFragment {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.fragment_login, BR.vm, mLoginState)
+        return new DataBindingConfig(R.layout.fragment_login, BR.vm, mState)
                 .addBindingParam(BR.click, new ClickProxy());
     }
 
@@ -77,19 +77,19 @@ public class LoginFragment extends BaseFragment {
         //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
         //https://xiaozhuanlan.com/topic/8204519736
 
-        mLoginState.accountRequest.getTokenLiveData().observe(getViewLifecycleOwner(), s -> {
+        mState.accountRequest.getTokenLiveData().observe(getViewLifecycleOwner(), s -> {
             if (TextUtils.isEmpty(s)) {
                 return;
             }
             SPUtils.getInstance().put(Configs.TOKEN, s);
-            mLoginState.loadingVisible.set(false);
+            mState.loadingVisible.set(false);
 
             //TODO 登录成功后进行的下一步操作...
             nav().navigateUp();
         });
 
-        mLoginState.accountRequest.getNetStateEvent().observeInFragment(this, netState -> {
-            mLoginState.loadingVisible.set(false);
+        mState.accountRequest.getNetStateEvent().observeInFragment(this, netState -> {
+            mState.loadingVisible.set(false);
             if (!netState.isSuccess()) {
                 showLongToast(getString(R.string.network_state_retry));
             }
@@ -109,13 +109,13 @@ public class LoginFragment extends BaseFragment {
 
             //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
-            if (TextUtils.isEmpty(mLoginState.name.get()) || TextUtils.isEmpty(mLoginState.password.get())) {
+            if (TextUtils.isEmpty(mState.name.get()) || TextUtils.isEmpty(mState.password.get())) {
                 showLongToast(getString(R.string.username_or_pwd_incomplete));
                 return;
             }
-            User user = new User(mLoginState.name.get(), mLoginState.password.get());
-            mLoginState.accountRequest.requestLogin(user);
-            mLoginState.loadingVisible.set(true);
+            User user = new User(mState.name.get(), mState.password.get());
+            mState.accountRequest.requestLogin(user);
+            mState.loadingVisible.set(true);
         }
 
     }
