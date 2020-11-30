@@ -79,12 +79,16 @@ public class SearchFragment extends BaseFragment {
         //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
         //https://xiaozhuanlan.com/topic/8204519736
 
-        mActivityScopeState.downloadRequest.getDownloadFileLiveData().observe(getViewLifecycleOwner(), downloadFile -> {
-            mState.progress.set(downloadFile.getProgress());
+        mActivityScopeState.downloadRequest.getDownloadFileLiveData().observe(getViewLifecycleOwner(), dataResult -> {
+            if (dataResult.getResultState().isSuccess()) {
+                mState.progress.set(dataResult.getResult().getProgress());
+            }
         });
 
-        mState.downloadRequest.getDownloadFileCanBeStoppedLiveData().observe(getViewLifecycleOwner(), downloadFile -> {
-            mState.progress_cancelable.set(downloadFile.getProgress());
+        mState.downloadRequest.getDownloadFileCanBeStoppedLiveData().observe(getViewLifecycleOwner(), dataResult -> {
+            if (dataResult.getResultState().isSuccess()) {
+                mState.progress_cancelable.set(dataResult.getResult().getProgress());
+            }
         });
     }
 
@@ -95,11 +99,11 @@ public class SearchFragment extends BaseFragment {
         }
 
         public void testNav() {
-            openUrlInBrowser("https://xiaozhuanlan.com/topic/5860149732");
+            openUrlInBrowser(getString(R.string.article_navigation));
         }
 
         public void subscribe() {
-            openUrlInBrowser("https://xiaozhuanlan.com/topic/5860149732");
+            openUrlInBrowser(getString(R.string.article_navigation));
         }
 
         public void testDownload() {

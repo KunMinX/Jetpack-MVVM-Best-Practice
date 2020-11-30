@@ -19,8 +19,6 @@ package com.kunminx.puremusic.domain.usecase;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import com.kunminx.architecture.data.response.DataResult;
 import com.kunminx.architecture.domain.usecase.UseCase;
@@ -44,12 +42,15 @@ import com.kunminx.puremusic.data.repository.DataRepository;
 public class CanBeStoppedUseCase extends UseCase<CanBeStoppedUseCase.RequestValues,
         CanBeStoppedUseCase.ResponseValue> implements DefaultLifecycleObserver {
 
+    private DownloadFile mDownloadFile = new DownloadFile();
+
     @Override
     public void onStop(@NonNull LifecycleOwner owner) {
-        if (getRequestValues() != null && getRequestValues().liveData != null) {
-            DownloadFile downloadFile = getRequestValues().liveData.getValue();
-            downloadFile.setForgive(true);
-            getUseCaseCallback().onSuccess(new ResponseValue(getRequestValues().liveData));
+        if (getRequestValues() != null) {
+            mDownloadFile.setForgive(true);
+            mDownloadFile.setProgress(0);
+            mDownloadFile.setFile(null);
+            getUseCaseCallback().onError();
         }
     }
 
@@ -58,43 +59,25 @@ public class CanBeStoppedUseCase extends UseCase<CanBeStoppedUseCase.RequestValu
 
         //访问数据层资源，在 UseCase 中处理带叫停性质的业务
 
-        DataRepository.getInstance().downloadFile(new DataResult<>((downloadFile, netState) -> {
-            requestValues.liveData.postValue(downloadFile);
-        }));
-
+        DataRepository.getInstance().downloadFile(mDownloadFile, dataResult -> {
+            getUseCaseCallback().onSuccess(new ResponseValue(dataResult));
+        });
     }
 
     public static final class RequestValues implements UseCase.RequestValues {
 
-        private MutableLiveData<DownloadFile> liveData;
-
-        public RequestValues(MutableLiveData<DownloadFile> liveData) {
-            this.liveData = liveData;
-        }
-
-        public MutableLiveData<DownloadFile> getLiveData() {
-            return liveData;
-        }
-
-        public void setLiveData(MutableLiveData<DownloadFile> liveData) {
-            this.liveData = liveData;
-        }
     }
 
     public static final class ResponseValue implements UseCase.ResponseValue {
 
-        private MutableLiveData<DownloadFile> liveData;
+        private DataResult<DownloadFile> mDataResult;
 
-        public ResponseValue(MutableLiveData<DownloadFile> liveData) {
-            this.liveData = liveData;
+        public ResponseValue(DataResult<DownloadFile> dataResult) {
+            mDataResult = dataResult;
         }
 
-        public LiveData<DownloadFile> getLiveData() {
-            return liveData;
-        }
-
-        public void setLiveData(MutableLiveData<DownloadFile> liveData) {
-            this.liveData = liveData;
+        public DataResult<DownloadFile> getDataResult() {
+            return mDataResult;
         }
     }
 }

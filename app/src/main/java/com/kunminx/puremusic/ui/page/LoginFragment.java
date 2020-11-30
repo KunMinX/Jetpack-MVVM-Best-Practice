@@ -77,22 +77,21 @@ public class LoginFragment extends BaseFragment {
         //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
         //https://xiaozhuanlan.com/topic/8204519736
 
-        mState.accountRequest.getTokenLiveData().observe(getViewLifecycleOwner(), s -> {
-            if (TextUtils.isEmpty(s)) {
+        mState.accountRequest.getTokenLiveData().observe(getViewLifecycleOwner(), dataResult -> {
+            if (!dataResult.getResultState().isSuccess()) {
+                mState.loadingVisible.set(false);
+                showLongToast(getString(R.string.network_state_retry));
                 return;
             }
+
+            String s = dataResult.getResult();
+            if (TextUtils.isEmpty(s)) return;
+
             SPUtils.getInstance().put(Configs.TOKEN, s);
             mState.loadingVisible.set(false);
 
             //TODO 登录成功后进行的下一步操作...
             nav().navigateUp();
-        });
-
-        mState.accountRequest.getNetStateEvent().observeInFragment(this, netState -> {
-            mState.loadingVisible.set(false);
-            if (!netState.isSuccess()) {
-                showLongToast(getString(R.string.network_state_retry));
-            }
         });
     }
 

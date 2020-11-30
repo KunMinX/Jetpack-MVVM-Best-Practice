@@ -18,12 +18,10 @@ package com.kunminx.puremusic.data.repository;
 
 import android.util.Log;
 
-import androidx.lifecycle.MutableLiveData;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kunminx.architecture.data.response.DataResult;
-import com.kunminx.architecture.data.response.NetState;
+import com.kunminx.architecture.data.response.ResultState;
 import com.kunminx.architecture.utils.Utils;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.DownloadFile;
@@ -42,20 +40,12 @@ import java.util.TimerTask;
 public class DataRepository implements ILocalSource, IRemoteSource {
 
     private static final DataRepository S_REQUEST_MANAGER = new DataRepository();
-    private MutableLiveData<String> responseCodeLiveData;
 
     private DataRepository() {
     }
 
     public static DataRepository getInstance() {
         return S_REQUEST_MANAGER;
-    }
-
-    public MutableLiveData<String> getResponseCodeLiveData() {
-        if (responseCodeLiveData == null) {
-            responseCodeLiveData = new MutableLiveData<>();
-        }
-        return responseCodeLiveData;
     }
 
     /**
@@ -70,24 +60,24 @@ public class DataRepository implements ILocalSource, IRemoteSource {
      * @param result
      */
     @Override
-    public void getFreeMusic(DataResult<TestAlbum> result) {
+    public void getFreeMusic(DataResult.Result<TestAlbum> result) {
 
         Gson gson = new Gson();
         Type type = new TypeToken<TestAlbum>() {
         }.getType();
         TestAlbum testAlbum = gson.fromJson(Utils.getApp().getString(R.string.free_music_json), type);
 
-        result.setResult(testAlbum, new NetState());
+        result.onResult(new DataResult<>(testAlbum, new ResultState()));
     }
 
     @Override
-    public void getLibraryInfo(DataResult<List<LibraryInfo>> result) {
+    public void getLibraryInfo(DataResult.Result<List<LibraryInfo>> result) {
         Gson gson = new Gson();
         Type type = new TypeToken<List<LibraryInfo>>() {
         }.getType();
         List<LibraryInfo> list = gson.fromJson(Utils.getApp().getString(R.string.library_json), type);
 
-        result.setResult(list, new NetState());
+        result.onResult(new DataResult<>(list, new ResultState()));
     }
 
     /**
@@ -98,7 +88,7 @@ public class DataRepository implements ILocalSource, IRemoteSource {
      * @param result 从 Request-ViewModel 或 UseCase 注入 LiveData，用于 控制流程、回传进度、回传文件
      */
     @Override
-    public void downloadFile(DataResult<DownloadFile> result) {
+    public void downloadFile(DownloadFile downloadFile, DataResult.Result<DownloadFile> result) {
 
         Timer timer = new Timer();
 
@@ -107,18 +97,11 @@ public class DataRepository implements ILocalSource, IRemoteSource {
             public void run() {
 
                 //模拟下载，假设下载一个文件要 10秒、每 100 毫秒下载 1% 并通知 UI 层
-
-                DownloadFile downloadFile = result.getResult();
-                if (downloadFile == null) {
-                    downloadFile = new DownloadFile();
-                }
                 if (downloadFile.getProgress() < 100) {
                     downloadFile.setProgress(downloadFile.getProgress() + 1);
                     Log.d("TAG", "下载进度 " + downloadFile.getProgress() + "%");
                 } else {
                     timer.cancel();
-                    downloadFile.setProgress(0);
-                    return;
                 }
                 if (downloadFile.isForgive()) {
                     timer.cancel();
@@ -126,12 +109,11 @@ public class DataRepository implements ILocalSource, IRemoteSource {
                     downloadFile.setForgive(false);
                     return;
                 }
-                result.setResult(downloadFile, new NetState());
-                downloadFile(result);
+                result.onResult(new DataResult<>(downloadFile, new ResultState()));
             }
         };
 
-        timer.schedule(task, 100);
+        timer.schedule(task, 100, 100);
     }
 
     /**
@@ -141,7 +123,7 @@ public class DataRepository implements ILocalSource, IRemoteSource {
      * @param result 模拟网络请求返回的 token
      */
     @Override
-    public void login(User user, DataResult<String> result) {
+    public void login(User user, DataResult.Result<String> result) {
 
         Timer timer = new Timer();
 
@@ -152,16 +134,11 @@ public class DataRepository implements ILocalSource, IRemoteSource {
                 //TODO 模拟登录，假装花费了 2000 毫秒去提交用户信息，结果遭遇网络状况不良。
                 //这时候可以通过 NetworkState 去通知 UI 层做出变化。
 
-                NetState netState = new NetState();
-                netState.setSuccess(false);
-                netState.setResponseCode("404");
+                String response = "";
 
-                if (netState.isSuccess()) {
-                    //TODO 否则，网络状况好的情况下，可向 UI 层回传来自网络请求响应的 token 等其他信息
-                    result.setResult("token:xxxxxxxxxxxx", netState);
-                } else {
-                    result.setResult("", netState);
-                }
+                ResultState resultState = new ResultState("404", false);
+
+                result.onResult(new DataResult<>(response, resultState));
             }
         };
 

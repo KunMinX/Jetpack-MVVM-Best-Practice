@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.kunminx.architecture.data.response.DataResult;
 import com.kunminx.architecture.domain.request.BaseRequest;
-import com.kunminx.architecture.domain.usecase.UseCase;
 import com.kunminx.architecture.domain.usecase.UseCaseHandler;
 import com.kunminx.puremusic.data.bean.DownloadFile;
 import com.kunminx.puremusic.data.repository.DataRepository;
@@ -30,9 +29,9 @@ import com.kunminx.puremusic.domain.usecase.CanBeStoppedUseCase;
  */
 public class DownloadRequest extends BaseRequest {
 
-    private final MutableLiveData<DownloadFile> mDownloadFileLiveData = new MutableLiveData<>();
+    private final MutableLiveData<DataResult<DownloadFile>> mDownloadFileLiveData = new MutableLiveData<>();
 
-    private final MutableLiveData<DownloadFile> mDownloadFileCanBeStoppedLiveData = new MutableLiveData<>();
+    private final MutableLiveData<DataResult<DownloadFile>> mDownloadFileCanBeStoppedLiveData = new MutableLiveData<>();
 
     private final CanBeStoppedUseCase mCanBeStoppedUseCase = new CanBeStoppedUseCase();
 
@@ -43,11 +42,11 @@ public class DownloadRequest extends BaseRequest {
     //如果这样说还不理解的话，详见《LiveData 鲜为人知的 身世背景 和 独特使命》中结合实际场合 对"唯一可信源"本质的解析。
     //https://xiaozhuanlan.com/topic/0168753249
 
-    public LiveData<DownloadFile> getDownloadFileLiveData() {
+    public LiveData<DataResult<DownloadFile>> getDownloadFileLiveData() {
         return mDownloadFileLiveData;
     }
 
-    public LiveData<DownloadFile> getDownloadFileCanBeStoppedLiveData() {
+    public LiveData<DataResult<DownloadFile>> getDownloadFileCanBeStoppedLiveData() {
         return mDownloadFileCanBeStoppedLiveData;
     }
 
@@ -56,9 +55,16 @@ public class DownloadRequest extends BaseRequest {
     }
 
     public void requestDownloadFile() {
-        DataRepository.getInstance().downloadFile(new DataResult<>((downloadFile, netState) -> {
-            mDownloadFileLiveData.postValue(downloadFile);
-        }));
+
+        DownloadFile downloadFile = new DownloadFile();
+
+        //TODO Tip：lambda 语句只有一行时可简写，具体可结合实际情况选择和使用
+
+        /*DataRepository.getInstance().downloadFile(downloadFile, dataResult -> {
+            mDownloadFileLiveData.postValue(dataResult);
+        });*/
+
+        DataRepository.getInstance().downloadFile(downloadFile, mDownloadFileLiveData::postValue);
     }
 
     //TODO tip2：
@@ -69,18 +75,8 @@ public class DownloadRequest extends BaseRequest {
 
     public void requestCanBeStoppedDownloadFile() {
         UseCaseHandler.getInstance().execute(getCanBeStoppedUseCase(),
-                new CanBeStoppedUseCase.RequestValues(mDownloadFileCanBeStoppedLiveData),
-                new UseCase.UseCaseCallback<CanBeStoppedUseCase.ResponseValue>() {
-                    @Override
-                    public void onSuccess(CanBeStoppedUseCase.ResponseValue response) {
-                        mDownloadFileCanBeStoppedLiveData.setValue(
-                                response.getLiveData().getValue());
-                    }
-
-                    @Override
-                    public void onError() {
-
-                    }
+                new CanBeStoppedUseCase.RequestValues(), response -> {
+                    mDownloadFileCanBeStoppedLiveData.setValue(response.getDataResult());
                 });
     }
 }

@@ -26,6 +26,7 @@ import com.kunminx.architecture.ui.page.BaseFragment;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
+import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.callback.SharedViewModel;
 import com.kunminx.puremusic.ui.page.adapter.PlaylistAdapter;
@@ -80,7 +81,11 @@ public class MainFragment extends BaseFragment {
             mState.notifyCurrentListChanged.setValue(true);
         });
 
-        mState.musicRequest.getFreeMusicsLiveData().observe(getViewLifecycleOwner(), musicAlbum -> {
+        mState.musicRequest.getFreeMusicsLiveData().observe(getViewLifecycleOwner(), dataResult -> {
+            if (!dataResult.getResultState().isSuccess()) return;
+
+            TestAlbum musicAlbum = dataResult.getResult();
+
             if (musicAlbum != null && musicAlbum.getMusics() != null) {
                 mState.list.setValue(musicAlbum.getMusics());
 

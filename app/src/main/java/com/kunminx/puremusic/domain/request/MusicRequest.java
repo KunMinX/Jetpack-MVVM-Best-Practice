@@ -43,7 +43,7 @@ import com.kunminx.puremusic.data.repository.DataRepository;
  */
 public class MusicRequest extends BaseRequest {
 
-    private MutableLiveData<TestAlbum> mFreeMusicsLiveData = new MutableLiveData<>();
+    private MutableLiveData<DataResult<TestAlbum>> mFreeMusicsLiveData = new MutableLiveData<>();
 
     //TODO tip 2：向 ui 层提供的 request LiveData，使用父类 LiveData 而不是 MutableLiveData，
     //如此达成了 "唯一可信源" 的设计，也即通过访问控制权限实现 "读写分离"（国外称 "单向数据流"），
@@ -52,13 +52,18 @@ public class MusicRequest extends BaseRequest {
     //如果这样说还不理解的话，详见《LiveData 鲜为人知的 身世背景 和 独特使命》中结合实际场合 对"唯一可信源"本质的解析。
     //https://xiaozhuanlan.com/topic/0168753249
 
-    public LiveData<TestAlbum> getFreeMusicsLiveData() {
+    public LiveData<DataResult<TestAlbum>> getFreeMusicsLiveData() {
         return mFreeMusicsLiveData;
     }
 
     public void requestFreeMusics() {
-        DataRepository.getInstance().getFreeMusic(new DataResult<>((testAlbum, netState) -> {
-            mFreeMusicsLiveData.setValue(testAlbum);
-        }));
+
+        //TODO Tip：lambda 语句只有一行时可简写，具体可结合实际情况选择和使用
+
+        /*DataRepository.getInstance().getFreeMusic(dataResult -> {
+            mFreeMusicsLiveData.setValue(dataResult);
+        });*/
+
+        DataRepository.getInstance().getFreeMusic(mFreeMusicsLiveData::setValue);
     }
 }

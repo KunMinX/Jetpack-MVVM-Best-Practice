@@ -42,5 +42,7 @@
     <string name="login">登录</string>
     <string name="username_or_pwd_incomplete">用户名或密码不完整</string>
     <string name="network_state_retry">网络状态不佳，请重试</string>
+    <string name="article_navigation">https://xiaozhuanlan.com/topic/5860149732</string>
+    <string name="github_project">https://github.com/KunMinX/Jetpack-MVVM-Best-Practice</string>
 
 </resources>

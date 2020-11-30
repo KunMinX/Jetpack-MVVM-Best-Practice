@@ -67,8 +67,10 @@ public class DrawerFragment extends BaseFragment {
         //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
         //https://xiaozhuanlan.com/topic/8204519736
 
-        mState.infoRequest.getLibraryLiveData().observe(getViewLifecycleOwner(), libraryInfoList -> {
-            if (mAnimationLoaded && libraryInfoList != null) {
+        mState.infoRequest.getLibraryLiveData().observe(getViewLifecycleOwner(), dataResult -> {
+            if (!dataResult.getResultState().isSuccess()) return;
+
+            if (mAnimationLoaded && dataResult.getResult() != null) {
 
                 //TODO tip 3："唯一可信源"的理念仅适用于"跨域通信"的场景，
                 // state-ViewModel 与"跨域通信"的场景无关，其所持有的 LiveData 仅用于"无防抖加持"的视图状态绑定用途
@@ -78,7 +80,7 @@ public class DrawerFragment extends BaseFragment {
                 // 如果这样说还不理解的话，详见《LiveData》篇和《DataBinding》篇的解析
                 // https://xiaozhuanlan.com/topic/0168753249、https://xiaozhuanlan.com/topic/9816742350
 
-                mState.list.setValue(libraryInfoList);
+                mState.list.setValue(dataResult.getResult());
             }
         });
 
@@ -88,15 +90,16 @@ public class DrawerFragment extends BaseFragment {
     @Override
     public void loadInitData() {
         super.loadInitData();
-        if (mState.infoRequest.getLibraryLiveData().getValue() != null) {
-            mState.list.setValue(mState.infoRequest.getLibraryLiveData().getValue());
+        if (mState.infoRequest.getLibraryLiveData().getValue() != null
+                && mState.infoRequest.getLibraryLiveData().getValue().getResult() != null) {
+            mState.list.setValue(mState.infoRequest.getLibraryLiveData().getValue().getResult());
         }
     }
 
     public class ClickProxy {
 
         public void logoClick() {
-            openUrlInBrowser("https://github.com/KunMinX/Jetpack-MVVM-Best-Practice");
+            openUrlInBrowser(getString(R.string.github_project));
         }
     }
 

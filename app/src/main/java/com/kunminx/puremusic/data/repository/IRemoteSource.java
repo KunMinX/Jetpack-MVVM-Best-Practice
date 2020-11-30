@@ -29,11 +29,11 @@ import java.util.List;
  */
 public interface IRemoteSource {
 
-    void getFreeMusic(DataResult<TestAlbum> result);
+    void getFreeMusic(DataResult.Result<TestAlbum> result);
 
-    void getLibraryInfo(DataResult<List<LibraryInfo>> result);
+    void getLibraryInfo(DataResult.Result<List<LibraryInfo>> result);
 
-    void downloadFile(DataResult<DownloadFile> result);
+    void downloadFile(DownloadFile downloadFile, DataResult.Result<DownloadFile> result);
 
-    void login(User user, DataResult<String> result);
+    void login(User user, DataResult.Result<String> result);
 }
