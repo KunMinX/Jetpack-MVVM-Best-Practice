@@ -124,7 +124,7 @@ public class MainActivity extends BaseActivity {
         super.onWindowFocusChanged(hasFocus);
         if (!mIsListened) {
 
-            // TODO tip 2：此处演示通过 UnPeekLiveData 来发送 生命周期安全的、事件源可追溯的 通知。
+            // TODO tip 2：此处演示通过 UnPeekLiveData 来发送 生命周期安全的、确保消息同步一致性和可靠性的 通知。
 
             // 如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/0168753249
             // --------

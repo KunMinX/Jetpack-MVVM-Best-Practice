@@ -71,13 +71,12 @@ public class MainFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // TODO tip 3：所有播放状态的改变，都要通过这个 作为 唯一可信源 的 PlayerManager 来统一分发，
+
+        // 如此才能确保 消息同步的一致性 和 可靠性，以及 避免 不可预期的 推送和错误。
+        // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/0168753249
+
         PlayerManager.getInstance().getChangeMusicLiveData().observe(getViewLifecycleOwner(), changeMusic -> {
-
-            // TODO tip 3：所有播放状态的改变，都要通过这个 作为 唯一可信源 的 PlayerManager 来统一分发，
-
-            // 如此才能方便 追溯事件源，以及 避免 不可预期的 推送和错误。
-            // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/0168753249
-
             mState.notifyCurrentListChanged.setValue(true);
         });
 
@@ -136,7 +135,7 @@ public class MainFragment extends BaseFragment {
 
         public void openMenu() {
 
-            // TODO tip 8：此处演示通过 UnPeekLiveData 来发送 生命周期安全的、事件源可追溯的 通知。
+            // TODO tip 8：此处演示通过 UnPeekLiveData 来发送 生命周期安全的、确保消息同步一致性和可靠性的 通知。
 
             // 如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/0168753249
             // --------

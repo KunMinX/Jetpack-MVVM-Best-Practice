@@ -44,43 +44,33 @@ public class SharedViewModel extends ViewModel {
     // 如果这么说还不理解的话，
     // 详见 https://xiaozhuanlan.com/topic/0168753249 和 https://xiaozhuanlan.com/topic/6257931840
 
-    private UnPeekLiveData<Boolean> toAddSlideListener;
-    private UnPeekLiveData<Boolean> toCloseSlidePanelIfExpanded;
-    private UnPeekLiveData<Boolean> toCloseActivityIfAllowed;
-    private UnPeekLiveData<Boolean> toOpenOrCloseDrawer;
+    private final UnPeekLiveData<Boolean> toCloseSlidePanelIfExpanded = new UnPeekLiveData<>();
+
+    private final UnPeekLiveData<Boolean> toCloseActivityIfAllowed = new UnPeekLiveData<>();
+
+    private final UnPeekLiveData<Boolean> toOpenOrCloseDrawer = new UnPeekLiveData<>();
+
+    //TODO tip 4：可以通过构造器的方式来配置 UnPeekLiveData
+
+    // 具体存在有缘和使用方式可详见《LiveData 数据倒灌 背景缘由全貌 独家解析》
+    // https://xiaozhuanlan.com/topic/6719328450
+
+    private final UnPeekLiveData<Boolean> toAddSlideListener =
+            new UnPeekLiveData.Builder<Boolean>().setAllowNullValue(false).create();
 
     public ProtectedUnPeekLiveData<Boolean> isToAddSlideListener() {
-        if (toAddSlideListener == null) {
-
-            //TODO tip 4：可以通过构造器的方式来配置 UnPeekLiveData
-
-            // 具体存在有缘和使用方式可详见《LiveData 数据倒灌 背景缘由全貌 独家解析》
-            // https://xiaozhuanlan.com/topic/6719328450
-
-            toAddSlideListener = new UnPeekLiveData.Builder<Boolean>()
-                    .setAllowNullValue(false).create();
-        }
         return toAddSlideListener;
     }
 
     public ProtectedUnPeekLiveData<Boolean> isToCloseSlidePanelIfExpanded() {
-        if (toCloseSlidePanelIfExpanded == null) {
-            toCloseSlidePanelIfExpanded = new UnPeekLiveData<>();
-        }
         return toCloseSlidePanelIfExpanded;
     }
 
     public ProtectedUnPeekLiveData<Boolean> isToCloseActivityIfAllowed() {
-        if (toCloseActivityIfAllowed == null) {
-            toCloseActivityIfAllowed = new UnPeekLiveData<>();
-        }
         return toCloseActivityIfAllowed;
     }
 
     public ProtectedUnPeekLiveData<Boolean> isToOpenOrCloseDrawer() {
-        if (toOpenOrCloseDrawer == null) {
-            toOpenOrCloseDrawer = new UnPeekLiveData<>();
-        }
         return toOpenOrCloseDrawer;
     }
 

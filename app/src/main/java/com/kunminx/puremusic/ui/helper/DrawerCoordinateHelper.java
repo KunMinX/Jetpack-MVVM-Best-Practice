@@ -22,7 +22,6 @@ import androidx.lifecycle.LifecycleOwner;
 
 import com.kunminx.architecture.ui.callback.ProtectedUnPeekLiveData;
 import com.kunminx.architecture.ui.callback.UnPeekLiveData;
-import com.kunminx.puremusic.ui.callback.SharedViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,36 +53,38 @@ public class DrawerCoordinateHelper implements DefaultLifecycleObserver {
         return S_HELPER;
     }
 
-    public static final List<String> TAG_OF_SECONDARY_PAGES = new ArrayList<>();
+    private final List<String> tagOfSecondaryPages = new ArrayList<>();
 
-    private UnPeekLiveData<Boolean> enableSwipeDrawer;
+    private final UnPeekLiveData<Boolean> enableSwipeDrawer = new UnPeekLiveData<>();
 
     public ProtectedUnPeekLiveData<Boolean> isEnableSwipeDrawer() {
-        if (enableSwipeDrawer == null) {
-            enableSwipeDrawer = new UnPeekLiveData<>();
-        }
         return enableSwipeDrawer;
     }
 
-    public void requestToUpdateDrawerMode() {
-        enableSwipeDrawer.setValue(TAG_OF_SECONDARY_PAGES.size() == 0);
+    public void requestToUpdateDrawerMode(boolean pageOpened, String pageName) {
+        if (pageOpened) {
+            tagOfSecondaryPages.add(pageName);
+        } else {
+            tagOfSecondaryPages.remove(pageName);
+        }
+        enableSwipeDrawer.setValue(tagOfSecondaryPages.size() == 0);
     }
 
     @Override
     public void onCreate(@NonNull LifecycleOwner owner) {
 
-        TAG_OF_SECONDARY_PAGES.add(owner.getClass().getSimpleName());
+        tagOfSecondaryPages.add(owner.getClass().getSimpleName());
 
-        enableSwipeDrawer.setValue(TAG_OF_SECONDARY_PAGES.size() == 0);
+        enableSwipeDrawer.setValue(tagOfSecondaryPages.size() == 0);
 
     }
 
     @Override
     public void onDestroy(@NonNull LifecycleOwner owner) {
 
-        TAG_OF_SECONDARY_PAGES.remove(owner.getClass().getSimpleName());
+        tagOfSecondaryPages.remove(owner.getClass().getSimpleName());
 
-        enableSwipeDrawer.setValue(TAG_OF_SECONDARY_PAGES.size() == 0);
+        enableSwipeDrawer.setValue(tagOfSecondaryPages.size() == 0);
 
     }
 

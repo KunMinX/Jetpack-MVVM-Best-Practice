@@ -98,20 +98,22 @@ public class PlayerFragment extends BaseFragment {
                     public void onPanelStateChanged(View view, SlidingUpPanelLayout.PanelState panelState,
                                                     SlidingUpPanelLayout.PanelState panelState1) {
 
-                        if (panelState1 == SlidingUpPanelLayout.PanelState.EXPANDED) {
-                            DrawerCoordinateHelper.TAG_OF_SECONDARY_PAGES.add(this.getClass().getSimpleName());
-                        } else {
-                            DrawerCoordinateHelper.TAG_OF_SECONDARY_PAGES.remove(this.getClass().getSimpleName());
-                        }
-                        DrawerCoordinateHelper.getInstance().requestToUpdateDrawerMode();
+                        DrawerCoordinateHelper.getInstance().requestToUpdateDrawerMode(
+                                panelState1 == SlidingUpPanelLayout.PanelState.EXPANDED,
+                                this.getClass().getSimpleName()
+                        );
                     }
                 });
             }
         });
 
-        PlayerManager.getInstance().getChangeMusicLiveData().observe(getViewLifecycleOwner(), changeMusic -> {
+        // TODO tip 2：所有播放状态的改变，都要通过这个 作为 唯一可信源 的 PlayerManager 来统一分发，
+        // 如此才能确保 消息同步的一致性 和 可靠性，以及 避免 不可预期的 推送和错误。
+        // 👆👆👆 划重点
 
-            // TODO tip 3：同 tip 2.
+        // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/0168753249
+
+        PlayerManager.getInstance().getChangeMusicLiveData().observe(getViewLifecycleOwner(), changeMusic -> {
 
             // 切歌时，音乐的标题、作者、封面 状态的改变
             mState.title.set(changeMusic.getTitle());
@@ -121,22 +123,12 @@ public class PlayerFragment extends BaseFragment {
 
         PlayerManager.getInstance().getPlayingMusicLiveData().observe(getViewLifecycleOwner(), playingMusic -> {
 
-            // TODO tip 4：同 tip 2.
-
             // 播放进度 状态的改变
             mState.maxSeekDuration.set(playingMusic.getDuration());
             mState.currentSeekPosition.set(playingMusic.getPlayerPosition());
         });
 
         PlayerManager.getInstance().getPauseLiveData().observe(getViewLifecycleOwner(), aBoolean -> {
-
-            // TODO tip 2：所有播放状态的改变，都要通过这个 作为 唯一可信源 的 PlayerManager 来统一分发，
-
-            // 如此才能方便 追溯事件源、保证 全应用范围内 所有状态的正确和及时，以及 避免 不可预期的 推送和错误。
-
-            // 👆👆👆 划重点
-
-            // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/0168753249
 
             // 播放按钮 状态的改变
             mState.isPlaying.set(!aBoolean);
@@ -174,7 +166,7 @@ public class PlayerFragment extends BaseFragment {
                     sliding.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                 } else {
 
-                    // TODO tip 6：此处演示通过 UnPeekLiveData 来发送 生命周期安全的、事件源可追溯的 通知。
+                    // TODO tip 6：此处演示通过 UnPeekLiveData 来发送 生命周期安全的、确保消息同步一致性和可靠性的 通知。
 
                     // fragment 与 Activity 的交互，同属于页面通信的范畴，适合统一地以 页面通信 的方式实现。
 
