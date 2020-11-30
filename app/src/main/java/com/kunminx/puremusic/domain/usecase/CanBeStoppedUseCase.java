@@ -41,7 +41,8 @@ import com.kunminx.puremusic.data.repository.DataRepository;
  * <p>
  * Create by KunMinX at 19/11/25
  */
-public class CanBeStoppedUseCase extends UseCase<CanBeStoppedUseCase.RequestValues, CanBeStoppedUseCase.ResponseValue> implements DefaultLifecycleObserver {
+public class CanBeStoppedUseCase extends UseCase<CanBeStoppedUseCase.RequestValues,
+        CanBeStoppedUseCase.ResponseValue> implements DefaultLifecycleObserver {
 
     @Override
     public void onStop(@NonNull LifecycleOwner owner) {
