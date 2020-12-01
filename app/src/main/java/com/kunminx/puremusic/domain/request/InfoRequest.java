@@ -46,7 +46,7 @@ import java.util.List;
  */
 public class InfoRequest extends BaseRequest {
 
-    private MutableLiveData<DataResult<List<LibraryInfo>>> mLibraryLiveData = new MutableLiveData<>();
+    private final MutableLiveData<DataResult<List<LibraryInfo>>> mLibraryLiveData = new MutableLiveData<>();
 
     //TODO tip 2：向 ui 层提供的 request LiveData，使用父类 LiveData 而不是 MutableLiveData，
     //如此达成了 "唯一可信源" 的设计，也即通过访问控制权限实现 "读写分离"（国外称 "单向数据流"），
