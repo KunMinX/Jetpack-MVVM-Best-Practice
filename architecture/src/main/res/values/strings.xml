@@ -18,6 +18,5 @@
     <string name="app_name">architecture</string>
 
     <string name="network_not_good">网络不给力</string>
-    <string name="debug_fragment_databinding_warning">Debug 提示：此 Fragment 未遵循 DataBinding 严格模式，存在 视图调用的 Null 安全风险</string>
-    <string name="debug_activity_databinding_warning">Debug 提示：此 Activity 未遵循 DataBinding 严格模式，存在 视图调用的 Null 安全风险</string>
+
 </resources>

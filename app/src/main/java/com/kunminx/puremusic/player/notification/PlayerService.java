@@ -32,7 +32,6 @@ import android.widget.RemoteViews;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
-import com.kunminx.architecture.domain.usecase.UseCase;
 import com.kunminx.architecture.domain.usecase.UseCaseHandler;
 import com.kunminx.architecture.utils.ImageUtils;
 import com.kunminx.puremusic.MainActivity;
@@ -219,17 +218,7 @@ public class PlayerService extends Service {
 
         UseCaseHandler.getInstance().execute(mDownloadUseCase,
                 new DownloadUseCase.RequestValues(coverUrl, musicId + ".jpg"),
-                new UseCase.UseCaseCallback<DownloadUseCase.ResponseValue>() {
-                    @Override
-                    public void onSuccess(DownloadUseCase.ResponseValue response) {
-                        startService(new Intent(getApplicationContext(), PlayerService.class));
-                    }
-
-                    @Override
-                    public void onError() {
-
-                    }
-                });
+                response -> startService(new Intent(getApplicationContext(), PlayerService.class)));
     }
 
     @Override

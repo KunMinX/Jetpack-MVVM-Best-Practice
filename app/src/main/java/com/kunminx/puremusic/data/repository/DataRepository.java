@@ -21,7 +21,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kunminx.architecture.data.response.DataResult;
-import com.kunminx.architecture.data.response.ResultState;
+import com.kunminx.architecture.data.response.ResponseStatus;
 import com.kunminx.architecture.utils.Utils;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.DownloadFile;
@@ -67,7 +67,7 @@ public class DataRepository implements ILocalSource, IRemoteSource {
         }.getType();
         TestAlbum testAlbum = gson.fromJson(Utils.getApp().getString(R.string.free_music_json), type);
 
-        result.onResult(new DataResult<>(testAlbum, new ResultState()));
+        result.onResult(new DataResult<>(testAlbum, new ResponseStatus()));
     }
 
     @Override
@@ -77,7 +77,7 @@ public class DataRepository implements ILocalSource, IRemoteSource {
         }.getType();
         List<LibraryInfo> list = gson.fromJson(Utils.getApp().getString(R.string.library_json), type);
 
-        result.onResult(new DataResult<>(list, new ResultState()));
+        result.onResult(new DataResult<>(list, new ResponseStatus()));
     }
 
     /**
@@ -109,7 +109,7 @@ public class DataRepository implements ILocalSource, IRemoteSource {
                     downloadFile.setForgive(false);
                     return;
                 }
-                result.onResult(new DataResult<>(downloadFile, new ResultState()));
+                result.onResult(new DataResult<>(downloadFile, new ResponseStatus()));
             }
         };
 
@@ -136,9 +136,9 @@ public class DataRepository implements ILocalSource, IRemoteSource {
 
                 String response = "";
 
-                ResultState resultState = new ResultState("404", false);
+                ResponseStatus responseStatus = new ResponseStatus("404", false);
 
-                result.onResult(new DataResult<>(response, resultState));
+                result.onResult(new DataResult<>(response, responseStatus));
             }
         };
 
