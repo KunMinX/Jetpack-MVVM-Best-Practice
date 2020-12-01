@@ -89,7 +89,9 @@ public class DrawerFragment extends BaseFragment {
             }
         });
 
-        mState.infoRequest.requestLibraryInfo();
+        if (mState.infoRequest.getLibraryLiveData().getValue() == null) {
+            mState.infoRequest.requestLibraryInfo();
+        }
     }
 
     @Override
