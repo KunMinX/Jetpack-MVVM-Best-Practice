@@ -81,7 +81,7 @@ public class MainFragment extends BaseFragment {
         });
 
         mState.musicRequest.getFreeMusicsLiveData().observe(getViewLifecycleOwner(), dataResult -> {
-            if (!dataResult.getResultState().isSuccess()) return;
+            if (!dataResult.getResponseStatus().isSuccess()) return;
 
             TestAlbum musicAlbum = dataResult.getResult();
 
