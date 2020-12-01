@@ -77,13 +77,6 @@ public class PlayerFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //TODO tip 7:
-        // getViewLifeCycleOwner 是 2020 年新增的特性，
-        // 主要是为了解决 getView() 的生命长度 比 fragment 短（仅存活于 onCreateView 之后和 onDestroyView 之前），
-        // 导致某些时候 fragment 其他成员还活着，但 getView() 为 null 的 生命周期安全问题，
-        // 也即，在 fragment 的场景下，请使用 getViewLifeCycleOwner 来作为 liveData 的观察者。
-        // Activity 则不用改变。
-
         mPageCallback.isToAddSlideListener().observeInFragment(this, aBoolean -> {
             if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {
                 SlidingUpPanelLayout sliding = (SlidingUpPanelLayout) view.getParent().getParent();
@@ -120,6 +113,13 @@ public class PlayerFragment extends BaseFragment {
             mState.artist.set(changeMusic.getSummary());
             mState.coverImg.set(changeMusic.getImg());
         });
+
+        //TODO tip 7:
+        // getViewLifeCycleOwner 是 2020 年新增的特性，
+        // 主要是为了解决 getView() 的生命长度 比 fragment 短（仅存活于 onCreateView 之后和 onDestroyView 之前），
+        // 导致某些时候 fragment 其他成员还活着，但 getView() 为 null 的 生命周期安全问题，
+        // 也即，在 fragment 的场景下，请使用 getViewLifeCycleOwner 来作为 liveData 的观察者。
+        // Activity 则不用改变。
 
         PlayerManager.getInstance().getPlayingMusicLiveData().observe(getViewLifecycleOwner(), playingMusic -> {
 
