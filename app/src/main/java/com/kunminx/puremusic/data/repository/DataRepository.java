@@ -37,7 +37,7 @@ import java.util.TimerTask;
 /**
  * Create by KunMinX at 19/10/29
  */
-public class DataRepository implements ILocalSource, IRemoteSource {
+public class DataRepository {
 
     private static final DataRepository S_REQUEST_MANAGER = new DataRepository();
 
@@ -59,7 +59,6 @@ public class DataRepository implements ILocalSource, IRemoteSource {
      *
      * @param result
      */
-    @Override
     public void getFreeMusic(DataResult.Result<TestAlbum> result) {
 
         Gson gson = new Gson();
@@ -70,7 +69,6 @@ public class DataRepository implements ILocalSource, IRemoteSource {
         result.onResult(new DataResult<>(testAlbum, new ResponseStatus()));
     }
 
-    @Override
     public void getLibraryInfo(DataResult.Result<List<LibraryInfo>> result) {
         Gson gson = new Gson();
         Type type = new TypeToken<List<LibraryInfo>>() {
@@ -87,7 +85,6 @@ public class DataRepository implements ILocalSource, IRemoteSource {
      *
      * @param result 从 Request-ViewModel 或 UseCase 注入 LiveData，用于 控制流程、回传进度、回传文件
      */
-    @Override
     public void downloadFile(DownloadFile downloadFile, DataResult.Result<DownloadFile> result) {
 
         Timer timer = new Timer();
@@ -122,7 +119,6 @@ public class DataRepository implements ILocalSource, IRemoteSource {
      * @param user   ui 层填写的用户信息
      * @param result 模拟网络请求返回的 token
      */
-    @Override
     public void login(User user, DataResult.Result<String> result) {
 
         Timer timer = new Timer();
