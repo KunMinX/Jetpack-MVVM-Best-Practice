@@ -80,19 +80,26 @@ public class MainFragment extends BaseFragment {
             mState.notifyCurrentListChanged.setValue(true);
         });
 
+        //TODO tip :
+        // getViewLifeCycleOwner 是 2020 年新增的特性，
+        // 主要是为了解决 getView() 的生命长度 比 fragment 短（仅存活于 onCreateView 之后和 onDestroyView 之前），
+        // 导致某些时候 fragment 其他成员还活着，但 getView() 为 null 的 生命周期安全问题，
+        // 也即，在 fragment 的场景下，请使用 getViewLifeCycleOwner 来作为 liveData 的观察者。
+        // Activity 则不用改变。
+
         mState.musicRequest.getFreeMusicsLiveData().observe(getViewLifecycleOwner(), dataResult -> {
             if (!dataResult.getResponseStatus().isSuccess()) return;
 
             TestAlbum musicAlbum = dataResult.getResult();
 
+            // TODO tip 4：未作 UnPeek 处理的 用于 request 的 LiveData，在视图控制器重建时会自动倒灌数据
+            // 一定要记住这一点，因为如果没有妥善处理，这里就会出现预期外的错误（例如收到旧数据的推送），
+            // 一定要记得它在重建时 是一定会倒灌的。
+
+            // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/0129483567
+
             if (musicAlbum != null && musicAlbum.getMusics() != null) {
                 mState.list.setValue(musicAlbum.getMusics());
-
-                // TODO tip 4：未作 UnPeek 处理的 用于 request 的 LiveData，在视图控制器重建时会自动倒灌数据
-
-                // 一定要记住这一点，因为如果没有妥善处理，这里就会出现预期外的错误，一定要记得它在重建时 是一定会倒灌的。
-
-                // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/0129483567
 
                 if (PlayerManager.getInstance().getAlbum() == null ||
                         !PlayerManager.getInstance().getAlbum().getAlbumId().equals(musicAlbum.getAlbumId())) {

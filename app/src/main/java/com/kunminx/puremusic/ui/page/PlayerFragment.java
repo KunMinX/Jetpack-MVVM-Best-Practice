@@ -31,6 +31,7 @@ import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.databinding.FragmentPlayerBinding;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.callback.SharedViewModel;
+import com.kunminx.puremusic.ui.helper.DefaultInterface;
 import com.kunminx.puremusic.ui.helper.DrawerCoordinateHelper;
 import com.kunminx.puremusic.ui.state.PlayerViewModel;
 import com.kunminx.puremusic.ui.view.PlayerSlideListener;
@@ -81,15 +82,11 @@ public class PlayerFragment extends BaseFragment {
             if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {
                 SlidingUpPanelLayout sliding = (SlidingUpPanelLayout) view.getParent().getParent();
                 sliding.addPanelSlideListener(new PlayerSlideListener((FragmentPlayerBinding) getBinding(), sliding));
-                sliding.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+                sliding.addPanelSlideListener(new DefaultInterface.PanelSlideListener() {
                     @Override
-                    public void onPanelSlide(View view, float v) {
-
-                    }
-
-                    @Override
-                    public void onPanelStateChanged(View view, SlidingUpPanelLayout.PanelState panelState,
-                                                    SlidingUpPanelLayout.PanelState panelState1) {
+                    public void onPanelStateChanged(
+                            View view, SlidingUpPanelLayout.PanelState panelState,
+                            SlidingUpPanelLayout.PanelState panelState1) {
 
                         DrawerCoordinateHelper.getInstance().requestToUpdateDrawerMode(
                                 panelState1 == SlidingUpPanelLayout.PanelState.EXPANDED,
@@ -113,13 +110,6 @@ public class PlayerFragment extends BaseFragment {
             mState.artist.set(changeMusic.getSummary());
             mState.coverImg.set(changeMusic.getImg());
         });
-
-        //TODO tip 7:
-        // getViewLifeCycleOwner 是 2020 年新增的特性，
-        // 主要是为了解决 getView() 的生命长度 比 fragment 短（仅存活于 onCreateView 之后和 onDestroyView 之前），
-        // 导致某些时候 fragment 其他成员还活着，但 getView() 为 null 的 生命周期安全问题，
-        // 也即，在 fragment 的场景下，请使用 getViewLifeCycleOwner 来作为 liveData 的观察者。
-        // Activity 则不用改变。
 
         PlayerManager.getInstance().getPlayingMusicLiveData().observe(getViewLifecycleOwner(), playingMusic -> {
 
@@ -225,17 +215,7 @@ public class PlayerFragment extends BaseFragment {
         }
     }
 
-    public static class EventHandler implements SeekBar.OnSeekBarChangeListener {
-
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-        }
-
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-
-        }
+    public static class EventHandler implements DefaultInterface.OnSeekBarChangeListener {
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
