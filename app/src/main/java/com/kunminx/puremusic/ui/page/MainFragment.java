@@ -40,7 +40,7 @@ public class MainFragment extends BaseFragment {
     //TODO tip 1：每个页面都要单独配备一个 state-ViewModel，职责仅限于 "状态托管和恢复"，
     //callback-ViewModel 则是用于在 "跨页面通信" 的场景下，承担 "唯一可信源"，
 
-    //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/6257931840
+    //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/8204519736
 
     private MainViewModel mState;
     private SharedViewModel mPageCallback;
@@ -93,10 +93,10 @@ public class MainFragment extends BaseFragment {
             TestAlbum musicAlbum = dataResult.getResult();
 
             // TODO tip 4：未作 UnPeek 处理的 用于 request 的 LiveData，在视图控制器重建时会自动倒灌数据
-            // 一定要记住这一点，因为如果没有妥善处理，这里就会出现预期外的错误（例如收到旧数据的推送），
-            // 一定要记得它在重建时 是一定会倒灌的。
+            // 请记得这一点，因为如果没有妥善处理，这里就可能出现预期外的错误（例如收到旧数据的推送），
+            // 再一次地，请记得它在重建时 是一定会倒灌的。
 
-            // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/0129483567
+            // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/6719328450
 
             if (musicAlbum != null && musicAlbum.getMusics() != null) {
                 mState.list.setValue(musicAlbum.getMusics());
@@ -123,7 +123,7 @@ public class MainFragment extends BaseFragment {
             //TODO tip 6："唯一可信源"的理念仅适用于"跨域通信"的场景，
             // state-ViewModel 与"跨域通信"的场景无关，其所持有的 LiveData 仅用于"无防抖加持"的视图状态绑定用途
             // （也即它是用于在不适合防抖加持的场景下替代"自带防抖特性的 ObservableField"），
-            // 因而此处 LiveData 可以直接在页面内 setValue：所通知的目标不包含其他页面的状态，而是当前页内部的状态。
+            // 因而此处 LiveData 可以直接在页面内 setValue：所通知的目标不包含其他页面的状态，而仅是当前页内部的状态。
 
             // 如果这样说还不理解的话，详见《LiveData》篇和《DataBinding》篇的解析
             // https://xiaozhuanlan.com/topic/0168753249、https://xiaozhuanlan.com/topic/9816742350

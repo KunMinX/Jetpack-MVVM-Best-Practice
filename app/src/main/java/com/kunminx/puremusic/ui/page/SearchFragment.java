@@ -35,6 +35,11 @@ import com.kunminx.puremusic.ui.state.SearchViewModel;
  */
 public class SearchFragment extends BaseFragment {
 
+    //TODO tip 1：每个页面都要单独配备一个 state-ViewModel，职责仅限于 "状态托管和恢复"，
+    //callback-ViewModel 则是用于在 "跨页面通信" 的场景下，承担 "唯一可信源"，
+
+    //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/8204519736
+
     private SearchViewModel mState;
     private MainActivityViewModel mActivityScopeState;
 
