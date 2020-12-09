@@ -52,7 +52,7 @@ dependencies {
     api 'androidx.lifecycle:lifecycle-common-java8:2.2.0'
     api 'androidx.lifecycle:lifecycle-viewmodel:2.2.0'
     api 'androidx.lifecycle:lifecycle-livedata:2.2.0'
-    api 'androidx.navigation:navigation-runtime:2.3.1'
+    api 'androidx.navigation:navigation-runtime:2.3.2'
 
     api 'com.kunminx.archi:unpeek-livedata:4.4.1-beta1'
     api 'com.kunminx.archi:smooth-navigation:3.3.2-beta5'
