@@ -35,7 +35,7 @@ public class DrawerAdapter extends SimpleDataBindingAdapter<LibraryInfo, Adapter
     public DrawerAdapter(Context context) {
         super(context, R.layout.adapter_library, DiffUtils.getInstance().getLibraryInfoItemCallback());
 
-        setOnItemClickListener((item, position) -> {
+        setOnItemClickListener((viewId, item, position) -> {
             Uri uri = Uri.parse(item.getUrl());
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             mContext.startActivity(intent);
