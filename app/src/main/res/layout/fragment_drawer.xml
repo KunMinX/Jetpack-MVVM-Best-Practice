@@ -29,7 +29,7 @@
 
         <variable
             name="adapter"
-            type="androidx.recyclerview.widget.ListAdapter" />
+            type="androidx.recyclerview.widget.RecyclerView.Adapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
