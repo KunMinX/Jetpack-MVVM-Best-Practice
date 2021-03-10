@@ -36,8 +36,4 @@ public class APIs {
 
     public final static String SONG_URL = "xxxxx";
 
-    public static final String HEADER_KEY_OF_USER_AGENT = "User-Agent";
-
-    public static final String HEADER_VALUE_OF_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36";
-
 }
