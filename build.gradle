@@ -1,4 +1,9 @@
 buildscript {
+    ext {
+        lifecycleVersion = "2.3.0"
+        navigationVersion = "2.3.4"
+    }
+
     repositories {
         google()
         jcenter()
