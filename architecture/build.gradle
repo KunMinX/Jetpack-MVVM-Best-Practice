@@ -14,25 +14,49 @@
  * limitations under the License.
  */
 
-apply plugin: "com.android.library"
+apply plugin: 'com.android.library'
 
-apply from: "../gradle/common.gradle"
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        minSdkVersion 23
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        dataBinding true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
 
 dependencies {
-    def lifecycleVersion = "2.3.0"
-    def navigationVersion = "2.3.4"
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    api "androidx.appcompat:appcompat:1.2.0"
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    api "androidx.lifecycle:lifecycle-runtime:$lifecycleVersion"
-    api "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
-    api "androidx.lifecycle:lifecycle-viewmodel:$lifecycleVersion"
-    api "androidx.lifecycle:lifecycle-livedata:$lifecycleVersion"
-    api "androidx.navigation:navigation-runtime:$navigationVersion"
+    api 'androidx.appcompat:appcompat:1.2.0'
 
-    api "com.kunminx.archi:unpeek-livedata:4.4.1-beta1"
-    api "com.kunminx.archi:smooth-navigation:3.3.2-beta5"
-    api "com.kunminx.archi:strict-databinding:3.6.2-beta1"
-    api "com.kunminx.archi:domain:1.1.0"
+    api 'androidx.lifecycle:lifecycle-runtime:2.3.0'
+    api 'androidx.lifecycle:lifecycle-common-java8:2.3.0'
+    api 'androidx.lifecycle:lifecycle-viewmodel:2.3.0'
+    api 'androidx.lifecycle:lifecycle-livedata:2.3.0'
+    api 'androidx.navigation:navigation-runtime:2.3.4'
+
+    api 'com.kunminx.archi:unpeek-livedata:4.4.1-beta1'
+    api 'com.kunminx.archi:smooth-navigation:3.3.2-beta5'
+    api 'com.kunminx.archi:strict-databinding:3.6.2-beta1'
+    api 'com.kunminx.archi:domain:1.1.0'
 
 }
