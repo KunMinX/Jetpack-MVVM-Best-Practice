@@ -44,6 +44,7 @@ public class MainFragment extends BaseFragment {
 
     private MainViewModel mState;
     private SharedViewModel mPageCallback;
+    private PlaylistAdapter mAdapter;
 
     @Override
     protected void initViewModel() {
@@ -53,6 +54,11 @@ public class MainFragment extends BaseFragment {
 
     @Override
     protected DataBindingConfig getDataBindingConfig() {
+
+        mAdapter = new PlaylistAdapter(getContext());
+        mAdapter.setOnItemClickListener((viewId, item, position) -> {
+            PlayerManager.getInstance().playAudio(position);
+        });
 
         //TODO tip 2: DataBinding 严格模式：
         // 将 DataBinding 实例限制于 base 页面中，默认不向子类暴露，
@@ -64,7 +70,7 @@ public class MainFragment extends BaseFragment {
 
         return new DataBindingConfig(R.layout.fragment_main, BR.vm, mState)
                 .addBindingParam(BR.click, new ClickProxy())
-                .addBindingParam(BR.adapter, new PlaylistAdapter(getContext()));
+                .addBindingParam(BR.adapter, mAdapter);
     }
 
     @Override
@@ -77,7 +83,7 @@ public class MainFragment extends BaseFragment {
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/0168753249
 
         PlayerManager.getInstance().getChangeMusicLiveData().observe(getViewLifecycleOwner(), changeMusic -> {
-            mState.notifyCurrentListChanged.setValue(true);
+            mAdapter.notifyDataSetChanged();
         });
 
         //TODO tip :

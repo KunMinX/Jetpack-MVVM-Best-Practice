@@ -35,6 +35,7 @@ public class DrawerAdapter extends SimpleDataBindingAdapter<LibraryInfo, Adapter
     public DrawerAdapter(Context context) {
         super(context, R.layout.adapter_library, DiffUtils.getInstance().getLibraryInfoItemCallback());
 
+        //TODO item click 回调可以在 adapter 中实现，也可以在外部实现
         setOnItemClickListener((viewId, item, position) -> {
             Uri uri = Uri.parse(item.getUrl());
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
