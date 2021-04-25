@@ -106,7 +106,7 @@
 &nbsp;
 &nbsp;
 
-# Thanks to
+# 感谢
 
 [AndroidX](https://developer.android.google.cn/jetpack/androidx)
 
@@ -125,7 +125,26 @@
 &nbsp;
 &nbsp;
 
-# My Pages
+## 谁在参考
+
+| 集团 / 公司                                         | 产品               |
+| --------------------------------------------------- | ------------------ |
+| 腾讯音乐                                            | 即将上线，暂时保密 |
+| TCL                                                 | 内置应用，暂时保密 |
+| 贵州广电网络                                        | 乐播播             |
+| 福建树叶网络科技有限公司 + 福建天奖网络科技有限公司 | 天奖谱林           |
+|                                                     | 小辣椒             |
+| BMW                                                 | Speech             |
+| 上海互教信息有限公司                                | 知心慧学教师       |
+| 美术宝                                              | 弹唱宝             |
+|                                                     | 网安               |
+| 左医科技                                            | 诊室听译机器人     |
+
+&nbsp;
+&nbsp;
+
+
+# 关于我
 
 Email：[kunminx@gmail.com](mailto:kunminx@gmail.com)
 
@@ -138,6 +157,9 @@ Juejin：[KunMinX 在掘金](https://juejin.im/user/58ab0de9ac502e006975d757/pos
 付费读者加微信进群：myatejx
 
 [![重学安卓小专栏](https://i.loli.net/2019/06/17/5d067596c2dbf49609.png)](https://xiaozhuanlan.com/kunminx?rel=kunminx)
+
+&nbsp;
+&nbsp;
 
 # License
 
