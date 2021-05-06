@@ -4,7 +4,6 @@
 
 [《重学安卓》](https://xiaozhuanlan.com/kunminx)付费读者加微信进群：myatejx
 
-（Tip：**专栏将于 5 月初调至 579 元**，有需要的小伙伴请及早上车）
 
 &nbsp;
 
