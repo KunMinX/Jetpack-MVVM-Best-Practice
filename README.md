@@ -1,4 +1,4 @@
-![](https://i.loli.net/2021/05/12/AKlBxiQUICjYDWH.png)
+![slogan.png](https://upload-images.jianshu.io/upload_images/57036-896e7a8809a9a705.png)
 
 &nbsp;
 
@@ -32,7 +32,7 @@
 
 上周我在 各大技术社区 发表了一篇 [《Jetpack MVVM 精讲》](https://juejin.im/post/5dafc49b6fb9a04e17209922)，原以为在 知识网红 唱衰安卓 的 2019 会无人问津，没想到文章一经发布，从 国内知名公司 的架构师、技术经理，到 世界级公司 的 Android 开发 都在看。😉
 
-![](https://i.loli.net/2021/05/12/I3GwsjX6Sg2YfU5.png)
+![reader_say.png](https://upload-images.jianshu.io/upload_images/57036-5445e7b4d66d97c7.png)
 
 并且从读者的反馈来看，近期大部分安卓开发 已跳出舒适圈，开始尝试认识和应用 Jetpack MVVM 到实际的项目开发中。
 
@@ -46,13 +46,13 @@
 
 |                  是让人 爱不释手 的 交互设计！                   |                     是 连贯 的 用户体验                      |                    唯一可信源 的 统一分发                    |
 | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
-| ![](https://i.loli.net/2021/05/12/FgX9suUTvyDLIRm.gif) | ![](https://i.loli.net/2021/05/12/Xqnkg7RMLQxtaje.gif) | ![](https://i.loli.net/2021/05/12/VsdIiBxUJE7fGaO.gif) |
+| ![1231111323.gif](https://upload-images.jianshu.io/upload_images/57036-0a5cdc68f003211a.gif) | ![222.gif](https://upload-images.jianshu.io/upload_images/57036-2b21db531e51ff03.gif) | ![333.gif](https://upload-images.jianshu.io/upload_images/57036-9a541148ce5bed2e.gif) |
 
 
 
 |                    横竖屏布局 的 无缝切换                    |
 | :----------------------------------------------------------: |
-| ![](https://i.loli.net/2021/05/12/iCxbZzYS73QcWXg.gif) |
+| ![444.gif](https://upload-images.jianshu.io/upload_images/57036-688f3eafc76cfa27.gif) |
 
 &nbsp;
 &nbsp;
@@ -100,7 +100,7 @@
 
 即日起，可在 应用商店 下载体验！
 
-[![](https://i.loli.net/2021/05/12/qQLE4bpX5glnd62.png)](https://www.coolapk.com/apk/247826) [![](https://i.loli.net/2021/05/12/d2Im73XgYQ1MC6o.png)](https://www.coolapk.com/apk/247826)
+[![google-play1.png](https://upload-images.jianshu.io/upload_images/57036-f9dbd7810d38ae95.png)](https://www.coolapk.com/apk/247826) [![coolapk1.png](https://upload-images.jianshu.io/upload_images/57036-6cf24d0c9efe8362.png)](https://www.coolapk.com/apk/247826)
 
 
 &nbsp;
