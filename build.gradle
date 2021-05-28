@@ -21,9 +21,9 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        // todo 等依赖库都迁移到 mavenCentral 后删除 jcenter
         jcenter()
         //maven { url "https://maven.aliyun.com/repository/public" }
-        flatDir { dirs "libs" }
     }
 }
 

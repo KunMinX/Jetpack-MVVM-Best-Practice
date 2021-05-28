@@ -39,7 +39,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
     implementation project(":architecture")
 
     testImplementation "junit:junit:4.13.2"
