@@ -1,29 +1,29 @@
 buildscript {
     ext {
-        lifecycleVersion = "2.3.0"
-        navigationVersion = "2.3.4"
+        lifecycleVersion = "2.3.1"
+        navigationVersion = "2.3.5"
     }
 
     repositories {
         google()
-        jcenter()
+        gradlePluginPortal()
 
-        //默认使用 jcenter，以便在依赖库有紧急更新时能第一时间获取
-        //如对日常的拉取速度有追求，可考虑使用以下远程仓库（是对 jcenter 的国内同步仓库，存在 1 天左右的时差）
+        //默认使用 gradlePluginPortal，以便在依赖库有紧急更新时能第一时间获取
+        //如对日常的拉取速度有追求，可考虑使用以下远程仓库（是对 central 的国内同步仓库，存在 1 天左右的时差）
         //maven { url "https://maven.aliyun.com/repository/public" }
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.1.3"
+        classpath "com.android.tools.build:gradle:4.2.1"
     }
 }
 
 allprojects {
     repositories {
         google()
+        mavenCentral()
+        // todo 等依赖库都迁移到 mavenCentral 后删除 jcenter
         jcenter()
         //maven { url "https://maven.aliyun.com/repository/public" }
-
-        flatDir { dirs "libs" }
     }
 }
 
