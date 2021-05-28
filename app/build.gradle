@@ -36,18 +36,11 @@ android {
     buildFeatures {
         dataBinding true
     }
-
-    compileOptions {
-        coreLibraryDesugaringEnabled true
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation project(":architecture")
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
 
     testImplementation "junit:junit:4.13.2"
     androidTestImplementation "androidx.test.ext:junit:1.1.2"
