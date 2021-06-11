@@ -30,7 +30,7 @@ import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.databinding.FragmentPlayerBinding;
 import com.kunminx.puremusic.player.PlayerManager;
-import com.kunminx.puremusic.ui.callback.SharedViewModel;
+import com.kunminx.puremusic.ui.event.SharedViewModel;
 import com.kunminx.puremusic.ui.helper.DefaultInterface;
 import com.kunminx.puremusic.ui.helper.DrawerCoordinateHelper;
 import com.kunminx.puremusic.ui.state.PlayerViewModel;
@@ -45,17 +45,17 @@ import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
 public class PlayerFragment extends BaseFragment {
 
     //TODO tip 1：每个页面都要单独配备一个 state-ViewModel，职责仅限于 "状态托管和恢复"，
-    //callback-ViewModel 则是用于在 "跨页面通信" 的场景下，承担 "唯一可信源"，
+    //event-ViewModel 则是用于在 "跨页面通信" 的场景下，承担 "唯一可信源"，
 
     //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/8204519736
 
     private PlayerViewModel mState;
-    private SharedViewModel mPageCallback;
+    private SharedViewModel mEvent;
 
     @Override
     protected void initViewModel() {
         mState = getFragmentScopeViewModel(PlayerViewModel.class);
-        mPageCallback = getApplicationScopeViewModel(SharedViewModel.class);
+        mEvent = getApplicationScopeViewModel(SharedViewModel.class);
     }
 
     @Override
@@ -63,22 +63,22 @@ public class PlayerFragment extends BaseFragment {
 
         //TODO tip: DataBinding 严格模式：
         // 将 DataBinding 实例限制于 base 页面中，默认不向子类暴露，
-        // 通过这样的方式，来彻底解决 视图调用的一致性问题，
-        // 如此，视图调用的安全性将和基于函数式编程思想的 Jetpack Compose 持平。
+        // 通过这样的方式，来彻底解决 视图实例 null 安全的一致性问题，
+        // 如此，视图实例 null 安全的安全性将和基于函数式编程思想的 Jetpack Compose 持平。
         // 而 DataBindingConfig 就是在这样的背景下，用于为 base 页面中的 DataBinding 提供绑定项。
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
         return new DataBindingConfig(R.layout.fragment_player, BR.vm, mState)
                 .addBindingParam(BR.click, new ClickProxy())
-                .addBindingParam(BR.event, new EventHandler());
+                .addBindingParam(BR.listener, new ListenerHandler());
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mPageCallback.isToAddSlideListener().observeInFragment(this, aBoolean -> {
+        mEvent.isToAddSlideListener().observe(this, aBoolean -> {
             if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {
                 SlidingUpPanelLayout sliding = (SlidingUpPanelLayout) view.getParent().getParent();
                 sliding.addPanelSlideListener(new PlayerSlideListener((FragmentPlayerBinding) getBinding(), sliding));
@@ -102,7 +102,7 @@ public class PlayerFragment extends BaseFragment {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/0168753249
 
-        PlayerManager.getInstance().getChangeMusicLiveData().observe(getViewLifecycleOwner(), changeMusic -> {
+        PlayerManager.getInstance().getChangeMusicEvent().observe(getViewLifecycleOwner(), changeMusic -> {
 
             // 切歌时，音乐的标题、作者、封面 状态的改变
             mState.title.set(changeMusic.getTitle());
@@ -110,20 +110,20 @@ public class PlayerFragment extends BaseFragment {
             mState.coverImg.set(changeMusic.getImg());
         });
 
-        PlayerManager.getInstance().getPlayingMusicLiveData().observe(getViewLifecycleOwner(), playingMusic -> {
+        PlayerManager.getInstance().getPlayingMusicEvent().observe(getViewLifecycleOwner(), playingMusic -> {
 
             // 播放进度 状态的改变
             mState.maxSeekDuration.set(playingMusic.getDuration());
             mState.currentSeekPosition.set(playingMusic.getPlayerPosition());
         });
 
-        PlayerManager.getInstance().getPauseLiveData().observe(getViewLifecycleOwner(), aBoolean -> {
+        PlayerManager.getInstance().getPauseEvent().observe(getViewLifecycleOwner(), aBoolean -> {
 
             // 播放按钮 状态的改变
             mState.isPlaying.set(!aBoolean);
         });
 
-        PlayerManager.getInstance().getPlayModeLiveData().observe(getViewLifecycleOwner(), anEnum -> {
+        PlayerManager.getInstance().getPlayModeEvent().observe(getViewLifecycleOwner(), anEnum -> {
             int tip;
             if (anEnum == PlayingInfoManager.RepeatMode.LIST_CYCLE) {
                 mState.playModeIcon.set(MaterialDrawableBuilder.IconValue.REPEAT);
@@ -143,7 +143,7 @@ public class PlayerFragment extends BaseFragment {
             }
         });
 
-        mPageCallback.isToCloseSlidePanelIfExpanded().observeInFragment(this, aBoolean -> {
+        mEvent.isToCloseSlidePanelIfExpanded().observe(this, aBoolean -> {
 
             // 按下返回键，如果此时 slide 面板是展开的，那么只对面板进行 slide down
 
@@ -167,21 +167,21 @@ public class PlayerFragment extends BaseFragment {
 
                     // TODO: yes:
 
-                    mPageCallback.requestToCloseActivityIfAllowed(true);
+                    mEvent.requestToCloseActivityIfAllowed(true);
 
                     // TODO: do not:
                     // mActivity.finish();
                 }
             } else {
-                mPageCallback.requestToCloseActivityIfAllowed(true);
+                mEvent.requestToCloseActivityIfAllowed(true);
             }
         });
 
     }
 
-    // TODO tip 7：此处通过 DataBinding 来规避 在 setOnClickListener 时存在的 视图调用的一致性问题，
+    // TODO tip 7：此处通过 DataBinding 来规避 在 setOnClickListener 时存在的 视图实例 null 安全的一致性问题，
 
-    // 也即，有绑定就有绑定，没绑定也没什么大不了的，总之 不会因一致性问题造成 视图调用的空指针。
+    // 也即，有绑定就有绑定，没绑定也没什么大不了的，总之 不会因一致性问题造成 视图实例 null 安全的空指针。
     // 如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
     public class ClickProxy {
@@ -207,14 +207,14 @@ public class PlayerFragment extends BaseFragment {
         }
 
         public void slideDown() {
-            mPageCallback.requestToCloseSlidePanelIfExpanded(true);
+            mEvent.requestToCloseSlidePanelIfExpanded(true);
         }
 
         public void more() {
         }
     }
 
-    public static class EventHandler implements DefaultInterface.OnSeekBarChangeListener {
+    public static class ListenerHandler implements DefaultInterface.OnSeekBarChangeListener {
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {

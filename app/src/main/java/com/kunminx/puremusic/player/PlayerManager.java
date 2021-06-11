@@ -21,12 +21,15 @@ import android.content.Intent;
 
 import androidx.lifecycle.LiveData;
 
+import com.danikula.videocache.HttpProxyCacheServer;
 import com.kunminx.player.PlayerController;
 import com.kunminx.player.bean.dto.ChangeMusic;
 import com.kunminx.player.bean.dto.PlayingMusic;
+import com.kunminx.player.contract.ICacheProxy;
 import com.kunminx.player.contract.IPlayController;
 import com.kunminx.player.contract.IServiceNotifier;
 import com.kunminx.puremusic.data.bean.TestAlbum;
+import com.kunminx.puremusic.player.helper.PlayerFileNameGenerator;
 import com.kunminx.puremusic.player.notification.PlayerService;
 
 import java.util.ArrayList;
@@ -51,13 +54,20 @@ public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestM
         return sManager;
     }
 
+    private HttpProxyCacheServer mProxy;
+
     public void init(Context context) {
-        init(context, null);
+        init(context, null, null);
     }
 
     @Override
-    public void init(Context context, IServiceNotifier iServiceNotifier) {
+    public void init(Context context, IServiceNotifier iServiceNotifier, ICacheProxy iCacheProxy) {
         mContext = context.getApplicationContext();
+
+        mProxy = new HttpProxyCacheServer.Builder(context.getApplicationContext())
+                .fileNameGenerator(new PlayerFileNameGenerator())
+                .maxCacheSize(2147483648L) // 2GB
+                .build();
 
         //添加额外的音乐格式
         List<String> extraFormats = new ArrayList<>();
@@ -71,7 +81,7 @@ public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestM
             } else {
                 mContext.stopService(intent);
             }
-        });
+        }, url -> mProxy.getProxyUrl(url));
     }
 
     @Override
@@ -179,21 +189,21 @@ public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestM
         return mController.getAlbumIndex();
     }
 
-    public LiveData<ChangeMusic> getChangeMusicLiveData() {
-        return mController.getChangeMusicLiveData();
+    public LiveData<ChangeMusic> getChangeMusicEvent() {
+        return mController.getChangeMusicEvent();
     }
 
-    public LiveData<PlayingMusic> getPlayingMusicLiveData() {
-        return mController.getPlayingMusicLiveData();
+    public LiveData<PlayingMusic> getPlayingMusicEvent() {
+        return mController.getPlayingMusicEvent();
     }
 
-    public LiveData<Boolean> getPauseLiveData() {
-        return mController.getPauseLiveData();
+    public LiveData<Boolean> getPauseEvent() {
+        return mController.getPauseEvent();
     }
 
     @Override
-    public LiveData<Enum> getPlayModeLiveData() {
-        return mController.getPlayModeLiveData();
+    public LiveData<Enum> getPlayModeEvent() {
+        return mController.getPlayModeEvent();
     }
 
     @Override

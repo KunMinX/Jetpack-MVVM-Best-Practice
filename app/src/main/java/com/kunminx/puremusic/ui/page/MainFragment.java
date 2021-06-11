@@ -28,7 +28,7 @@ import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.player.PlayerManager;
-import com.kunminx.puremusic.ui.callback.SharedViewModel;
+import com.kunminx.puremusic.ui.event.SharedViewModel;
 import com.kunminx.puremusic.ui.page.adapter.PlaylistAdapter;
 import com.kunminx.puremusic.ui.state.MainViewModel;
 
@@ -38,18 +38,18 @@ import com.kunminx.puremusic.ui.state.MainViewModel;
 public class MainFragment extends BaseFragment {
 
     //TODO tip 1：每个页面都要单独配备一个 state-ViewModel，职责仅限于 "状态托管和恢复"，
-    //callback-ViewModel 则是用于在 "跨页面通信" 的场景下，承担 "唯一可信源"，
+    //event-ViewModel 则是用于在 "跨页面通信" 的场景下，承担 "唯一可信源"，
 
     //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/8204519736
 
     private MainViewModel mState;
-    private SharedViewModel mPageCallback;
+    private SharedViewModel mEvent;
     private PlaylistAdapter mAdapter;
 
     @Override
     protected void initViewModel() {
         mState = getFragmentScopeViewModel(MainViewModel.class);
-        mPageCallback = getApplicationScopeViewModel(SharedViewModel.class);
+        mEvent = getApplicationScopeViewModel(SharedViewModel.class);
     }
 
     @Override
@@ -62,8 +62,8 @@ public class MainFragment extends BaseFragment {
 
         //TODO tip 2: DataBinding 严格模式：
         // 将 DataBinding 实例限制于 base 页面中，默认不向子类暴露，
-        // 通过这样的方式，来彻底解决 视图调用的一致性问题，
-        // 如此，视图调用的安全性将和基于函数式编程思想的 Jetpack Compose 持平。
+        // 通过这样的方式，来彻底解决 视图实例 null 安全的一致性问题，
+        // 如此，视图实例 null 安全的安全性将和基于函数式编程思想的 Jetpack Compose 持平。
         // 而 DataBindingConfig 就是在这样的背景下，用于为 base 页面中的 DataBinding 提供绑定项。
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
@@ -82,7 +82,7 @@ public class MainFragment extends BaseFragment {
         // 如此才能确保 消息同步的一致性 和 可靠性，以及 避免 不可预期的 推送和错误。
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/0168753249
 
-        PlayerManager.getInstance().getChangeMusicLiveData().observe(getViewLifecycleOwner(), changeMusic -> {
+        PlayerManager.getInstance().getChangeMusicEvent().observe(getViewLifecycleOwner(), changeMusic -> {
             mAdapter.notifyDataSetChanged();
         });
 
@@ -139,9 +139,9 @@ public class MainFragment extends BaseFragment {
     }
 
 
-    // TODO tip 7：此处通过 DataBinding 来规避 在 setOnClickListener 时存在的 视图调用的一致性问题，
+    // TODO tip 7：此处通过 DataBinding 来规避 在 setOnClickListener 时存在的 视图实例 null 安全的一致性问题，
 
-    // 也即，有绑定就有绑定，没绑定也没什么大不了的，总之 不会因一致性问题造成 视图调用的空指针。
+    // 也即，有绑定就有绑定，没绑定也没什么大不了的，总之 不会因一致性问题造成 视图实例 null 安全的空指针。
     // 如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
     public class ClickProxy {
@@ -156,7 +156,7 @@ public class MainFragment extends BaseFragment {
             // Activity 内部的事情在 Activity 内部消化，不要试图在 fragment 中调用和操纵 Activity 内部的东西。
             // 因为 Activity 端的处理后续可能会改变，并且可受用于更多的 fragment，而不单单是本 fragment。
 
-            mPageCallback.requestToOpenOrCloseDrawer(true);
+            mEvent.requestToOpenOrCloseDrawer(true);
         }
 
         public void login() {
