@@ -39,7 +39,7 @@ import com.kunminx.puremusic.ui.state.LoginViewModel;
 public class LoginFragment extends BaseFragment {
 
     //TODO tip 1：每个页面都要单独配备一个 state-ViewModel，职责仅限于 "状态托管和恢复"，
-    //callback-ViewModel 则是用于在 "跨页面通信" 的场景下，承担 "唯一可信源"，
+    //event-ViewModel 则是用于在 "跨页面通信" 的场景下，承担 "唯一可信源"，
 
     //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/8204519736
 
@@ -55,8 +55,8 @@ public class LoginFragment extends BaseFragment {
 
         //TODO tip: DataBinding 严格模式：
         // 将 DataBinding 实例限制于 base 页面中，默认不向子类暴露，
-        // 通过这样的方式，来彻底解决 视图调用的一致性问题，
-        // 如此，视图调用的安全性将和基于函数式编程思想的 Jetpack Compose 持平。
+        // 通过这样的方式，来彻底解决 视图实例 null 安全的一致性问题，
+        // 如此，视图实例 null 安全的安全性将和基于函数式编程思想的 Jetpack Compose 持平。
         // 而 DataBindingConfig 就是在这样的背景下，用于为 base 页面中的 DataBinding 提供绑定项。
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
@@ -70,6 +70,11 @@ public class LoginFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
 
         getLifecycle().addObserver(DrawerCoordinateHelper.getInstance());
+
+        //TODO tip：让 accountRequest 可观察页面生命周期，
+        // 从而在页面即将退出、且登录请求由于网络延迟尚未完成时，
+        // 及时通知数据层取消本次请求，以避免资源浪费和一系列不可预期的问题。
+        getLifecycle().addObserver(mState.accountRequest);
     }
 
     @Override
@@ -109,7 +114,7 @@ public class LoginFragment extends BaseFragment {
         public void login() {
 
             //TODO tip 3：通过 xml 中的双向绑定，使得能够通过 state-ViewModel 中与控件发生绑定的"可观察数据"拿到控件的数据，
-            // 避免直接接触控件实例而埋下视图调用的一致性隐患。
+            // 避免直接接触控件实例而埋下视图实例 null 安全的一致性隐患。
 
             //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 

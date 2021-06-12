@@ -36,7 +36,7 @@ import com.kunminx.puremusic.ui.state.SearchViewModel;
 public class SearchFragment extends BaseFragment {
 
     //TODO tip 1：每个页面都要单独配备一个 state-ViewModel，职责仅限于 "状态托管和恢复"，
-    //callback-ViewModel 则是用于在 "跨页面通信" 的场景下，承担 "唯一可信源"，
+    //event-ViewModel 则是用于在 "跨页面通信" 的场景下，承担 "唯一可信源"，
 
     //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/8204519736
 
@@ -54,8 +54,8 @@ public class SearchFragment extends BaseFragment {
 
         //TODO tip 1: DataBinding 严格模式：
         // 将 DataBinding 实例限制于 base 页面中，默认不向子类暴露，
-        // 通过这样的方式，来彻底解决 视图调用的一致性问题，
-        // 如此，视图调用的安全性将和基于函数式编程思想的 Jetpack Compose 持平。
+        // 通过这样的方式，来彻底解决 视图实例 null 安全的一致性问题，
+        // 如此，视图实例 null 安全的安全性将和基于函数式编程思想的 Jetpack Compose 持平。
         // 而 DataBindingConfig 就是在这样的背景下，用于为 base 页面中的 DataBinding 提供绑定项。
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910

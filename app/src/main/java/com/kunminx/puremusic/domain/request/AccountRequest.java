@@ -17,6 +17,9 @@
 package com.kunminx.puremusic.domain.request;
 
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -24,6 +27,7 @@ import com.kunminx.architecture.data.response.DataResult;
 import com.kunminx.architecture.domain.request.BaseRequest;
 import com.kunminx.puremusic.data.bean.User;
 import com.kunminx.puremusic.data.repository.DataRepository;
+
 
 /**
  * 用户账户 Request
@@ -41,7 +45,12 @@ import com.kunminx.puremusic.data.repository.DataRepository;
  * <p>
  * Create by KunMinX at 20/04/26
  */
-public class AccountRequest extends BaseRequest {
+public class AccountRequest extends BaseRequest
+        implements DefaultLifecycleObserver {
+
+    //TODO tip：👆👆👆 让 accountRequest 可观察页面生命周期，
+    // 从而在页面即将退出、且登录请求由于网络延迟尚未完成时，
+    // 及时通知数据层取消本次请求，以避免资源浪费和一系列不可预期的问题。
 
     private final MutableLiveData<DataResult<String>> tokenLiveData = new MutableLiveData<>();
 
@@ -75,5 +84,19 @@ public class AccountRequest extends BaseRequest {
         });*/
 
         DataRepository.getInstance().login(user, tokenLiveData::postValue);
+    }
+
+    private void cancelLogin() {
+        DataRepository.getInstance().cancelLogin();
+    }
+
+
+    //TODO tip：让 accountRequest 可观察页面生命周期，
+    // 从而在页面即将退出、且登录请求由于网络延迟尚未完成时，
+    // 及时通知数据层取消本次请求，以避免资源浪费和一系列不可预期的问题。
+
+    @Override
+    public void onStop(@NonNull LifecycleOwner owner) {
+        cancelLogin();
     }
 }

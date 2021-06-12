@@ -10,15 +10,15 @@
             type="com.kunminx.puremusic.ui.state.MainActivityViewModel" />
 
         <variable
-            name="event"
-            type="com.kunminx.puremusic.MainActivity.EventHandler" />
+            name="listener"
+            type="com.kunminx.puremusic.MainActivity.ListenerHandler" />
 
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/dl"
         allowDrawerOpen="@{vm.allowDrawerOpen}"
-        bindDrawerListener="@{event}"
+        bindDrawerListener="@{listener}"
         isOpenDrawer="@{vm.openDrawer}"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
