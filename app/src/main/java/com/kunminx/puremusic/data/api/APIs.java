@@ -5,5 +5,5 @@ package com.kunminx.puremusic.data.api;
  */
 public class APIs {
 
-    public final static String BASE_URL = "https://此处填写 BASE_API/";
+    public final static String BASE_URL = "https://test.com/";
 }

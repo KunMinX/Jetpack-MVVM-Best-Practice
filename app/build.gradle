@@ -2,7 +2,6 @@ apply plugin: "com.android.application"
 
 android {
     compileSdkVersion appTargetSdk
-    buildToolsVersion appBuildTool
     defaultConfig {
         applicationId "com.kunminx.puremusic"
         minSdkVersion appMinSdk
@@ -55,6 +54,7 @@ dependencies {
     implementation "com.kunminx.arch:binding-recyclerview:3.9.0-beta1"
 
     implementation "com.kunminx.player:player:3.1.0"
+    implementation 'org.slf4j:slf4j-android:1.7.21'
 
     implementation "com.github.bumptech.glide:glide:4.12.0"
 
@@ -64,5 +64,5 @@ dependencies {
 
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation "com.squareup.okhttp3:logging-interceptor:3.14.9"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.1"
 }
