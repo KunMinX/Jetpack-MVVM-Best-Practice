@@ -20,7 +20,6 @@ import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.kunminx.architecture.ui.callback.UnPeekLiveData;
 import com.kunminx.puremusic.domain.request.DownloadRequest;
 
 /**

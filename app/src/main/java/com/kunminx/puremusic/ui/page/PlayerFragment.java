@@ -78,7 +78,7 @@ public class PlayerFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mEvent.isToAddSlideListener().observe(this, aBoolean -> {
+        mEvent.isToAddSlideListener().observe(getViewLifecycleOwner(), aBoolean -> {
             if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {
                 SlidingUpPanelLayout sliding = (SlidingUpPanelLayout) view.getParent().getParent();
                 sliding.addPanelSlideListener(new PlayerSlideListener((FragmentPlayerBinding) getBinding(), sliding));
@@ -143,7 +143,7 @@ public class PlayerFragment extends BaseFragment {
             }
         });
 
-        mEvent.isToCloseSlidePanelIfExpanded().observe(this, aBoolean -> {
+        mEvent.isToCloseSlidePanelIfExpanded().observe(getViewLifecycleOwner(), aBoolean -> {
 
             // 按下返回键，如果此时 slide 面板是展开的，那么只对面板进行 slide down
 

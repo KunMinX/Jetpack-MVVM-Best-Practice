@@ -28,6 +28,7 @@ import com.kunminx.architecture.domain.request.BaseRequest;
 import com.kunminx.puremusic.data.bean.User;
 import com.kunminx.puremusic.data.repository.DataRepository;
 
+import org.jetbrains.annotations.NotNull;
 
 /**
  * 用户账户 Request
@@ -96,7 +97,7 @@ public class AccountRequest extends BaseRequest
     // 及时通知数据层取消本次请求，以避免资源浪费和一系列不可预期的问题。
 
     @Override
-    public void onStop(@NonNull LifecycleOwner owner) {
+    public void onStop(@NonNull @NotNull LifecycleOwner owner) {
         cancelLogin();
     }
 }
