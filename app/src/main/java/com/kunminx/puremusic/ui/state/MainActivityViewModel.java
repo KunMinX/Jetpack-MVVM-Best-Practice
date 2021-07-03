@@ -43,9 +43,9 @@ public class MainActivityViewModel extends ViewModel {
 
     //如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
-    public final MutableLiveData<Boolean> openDrawer = new MutableLiveData<>();
+    public final MutableLiveData<Boolean> openDrawer = new MutableLiveData<>(false);
 
-    public final MutableLiveData<Boolean> allowDrawerOpen = new MutableLiveData<>();
+    public final MutableLiveData<Boolean> allowDrawerOpen = new MutableLiveData<>(true);
 
     //TODO tip 2：将 request 作为 ViewModel 的成员暴露给 Activity/Fragment，
     // 如此便于语义的明确，以及实现多个 request 在 ViewModel 中的组合和复用。
@@ -54,11 +54,5 @@ public class MainActivityViewModel extends ViewModel {
     //https://xiaozhuanlan.com/topic/8204519736
 
     public final DownloadRequest downloadRequest = new DownloadRequest();
-
-
-    {
-        allowDrawerOpen.setValue(true);
-        openDrawer.setValue(false);
-    }
 
 }
