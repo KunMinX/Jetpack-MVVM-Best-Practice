@@ -75,7 +75,7 @@ public class DrawerFragment extends BaseFragment {
         mState.infoRequest.getLibraryLiveData().observe(getViewLifecycleOwner(), dataResult -> {
             if (!dataResult.getResponseStatus().isSuccess()) return;
 
-            if (mAnimationLoaded && dataResult.getResult() != null) {
+            if (dataResult.getResult() != null) {
 
                 //TODO tip 3："唯一可信源"的理念仅适用于"跨域通信"的场景，
                 // state-ViewModel 与"跨域通信"的场景无关，其所持有的 LiveData 仅用于"无防抖加持"的视图状态绑定用途
@@ -91,15 +91,6 @@ public class DrawerFragment extends BaseFragment {
 
         if (mState.infoRequest.getLibraryLiveData().getValue() == null) {
             mState.infoRequest.requestLibraryInfo();
-        }
-    }
-
-    @Override
-    public void loadInitData() {
-        super.loadInitData();
-        if (mState.infoRequest.getLibraryLiveData().getValue() != null
-                && mState.infoRequest.getLibraryLiveData().getValue().getResult() != null) {
-            mState.list.setValue(mState.infoRequest.getLibraryLiveData().getValue().getResult());
         }
     }
 
