@@ -31,7 +31,7 @@ import com.kunminx.architecture.utils.Utils;
 public class NetworkStateManager implements DefaultLifecycleObserver {
 
     private static final NetworkStateManager S_MANAGER = new NetworkStateManager();
-    private NetworkStateReceive mNetworkStateReceive;
+    private final NetworkStateReceive mNetworkStateReceive = new NetworkStateReceive();
 
     private NetworkStateManager() {
     }
@@ -42,7 +42,6 @@ public class NetworkStateManager implements DefaultLifecycleObserver {
 
     @Override
     public void onResume(@NonNull LifecycleOwner owner) {
-        mNetworkStateReceive = new NetworkStateReceive();
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         Utils.getApp().getApplicationContext().registerReceiver(mNetworkStateReceive, filter);
     }
