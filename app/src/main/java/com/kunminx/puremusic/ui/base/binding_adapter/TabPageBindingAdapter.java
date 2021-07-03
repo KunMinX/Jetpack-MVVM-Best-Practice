@@ -24,7 +24,7 @@ public class TabPageBindingAdapter {
         }
         ViewPager viewPager = (tabLayout.getRootView()).findViewById(R.id.view_pager);
         if (viewPager != null) {
-            viewPager.setAdapter(new CommonViewPagerAdapter(count, false, title));
+            viewPager.setAdapter(new CommonViewPagerAdapter(false, title));
             tabLayout.setupWithViewPager(viewPager);
         }
     }
