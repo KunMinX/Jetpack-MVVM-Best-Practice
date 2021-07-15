@@ -47,7 +47,7 @@ dependencies {
     api "androidx.lifecycle:lifecycle-livedata:$lifecycleVersion"
     api "androidx.navigation:navigation-runtime:$navigationVersion"
 
-    api 'com.kunminx.arch:unpeek-livedata:6.0.0-beta1'
+    api 'com.kunminx.arch:unpeek-livedata:6.1.0-beta1'
     api 'com.kunminx.arch:smooth-navigation:3.9.0-beta1'
     api 'com.kunminx.arch:strict-databinding:3.7.0-beta1'
 
