@@ -27,8 +27,6 @@ import com.kunminx.architecture.ui.page.DataBindingConfig;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.TestAlbum;
-import com.kunminx.puremusic.databinding.FragmentDrawerBinding;
-import com.kunminx.puremusic.databinding.FragmentMainBinding;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.event.SharedViewModel;
 import com.kunminx.puremusic.ui.page.adapter.PlaylistAdapter;
@@ -170,5 +168,4 @@ public class MainFragment extends BaseFragment {
         }
 
     }
-
 }
