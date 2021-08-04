@@ -6,6 +6,8 @@ buildscript {
         appVersionName = "3.2.4"
         lifecycleVersion = "2.3.1"
         navigationVersion = "2.3.5"
+        retrofitVersion = "2.9.0"
+        okHttpVersion = "4.9.1"
     }
 
     repositories {
