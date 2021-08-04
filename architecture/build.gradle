@@ -17,12 +17,10 @@
 apply plugin: "com.android.library"
 
 android {
-    compileSdkVersion appTargetSdk
+    compileSdk appTargetSdk
     defaultConfig {
-        minSdkVersion appMinSdk
-        targetSdkVersion appTargetSdk
-        versionCode appVersionCode
-        versionName appVersionName
+        minSdk appMinSdk
+        targetSdk appTargetSdk
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -50,5 +48,4 @@ dependencies {
     api 'com.kunminx.arch:unpeek-livedata:6.1.0-beta1'
     api 'com.kunminx.arch:smooth-navigation:3.9.0-beta1'
     api 'com.kunminx.arch:strict-databinding:3.7.0-beta1'
-
 }
