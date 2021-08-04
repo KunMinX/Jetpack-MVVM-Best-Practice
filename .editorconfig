@@ -1,0 +1,7 @@
+[*]
+charset = utf-8
+ij_java_use_single_class_imports = true
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
