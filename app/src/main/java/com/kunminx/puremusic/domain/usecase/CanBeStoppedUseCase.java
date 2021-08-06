@@ -44,6 +44,13 @@ public class CanBeStoppedUseCase extends UseCase<CanBeStoppedUseCase.RequestValu
 
     private DownloadFile mDownloadFile = new DownloadFile();
 
+    //TODO tip：让 CanBeStoppedUseCase 可观察页面生命周期，
+    // 从而在页面即将退出、且下载请求尚未完成时，
+    // 及时通知数据层取消本次请求，以避免资源浪费和一系列不可预期的问题。
+
+    // 关于 Lifecycle 组件的存在意义，可详见《为你还原一个真实的 Jetpack Lifecycle》篇的解析
+    // https://xiaozhuanlan.com/topic/3684721950
+
     @Override
     public void onStop(@NonNull LifecycleOwner owner) {
         if (getRequestValues() != null) {

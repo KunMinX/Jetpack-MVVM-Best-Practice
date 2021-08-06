@@ -70,6 +70,13 @@ public class DrawerCoordinateHelper implements DefaultLifecycleObserver {
         enableSwipeDrawer.setValue(tagOfSecondaryPages.size() == 0);
     }
 
+    //TODO tip：让 NetworkStateManager 可观察页面生命周期，
+    // 从而在进入或离开目标页面时，
+    // 能自动在此登记和处理抽屉的禁用和解禁，避免一系列不可预期的问题。
+
+    // 关于 Lifecycle 组件的存在意义，可详见《为你还原一个真实的 Jetpack Lifecycle》篇的解析
+    // https://xiaozhuanlan.com/topic/3684721950
+
     @Override
     public void onCreate(@NonNull LifecycleOwner owner) {
 
