@@ -161,6 +161,7 @@
             <com.kunminx.puremusic.ui.view.PlayPauseView
                 android:id="@+id/play_pause"
                 isPlaying="@{vm.isPlaying}"
+                onClickWithDebouncing="@{()->click.togglePlay()}"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_marginEnd="16dp"
@@ -168,7 +169,6 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                android:onClick="@{()->click.togglePlay()}"
                 playpauseview:circleAlpha="0"
                 playpauseview:isCircleDraw="true" />
 
