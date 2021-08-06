@@ -1,11 +1,11 @@
 apply plugin: "com.android.application"
 
 android {
-    compileSdkVersion appTargetSdk
+    compileSdk appTargetSdk
     defaultConfig {
         applicationId "com.kunminx.puremusic"
-        minSdkVersion appMinSdk
-        targetSdkVersion appTargetSdk
+        minSdk appMinSdk
+        targetSdk appTargetSdk
         versionCode appVersionCode
         versionName appVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -35,26 +35,25 @@ android {
     buildFeatures {
         dataBinding true
     }
-
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
     implementation project(":architecture")
-    implementation 'org.jetbrains:annotations:21.0.1'
+    implementation "org.jetbrains:annotations:21.0.1"
 
     testImplementation "junit:junit:4.13.2"
     androidTestImplementation "androidx.test.ext:junit:1.1.3"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.4.0"
 
-    implementation "androidx.constraintlayout:constraintlayout:2.0.4"
+    implementation "androidx.constraintlayout:constraintlayout:2.1.0"
     implementation "com.google.android.material:material:1.4.0"
     implementation "androidx.recyclerview:recyclerview:1.2.1"
 
     implementation "com.kunminx.arch:binding-recyclerview:3.9.0-beta1"
 
     implementation "com.kunminx.player:player:3.1.0"
-    implementation 'org.slf4j:slf4j-android:1.7.32'
+    implementation "org.slf4j:slf4j-android:1.7.32"
 
     implementation "com.github.bumptech.glide:glide:4.12.0"
 
@@ -62,7 +61,8 @@ dependencies {
 
     implementation "com.sothree.slidinguppanel:library:3.4.0"
 
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2"
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
+    implementation "com.squareup.okhttp3:okhttp:$okHttpVersion"
 }
