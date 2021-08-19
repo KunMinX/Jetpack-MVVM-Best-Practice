@@ -6,6 +6,14 @@ import android.util.Log;
 
 import java.lang.reflect.Field;
 
+/**
+ * <pre>
+ *     author: Blankj
+ *     blog  : http://blankj.com
+ *     time  : 2016/09/23
+ *     desc  : AdaptScreenUtils
+ * </pre>
+ */
 public final class AdaptScreenUtils {
 
     private static boolean isInitMiui = false;

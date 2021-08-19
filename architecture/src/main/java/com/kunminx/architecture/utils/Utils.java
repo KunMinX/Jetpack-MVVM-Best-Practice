@@ -2,7 +2,6 @@ package com.kunminx.architecture.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.Application;
 import android.app.Application.ActivityLifecycleCallbacks;
 import android.content.Context;
@@ -19,7 +18,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -45,7 +43,7 @@ import java.util.Set;
 public final class Utils {
 
     private static final String PERMISSION_ACTIVITY_CLASS_NAME =
-            "com.blankj.utilcode.util.PermissionUtils$PermissionActivity";
+        "com.blankj.utilcode.util.PermissionUtils$PermissionActivity";
 
     private static final ActivityLifecycleImpl ACTIVITY_LIFECYCLE = new ActivityLifecycleImpl();
 
@@ -124,40 +122,6 @@ public final class Utils {
         throw new NullPointerException("u should init first");
     }
 
-    static ActivityLifecycleImpl getActivityLifecycle() {
-        return ACTIVITY_LIFECYCLE;
-    }
-
-    static LinkedList<Activity> getActivityList() {
-        return ACTIVITY_LIFECYCLE.mActivityList;
-    }
-
-    static Context getTopActivityOrApp() {
-        if (isAppForeground()) {
-            Activity topActivity = ACTIVITY_LIFECYCLE.getTopActivity();
-            return topActivity == null ? Utils.getApp() : topActivity;
-        } else {
-            return Utils.getApp();
-        }
-    }
-
-    static boolean isAppForeground() {
-        ActivityManager am = (ActivityManager) Utils.getApp().getSystemService(Context.ACTIVITY_SERVICE);
-        if (am == null) {
-            return false;
-        }
-        List<ActivityManager.RunningAppProcessInfo> info = am.getRunningAppProcesses();
-        if (info == null || info.size() == 0) {
-            return false;
-        }
-        for (ActivityManager.RunningAppProcessInfo aInfo : info) {
-            if (aInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
-                return aInfo.processName.equals(Utils.getApp().getPackageName());
-            }
-        }
-        return false;
-    }
-
     public interface OnAppStatusChangedListener {
         void onForeground();
 
@@ -187,7 +151,7 @@ public final class Utils {
                 return;
             }
             InputMethodManager imm =
-                    (InputMethodManager) Utils.getApp().getSystemService(Context.INPUT_METHOD_SERVICE);
+                (InputMethodManager) Utils.getApp().getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm == null) {
                 return;
             }
@@ -347,7 +311,7 @@ public final class Utils {
 
         private void consumeOnActivityDestroyedListener(Activity activity) {
             Iterator<Map.Entry<Activity, Set<OnActivityDestroyedListener>>> iterator
-                    = mDestroyedListenerMap.entrySet().iterator();
+                = mDestroyedListenerMap.entrySet().iterator();
             while (iterator.hasNext()) {
                 Map.Entry<Activity, Set<OnActivityDestroyedListener>> entry = iterator.next();
                 if (entry.getKey() == activity) {
