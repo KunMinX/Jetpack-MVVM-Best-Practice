@@ -4,7 +4,7 @@
 
 # 版权声明
 
-刚刚就本项目 "被卖课" 一事，在掘金发表了一期专访 [《开源项目被人拿去做课程卖了 1000 多万是什么体验》](https://juejin.im/post/5ecb4950518825431a669897)
+我们就本项目 "被卖课" 一事，在掘金发表了一期专访 [《开源项目被人拿去做课程卖了 1000 多万是什么体验》](https://juejin.im/post/5ecb4950518825431a669897)
 
 本项目系我为了方便开发者们 **无痛理解 Google 开源的 Jetpack MVVM 中每个架构组件的 存在缘由、职责边界**，而 **精心设计的一个又一个高频应用场景**，
 
@@ -74,7 +74,7 @@
 &nbsp;
 &nbsp;
 
-除了 **在 以简驭繁 的代码中 掌握 MVVM 最佳实践**，你还可以 从这个开源项目中 获得的内容 包括：
+除了 **在 "以简驭繁" 的代码中 掌握 MVVM 最佳实践**，你还可以 从这个开源项目中 获得的内容 包括：
 
 1. 整洁的代码风格 和 标准的资源命名规范。
 2. 对 视图控制器 知识点的 深入理解 和 正确使用。
@@ -84,7 +84,7 @@
 6. 绝不使用 Dagger，绝不使用奇技淫巧、编写艰深晦涩的代码。
 7. The one more thing is：
 
-即日起，可在 应用商店 下载体验！
+即日起，可在 "应用商店" 下载体验！
 
 [![google-play1.png](https://upload-images.jianshu.io/upload_images/57036-f9dbd7810d38ae95.png)](https://www.coolapk.com/apk/247826) [![coolapk1.png](https://upload-images.jianshu.io/upload_images/57036-6cf24d0c9efe8362.png)](https://www.coolapk.com/apk/247826)
 
@@ -96,7 +96,7 @@
 
 [AndroidX](https://developer.android.google.cn/jetpack/androidx)
 
-[Jetpack MVVM](https://developer.android.google.cn/jetpack/)
+[Jetpack](https://developer.android.google.cn/jetpack/)
 
 [material-components-android](https://github.com/material-components/material-components-android)
 
@@ -113,7 +113,7 @@
 
 # Who is using
 
-感谢小伙伴们对 “开源库使用情况” 匿名调查问卷的参与，截至 2021年4月25日，我们了解到
+感谢小伙伴们对 “开源库使用情况” 匿名调查问卷的参与，截至 2021年4月25日，通过小伙伴的私下反馈和调查问卷，我们了解到
 
 包括 “腾讯音乐、BMW、TCL” 在内的诸多知名厂商的软件，都参考过我们开源的此架构模式，以及正在使用我们维护的 [UnPeek-LiveData](https://github.com/KunMinX/UnPeek-LiveData) 等框架。
 
