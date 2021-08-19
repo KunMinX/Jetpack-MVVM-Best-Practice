@@ -26,6 +26,7 @@ import androidx.annotation.Nullable;
 import com.kunminx.architecture.ui.page.BaseFragment;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
 import com.kunminx.architecture.utils.SPUtils;
+import com.kunminx.architecture.utils.ToastUtils;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.User;
@@ -62,7 +63,7 @@ public class LoginFragment extends BaseFragment {
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
         return new DataBindingConfig(R.layout.fragment_login, BR.vm, mState)
-                .addBindingParam(BR.click, new ClickProxy());
+            .addBindingParam(BR.click, new ClickProxy());
     }
 
     @Override
@@ -90,7 +91,7 @@ public class LoginFragment extends BaseFragment {
         mState.accountRequest.getTokenLiveData().observe(getViewLifecycleOwner(), dataResult -> {
             if (!dataResult.getResponseStatus().isSuccess()) {
                 mState.loadingVisible.set(false);
-                showLongToast(getString(R.string.network_state_retry));
+                ToastUtils.showLongToast(getApplicationContext(), getString(R.string.network_state_retry));
                 return;
             }
 
@@ -119,7 +120,7 @@ public class LoginFragment extends BaseFragment {
             //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
             if (TextUtils.isEmpty(mState.name.get()) || TextUtils.isEmpty(mState.password.get())) {
-                showLongToast(getString(R.string.username_or_pwd_incomplete));
+                ToastUtils.showLongToast(getApplicationContext(), getString(R.string.username_or_pwd_incomplete));
                 return;
             }
             User user = new User(mState.name.get(), mState.password.get());

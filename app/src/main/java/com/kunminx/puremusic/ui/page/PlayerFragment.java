@@ -25,6 +25,7 @@ import androidx.annotation.Nullable;
 
 import com.kunminx.architecture.ui.page.BaseFragment;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
+import com.kunminx.architecture.utils.ToastUtils;
 import com.kunminx.player.PlayingInfoManager;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
@@ -70,8 +71,8 @@ public class PlayerFragment extends BaseFragment {
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
         return new DataBindingConfig(R.layout.fragment_player, BR.vm, mState)
-                .addBindingParam(BR.click, new ClickProxy())
-                .addBindingParam(BR.listener, new ListenerHandler());
+            .addBindingParam(BR.click, new ClickProxy())
+            .addBindingParam(BR.listener, new ListenerHandler());
     }
 
     @Override
@@ -85,11 +86,11 @@ public class PlayerFragment extends BaseFragment {
                 sliding.addPanelSlideListener(new DefaultInterface.PanelSlideListener() {
                     @Override
                     public void onPanelStateChanged(
-                            View view, SlidingUpPanelLayout.PanelState panelState,
-                            SlidingUpPanelLayout.PanelState panelState1) {
+                        View view, SlidingUpPanelLayout.PanelState panelState,
+                        SlidingUpPanelLayout.PanelState panelState1) {
                         DrawerCoordinateHelper.getInstance().requestToUpdateDrawerMode(
-                                panelState1 == SlidingUpPanelLayout.PanelState.EXPANDED,
-                                this.getClass().getSimpleName()
+                            panelState1 == SlidingUpPanelLayout.PanelState.EXPANDED,
+                            this.getClass().getSimpleName()
                         );
                     }
                 });
@@ -138,7 +139,7 @@ public class PlayerFragment extends BaseFragment {
             if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {
                 SlidingUpPanelLayout sliding = (SlidingUpPanelLayout) view.getParent().getParent();
                 if (sliding.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
-                    showShortToast(tip);
+                    ToastUtils.showShortToast(getApplicationContext(), getString(tip));
                 }
             }
         });
@@ -203,7 +204,7 @@ public class PlayerFragment extends BaseFragment {
         }
 
         public void showPlayList() {
-            showShortToast(R.string.unfinished);
+            ToastUtils.showShortToast(getApplicationContext(), getString(R.string.unfinished));
         }
 
         public void slideDown() {

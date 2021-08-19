@@ -17,14 +17,12 @@
 package com.kunminx.architecture.ui.page;
 
 import android.app.Activity;
-import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -72,32 +70,9 @@ public abstract class BaseFragment extends DataBindingFragment {
 
     protected <T extends ViewModel> T getApplicationScopeViewModel(@NonNull Class<T> modelClass) {
         if (mApplicationProvider == null) {
-            mApplicationProvider = new ViewModelProvider(
-                    (BaseApplication) mActivity.getApplicationContext(), getApplicationFactory(mActivity));
+            mApplicationProvider = new ViewModelProvider((BaseApplication) mActivity.getApplicationContext());
         }
         return mApplicationProvider.get(modelClass);
-    }
-
-    private ViewModelProvider.Factory getApplicationFactory(Activity activity) {
-        checkActivity(this);
-        Application application = checkApplication(activity);
-        return ViewModelProvider.AndroidViewModelFactory.getInstance(application);
-    }
-
-    private Application checkApplication(Activity activity) {
-        Application application = activity.getApplication();
-        if (application == null) {
-            throw new IllegalStateException("Your activity/fragment is not yet attached to "
-                    + "Application. You can't request ViewModel before onCreate call.");
-        }
-        return application;
-    }
-
-    private void checkActivity(Fragment fragment) {
-        Activity activity = fragment.getActivity();
-        if (activity == null) {
-            throw new IllegalStateException("Can't create ViewModelProvider for detached fragment");
-        }
     }
 
     protected NavController nav() {
@@ -116,19 +91,8 @@ public abstract class BaseFragment extends DataBindingFragment {
         startActivity(intent);
     }
 
-    protected void showLongToast(String text) {
-        Toast.makeText(mActivity.getApplicationContext(), text, Toast.LENGTH_LONG).show();
+    protected Context getApplicationContext() {
+        return mActivity.getApplicationContext();
     }
 
-    protected void showShortToast(String text) {
-        Toast.makeText(mActivity.getApplicationContext(), text, Toast.LENGTH_SHORT).show();
-    }
-
-    protected void showLongToast(int stringRes) {
-        showLongToast(mActivity.getApplicationContext().getString(stringRes));
-    }
-
-    protected void showShortToast(int stringRes) {
-        showShortToast(mActivity.getApplicationContext().getString(stringRes));
-    }
 }
