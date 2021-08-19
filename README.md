@@ -2,7 +2,7 @@
 
 &nbsp;
 
-[《重学安卓》](https://xiaozhuanlan.com/kunminx)付费读者加微信进群：myatejx
+[《重学安卓》](https://xiaozhuanlan.com/topic/6017825943)付费读者加微信进群：myatejx
 
 &nbsp;
 
