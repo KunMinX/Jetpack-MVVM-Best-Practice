@@ -3,8 +3,6 @@ package com.kunminx.puremusic.ui.view;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
-import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
@@ -48,15 +46,13 @@ public class PlayPauseDrawable extends Drawable {
     private float mProgress;
     private boolean mIsPlay;
 
-    public PlayPauseDrawable(Context context) {
-        final Resources res = context.getResources();
+    public PlayPauseDrawable() {
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(Color.BLACK);
     }
 
-    public PlayPauseDrawable(Context context, @ColorInt int color) {
-        final Resources res = context.getResources();
+    public PlayPauseDrawable(@ColorInt int color) {
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(color);

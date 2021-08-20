@@ -64,7 +64,7 @@ public class PlayPauseView extends FrameLayout {
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setAlpha(circleAlpha);
         mPaint.setColor(mBackgroundColor);
-        mDrawable = new PlayPauseDrawable(context, mDrawableColor);
+        mDrawable = new PlayPauseDrawable(mDrawableColor);
         mDrawable.setCallback(this);
 
     }
