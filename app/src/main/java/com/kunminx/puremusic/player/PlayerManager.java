@@ -40,11 +40,9 @@ import java.util.List;
  */
 public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestMusic> {
 
-    private static PlayerManager sManager = new PlayerManager();
+    private static final PlayerManager sManager = new PlayerManager();
 
-    private PlayerController<TestAlbum, TestAlbum.TestMusic> mController;
-
-    private Context mContext;
+    private final PlayerController<TestAlbum, TestAlbum.TestMusic> mController;
 
     private PlayerManager() {
         mController = new PlayerController<>();
@@ -62,24 +60,24 @@ public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestM
 
     @Override
     public void init(Context context, IServiceNotifier iServiceNotifier, ICacheProxy iCacheProxy) {
-        mContext = context.getApplicationContext();
+        Context context1 = context.getApplicationContext();
 
-        mProxy = new HttpProxyCacheServer.Builder(context.getApplicationContext())
-                .fileNameGenerator(new PlayerFileNameGenerator())
-                .maxCacheSize(2147483648L) // 2GB
-                .build();
+        mProxy = new HttpProxyCacheServer.Builder(context1)
+            .fileNameGenerator(new PlayerFileNameGenerator())
+            .maxCacheSize(2147483648L) // 2GB
+            .build();
 
         //添加额外的音乐格式
         List<String> extraFormats = new ArrayList<>();
         extraFormats.add(".flac");
         extraFormats.add(".ape");
 
-        mController.init(mContext, extraFormats, startOrStop -> {
-            Intent intent = new Intent(mContext, PlayerService.class);
+        mController.init(context1, extraFormats, startOrStop -> {
+            Intent intent = new Intent(context1, PlayerService.class);
             if (startOrStop) {
-                mContext.startService(intent);
+                context1.startService(intent);
             } else {
-                mContext.stopService(intent);
+                context1.stopService(intent);
             }
         }, url -> mProxy.getProxyUrl(url));
     }

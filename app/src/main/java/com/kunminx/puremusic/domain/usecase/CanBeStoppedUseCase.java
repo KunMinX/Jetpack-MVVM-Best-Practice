@@ -42,7 +42,7 @@ import com.kunminx.puremusic.data.repository.DataRepository;
 public class CanBeStoppedUseCase extends UseCase<CanBeStoppedUseCase.RequestValues,
         CanBeStoppedUseCase.ResponseValue> implements DefaultLifecycleObserver {
 
-    private DownloadFile mDownloadFile = new DownloadFile();
+    private final DownloadFile mDownloadFile = new DownloadFile();
 
     //TODO tip：让 CanBeStoppedUseCase 可观察页面生命周期，
     // 从而在页面即将退出、且下载请求尚未完成时，
@@ -77,7 +77,7 @@ public class CanBeStoppedUseCase extends UseCase<CanBeStoppedUseCase.RequestValu
 
     public static final class ResponseValue implements UseCase.ResponseValue {
 
-        private DataResult<DownloadFile> mDataResult;
+        private final DataResult<DownloadFile> mDataResult;
 
         public ResponseValue(DataResult<DownloadFile> dataResult) {
             mDataResult = dataResult;

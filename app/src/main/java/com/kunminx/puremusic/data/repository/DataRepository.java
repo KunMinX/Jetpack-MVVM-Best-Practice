@@ -89,7 +89,7 @@ public class DataRepository {
      * 如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》篇的解析
      * https://xiaozhuanlan.com/topic/8204519736
      *
-     * @param result
+     * @param result result
      */
     public void getFreeMusic(DataResult.Result<TestAlbum> result) {
 
