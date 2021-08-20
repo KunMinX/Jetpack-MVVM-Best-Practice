@@ -17,11 +17,10 @@
 package com.kunminx.puremusic.domain.request;
 
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-
 import com.kunminx.architecture.data.response.DataResult;
 import com.kunminx.architecture.domain.request.BaseRequest;
+import com.kunminx.architecture.ui.callback.ProtectedUnPeekLiveData;
+import com.kunminx.architecture.ui.callback.UnPeekLiveData;
 import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.data.repository.DataRepository;
 
@@ -43,7 +42,7 @@ import com.kunminx.puremusic.data.repository.DataRepository;
  */
 public class MusicRequest extends BaseRequest {
 
-    private final MutableLiveData<DataResult<TestAlbum>> mFreeMusicsLiveData = new MutableLiveData<>();
+    private final UnPeekLiveData<DataResult<TestAlbum>> mFreeMusicsLiveData = new UnPeekLiveData<>();
 
     //TODO tip 2：向 ui 层提供的 request LiveData，使用父类 LiveData 而不是 MutableLiveData，
     //如此达成了 "唯一可信源" 的设计，也即通过访问控制权限实现 "读写分离"（国外称 "单向数据流"），
@@ -52,7 +51,7 @@ public class MusicRequest extends BaseRequest {
     //如果这样说还不理解的话，详见《LiveData 鲜为人知的 身世背景 和 独特使命》中结合实际场合 对"唯一可信源"本质的解析。
     //https://xiaozhuanlan.com/topic/0168753249
 
-    public LiveData<DataResult<TestAlbum>> getFreeMusicsLiveData() {
+    public ProtectedUnPeekLiveData<DataResult<TestAlbum>> getFreeMusicsLiveData() {
 
         //TODO tip 3：与此同时，为了方便语义上的理解，故而直接将 DataResult 作为 LiveData value 回推给 UI 层，
         //而不是将 DataResult 的泛型实体拆下来单独回推，如此

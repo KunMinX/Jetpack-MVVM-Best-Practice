@@ -1,11 +1,10 @@
 package com.kunminx.puremusic.domain.request;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-
 import com.kunminx.architecture.data.response.DataResult;
 import com.kunminx.architecture.domain.request.BaseRequest;
 import com.kunminx.architecture.domain.usecase.UseCaseHandler;
+import com.kunminx.architecture.ui.callback.ProtectedUnPeekLiveData;
+import com.kunminx.architecture.ui.callback.UnPeekLiveData;
 import com.kunminx.puremusic.data.bean.DownloadFile;
 import com.kunminx.puremusic.data.repository.DataRepository;
 import com.kunminx.puremusic.domain.usecase.CanBeStoppedUseCase;
@@ -29,9 +28,9 @@ import com.kunminx.puremusic.domain.usecase.CanBeStoppedUseCase;
  */
 public class DownloadRequest extends BaseRequest {
 
-    private final MutableLiveData<DataResult<DownloadFile>> mDownloadFileLiveData = new MutableLiveData<>();
+    private final UnPeekLiveData<DataResult<DownloadFile>> mDownloadFileLiveData = new UnPeekLiveData<>();
 
-    private final MutableLiveData<DataResult<DownloadFile>> mDownloadFileCanBeStoppedLiveData = new MutableLiveData<>();
+    private final UnPeekLiveData<DataResult<DownloadFile>> mDownloadFileCanBeStoppedLiveData = new UnPeekLiveData<>();
 
     private final CanBeStoppedUseCase mCanBeStoppedUseCase = new CanBeStoppedUseCase();
 
@@ -42,7 +41,7 @@ public class DownloadRequest extends BaseRequest {
     //如果这样说还不理解的话，详见《LiveData 鲜为人知的 身世背景 和 独特使命》中结合实际场合 对"唯一可信源"本质的解析。
     //https://xiaozhuanlan.com/topic/0168753249
 
-    public LiveData<DataResult<DownloadFile>> getDownloadFileLiveData() {
+    public ProtectedUnPeekLiveData<DataResult<DownloadFile>> getDownloadFileLiveData() {
 
         //TODO tip 3：与此同时，为了方便语义上的理解，故而直接将 DataResult 作为 LiveData value 回推给 UI 层，
         //而不是将 DataResult 的泛型实体拆下来单独回推，如此
@@ -56,7 +55,7 @@ public class DownloadRequest extends BaseRequest {
         return mDownloadFileLiveData;
     }
 
-    public LiveData<DataResult<DownloadFile>> getDownloadFileCanBeStoppedLiveData() {
+    public ProtectedUnPeekLiveData<DataResult<DownloadFile>> getDownloadFileCanBeStoppedLiveData() {
         return mDownloadFileCanBeStoppedLiveData;
     }
 
@@ -85,8 +84,8 @@ public class DownloadRequest extends BaseRequest {
 
     public void requestCanBeStoppedDownloadFile() {
         UseCaseHandler.getInstance().execute(getCanBeStoppedUseCase(),
-                new CanBeStoppedUseCase.RequestValues(), response -> {
-                    mDownloadFileCanBeStoppedLiveData.setValue(response.getDataResult());
-                });
+            new CanBeStoppedUseCase.RequestValues(), response -> {
+                mDownloadFileCanBeStoppedLiveData.setValue(response.getDataResult());
+            });
     }
 }
