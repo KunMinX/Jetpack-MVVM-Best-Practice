@@ -70,7 +70,7 @@ public class PlayerReceiver extends BroadcastReceiver {
             if (Objects.requireNonNull(intent.getAction()).equals(PlayerService.NOTIFY_PLAY)) {
                 PlayerManager.getInstance().playAudio();
             } else if (intent.getAction().equals(PlayerService.NOTIFY_PAUSE)
-                    || intent.getAction().equals(android.media.AudioManager.ACTION_AUDIO_BECOMING_NOISY)) {
+                || intent.getAction().equals(android.media.AudioManager.ACTION_AUDIO_BECOMING_NOISY)) {
                 PlayerManager.getInstance().pauseAudio();
             } else if (intent.getAction().equals(PlayerService.NOTIFY_NEXT)) {
                 PlayerManager.getInstance().playNext();

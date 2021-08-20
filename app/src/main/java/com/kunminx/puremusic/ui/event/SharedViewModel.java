@@ -56,7 +56,7 @@ public class SharedViewModel extends ViewModel {
     // https://xiaozhuanlan.com/topic/6719328450
 
     private final UnPeekLiveData<Boolean> toAddSlideListener =
-            new UnPeekLiveData.Builder<Boolean>().setAllowNullValue(false).create();
+        new UnPeekLiveData.Builder<Boolean>().setAllowNullValue(false).create();
 
     public ProtectedUnPeekLiveData<Boolean> isToAddSlideListener() {
         return toAddSlideListener;

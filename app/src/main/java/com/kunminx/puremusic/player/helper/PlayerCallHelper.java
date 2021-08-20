@@ -63,7 +63,7 @@ public class PlayerCallHelper implements AudioManager.OnAudioFocusChangeListener
                 } else if (state == TelephonyManager.CALL_STATE_RINGING) {
                     if (mPlayerCallHelperListener != null) {
                         if (mPlayerCallHelperListener.isPlaying() &&
-                                !mPlayerCallHelperListener.isPaused()) {
+                            !mPlayerCallHelperListener.isPaused()) {
                             mPlayerCallHelperListener.pauseAudio();
                             mIsTempPauseByPhone = true;
                         }
@@ -91,16 +91,16 @@ public class PlayerCallHelper implements AudioManager.OnAudioFocusChangeListener
                 Intent mediaButtonIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
                 mediaButtonIntent.setComponent(remoteComponentName);
                 PendingIntent mediaPendingIntent = PendingIntent.getBroadcast(
-                        context, 0, mediaButtonIntent, 0);
+                    context, 0, mediaButtonIntent, 0);
                 remoteControlClient = new RemoteControlClient(mediaPendingIntent);
                 mAudioManager.registerRemoteControlClient(remoteControlClient);
             }
             remoteControlClient.setTransportControlFlags(RemoteControlClient.FLAG_KEY_MEDIA_PLAY
-                    | RemoteControlClient.FLAG_KEY_MEDIA_PAUSE
-                    | RemoteControlClient.FLAG_KEY_MEDIA_PLAY_PAUSE
-                    | RemoteControlClient.FLAG_KEY_MEDIA_STOP
-                    | RemoteControlClient.FLAG_KEY_MEDIA_PREVIOUS
-                    | RemoteControlClient.FLAG_KEY_MEDIA_NEXT);
+                | RemoteControlClient.FLAG_KEY_MEDIA_PAUSE
+                | RemoteControlClient.FLAG_KEY_MEDIA_PLAY_PAUSE
+                | RemoteControlClient.FLAG_KEY_MEDIA_STOP
+                | RemoteControlClient.FLAG_KEY_MEDIA_PREVIOUS
+                | RemoteControlClient.FLAG_KEY_MEDIA_NEXT);
         } catch (Exception e) {
             Log.e("tmessages", e.toString());
         }
@@ -150,7 +150,7 @@ public class PlayerCallHelper implements AudioManager.OnAudioFocusChangeListener
         if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
             if (mPlayerCallHelperListener != null) {
                 if (mPlayerCallHelperListener.isPlaying() &&
-                        !mPlayerCallHelperListener.isPaused()) {
+                    !mPlayerCallHelperListener.isPaused()) {
                     mPlayerCallHelperListener.pauseAudio();
                     tempPause = true;
                 }

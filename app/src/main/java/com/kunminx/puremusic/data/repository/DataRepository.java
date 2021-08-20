@@ -68,16 +68,16 @@ public class DataRepository {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(8, TimeUnit.SECONDS)
-                .readTimeout(8, TimeUnit.SECONDS)
-                .writeTimeout(8, TimeUnit.SECONDS)
-                .addInterceptor(logging)
-                .build();
+            .connectTimeout(8, TimeUnit.SECONDS)
+            .readTimeout(8, TimeUnit.SECONDS)
+            .writeTimeout(8, TimeUnit.SECONDS)
+            .addInterceptor(logging)
+            .build();
         retrofit = new Retrofit.Builder()
-                .baseUrl(APIs.BASE_URL)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+            .baseUrl(APIs.BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
     }
 
     /**
@@ -165,7 +165,7 @@ public class DataRepository {
             @Override
             public void onResponse(@NotNull Call<String> call, @NotNull Response<String> response) {
                 ResponseStatus responseStatus = new ResponseStatus(
-                        String.valueOf(response.code()), response.isSuccessful(), ResultSource.NETWORK);
+                    String.valueOf(response.code()), response.isSuccessful(), ResultSource.NETWORK);
                 result.onResult(new DataResult<>(response.body(), responseStatus));
                 mUserCall = null;
             }
@@ -173,7 +173,7 @@ public class DataRepository {
             @Override
             public void onFailure(@NotNull Call<String> call, @NotNull Throwable t) {
                 result.onResult(new DataResult<>(null,
-                        new ResponseStatus(t.getMessage(), false, ResultSource.NETWORK)));
+                    new ResponseStatus(t.getMessage(), false, ResultSource.NETWORK)));
                 mUserCall = null;
             }
         });

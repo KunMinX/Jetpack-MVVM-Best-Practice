@@ -41,6 +41,6 @@ public class PlaylistAdapter extends SimpleDataBindingAdapter<TestAlbum.TestMusi
         binding.setAlbum(item);
         int currentIndex = PlayerManager.getInstance().getAlbumIndex();
         binding.ivPlayStatus.setColor(currentIndex == holder.getAbsoluteAdapterPosition()
-                ? binding.getRoot().getContext().getColor(R.color.gray) : Color.TRANSPARENT);
+            ? binding.getRoot().getContext().getColor(R.color.gray) : Color.TRANSPARENT);
     }
 }

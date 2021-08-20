@@ -170,12 +170,12 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
     private void calculateTitleAndArtist() {
         Rect titleBounds = new Rect();
         mBinding.title.getPaint().getTextBounds(mBinding.title.getText().toString(), 0,
-                mBinding.title.getText().length(), titleBounds);
+            mBinding.title.getText().length(), titleBounds);
         int titleWidth = titleBounds.width();
 
         Rect artistBounds = new Rect();
         mBinding.artist.getPaint().getTextBounds(mBinding.artist.getText().toString(), 0,
-                mBinding.artist.getText().length(), artistBounds);
+            mBinding.artist.getText().length(), artistBounds);
         int artistWidth = artistBounds.width();
 
         titleEndTranslationX = (screenWidth / 2) - (titleWidth / 2) - DisplayUtils.dp2px(67);

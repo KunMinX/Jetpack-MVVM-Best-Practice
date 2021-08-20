@@ -61,7 +61,7 @@ public class SearchFragment extends BaseFragment {
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
         return new DataBindingConfig(R.layout.fragment_search, BR.vm, mState)
-                .addBindingParam(BR.click, new ClickProxy());
+            .addBindingParam(BR.click, new ClickProxy());
     }
 
     @Override
@@ -85,18 +85,18 @@ public class SearchFragment extends BaseFragment {
         //https://xiaozhuanlan.com/topic/8204519736
 
         mActivityScopeState.downloadRequest.getDownloadFileLiveData()
-                .observe(getViewLifecycleOwner(), dataResult -> {
-                    if (dataResult.getResponseStatus().isSuccess()) {
-                        mState.progress.set(dataResult.getResult().getProgress());
-                    }
-                });
+            .observe(getViewLifecycleOwner(), dataResult -> {
+                if (dataResult.getResponseStatus().isSuccess()) {
+                    mState.progress.set(dataResult.getResult().getProgress());
+                }
+            });
 
         mState.downloadRequest.getDownloadFileCanBeStoppedLiveData()
-                .observe(getViewLifecycleOwner(), dataResult -> {
-                    if (dataResult.getResponseStatus().isSuccess()) {
-                        mState.progress_cancelable.set(dataResult.getResult().getProgress());
-                    }
-                });
+            .observe(getViewLifecycleOwner(), dataResult -> {
+                if (dataResult.getResponseStatus().isSuccess()) {
+                    mState.progress_cancelable.set(dataResult.getResult().getProgress());
+                }
+            });
     }
 
     public class ClickProxy {

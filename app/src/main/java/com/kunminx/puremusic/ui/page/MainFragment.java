@@ -69,8 +69,8 @@ public class MainFragment extends BaseFragment {
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
         return new DataBindingConfig(R.layout.fragment_main, BR.vm, mState)
-                .addBindingParam(BR.click, new ClickProxy())
-                .addBindingParam(BR.adapter, mAdapter);
+            .addBindingParam(BR.click, new ClickProxy())
+            .addBindingParam(BR.adapter, mAdapter);
     }
 
     @Override
@@ -108,7 +108,7 @@ public class MainFragment extends BaseFragment {
                 mState.list.setValue(musicAlbum.getMusics());
 
                 if (PlayerManager.getInstance().getAlbum() == null ||
-                        !PlayerManager.getInstance().getAlbum().getAlbumId().equals(musicAlbum.getAlbumId())) {
+                    !PlayerManager.getInstance().getAlbum().getAlbumId().equals(musicAlbum.getAlbumId())) {
                     PlayerManager.getInstance().loadAlbum(musicAlbum);
                 }
             }
@@ -168,4 +168,5 @@ public class MainFragment extends BaseFragment {
         }
 
     }
+
 }

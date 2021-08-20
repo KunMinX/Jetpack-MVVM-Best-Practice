@@ -21,8 +21,8 @@ public class DrawerBindingAdapter {
     @BindingAdapter(value = {"allowDrawerOpen"}, requireAll = false)
     public static void allowDrawerOpen(DrawerLayout drawerLayout, boolean allowDrawerOpen) {
         drawerLayout.setDrawerLockMode(allowDrawerOpen
-                ? DrawerLayout.LOCK_MODE_UNLOCKED
-                : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            ? DrawerLayout.LOCK_MODE_UNLOCKED
+            : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
     @BindingAdapter(value = {"bindDrawerListener"}, requireAll = false)
