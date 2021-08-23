@@ -16,7 +16,7 @@
 
 # 前言
 
-上周我在 各大技术社区 发表了一篇 [《Jetpack MVVM 精讲》](https://juejin.im/post/5dafc49b6fb9a04e17209922)，原以为在 知识网红 唱衰安卓 的 2019 会无人问津，没想到文章一经发布，从 国内知名公司 的架构师、技术经理，到 世界级公司 的 Android 开发 都在看。😉
+上周我在 各大技术社区 发表了一篇 [《Jetpack MVVM 精讲》](https://juejin.im/post/5dafc49b6fb9a04e17209922)，原以为在 知识网红 唱衰安卓 的 2019 会无人问津，没想到文章一经发布，从 国内知名公司 的架构师、技术经理，到 世界级公司 的 Android 开发 都在看。
 
 ![](https://images.xiaozhuanlan.com/photo/2021/eaa8fabdea2da66b9ee08c6b4b670423.png)
 
