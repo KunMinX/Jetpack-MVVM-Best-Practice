@@ -2,9 +2,9 @@
 
 [《重学安卓》](https://xiaozhuanlan.com/kunminx)付费读者加微信进群：myatejx
 
-> [免费试读](https://mp.weixin.qq.com/s/h2IvuIRWe0OLx3hgbTABYA)，**[专栏目录](https://kunminx.gitbook.io/relearn-android/category)**，**[更新动态](https://kunminx.gitbook.io/relearn-android/new_moments)**，[优惠政策](https://kunminx.gitbook.io/relearn-android/ban-quan-sheng-ming#you-hui-zheng-ce)，[版权须知](https://kunminx.gitbook.io/relearn-android/ban-quan-sheng-ming#ban-quan-xu-zhi)
-
 （Tip：**专栏不久后调至 579 元**，有需要的小伙伴请及早上车）
+
+> [免费试读](https://mp.weixin.qq.com/s/h2IvuIRWe0OLx3hgbTABYA)，**[专栏目录](https://kunminx.gitbook.io/relearn-android/category)**，**[更新动态](https://kunminx.gitbook.io/relearn-android/new_moments)**，[优惠政策](https://kunminx.gitbook.io/relearn-android/ban-quan-sheng-ming#you-hui-zheng-ce)
 
 &nbsp;
 
