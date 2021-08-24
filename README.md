@@ -30,9 +30,7 @@
 
 上周我在各大 “技术社区” 发表了一篇 [《Jetpack MVVM 精讲》](https://juejin.im/post/5dafc49b6fb9a04e17209922)，原以为在 “知识网红” 唱衰 Android 的眼下会无人问津，没想到文章一经发布，从 “国内知名公司” 的架构师、技术经理，到 “世界级公司” 的 Android 开发都在看。
 
-![](https://images.xiaozhuanlan.com/photo/2021/eaa8fabdea2da66b9ee08c6b4b670423.png)
-
-并且从读者的反馈来看，近期大部分 Android 开发已跳出舒适圈，开始尝试认识和应用 Jetpack MVVM 到实际的项目中。
+并且从读者的反馈来看，近期大部分 Android 开发已跳出舒适圈，开始尝试认识和应用 Jetpack MVVM 到实际项目中。
 
 只可惜，关于 Jetpack MVVM，网上多是 **东拼西凑、人云亦云、通篇贴代码** 的文章，这不仅不能提供完整的视角 来帮助读者 首先明确背景状况，更是给还没入门 Jetpack 的读者 **徒添困扰**、起到 **劝退** 的作用。
 
