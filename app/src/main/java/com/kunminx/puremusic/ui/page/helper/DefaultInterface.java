@@ -16,7 +16,7 @@
  *
  */
 
-package com.kunminx.puremusic.ui.helper;
+package com.kunminx.puremusic.ui.page.helper;
 
 import android.view.View;
 import android.widget.SeekBar;

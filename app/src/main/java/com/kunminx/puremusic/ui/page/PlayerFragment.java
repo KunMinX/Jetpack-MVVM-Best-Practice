@@ -31,9 +31,9 @@ import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.databinding.FragmentPlayerBinding;
 import com.kunminx.puremusic.player.PlayerManager;
-import com.kunminx.puremusic.ui.event.SharedViewModel;
-import com.kunminx.puremusic.ui.helper.DefaultInterface;
-import com.kunminx.puremusic.ui.helper.DrawerCoordinateHelper;
+import com.kunminx.puremusic.domain.message.SharedViewModel;
+import com.kunminx.puremusic.ui.page.helper.DefaultInterface;
+import com.kunminx.puremusic.domain.message.DrawerCoordinateManager;
 import com.kunminx.puremusic.ui.state.PlayerViewModel;
 import com.kunminx.puremusic.ui.view.PlayerSlideListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -88,7 +88,7 @@ public class PlayerFragment extends BaseFragment {
                     public void onPanelStateChanged(
                         View view, SlidingUpPanelLayout.PanelState panelState,
                         SlidingUpPanelLayout.PanelState panelState1) {
-                        DrawerCoordinateHelper.getInstance().requestToUpdateDrawerMode(
+                        DrawerCoordinateManager.getInstance().requestToUpdateDrawerMode(
                             panelState1 == SlidingUpPanelLayout.PanelState.EXPANDED,
                             this.getClass().getSimpleName()
                         );

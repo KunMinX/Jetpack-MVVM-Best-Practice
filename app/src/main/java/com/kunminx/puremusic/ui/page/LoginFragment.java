@@ -31,7 +31,7 @@ import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.User;
 import com.kunminx.puremusic.data.config.Configs;
-import com.kunminx.puremusic.ui.helper.DrawerCoordinateHelper;
+import com.kunminx.puremusic.domain.message.DrawerCoordinateManager;
 import com.kunminx.puremusic.ui.state.LoginViewModel;
 
 /**
@@ -70,7 +70,7 @@ public class LoginFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getLifecycle().addObserver(DrawerCoordinateHelper.getInstance());
+        getLifecycle().addObserver(DrawerCoordinateManager.getInstance());
 
         //TODO tip：让 accountRequest 可观察页面生命周期，
         // 从而在页面即将退出、且登录请求由于网络延迟尚未完成时，
