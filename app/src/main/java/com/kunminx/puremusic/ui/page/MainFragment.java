@@ -28,7 +28,7 @@ import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.player.PlayerManager;
-import com.kunminx.puremusic.ui.event.SharedViewModel;
+import com.kunminx.puremusic.domain.message.SharedViewModel;
 import com.kunminx.puremusic.ui.page.adapter.PlaylistAdapter;
 import com.kunminx.puremusic.ui.state.MainViewModel;
 

@@ -26,7 +26,7 @@ import com.kunminx.architecture.ui.page.BaseFragment;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
-import com.kunminx.puremusic.ui.helper.DrawerCoordinateHelper;
+import com.kunminx.puremusic.domain.message.DrawerCoordinateManager;
 import com.kunminx.puremusic.ui.state.MainActivityViewModel;
 import com.kunminx.puremusic.ui.state.SearchViewModel;
 
@@ -68,7 +68,7 @@ public class SearchFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getLifecycle().addObserver(DrawerCoordinateHelper.getInstance());
+        getLifecycle().addObserver(DrawerCoordinateManager.getInstance());
 
         //TODO tip 2：绑定跟随视图控制器生命周期的、可叫停的、单独放在 UseCase 中处理的业务
         getLifecycle().addObserver(mState.downloadRequest.getCanBeStoppedUseCase());

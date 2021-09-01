@@ -2,8 +2,6 @@
 
 [《重学安卓》](https://xiaozhuanlan.com/kunminx)付费读者加微信进群：myatejx
 
-（Tip：**专栏不久后调至 579 元**，有需要的小伙伴请及早上车）
-
 > [免费试读](https://mp.weixin.qq.com/s/h2IvuIRWe0OLx3hgbTABYA)，**[专栏目录](https://kunminx.gitbook.io/relearn-android/category)**，**[更新动态](https://kunminx.gitbook.io/relearn-android/new_moments)**，[优惠政策](https://kunminx.gitbook.io/relearn-android/ban-quan-sheng-ming#you-hui-zheng-ce)
 
 &nbsp;
@@ -22,13 +20,13 @@
 
 # 架构图一览
 
-![](https://images.xiaozhuanlan.com/photo/2021/52281434a8f42edc952b84be19bb7ae6.png)
+![](https://images.xiaozhuanlan.com/photo/2021/1fc3f3cefb1d8e6755dea55ac828874d.png)
 
 &nbsp;
 
 # 前言
 
-上周我在各大 “技术社区” 发表了一篇 [《Jetpack MVVM 精讲》](https://juejin.im/post/5dafc49b6fb9a04e17209922)，原以为在 “知识网红” 唱衰 Android 的眼下会无人问津，没想到文章一经发布，从 “国内知名公司” 的架构师、技术经理，到 “世界级公司” 的 Android 开发都在看。
+上周我在各大 “技术社区” 发表了一篇 [《Jetpack MVVM 精讲》](https://juejin.im/post/5dafc49b6fb9a04e17209922)，原以为在 “知识网红” 唱衰 Android 的 2019 会无人问津，没想到文章一经发布，从 “国内知名公司” 的架构师、技术经理，到 “世界级公司” 的 Android 开发都在看。
 
 并且从读者的反馈来看，近期大部分 Android 开发已跳出舒适圈，开始尝试认识和应用 Jetpack MVVM 到实际项目中。
 
@@ -40,7 +38,7 @@
 &nbsp;
 
 
-|                  是让人爱不释手的交互设计                   |                     是连贯的用户体验                      |                    唯一可信源的统一分发                    |
+|                   是让人爱不释手的交互设计                   |                       是连贯的用户体验                       |                     唯一可信源的统一分发                     |
 | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
 | ![1231111323.gif](https://upload-images.jianshu.io/upload_images/57036-0a5cdc68f003211a.gif) | ![222.gif](https://upload-images.jianshu.io/upload_images/57036-2b21db531e51ff03.gif) | ![333.gif](https://upload-images.jianshu.io/upload_images/57036-9a541148ce5bed2e.gif) |
 
@@ -55,7 +53,7 @@
 
 # 项目简介
 
-本人拥有 5 年的 “移动端业务架构” 践行和设计经验，领导或参与团队重构的 中大型项目 多达十数个，对 Jetpack MVVM 架构在 确立规范化、标准化 开发模式 以 **减少不可预期的错误** 所作的努力，有着深入的理解。
+本人拥有 3 年的 “移动端业务架构” 践行和设计经验，领导或参与团队重构的 中大型项目 多达十数个，对 Jetpack MVVM 架构在 确立规范化、标准化 开发模式 以 **减少不可预期的错误** 所作的努力，有着深入的理解。
 
 
 
@@ -135,7 +133,7 @@ https://wj.qq.com/s2/8362688/124a/
 
 | 集团 / 公司 / 品牌 / 团队                             | 产品               |
 | ----------------------------------------------------- | ------------------ |
-| 腾讯音乐                                              | QQ 音乐         |
+| 腾讯音乐                                              | QQ 音乐            |
 | TCL                                                   | 内置应用，暂时保密 |
 | 贵州广电网络                                          | 乐播播             |
 | 福建树叶网络科技有限公司<br/>福建天奖网络科技有限公司 | 天奖谱林           |
@@ -185,4 +183,3 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
-
