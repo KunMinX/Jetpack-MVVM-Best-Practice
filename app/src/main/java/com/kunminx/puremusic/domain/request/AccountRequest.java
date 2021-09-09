@@ -37,7 +37,7 @@ import org.jetbrains.annotations.NotNull;
  * 一个项目中通常存在多个 Request 类，
  * 每个页面配备的 state-ViewModel 实例可根据业务需要持有多个不同的 Request 实例。
  * <p>
- * request 的职责仅限于 对数据请求的转发，不建议在此处理 UI 逻辑，
+ * request 的职责仅限于 "业务逻辑处理" 和 "Event 分发"，不建议在此处理 UI 逻辑，
  * UI 逻辑只适合在 Activity/Fragment 等视图控制器中完成，是 “数据驱动” 的一部分，
  * 将来升级到 Jetpack Compose 更是如此。
  * <p>
