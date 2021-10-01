@@ -15,7 +15,7 @@ jobs:
       - name: set up JDK 11
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
+          distribution: 'temurin'
           java-version: ${{ matrix.java }}
       - name: Make gradlew executable
         run: chmod +x ./gradlew
