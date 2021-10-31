@@ -4,7 +4,7 @@ buildscript {
         appMinSdk = 23
         appVersionCode = 30204
         appVersionName = "3.2.4"
-        lifecycleVersion = "2.3.1"
+        lifecycleVersion = "2.4.0"
         navigationVersion = "2.3.5"
         retrofitVersion = "2.9.0"
         okHttpVersion = "4.9.2"
