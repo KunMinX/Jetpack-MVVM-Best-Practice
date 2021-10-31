@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        appTargetSdk = 29
+        appTargetSdk = 31
         appMinSdk = 23
         appVersionCode = 30204
         appVersionName = "3.2.4"
