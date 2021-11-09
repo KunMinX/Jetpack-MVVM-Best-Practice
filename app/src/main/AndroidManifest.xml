@@ -30,9 +30,7 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".player.notification.PlayerService"
-            android:exported="false" />
+        <service android:name=".player.notification.PlayerService" />
 
         <receiver
             android:name=".player.notification.PlayerReceiver"
