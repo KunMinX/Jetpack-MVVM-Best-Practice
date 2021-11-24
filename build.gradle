@@ -7,7 +7,7 @@ buildscript {
         lifecycleVersion = "2.4.0"
         navigationVersion = "2.3.5"
         retrofitVersion = "2.9.0"
-        okHttpVersion = "4.9.2"
+        okHttpVersion = "4.9.3"
     }
 
     repositories {
