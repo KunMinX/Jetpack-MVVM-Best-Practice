@@ -65,4 +65,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
     implementation "com.squareup.okhttp3:okhttp:$okHttpVersion"
+
+    implementation 'com.yanzhenjie.permission:x:2.0.1'
+
 }

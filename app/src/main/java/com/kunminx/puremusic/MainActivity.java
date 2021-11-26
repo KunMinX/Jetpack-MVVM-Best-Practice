@@ -16,6 +16,7 @@
 
 package com.kunminx.puremusic;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
@@ -25,9 +26,11 @@ import androidx.navigation.Navigation;
 
 import com.kunminx.architecture.ui.page.BaseActivity;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
-import com.kunminx.puremusic.domain.message.SharedViewModel;
 import com.kunminx.puremusic.domain.message.DrawerCoordinateManager;
+import com.kunminx.puremusic.domain.message.SharedViewModel;
 import com.kunminx.puremusic.ui.state.MainActivityViewModel;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.runtime.Permission;
 
 /**
  * Create by KunMinX at 19/10/16
@@ -64,6 +67,25 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //TODO tip：Android 12 部分权限的处理
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            AndPermission.with(getApplicationContext())
+                .runtime()
+                .permission(Permission.READ_PHONE_STATE)
+                .onGranted(permission -> {
+                    init();
+                })
+                .onDenied(permission -> {
+                    finish();
+                })
+                .start();
+        } else {
+            init();
+        }
+    }
+
+    private void init() {
         mEvent.isToCloseActivityIfAllowed().observe(this, aBoolean -> {
             NavController nav = Navigation.findNavController(this, R.id.main_fragment_host);
             if (nav.getCurrentDestination() != null && nav.getCurrentDestination().getId() != R.id.mainFragment) {
