@@ -24,13 +24,16 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.hjq.permissions.OnPermissionCallback;
+import com.hjq.permissions.Permission;
+import com.hjq.permissions.XXPermissions;
 import com.kunminx.architecture.ui.page.BaseActivity;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
 import com.kunminx.puremusic.domain.message.DrawerCoordinateManager;
 import com.kunminx.puremusic.domain.message.SharedViewModel;
 import com.kunminx.puremusic.ui.state.MainActivityViewModel;
-import com.yanzhenjie.permission.AndPermission;
-import com.yanzhenjie.permission.runtime.Permission;
+
+import java.util.List;
 
 /**
  * Create by KunMinX at 19/10/16
@@ -70,16 +73,19 @@ public class MainActivity extends BaseActivity {
         //TODO tip：Android 12 部分权限的处理
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            AndPermission.with(getApplicationContext())
-                .runtime()
+            XXPermissions.with(this)
                 .permission(Permission.READ_PHONE_STATE)
-                .onGranted(permission -> {
-                    init();
-                })
-                .onDenied(permission -> {
-                    finish();
-                })
-                .start();
+                .request(new OnPermissionCallback() {
+                    @Override
+                    public void onGranted(List<String> permissions, boolean all) {
+                        init();
+                    }
+
+                    @Override
+                    public void onDenied(List<String> permissions, boolean never) {
+                        finish();
+                    }
+                });
         } else {
             init();
         }

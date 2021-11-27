@@ -13,6 +13,7 @@ buildscript {
     repositories {
         google()
         gradlePluginPortal()
+        maven { url 'https://jitpack.io' }
 
         //默认使用 gradlePluginPortal，以便在依赖库有紧急更新时能第一时间获取
         //如对日常的拉取速度有追求，可考虑使用以下远程仓库（是对 central 的国内同步仓库，存在 1 天左右的时差）
@@ -27,6 +28,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
 }
 
