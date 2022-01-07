@@ -52,7 +52,7 @@ dependencies {
 
     implementation "com.kunminx.arch:binding-recyclerview:3.9.0-beta1"
 
-    implementation "com.kunminx.player:player:3.1.0"
+    implementation "com.kunminx.player:player:3.2.0"
     implementation "org.slf4j:slf4j-android:1.7.32"
 
     implementation "com.github.bumptech.glide:glide:4.12.0"
