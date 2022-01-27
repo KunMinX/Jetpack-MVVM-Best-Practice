@@ -30,7 +30,19 @@ android {
     }
 }
 
+
 dependencies {
+
+    //纯 java 项目添加此
+    configurations {
+        all {
+            exclude group: 'androidx.lifecycle', module: 'lifecycle-viewmodel-ktx'
+        }
+    }
+
+    //kotlin 项目添加此
+    //implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
+
     api fileTree(dir: "libs", include: ["*.jar", "*.aar"])
 
     testImplementation "junit:junit:4.13.2"
