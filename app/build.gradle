@@ -66,6 +66,6 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
     implementation "com.squareup.okhttp3:okhttp:$okHttpVersion"
 
-    implementation 'com.github.getActivity:XXPermissions:13.2'
+    implementation 'com.github.getActivity:XXPermissions:13.5'
 
 }
