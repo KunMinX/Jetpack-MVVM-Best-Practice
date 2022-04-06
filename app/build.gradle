@@ -55,9 +55,9 @@ dependencies {
     implementation "com.kunminx.player:player:3.3.0"
     implementation "org.slf4j:slf4j-android:1.7.36"
 
-    implementation "com.github.bumptech.glide:glide:4.13.0"
+    implementation "com.github.bumptech.glide:glide:4.13.1"
 
-    implementation "com.google.code.gson:gson:2.8.9"
+    implementation "com.google.code.gson:gson:2.9.0"
 
     implementation "com.sothree.slidinguppanel:library:3.4.0"
 
@@ -66,6 +66,6 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
     implementation "com.squareup.okhttp3:okhttp:$okHttpVersion"
 
-    implementation 'com.github.getActivity:XXPermissions:13.2'
+    implementation 'com.github.getActivity:XXPermissions:13.5'
 
 }
