@@ -21,8 +21,7 @@ import android.animation.FloatEvaluator;
 import android.animation.IntEvaluator;
 import android.content.Context;
 import android.graphics.Color;
-import android.text.TextPaint;
-import android.util.Log;
+import android.graphics.Rect;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -93,6 +92,9 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
 
     @Override
     public void onPanelSlide(View panel, float slideOffset) {
+
+        calculateTitleAndArtist();
+
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) mBinding.albumArt.getLayoutParams();
 
         //animate albumImage
@@ -169,7 +171,7 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
 
     }
 
-    private void calculateTitleAndArtist() {
+    public void calculateTitleAndArtist() {
         int titleWidth = getTextWidth(mBinding.title);
         int artistWidth = getTextWidth(mBinding.artist);
 
@@ -228,14 +230,10 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
     }
 
     private int getTextWidth(TextView textView) {
-        int spec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        textView.measure(spec, spec);
-        String text = textView.getText().toString();
-
-        TextPaint newPaint = new TextPaint();
-        float textSize = textView.getResources().getDisplayMetrics().scaledDensity * 15;
-        newPaint.setTextSize(textSize);
-        return (int) newPaint.measureText(text);
+        Rect artistBounds = new Rect();
+        textView.getPaint().getTextBounds(textView.getText().toString(), 0,
+            textView.getText().length(), artistBounds);
+        return artistBounds.width();
     }
 
 }
