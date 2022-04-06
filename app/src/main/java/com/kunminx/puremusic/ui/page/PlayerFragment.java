@@ -30,10 +30,10 @@ import com.kunminx.player.PlayingInfoManager;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.databinding.FragmentPlayerBinding;
-import com.kunminx.puremusic.player.PlayerManager;
-import com.kunminx.puremusic.domain.message.SharedViewModel;
-import com.kunminx.puremusic.ui.page.helper.DefaultInterface;
 import com.kunminx.puremusic.domain.message.DrawerCoordinateManager;
+import com.kunminx.puremusic.domain.message.SharedViewModel;
+import com.kunminx.puremusic.player.PlayerManager;
+import com.kunminx.puremusic.ui.page.helper.DefaultInterface;
 import com.kunminx.puremusic.ui.state.PlayerViewModel;
 import com.kunminx.puremusic.ui.view.PlayerSlideListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -52,6 +52,7 @@ public class PlayerFragment extends BaseFragment {
 
     private PlayerViewModel mState;
     private SharedViewModel mEvent;
+    private PlayerSlideListener mListener;
 
     @Override
     protected void initViewModel() {
@@ -82,7 +83,7 @@ public class PlayerFragment extends BaseFragment {
         mEvent.isToAddSlideListener().observe(getViewLifecycleOwner(), aBoolean -> {
             if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {
                 SlidingUpPanelLayout sliding = (SlidingUpPanelLayout) view.getParent().getParent();
-                sliding.addPanelSlideListener(new PlayerSlideListener((FragmentPlayerBinding) getBinding(), sliding));
+                sliding.addPanelSlideListener(mListener = new PlayerSlideListener((FragmentPlayerBinding) getBinding(), sliding));
                 sliding.addPanelSlideListener(new DefaultInterface.PanelSlideListener() {
                     @Override
                     public void onPanelStateChanged(
@@ -109,6 +110,10 @@ public class PlayerFragment extends BaseFragment {
             mState.title.set(changeMusic.getTitle());
             mState.artist.set(changeMusic.getSummary());
             mState.coverImg.set(changeMusic.getImg());
+
+            if (mListener != null) {
+                view.post(mListener::calculateTitleAndArtist);
+            }
         });
 
         PlayerManager.getInstance().getPlayingMusicEvent().observe(getViewLifecycleOwner(), playingMusic -> {
