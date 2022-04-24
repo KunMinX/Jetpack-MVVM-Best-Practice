@@ -31,20 +31,12 @@ public class TestAlbum extends BaseAlbumItem<TestAlbum.TestMusic, TestAlbum.Test
         return albumMid;
     }
 
-    public void setAlbumMid(String albumMid) {
-        this.albumMid = albumMid;
-    }
-
     public static class TestMusic extends BaseMusicItem<TestArtist> {
 
         private String songMid;
 
         public String getSongMid() {
             return songMid;
-        }
-
-        public void setSongMid(String songMid) {
-            this.songMid = songMid;
         }
     }
 
@@ -54,10 +46,6 @@ public class TestAlbum extends BaseAlbumItem<TestAlbum.TestMusic, TestAlbum.Test
 
         public String getBirthday() {
             return birthday;
-        }
-
-        public void setBirthday(String birthday) {
-            this.birthday = birthday;
         }
     }
 }
