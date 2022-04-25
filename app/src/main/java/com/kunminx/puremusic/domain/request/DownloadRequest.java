@@ -65,13 +65,15 @@ public class DownloadRequest extends BaseRequest {
 
     public void requestDownloadFile() {
 
+        CanBeStoppedUseCase.DownloadState downloadState = new CanBeStoppedUseCase.DownloadState();
+
         //TODO Tip：lambda 语句只有一行时可简写，具体可结合实际情况选择和使用
 
         /*DataRepository.getInstance().downloadFile(downloadFile, dataResult -> {
             mDownloadFileLiveData.postValue(dataResult);
         });*/
 
-        DataRepository.getInstance().downloadFile(null, mDownloadFileLiveData::postValue);
+        DataRepository.getInstance().downloadFile(downloadState, mDownloadFileLiveData::postValue);
     }
 
     //TODO tip2：
