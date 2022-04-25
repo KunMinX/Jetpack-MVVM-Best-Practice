@@ -18,6 +18,8 @@ package com.kunminx.puremusic.data.bean;
 
 /**
  * Create by KunMinX at 19/11/2
+ * <p>
+ * bean，原始数据，只读
  */
 public class LibraryInfo {
 

@@ -27,10 +27,10 @@ import com.kunminx.architecture.utils.Utils;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.api.APIs;
 import com.kunminx.puremusic.data.api.AccountService;
-import com.kunminx.puremusic.data.bean.DownloadFile;
 import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.data.bean.User;
+import com.kunminx.puremusic.domain.usecase.CanBeStoppedUseCase;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -117,7 +117,8 @@ public class DataRepository {
      *
      * @param result 从 Request-ViewModel 或 UseCase 注入 LiveData，用于 控制流程、回传进度、回传文件
      */
-    public void downloadFile(DownloadFile downloadFile, DataResult.Result<DownloadFile> result) {
+    public void downloadFile(CanBeStoppedUseCase.DownloadState downloadState,
+                             DataResult.Result<CanBeStoppedUseCase.DownloadState> result) {
 
         Timer timer = new Timer();
 
@@ -126,19 +127,19 @@ public class DataRepository {
             public void run() {
 
                 //模拟下载，假设下载一个文件要 10秒、每 100 毫秒下载 1% 并通知 UI 层
-                if (downloadFile.getProgress() < 100) {
-                    downloadFile.setProgress(downloadFile.getProgress() + 1);
-                    Log.d("TAG", "下载进度 " + downloadFile.getProgress() + "%");
+                if (downloadState.progress < 100) {
+                    downloadState.progress = downloadState.progress + 1;
+                    Log.d("TAG", "下载进度 " + downloadState.progress + "%");
                 } else {
                     timer.cancel();
                 }
-                if (downloadFile.isForgive()) {
+                if (downloadState.isForgive) {
                     timer.cancel();
-                    downloadFile.setProgress(0);
-                    downloadFile.setForgive(false);
+                    downloadState.file = null;
+                    downloadState.isForgive = false;
                     return;
                 }
-                result.onResult(new DataResult<>(downloadFile, new ResponseStatus()));
+                result.onResult(new DataResult<>(downloadState, new ResponseStatus()));
             }
         };
 

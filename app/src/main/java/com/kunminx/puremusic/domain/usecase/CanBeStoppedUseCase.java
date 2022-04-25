@@ -22,8 +22,9 @@ import androidx.lifecycle.LifecycleOwner;
 
 import com.kunminx.architecture.data.response.DataResult;
 import com.kunminx.architecture.domain.usecase.UseCase;
-import com.kunminx.puremusic.data.bean.DownloadFile;
 import com.kunminx.puremusic.data.repository.DataRepository;
+
+import java.io.File;
 
 
 /**
@@ -40,9 +41,9 @@ import com.kunminx.puremusic.data.repository.DataRepository;
  * Create by KunMinX at 19/11/25
  */
 public class CanBeStoppedUseCase extends UseCase<CanBeStoppedUseCase.RequestValues,
-        CanBeStoppedUseCase.ResponseValue> implements DefaultLifecycleObserver {
+    CanBeStoppedUseCase.ResponseValue> implements DefaultLifecycleObserver {
 
-    private final DownloadFile mDownloadFile = new DownloadFile();
+    private final DownloadState downloadState = new DownloadState();
 
     //TODO tip：让 CanBeStoppedUseCase 可观察页面生命周期，
     // 从而在页面即将退出、且下载请求尚未完成时，
@@ -54,9 +55,9 @@ public class CanBeStoppedUseCase extends UseCase<CanBeStoppedUseCase.RequestValu
     @Override
     public void onStop(@NonNull LifecycleOwner owner) {
         if (getRequestValues() != null) {
-            mDownloadFile.setForgive(true);
-            mDownloadFile.setProgress(0);
-            mDownloadFile.setFile(null);
+            downloadState.isForgive = true;
+            downloadState.file = null;
+            downloadState.progress = 0;
             getUseCaseCallback().onError();
         }
     }
@@ -66,7 +67,7 @@ public class CanBeStoppedUseCase extends UseCase<CanBeStoppedUseCase.RequestValu
 
         //访问数据层资源，在 UseCase 中处理带叫停性质的业务
 
-        DataRepository.getInstance().downloadFile(mDownloadFile, dataResult -> {
+        DataRepository.getInstance().downloadFile(downloadState, dataResult -> {
             getUseCaseCallback().onSuccess(new ResponseValue(dataResult));
         });
     }
@@ -77,14 +78,23 @@ public class CanBeStoppedUseCase extends UseCase<CanBeStoppedUseCase.RequestValu
 
     public static final class ResponseValue implements UseCase.ResponseValue {
 
-        private final DataResult<DownloadFile> mDataResult;
+        private final DataResult<CanBeStoppedUseCase.DownloadState> mDataResult;
 
-        public ResponseValue(DataResult<DownloadFile> dataResult) {
+        public ResponseValue(DataResult<CanBeStoppedUseCase.DownloadState> dataResult) {
             mDataResult = dataResult;
         }
 
-        public DataResult<DownloadFile> getDataResult() {
+        public DataResult<CanBeStoppedUseCase.DownloadState> getDataResult() {
             return mDataResult;
         }
+    }
+
+    public static final class DownloadState {
+
+        public boolean isForgive = false;
+
+        public int progress;
+
+        public File file;
     }
 }

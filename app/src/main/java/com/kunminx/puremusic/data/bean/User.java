@@ -18,6 +18,8 @@ package com.kunminx.puremusic.data.bean;
 
 /**
  * Create by KunMinX at 20/04/26
+ * <p>
+ * bean，原始数据，只读
  */
 public class User {
 

@@ -87,14 +87,14 @@ public class SearchFragment extends BaseFragment {
         mActivityScopeState.downloadRequest.getDownloadFileLiveData()
             .observe(getViewLifecycleOwner(), dataResult -> {
                 if (dataResult.getResponseStatus().isSuccess()) {
-                    mState.progress.set(dataResult.getResult().getProgress());
+                    mState.progress.set(dataResult.getResult().progress);
                 }
             });
 
         mState.downloadRequest.getDownloadFileCanBeStoppedLiveData()
             .observe(getViewLifecycleOwner(), dataResult -> {
                 if (dataResult.getResponseStatus().isSuccess()) {
-                    mState.progress_cancelable.set(dataResult.getResult().getProgress());
+                    mState.progress_cancelable.set(dataResult.getResult().progress);
                 }
             });
     }
