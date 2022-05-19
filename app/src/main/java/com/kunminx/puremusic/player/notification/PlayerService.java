@@ -16,6 +16,7 @@
 
 package com.kunminx.puremusic.player.notification;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationChannelGroup;
@@ -40,7 +41,6 @@ import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.data.config.Configs;
 import com.kunminx.puremusic.domain.usecase.DownloadUseCase;
 import com.kunminx.puremusic.player.PlayerManager;
-import com.kunminx.puremusic.player.helper.PlayerCallHelper;
 
 import java.io.File;
 
@@ -56,44 +56,16 @@ public class PlayerService extends Service {
     public static final String NOTIFY_NEXT = "pure_music.kunminx.next";
     private static final String GROUP_ID = "group_001";
     private static final String CHANNEL_ID = "channel_001";
-    private PlayerCallHelper mPlayerCallHelper;
     private DownloadUseCase mDownloadUseCase;
 
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-        if (mPlayerCallHelper == null) {
-            mPlayerCallHelper = new PlayerCallHelper(new PlayerCallHelper.PlayerCallHelperListener() {
-                @Override
-                public void playAudio() {
-                    PlayerManager.getInstance().playAudio();
-                }
-
-                @Override
-                public boolean isPlaying() {
-                    return PlayerManager.getInstance().isPlaying();
-                }
-
-                @Override
-                public boolean isPaused() {
-                    return PlayerManager.getInstance().isPaused();
-                }
-
-                @Override
-                public void pauseAudio() {
-                    PlayerManager.getInstance().pauseAudio();
-                }
-            });
-        }
-
         TestAlbum.TestMusic results = PlayerManager.getInstance().getCurrentPlayingMusic();
         if (results == null) {
             stopSelf();
             return START_NOT_STICKY;
         }
-
-        mPlayerCallHelper.bindCallListener(getApplicationContext());
 
         createNotification(results);
         return START_NOT_STICKY;
@@ -176,14 +148,12 @@ public class PlayerService extends Service {
 
             startForeground(5, notification);
 
-            mPlayerCallHelper.bindRemoteController(getApplicationContext());
-            mPlayerCallHelper.requestAudioFocus(title, summary);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    @SuppressLint("UnspecifiedImmutableFlag")
     public void setListeners(RemoteViews view) {
         try {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),
@@ -224,8 +194,6 @@ public class PlayerService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mPlayerCallHelper.unbindCallListener(getApplicationContext());
-        mPlayerCallHelper.unbindRemoteController();
     }
 
     @Nullable
