@@ -19,19 +19,15 @@ package com.kunminx.puremusic.ui.view;
 import android.animation.ArgbEvaluator;
 import android.animation.FloatEvaluator;
 import android.animation.IntEvaluator;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.kunminx.architecture.utils.DisplayUtils;
 import com.kunminx.architecture.utils.ScreenUtils;
-import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.databinding.FragmentPlayerBinding;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -43,33 +39,33 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
     private final FragmentPlayerBinding mBinding;
     private final SlidingUpPanelLayout mSlidingUpPanelLayout;
 
-    private int titleEndTranslationX;
-    private int artistEndTranslationX;
-    private int artistNormalEndTranslationY;
-    private int contentNormalEndTranslationY;
+    private int mTitleEndTranslationX;
+    private int mArtistEndTranslationX;
+    private int mArtistNormalEndTranslationY;
+    private int mContentNormalEndTranslationY;
 
-    private int modeStartX;
-    private int previousStartX;
-    private int playPauseStartX;
-    private int nextStartX;
-    private int playQueueStartX;
-    private int playPauseEndX;
-    private int previousEndX;
-    private int modeEndX;
-    private int nextEndX;
-    private int playQueueEndX;
-    private int iconContainerStartY;
-    private int iconContainerEndY;
+    private int mModeStartX;
+    private int mPreviousStartX;
+    private int mPlayPauseStartX;
+    private int mNextStartX;
+    private int mPlayQueueStartX;
+    private int mPlayPauseEndX;
+    private int mPreviousEndX;
+    private int mModeEndX;
+    private int mNextEndX;
+    private int mPlayQueueEndX;
+    private int mIconContainerStartY;
+    private int mIconContainerEndY;
 
-    private final int screenWidth;
-    private final int screenHeight;
+    private final int SCREEN_WIDTH;
+    private final int SCREEN_HEIGHT;
 
-    private final IntEvaluator intEvaluator = new IntEvaluator();
-    private final FloatEvaluator floatEvaluator = new FloatEvaluator();
-    private final ArgbEvaluator colorEvaluator = new ArgbEvaluator();
+    private final IntEvaluator INT_EVALUATOR = new IntEvaluator();
+    private final FloatEvaluator FLOAT_EVALUATOR = new FloatEvaluator();
+    private final ArgbEvaluator COLOR_EVALUATOR = new ArgbEvaluator();
 
-    private final int nowPlayingCardColor;
-    private final int playPauseDrawableColor;
+    private final int NOW_PLAYING_CARD_COLOR;
+    private final int PLAY_PAUSE_DRAWABLE_COLOR;
     private Status mStatus = Status.COLLAPSED;
 
     public enum Status {
@@ -81,13 +77,13 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
     public PlayerSlideListener(FragmentPlayerBinding binding, SlidingUpPanelLayout slidingUpPanelLayout) {
         mBinding = binding;
         mSlidingUpPanelLayout = slidingUpPanelLayout;
-        screenWidth = ScreenUtils.getScreenWidth();
-        screenHeight = ScreenUtils.getScreenHeight();
-        playPauseDrawableColor = Color.BLACK;
-        nowPlayingCardColor = Color.WHITE;
+        SCREEN_WIDTH = ScreenUtils.getScreenWidth();
+        SCREEN_HEIGHT = ScreenUtils.getScreenHeight();
+        PLAY_PAUSE_DRAWABLE_COLOR = Color.BLACK;
+        NOW_PLAYING_CARD_COLOR = Color.WHITE;
         calculateTitleAndArtist();
         calculateIcons();
-        mBinding.playPause.setDrawableColor(playPauseDrawableColor);
+        mBinding.playPause.setDrawableColor(PLAY_PAUSE_DRAWABLE_COLOR);
     }
 
     @Override
@@ -97,32 +93,29 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
 
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) mBinding.albumArt.getLayoutParams();
 
-        //animate albumImage
-        int tempImgSize = intEvaluator.evaluate(slideOffset, DisplayUtils.dp2px(55), screenWidth);
+        int tempImgSize = INT_EVALUATOR.evaluate(slideOffset, DisplayUtils.dp2px(55), SCREEN_WIDTH);
         params.width = tempImgSize;
         params.height = tempImgSize;
         mBinding.albumArt.setLayoutParams(params);
 
-        //animate title and artist
-        mBinding.title.setTranslationX(floatEvaluator.evaluate(slideOffset, 0, titleEndTranslationX));
-        mBinding.artist.setTranslationX(floatEvaluator.evaluate(slideOffset, 0, artistEndTranslationX));
-        mBinding.artist.setTranslationY(floatEvaluator.evaluate(slideOffset, 0, artistNormalEndTranslationY));
-        mBinding.summary.setTranslationY(floatEvaluator.evaluate(slideOffset, 0, contentNormalEndTranslationY));
+        mBinding.title.setTranslationX(FLOAT_EVALUATOR.evaluate(slideOffset, 0, mTitleEndTranslationX));
+        mBinding.artist.setTranslationX(FLOAT_EVALUATOR.evaluate(slideOffset, 0, mArtistEndTranslationX));
+        mBinding.artist.setTranslationY(FLOAT_EVALUATOR.evaluate(slideOffset, 0, mArtistNormalEndTranslationY));
+        mBinding.summary.setTranslationY(FLOAT_EVALUATOR.evaluate(slideOffset, 0, mContentNormalEndTranslationY));
 
-        //animate icons
-        mBinding.playPause.setX(intEvaluator.evaluate(slideOffset, playPauseStartX, playPauseEndX));
-        mBinding.playPause.setCircleAlpha(intEvaluator.evaluate(slideOffset, 0, 255));
-        mBinding.playPause.setDrawableColor((int) colorEvaluator.evaluate(slideOffset, playPauseDrawableColor, nowPlayingCardColor));
-        mBinding.previous.setX(intEvaluator.evaluate(slideOffset, previousStartX, previousEndX));
-        mBinding.mode.setX(intEvaluator.evaluate(slideOffset, modeStartX, modeEndX));
-        mBinding.next.setX(intEvaluator.evaluate(slideOffset, nextStartX, nextEndX));
-        mBinding.icPlayList.setX(intEvaluator.evaluate(slideOffset, playQueueStartX, playQueueEndX));
-        mBinding.mode.setAlpha(floatEvaluator.evaluate(slideOffset, 0, 1));
-        mBinding.previous.setAlpha(floatEvaluator.evaluate(slideOffset, 0, 1));
-        mBinding.iconContainer.setY(intEvaluator.evaluate(slideOffset, iconContainerStartY, iconContainerEndY));
+        mBinding.playPause.setX(INT_EVALUATOR.evaluate(slideOffset, mPlayPauseStartX, mPlayPauseEndX));
+        mBinding.playPause.setCircleAlpha(INT_EVALUATOR.evaluate(slideOffset, 0, 255));
+        mBinding.playPause.setDrawableColor((int) COLOR_EVALUATOR.evaluate(slideOffset, PLAY_PAUSE_DRAWABLE_COLOR, NOW_PLAYING_CARD_COLOR));
+        mBinding.previous.setX(INT_EVALUATOR.evaluate(slideOffset, mPreviousStartX, mPreviousEndX));
+        mBinding.mode.setX(INT_EVALUATOR.evaluate(slideOffset, mModeStartX, mModeEndX));
+        mBinding.next.setX(INT_EVALUATOR.evaluate(slideOffset, mNextStartX, mNextEndX));
+        mBinding.icPlayList.setX(INT_EVALUATOR.evaluate(slideOffset, mPlayQueueStartX, mPlayQueueEndX));
+        mBinding.mode.setAlpha(FLOAT_EVALUATOR.evaluate(slideOffset, 0, 1));
+        mBinding.previous.setAlpha(FLOAT_EVALUATOR.evaluate(slideOffset, 0, 1));
+        mBinding.iconContainer.setY(INT_EVALUATOR.evaluate(slideOffset, mIconContainerStartY, mIconContainerEndY));
 
         CoordinatorLayout.LayoutParams params1 = (CoordinatorLayout.LayoutParams) mBinding.summary.getLayoutParams();
-        params1.height = intEvaluator.evaluate(slideOffset, DisplayUtils.dp2px(55), DisplayUtils.dp2px(60));
+        params1.height = INT_EVALUATOR.evaluate(slideOffset, DisplayUtils.dp2px(55), DisplayUtils.dp2px(60));
         mBinding.summary.setLayoutParams(params1);
 
     }
@@ -144,9 +137,7 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
 
         if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
             mStatus = Status.EXPANDED;
-            toolbarSlideIn(panel.getContext());
-            mBinding.mode.setClickable(true);
-            mBinding.previous.setClickable(true);
+            mBinding.customToolbar.setVisibility(View.VISIBLE);
         } else if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
             mStatus = Status.COLLAPSED;
             if (mBinding.songProgressNormal.getVisibility() != View.VISIBLE) {
@@ -168,65 +159,36 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
                 mBinding.customToolbar.setVisibility(View.INVISIBLE);
             }
         }
-
     }
 
     public void calculateTitleAndArtist() {
         int titleWidth = getTextWidth(mBinding.title);
         int artistWidth = getTextWidth(mBinding.artist);
 
-        titleEndTranslationX = (screenWidth / 2) - (titleWidth / 2) - DisplayUtils.dp2px(67);
-        artistEndTranslationX = (screenWidth / 2) - (artistWidth / 2) - DisplayUtils.dp2px(67);
-        artistNormalEndTranslationY = DisplayUtils.dp2px(12);
-        contentNormalEndTranslationY = screenWidth + DisplayUtils.dp2px(32);
+        mTitleEndTranslationX = (SCREEN_WIDTH / 2) - (titleWidth / 2) - DisplayUtils.dp2px(67);
+        mArtistEndTranslationX = (SCREEN_WIDTH / 2) - (artistWidth / 2) - DisplayUtils.dp2px(67);
+        mArtistNormalEndTranslationY = DisplayUtils.dp2px(12);
+        mContentNormalEndTranslationY = SCREEN_WIDTH + DisplayUtils.dp2px(32);
 
-        if (mStatus == Status.COLLAPSED) {
-            mBinding.title.setTranslationX(0);
-            mBinding.artist.setTranslationX(0);
-        } else {
-            mBinding.title.setTranslationX(titleEndTranslationX);
-            mBinding.artist.setTranslationX(artistEndTranslationX);
-        }
+        mBinding.title.setTranslationX(mStatus == Status.COLLAPSED ? 0 : mTitleEndTranslationX);
+        mBinding.artist.setTranslationX(mStatus == Status.COLLAPSED ? 0 : mArtistEndTranslationX);
     }
 
     private void calculateIcons() {
-        modeStartX = mBinding.mode.getLeft();
-        previousStartX = mBinding.previous.getLeft();
-        playPauseStartX = mBinding.playPause.getLeft();
-        nextStartX = mBinding.next.getLeft();
-        playQueueStartX = mBinding.icPlayList.getLeft();
+        mModeStartX = mBinding.mode.getLeft();
+        mPreviousStartX = mBinding.previous.getLeft();
+        mPlayPauseStartX = mBinding.playPause.getLeft();
+        mNextStartX = mBinding.next.getLeft();
+        mPlayQueueStartX = mBinding.icPlayList.getLeft();
         int size = DisplayUtils.dp2px(36);
-        int gap = (screenWidth - 5 * (size)) / 6;
-        playPauseEndX = (screenWidth / 2) - (size / 2);
-        previousEndX = playPauseEndX - gap - size;
-        modeEndX = previousEndX - gap - size;
-        nextEndX = playPauseEndX + gap + size;
-        playQueueEndX = nextEndX + gap + size;
-        iconContainerStartY = mBinding.iconContainer.getTop();
-        iconContainerEndY = screenHeight - 3 * mBinding.iconContainer.getHeight() - mBinding.seekBottom.getHeight();
-    }
-
-    private void toolbarSlideIn(Context context) {
-        mBinding.customToolbar.post(() -> {
-            Animation animation = AnimationUtils.loadAnimation(context, R.anim.toolbar_slide_in);
-            animation.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                    mBinding.customToolbar.setVisibility(View.VISIBLE);
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-            mBinding.customToolbar.startAnimation(animation);
-        });
+        int gap = (SCREEN_WIDTH - 5 * (size)) / 6;
+        mPlayPauseEndX = (SCREEN_WIDTH / 2) - (size / 2);
+        mPreviousEndX = mPlayPauseEndX - gap - size;
+        mModeEndX = mPreviousEndX - gap - size;
+        mNextEndX = mPlayPauseEndX + gap + size;
+        mPlayQueueEndX = mNextEndX + gap + size;
+        mIconContainerStartY = mBinding.iconContainer.getTop();
+        mIconContainerEndY = SCREEN_HEIGHT - 3 * mBinding.iconContainer.getHeight() - mBinding.seekBottom.getHeight();
     }
 
     private int getTextWidth(TextView textView) {

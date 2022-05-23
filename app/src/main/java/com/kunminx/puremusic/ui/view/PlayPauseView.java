@@ -2,7 +2,6 @@ package com.kunminx.puremusic.ui.view;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -10,9 +9,7 @@ import android.graphics.Color;
 import android.graphics.Outline;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Property;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 import android.view.animation.DecelerateInterpolator;
@@ -25,18 +22,6 @@ import com.kunminx.puremusic.R;
 
 
 public class PlayPauseView extends FrameLayout {
-
-    private static final Property<PlayPauseView, Integer> COLOR = new Property<PlayPauseView, Integer>(Integer.class, "color") {
-        @Override
-        public Integer get(PlayPauseView v) {
-            return v.getCircleColor();
-        }
-
-        @Override
-        public void set(PlayPauseView v, Integer value) {
-            v.setCircleColor(value);
-        }
-    };
 
     private static final long PLAY_PAUSE_ANIMATION_DURATION = 200;
     public final boolean isDrawCircle;
@@ -77,7 +62,6 @@ public class PlayPauseView extends FrameLayout {
         mHeight = h;
 
         setOutlineProvider(new ViewOutlineProvider() {
-            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void getOutline(View view, Outline outline) {
                 outline.setOval(0, 0, view.getWidth(), view.getHeight());
@@ -142,8 +126,7 @@ public class PlayPauseView extends FrameLayout {
             mAnimatorSet.cancel();
         }
         mAnimatorSet = new AnimatorSet();
-        mIsPlay = true;
-        mDrawable.setIsPlay(mIsPlay);
+        mDrawable.setIsPlay(mIsPlay = true);
         final Animator pausePlayAnim = mDrawable.getPausePlayAnimator();
         mAnimatorSet.setInterpolator(new DecelerateInterpolator());
         mAnimatorSet.setDuration(PLAY_PAUSE_ANIMATION_DURATION);
@@ -154,10 +137,8 @@ public class PlayPauseView extends FrameLayout {
         if (mAnimatorSet != null) {
             mAnimatorSet.cancel();
         }
-
         mAnimatorSet = new AnimatorSet();
-        mIsPlay = false;
-        mDrawable.setIsPlay(mIsPlay);
+        mDrawable.setIsPlay(mIsPlay = false);
         final Animator pausePlayAnim = mDrawable.getPausePlayAnimator();
         mAnimatorSet.setInterpolator(new DecelerateInterpolator());
         mAnimatorSet.setDuration(PLAY_PAUSE_ANIMATION_DURATION);
