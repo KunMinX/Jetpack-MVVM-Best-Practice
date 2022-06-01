@@ -47,7 +47,7 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:3.4.0"
 
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
-    implementation "com.google.android.material:material:1.6.0"
+    implementation "com.google.android.material:material:1.6.1"
     implementation "androidx.recyclerview:recyclerview:1.2.1"
 
     implementation "com.kunminx.arch:binding-recyclerview:3.9.0-beta1"
