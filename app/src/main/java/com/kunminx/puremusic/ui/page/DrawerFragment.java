@@ -88,7 +88,7 @@ public class DrawerFragment extends BaseFragment {
                 // 如果这样说还不理解的话，详见《LiveData》篇和《DataBinding》篇的解析
                 // https://xiaozhuanlan.com/topic/0168753249、https://xiaozhuanlan.com/topic/9816742350
 
-                mState.list.setValue(dataResult.getResult());
+                mState.list.set(dataResult.getResult());
             }
         });
 

@@ -94,7 +94,7 @@ public class MainActivity extends BaseActivity {
 
             //如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
-            mState.openDrawer.setValue(aBoolean);
+            mState.openDrawer.set(aBoolean);
 
             //TODO do not:（容易因疏忽 而埋下视图实例 null 安全的一致性隐患）
 
@@ -111,7 +111,7 @@ public class MainActivity extends BaseActivity {
 
             //TODO yes: 同 tip 1
 
-            mState.allowDrawerOpen.setValue(aBoolean);
+            mState.allowDrawerOpen.set(aBoolean);
 
             // TODO do not:（容易因疏忽 而埋下视图实例 null 安全的一致性隐患）
 
@@ -161,7 +161,7 @@ public class MainActivity extends BaseActivity {
         public void onDrawerClosed(View drawerView) {
             super.onDrawerClosed(drawerView);
             mState.isDrawerOpened.set(false);
-            mState.openDrawer.setValue(false);
+            mState.openDrawer.set(false);
         }
     }
 }
