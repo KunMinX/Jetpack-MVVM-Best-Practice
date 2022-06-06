@@ -16,9 +16,9 @@
 
 package com.kunminx.puremusic.ui.state;
 
-import androidx.databinding.ObservableBoolean;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.kunminx.architecture.ui.page.State;
 
 /**
  * TODO tip：每个页面都要单独准备一个 state-ViewModel，
@@ -34,15 +34,15 @@ import androidx.lifecycle.ViewModel;
  */
 public class MainActivityViewModel extends ViewModel {
 
-    public final ObservableBoolean isDrawerOpened = new ObservableBoolean();
+    public final State<Boolean> isDrawerOpened = new State<>();
 
     //TODO 此处用于绑定的状态，使用 LiveData 而不是 ObservableField，
     // 主要是考虑到 ObservableField 具有防抖的特性，不适合该场景。
 
     //如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
-    public final MutableLiveData<Boolean> openDrawer = new MutableLiveData<>(false);
+    public final State<Boolean> openDrawer = new State<>();
 
-    public final MutableLiveData<Boolean> allowDrawerOpen = new MutableLiveData<>(true);
+    public final State<Boolean> allowDrawerOpen = new State<>(true);
 
 }

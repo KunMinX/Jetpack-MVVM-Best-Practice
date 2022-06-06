@@ -16,11 +16,9 @@
 
 package com.kunminx.puremusic.ui.state;
 
-import androidx.databinding.ObservableBoolean;
-import androidx.databinding.ObservableField;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.kunminx.architecture.ui.page.State;
 import com.kunminx.puremusic.data.bean.TestAlbum;
 
 import java.util.List;
@@ -39,15 +37,15 @@ import java.util.List;
  */
 public class MainViewModel extends ViewModel {
 
-    public final ObservableBoolean initTabAndPage = new ObservableBoolean(true);
+    public final State<Boolean> initTabAndPage = new State<>(true);
 
-    public final ObservableField<String> pageAssetPath = new ObservableField<>("summary.html");
+    public final State<String> pageAssetPath = new State<>("summary.html");
 
     //TODO 此处用于绑定的状态，使用 LiveData 而不是 ObservableField，
     // 主要是考虑到 ObservableField 具有防抖的特性，不适合该场景。
 
     //如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
-    public final MutableLiveData<List<TestAlbum.TestMusic>> list = new MutableLiveData<>();
+    public final State<List<TestAlbum.TestMusic>> list = new State<>();
 
 }

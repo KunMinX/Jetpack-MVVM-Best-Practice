@@ -17,9 +17,9 @@
 package com.kunminx.puremusic.ui.state;
 
 
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.kunminx.architecture.ui.page.State;
 import com.kunminx.puremusic.data.bean.LibraryInfo;
 
 import java.util.List;
@@ -43,6 +43,6 @@ public class DrawerViewModel extends ViewModel {
 
     //如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
-    public final MutableLiveData<List<LibraryInfo>> list = new MutableLiveData<>();
+    public final State<List<LibraryInfo>> list = new State<>();
 
 }

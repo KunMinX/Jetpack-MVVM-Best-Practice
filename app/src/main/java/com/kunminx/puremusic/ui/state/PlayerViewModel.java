@@ -19,11 +19,9 @@ package com.kunminx.puremusic.ui.state;
 import android.graphics.drawable.Drawable;
 
 import androidx.core.content.ContextCompat;
-import androidx.databinding.ObservableBoolean;
-import androidx.databinding.ObservableField;
-import androidx.databinding.ObservableInt;
 import androidx.lifecycle.ViewModel;
 
+import com.kunminx.architecture.ui.page.State;
 import com.kunminx.architecture.utils.Utils;
 import com.kunminx.player.PlayingInfoManager;
 import com.kunminx.puremusic.R;
@@ -45,27 +43,23 @@ import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
  */
 public class PlayerViewModel extends ViewModel {
 
-    public final ObservableField<String> title = new ObservableField<>();
+    public final State<String> title = new State<>(Utils.getApp().getString(R.string.app_name));
 
-    public final ObservableField<String> artist = new ObservableField<>();
+    public final State<String> artist = new State<>(Utils.getApp().getString(R.string.app_name));
 
-    public final ObservableField<String> coverImg = new ObservableField<>();
+    public final State<String> coverImg = new State<>();
 
-    public final ObservableField<Drawable> placeHolder = new ObservableField<>();
+    public final State<Drawable> placeHolder = new State<>(ContextCompat.getDrawable(Utils.getApp(), R.drawable.bg_album_default));
 
-    public final ObservableInt maxSeekDuration = new ObservableInt();
+    public final State<Integer> maxSeekDuration = new State<>();
 
-    public final ObservableInt currentSeekPosition = new ObservableInt();
+    public final State<Integer> currentSeekPosition = new State<>();
 
-    public final ObservableBoolean isPlaying = new ObservableBoolean();
+    public final State<Boolean> isPlaying = new State<>(null, false);
 
-    public final ObservableField<MaterialDrawableBuilder.IconValue> playModeIcon = new ObservableField<>();
+    public final State<MaterialDrawableBuilder.IconValue> playModeIcon = new State<>();
 
     {
-        title.set(Utils.getApp().getString(R.string.app_name));
-        artist.set(Utils.getApp().getString(R.string.app_name));
-        placeHolder.set(ContextCompat.getDrawable(Utils.getApp(), R.drawable.bg_album_default));
-
         if (PlayerManager.getInstance().getRepeatMode() == PlayingInfoManager.RepeatMode.LIST_CYCLE) {
             playModeIcon.set(MaterialDrawableBuilder.IconValue.REPEAT);
         } else if (PlayerManager.getInstance().getRepeatMode() == PlayingInfoManager.RepeatMode.SINGLE_CYCLE) {

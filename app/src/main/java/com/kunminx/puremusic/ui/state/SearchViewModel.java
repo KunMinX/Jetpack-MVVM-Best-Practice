@@ -19,6 +19,8 @@ package com.kunminx.puremusic.ui.state;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
+import com.kunminx.architecture.ui.page.State;
+
 /**
  * TODO tip 1：每个页面都要单独准备一个 state-ViewModel，
  * 来托管 DataBinding 绑定的临时状态，以及视图控制器重建时状态的恢复。
@@ -33,8 +35,8 @@ import androidx.lifecycle.ViewModel;
  */
 public class SearchViewModel extends ViewModel {
 
-    public final ObservableField<Integer> progress = new ObservableField<>();
+    public final State<Integer> progress = new State<>();
 
-    public final ObservableField<Integer> progress_cancelable = new ObservableField<>();
+    public final State<Integer> progress_cancelable = new State<>();
 
 }
