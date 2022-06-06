@@ -22,13 +22,11 @@ import androidx.lifecycle.ViewModel;
 import com.kunminx.architecture.data.response.DataResult;
 import com.kunminx.architecture.ui.callback.ProtectedUnPeekLiveData;
 import com.kunminx.architecture.ui.callback.UnPeekLiveData;
-import com.kunminx.puremusic.data.bean.LibraryInfo;
+import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.data.repository.DataRepository;
 
-import java.util.List;
-
 /**
- * 信息列表 Request
+ * 音乐资源  Request
  * <p>
  * TODO tip 1：Request 通常按业务划分
  * 一个项目中通常存在多个 Request 类，
@@ -41,12 +39,11 @@ import java.util.List;
  * 如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
  * https://xiaozhuanlan.com/topic/8204519736
  * <p>
- * <p>
- * Create by KunMinX at 19/11/2
+ * Create by KunMinX at 19/10/29
  */
-public class InfoRequest extends ViewModel {
+public class MusicRequester extends ViewModel {
 
-    private final UnPeekLiveData<DataResult<List<LibraryInfo>>> mLibraryLiveData = new UnPeekLiveData<>();
+    private final UnPeekLiveData<DataResult<TestAlbum>> mFreeMusicsLiveData = new UnPeekLiveData<>();
 
     //TODO tip 2：向 ui 层提供的 request LiveData，使用 "父类的 LiveData" 而不是 "Mutable 的 LiveData"，
     //如此达成了 "唯一可信源" 的设计，也即通过访问控制权限实现 "读写分离"，
@@ -56,7 +53,7 @@ public class InfoRequest extends ViewModel {
     //如果这样说还不理解的话，详见《关于 LiveData 本质，你看到了第几层》的铺垫和解析。
     //https://xiaozhuanlan.com/topic/6017825943
 
-    public ProtectedUnPeekLiveData<DataResult<List<LibraryInfo>>> getLibraryLiveData() {
+    public ProtectedUnPeekLiveData<DataResult<TestAlbum>> getFreeMusicsLiveData() {
 
         //TODO tip 3：与此同时，为了方便语义上的理解，故而直接将 DataResult 作为 LiveData value 回推给 UI 层，
         //而不是将 DataResult 的泛型实体拆下来单独回推，如此
@@ -67,17 +64,17 @@ public class InfoRequest extends ViewModel {
         //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》中对 "只读数据" 和 "可变状态" 的区分的解析。
         //https://xiaozhuanlan.com/topic/8204519736
 
-        return mLibraryLiveData;
+        return mFreeMusicsLiveData;
     }
 
-    public void requestLibraryInfo() {
+    public void requestFreeMusics() {
 
         //TODO Tip：lambda 语句只有一行时可简写，具体可结合实际情况选择和使用
 
-        /*DataRepository.getInstance().getLibraryInfo(dataResult -> {
-            mLibraryLiveData.setValue(dataResult);
+        /*DataRepository.getInstance().getFreeMusic(dataResult -> {
+            mFreeMusicsLiveData.setValue(dataResult);
         });*/
 
-        DataRepository.getInstance().getLibraryInfo(mLibraryLiveData::setValue);
+        DataRepository.getInstance().getFreeMusic(mFreeMusicsLiveData::setValue);
     }
 }

@@ -17,16 +17,21 @@
 package com.kunminx.puremusic.domain.request;
 
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModel;
 
 import com.kunminx.architecture.data.response.DataResult;
 import com.kunminx.architecture.ui.callback.ProtectedUnPeekLiveData;
 import com.kunminx.architecture.ui.callback.UnPeekLiveData;
-import com.kunminx.puremusic.data.bean.TestAlbum;
+import com.kunminx.puremusic.data.bean.User;
 import com.kunminx.puremusic.data.repository.DataRepository;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
- * 音乐资源  Request
+ * 用户账户 Request
  * <p>
  * TODO tip 1：Request 通常按业务划分
  * 一个项目中通常存在多个 Request 类，
@@ -39,11 +44,16 @@ import com.kunminx.puremusic.data.repository.DataRepository;
  * 如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
  * https://xiaozhuanlan.com/topic/8204519736
  * <p>
- * Create by KunMinX at 19/10/29
+ * Create by KunMinX at 20/04/26
  */
-public class MusicRequest extends ViewModel {
+public class AccountRequester extends ViewModel
+    implements DefaultLifecycleObserver {
 
-    private final UnPeekLiveData<DataResult<TestAlbum>> mFreeMusicsLiveData = new UnPeekLiveData<>();
+    //TODO tip：👆👆👆 让 accountRequest 可观察页面生命周期，
+    // 从而在页面即将退出、且登录请求由于网络延迟尚未完成时，
+    // 及时通知数据层取消本次请求，以避免资源浪费和一系列不可预期的问题。
+
+    private final UnPeekLiveData<DataResult<String>> tokenLiveData = new UnPeekLiveData<>();
 
     //TODO tip 2：向 ui 层提供的 request LiveData，使用 "父类的 LiveData" 而不是 "Mutable 的 LiveData"，
     //如此达成了 "唯一可信源" 的设计，也即通过访问控制权限实现 "读写分离"，
@@ -53,7 +63,7 @@ public class MusicRequest extends ViewModel {
     //如果这样说还不理解的话，详见《关于 LiveData 本质，你看到了第几层》的铺垫和解析。
     //https://xiaozhuanlan.com/topic/6017825943
 
-    public ProtectedUnPeekLiveData<DataResult<TestAlbum>> getFreeMusicsLiveData() {
+    public ProtectedUnPeekLiveData<DataResult<String>> getTokenLiveData() {
 
         //TODO tip 3：与此同时，为了方便语义上的理解，故而直接将 DataResult 作为 LiveData value 回推给 UI 层，
         //而不是将 DataResult 的泛型实体拆下来单独回推，如此
@@ -64,17 +74,34 @@ public class MusicRequest extends ViewModel {
         //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》中对 "只读数据" 和 "可变状态" 的区分的解析。
         //https://xiaozhuanlan.com/topic/8204519736
 
-        return mFreeMusicsLiveData;
+        return tokenLiveData;
     }
 
-    public void requestFreeMusics() {
+    public void requestLogin(User user) {
 
         //TODO Tip：lambda 语句只有一行时可简写，具体可结合实际情况选择和使用
 
-        /*DataRepository.getInstance().getFreeMusic(dataResult -> {
-            mFreeMusicsLiveData.setValue(dataResult);
+        /*DataRepository.getInstance().login(user, dataResult -> {
+            tokenLiveData.postValue(dataResult);
         });*/
 
-        DataRepository.getInstance().getFreeMusic(mFreeMusicsLiveData::setValue);
+        DataRepository.getInstance().login(user, tokenLiveData::postValue);
+    }
+
+    private void cancelLogin() {
+        DataRepository.getInstance().cancelLogin();
+    }
+
+
+    //TODO tip：让 accountRequest 可观察页面生命周期，
+    // 从而在页面即将退出、且登录请求由于网络延迟尚未完成时，
+    // 及时通知数据层取消本次请求，以避免资源浪费和一系列不可预期的问题。
+
+    // 关于 Lifecycle 组件的存在意义，可详见《为你还原一个真实的 Jetpack Lifecycle》篇的解析
+    // https://xiaozhuanlan.com/topic/3684721950
+
+    @Override
+    public void onStop(@NonNull @NotNull LifecycleOwner owner) {
+        cancelLogin();
     }
 }

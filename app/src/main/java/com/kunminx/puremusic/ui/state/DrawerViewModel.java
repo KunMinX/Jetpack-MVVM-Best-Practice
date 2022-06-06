@@ -21,7 +21,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.kunminx.puremusic.data.bean.LibraryInfo;
-import com.kunminx.puremusic.domain.request.InfoRequest;
+import com.kunminx.puremusic.domain.request.InfoRequester;
 
 import java.util.List;
 
@@ -52,6 +52,6 @@ public class DrawerViewModel extends ViewModel {
     //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
     //https://xiaozhuanlan.com/topic/8204519736
 
-    public final InfoRequest infoRequest = new InfoRequest();
+    public final InfoRequester infoRequest = new InfoRequester();
 
 }

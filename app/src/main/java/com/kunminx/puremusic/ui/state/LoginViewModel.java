@@ -20,7 +20,7 @@ import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
-import com.kunminx.puremusic.domain.request.AccountRequest;
+import com.kunminx.puremusic.domain.request.AccountRequester;
 
 /**
  * TODO tip：每个页面都要单独准备一个 state-ViewModel，
@@ -48,6 +48,6 @@ public class LoginViewModel extends ViewModel {
     //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
     //https://xiaozhuanlan.com/topic/8204519736
 
-    public final AccountRequest accountRequest = new AccountRequest();
+    public final AccountRequester accountRequest = new AccountRequester();
 
 }

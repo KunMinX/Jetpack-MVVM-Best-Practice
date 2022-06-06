@@ -19,7 +19,7 @@ package com.kunminx.puremusic.ui.state;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
-import com.kunminx.puremusic.domain.request.DownloadRequest;
+import com.kunminx.puremusic.domain.request.DownloadRequester;
 
 /**
  * TODO tip 1：每个页面都要单独准备一个 state-ViewModel，
@@ -45,6 +45,6 @@ public class SearchViewModel extends ViewModel {
     //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
     //https://xiaozhuanlan.com/topic/8204519736
 
-    public final DownloadRequest downloadRequest = new DownloadRequest();
+    public final DownloadRequester downloadRequest = new DownloadRequester();
 
 }

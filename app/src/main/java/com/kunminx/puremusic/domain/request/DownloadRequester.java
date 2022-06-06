@@ -1,37 +1,16 @@
-/*
- * Copyright 2018-present KunMinX
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.kunminx.puremusic.domain.request;
 
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.DefaultLifecycleObserver;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModel;
 
 import com.kunminx.architecture.data.response.DataResult;
+import com.kunminx.architecture.domain.usecase.UseCaseHandler;
 import com.kunminx.architecture.ui.callback.ProtectedUnPeekLiveData;
 import com.kunminx.architecture.ui.callback.UnPeekLiveData;
-import com.kunminx.puremusic.data.bean.User;
 import com.kunminx.puremusic.data.repository.DataRepository;
-
-import org.jetbrains.annotations.NotNull;
+import com.kunminx.puremusic.domain.usecase.CanBeStoppedUseCase;
 
 /**
- * 用户账户 Request
+ * 数据下载 Request
  * <p>
  * TODO tip 1：Request 通常按业务划分
  * 一个项目中通常存在多个 Request 类，
@@ -44,16 +23,16 @@ import org.jetbrains.annotations.NotNull;
  * 如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
  * https://xiaozhuanlan.com/topic/8204519736
  * <p>
- * Create by KunMinX at 20/04/26
+ * <p>
+ * Create by KunMinX at 20/03/18
  */
-public class AccountRequest extends ViewModel
-    implements DefaultLifecycleObserver {
+public class DownloadRequester extends ViewModel {
 
-    //TODO tip：👆👆👆 让 accountRequest 可观察页面生命周期，
-    // 从而在页面即将退出、且登录请求由于网络延迟尚未完成时，
-    // 及时通知数据层取消本次请求，以避免资源浪费和一系列不可预期的问题。
+    private final UnPeekLiveData<DataResult<CanBeStoppedUseCase.DownloadState>> mDownloadFileLiveData = new UnPeekLiveData<>();
 
-    private final UnPeekLiveData<DataResult<String>> tokenLiveData = new UnPeekLiveData<>();
+    private final UnPeekLiveData<DataResult<CanBeStoppedUseCase.DownloadState>> mDownloadFileCanBeStoppedLiveData = new UnPeekLiveData<>();
+
+    private final CanBeStoppedUseCase mCanBeStoppedUseCase = new CanBeStoppedUseCase();
 
     //TODO tip 2：向 ui 层提供的 request LiveData，使用 "父类的 LiveData" 而不是 "Mutable 的 LiveData"，
     //如此达成了 "唯一可信源" 的设计，也即通过访问控制权限实现 "读写分离"，
@@ -63,7 +42,7 @@ public class AccountRequest extends ViewModel
     //如果这样说还不理解的话，详见《关于 LiveData 本质，你看到了第几层》的铺垫和解析。
     //https://xiaozhuanlan.com/topic/6017825943
 
-    public ProtectedUnPeekLiveData<DataResult<String>> getTokenLiveData() {
+    public ProtectedUnPeekLiveData<DataResult<CanBeStoppedUseCase.DownloadState>> getDownloadFileLiveData() {
 
         //TODO tip 3：与此同时，为了方便语义上的理解，故而直接将 DataResult 作为 LiveData value 回推给 UI 层，
         //而不是将 DataResult 的泛型实体拆下来单独回推，如此
@@ -74,34 +53,40 @@ public class AccountRequest extends ViewModel
         //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》中对 "只读数据" 和 "可变状态" 的区分的解析。
         //https://xiaozhuanlan.com/topic/8204519736
 
-        return tokenLiveData;
+        return mDownloadFileLiveData;
     }
 
-    public void requestLogin(User user) {
+    public ProtectedUnPeekLiveData<DataResult<CanBeStoppedUseCase.DownloadState>> getDownloadFileCanBeStoppedLiveData() {
+        return mDownloadFileCanBeStoppedLiveData;
+    }
+
+    public CanBeStoppedUseCase getCanBeStoppedUseCase() {
+        return mCanBeStoppedUseCase;
+    }
+
+    public void requestDownloadFile() {
+
+        CanBeStoppedUseCase.DownloadState downloadState = new CanBeStoppedUseCase.DownloadState();
 
         //TODO Tip：lambda 语句只有一行时可简写，具体可结合实际情况选择和使用
 
-        /*DataRepository.getInstance().login(user, dataResult -> {
-            tokenLiveData.postValue(dataResult);
+        /*DataRepository.getInstance().downloadFile(downloadFile, dataResult -> {
+            mDownloadFileLiveData.postValue(dataResult);
         });*/
 
-        DataRepository.getInstance().login(user, tokenLiveData::postValue);
+        DataRepository.getInstance().downloadFile(downloadState, mDownloadFileLiveData::postValue);
     }
 
-    private void cancelLogin() {
-        DataRepository.getInstance().cancelLogin();
-    }
+    //TODO tip2：
+    // 同样是“下载”，我不是在数据层分别写两个方法，
+    // 而是遵循开闭原则，在 vm 和 数据层之间，插入一个 UseCase，来专门负责可叫停的情况，
+    // 除了开闭原则，使用 UseCase 还有个考虑就是避免内存泄漏，
+    // 具体缘由可详见 https://xiaozhuanlan.com/topic/6257931840 评论区 15 楼
 
-
-    //TODO tip：让 accountRequest 可观察页面生命周期，
-    // 从而在页面即将退出、且登录请求由于网络延迟尚未完成时，
-    // 及时通知数据层取消本次请求，以避免资源浪费和一系列不可预期的问题。
-
-    // 关于 Lifecycle 组件的存在意义，可详见《为你还原一个真实的 Jetpack Lifecycle》篇的解析
-    // https://xiaozhuanlan.com/topic/3684721950
-
-    @Override
-    public void onStop(@NonNull @NotNull LifecycleOwner owner) {
-        cancelLogin();
+    public void requestCanBeStoppedDownloadFile() {
+        UseCaseHandler.getInstance().execute(getCanBeStoppedUseCase(),
+            new CanBeStoppedUseCase.RequestValues(), response -> {
+                mDownloadFileCanBeStoppedLiveData.setValue(response.getDataResult());
+            });
     }
 }
