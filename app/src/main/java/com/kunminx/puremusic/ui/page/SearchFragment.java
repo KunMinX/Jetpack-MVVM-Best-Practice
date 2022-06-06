@@ -30,7 +30,6 @@ import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.domain.message.DrawerCoordinateManager;
 import com.kunminx.puremusic.domain.request.DownloadRequester;
-import com.kunminx.puremusic.ui.state.SearchViewModel;
 
 /**
  * Create by KunMinX at 19/10/29
