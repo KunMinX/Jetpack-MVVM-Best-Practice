@@ -22,8 +22,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.kunminx.architecture.ui.callback.ProtectedUnPeekLiveData;
-import com.kunminx.architecture.ui.callback.UnPeekLiveData;
+import com.kunminx.architecture.domain.message.Event;
+import com.kunminx.architecture.domain.message.MutableEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,9 +57,9 @@ public class DrawerCoordinateManager implements DefaultLifecycleObserver {
 
     private final List<String> tagOfSecondaryPages = new ArrayList<>();
 
-    private final UnPeekLiveData<Boolean> enableSwipeDrawer = new UnPeekLiveData<>();
+    private final MutableEvent<Boolean> enableSwipeDrawer = new MutableEvent<>();
 
-    public ProtectedUnPeekLiveData<Boolean> isEnableSwipeDrawer() {
+    public Event<Boolean> isEnableSwipeDrawer() {
         return enableSwipeDrawer;
     }
 

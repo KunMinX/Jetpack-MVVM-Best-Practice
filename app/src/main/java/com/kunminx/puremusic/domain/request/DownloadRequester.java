@@ -3,9 +3,9 @@ package com.kunminx.puremusic.domain.request;
 import androidx.lifecycle.ViewModel;
 
 import com.kunminx.architecture.data.response.DataResult;
+import com.kunminx.architecture.domain.message.Event;
+import com.kunminx.architecture.domain.message.MutableEvent;
 import com.kunminx.architecture.domain.usecase.UseCaseHandler;
-import com.kunminx.architecture.ui.callback.ProtectedUnPeekLiveData;
-import com.kunminx.architecture.ui.callback.UnPeekLiveData;
 import com.kunminx.puremusic.data.repository.DataRepository;
 import com.kunminx.puremusic.domain.usecase.CanBeStoppedUseCase;
 
@@ -28,9 +28,9 @@ import com.kunminx.puremusic.domain.usecase.CanBeStoppedUseCase;
  */
 public class DownloadRequester extends ViewModel {
 
-    private final UnPeekLiveData<DataResult<CanBeStoppedUseCase.DownloadState>> mDownloadFileLiveData = new UnPeekLiveData<>();
+    private final MutableEvent<DataResult<CanBeStoppedUseCase.DownloadState>> mDownloadFileEvent = new MutableEvent<>();
 
-    private final UnPeekLiveData<DataResult<CanBeStoppedUseCase.DownloadState>> mDownloadFileCanBeStoppedLiveData = new UnPeekLiveData<>();
+    private final MutableEvent<DataResult<CanBeStoppedUseCase.DownloadState>> mDownloadFileCanBeStoppedEvent = new MutableEvent<>();
 
     private final CanBeStoppedUseCase mCanBeStoppedUseCase = new CanBeStoppedUseCase();
 
@@ -42,7 +42,7 @@ public class DownloadRequester extends ViewModel {
     //如果这样说还不理解的话，详见《关于 LiveData 本质，你看到了第几层》的铺垫和解析。
     //https://xiaozhuanlan.com/topic/6017825943
 
-    public ProtectedUnPeekLiveData<DataResult<CanBeStoppedUseCase.DownloadState>> getDownloadFileLiveData() {
+    public Event<DataResult<CanBeStoppedUseCase.DownloadState>> getDownloadFileEvent() {
 
         //TODO tip 3：与此同时，为了方便语义上的理解，故而直接将 DataResult 作为 LiveData value 回推给 UI 层，
         //而不是将 DataResult 的泛型实体拆下来单独回推，如此
@@ -53,11 +53,11 @@ public class DownloadRequester extends ViewModel {
         //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》中对 "只读数据" 和 "可变状态" 的区分的解析。
         //https://xiaozhuanlan.com/topic/8204519736
 
-        return mDownloadFileLiveData;
+        return mDownloadFileEvent;
     }
 
-    public ProtectedUnPeekLiveData<DataResult<CanBeStoppedUseCase.DownloadState>> getDownloadFileCanBeStoppedLiveData() {
-        return mDownloadFileCanBeStoppedLiveData;
+    public Event<DataResult<CanBeStoppedUseCase.DownloadState>> getDownloadFileCanBeStoppedEvent() {
+        return mDownloadFileCanBeStoppedEvent;
     }
 
     public CanBeStoppedUseCase getCanBeStoppedUseCase() {
@@ -74,7 +74,7 @@ public class DownloadRequester extends ViewModel {
             mDownloadFileLiveData.postValue(dataResult);
         });*/
 
-        DataRepository.getInstance().downloadFile(downloadState, mDownloadFileLiveData::postValue);
+        DataRepository.getInstance().downloadFile(downloadState, mDownloadFileEvent::postValue);
     }
 
     //TODO tip2：
@@ -86,7 +86,7 @@ public class DownloadRequester extends ViewModel {
     public void requestCanBeStoppedDownloadFile() {
         UseCaseHandler.getInstance().execute(getCanBeStoppedUseCase(),
             new CanBeStoppedUseCase.RequestValues(), response -> {
-                mDownloadFileCanBeStoppedLiveData.setValue(response.getDataResult());
+                mDownloadFileCanBeStoppedEvent.setValue(response.getDataResult());
             });
     }
 }

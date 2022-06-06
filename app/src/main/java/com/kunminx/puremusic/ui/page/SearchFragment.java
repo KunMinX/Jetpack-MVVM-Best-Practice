@@ -86,14 +86,14 @@ public class SearchFragment extends BaseFragment {
         //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
         //https://xiaozhuanlan.com/topic/8204519736
 
-        mGlobalDownloadRequester.getDownloadFileLiveData()
+        mGlobalDownloadRequester.getDownloadFileEvent()
             .observe(getViewLifecycleOwner(), dataResult -> {
                 if (dataResult.getResponseStatus().isSuccess()) {
                     mState.progress.set(dataResult.getResult().progress);
                 }
             });
 
-        mDownloadRequester.getDownloadFileCanBeStoppedLiveData()
+        mDownloadRequester.getDownloadFileCanBeStoppedEvent()
             .observe(getViewLifecycleOwner(), dataResult -> {
                 if (dataResult.getResponseStatus().isSuccess()) {
                     mState.progress_cancelable.set(dataResult.getResult().progress);

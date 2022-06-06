@@ -91,7 +91,7 @@ public class LoginFragment extends BaseFragment {
         //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
         //https://xiaozhuanlan.com/topic/8204519736
 
-        mAccountRequester.getTokenLiveData().observe(getViewLifecycleOwner(), dataResult -> {
+        mAccountRequester.getTokenEvent().observe(getViewLifecycleOwner(), dataResult -> {
             if (!dataResult.getResponseStatus().isSuccess()) {
                 mState.loadingVisible.set(false);
                 ToastUtils.showLongToast(getApplicationContext(), getString(R.string.network_state_retry));

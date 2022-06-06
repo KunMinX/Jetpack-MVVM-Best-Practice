@@ -20,8 +20,8 @@ package com.kunminx.puremusic.domain.request;
 import androidx.lifecycle.ViewModel;
 
 import com.kunminx.architecture.data.response.DataResult;
-import com.kunminx.architecture.ui.callback.ProtectedUnPeekLiveData;
-import com.kunminx.architecture.ui.callback.UnPeekLiveData;
+import com.kunminx.architecture.domain.message.Event;
+import com.kunminx.architecture.domain.message.MutableEvent;
 import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.data.repository.DataRepository;
 
@@ -43,7 +43,7 @@ import com.kunminx.puremusic.data.repository.DataRepository;
  */
 public class MusicRequester extends ViewModel {
 
-    private final UnPeekLiveData<DataResult<TestAlbum>> mFreeMusicsLiveData = new UnPeekLiveData<>();
+    private final MutableEvent<DataResult<TestAlbum>> mFreeMusicsEvent = new MutableEvent<>();
 
     //TODO tip 2：向 ui 层提供的 request LiveData，使用 "父类的 LiveData" 而不是 "Mutable 的 LiveData"，
     //如此达成了 "唯一可信源" 的设计，也即通过访问控制权限实现 "读写分离"，
@@ -53,7 +53,7 @@ public class MusicRequester extends ViewModel {
     //如果这样说还不理解的话，详见《关于 LiveData 本质，你看到了第几层》的铺垫和解析。
     //https://xiaozhuanlan.com/topic/6017825943
 
-    public ProtectedUnPeekLiveData<DataResult<TestAlbum>> getFreeMusicsLiveData() {
+    public Event<DataResult<TestAlbum>> getFreeMusicsEvent() {
 
         //TODO tip 3：与此同时，为了方便语义上的理解，故而直接将 DataResult 作为 LiveData value 回推给 UI 层，
         //而不是将 DataResult 的泛型实体拆下来单独回推，如此
@@ -64,7 +64,7 @@ public class MusicRequester extends ViewModel {
         //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》中对 "只读数据" 和 "可变状态" 的区分的解析。
         //https://xiaozhuanlan.com/topic/8204519736
 
-        return mFreeMusicsLiveData;
+        return mFreeMusicsEvent;
     }
 
     public void requestFreeMusics() {
@@ -75,6 +75,6 @@ public class MusicRequester extends ViewModel {
             mFreeMusicsLiveData.setValue(dataResult);
         });*/
 
-        DataRepository.getInstance().getFreeMusic(mFreeMusicsLiveData::setValue);
+        DataRepository.getInstance().getFreeMusic(mFreeMusicsEvent::setValue);
     }
 }

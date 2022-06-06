@@ -75,7 +75,7 @@ public class DrawerFragment extends BaseFragment {
         //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
         //https://xiaozhuanlan.com/topic/8204519736
 
-        mInfoRequester.getLibraryLiveData().observe(getViewLifecycleOwner(), dataResult -> {
+        mInfoRequester.getLibraryEvent().observe(getViewLifecycleOwner(), dataResult -> {
             if (!dataResult.getResponseStatus().isSuccess()) return;
 
             if (dataResult.getResult() != null) {
@@ -92,7 +92,7 @@ public class DrawerFragment extends BaseFragment {
             }
         });
 
-        if (mInfoRequester.getLibraryLiveData().getValue() == null) {
+        if (mInfoRequester.getLibraryEvent().getValue() == null) {
             mInfoRequester.requestLibraryInfo();
         }
     }

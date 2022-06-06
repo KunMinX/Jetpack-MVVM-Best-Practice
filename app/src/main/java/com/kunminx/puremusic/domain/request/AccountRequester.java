@@ -23,8 +23,8 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModel;
 
 import com.kunminx.architecture.data.response.DataResult;
-import com.kunminx.architecture.ui.callback.ProtectedUnPeekLiveData;
-import com.kunminx.architecture.ui.callback.UnPeekLiveData;
+import com.kunminx.architecture.domain.message.Event;
+import com.kunminx.architecture.domain.message.MutableEvent;
 import com.kunminx.puremusic.data.bean.User;
 import com.kunminx.puremusic.data.repository.DataRepository;
 
@@ -53,7 +53,7 @@ public class AccountRequester extends ViewModel
     // 从而在页面即将退出、且登录请求由于网络延迟尚未完成时，
     // 及时通知数据层取消本次请求，以避免资源浪费和一系列不可预期的问题。
 
-    private final UnPeekLiveData<DataResult<String>> tokenLiveData = new UnPeekLiveData<>();
+    private final MutableEvent<DataResult<String>> tokenEvent = new MutableEvent<>();
 
     //TODO tip 2：向 ui 层提供的 request LiveData，使用 "父类的 LiveData" 而不是 "Mutable 的 LiveData"，
     //如此达成了 "唯一可信源" 的设计，也即通过访问控制权限实现 "读写分离"，
@@ -63,7 +63,7 @@ public class AccountRequester extends ViewModel
     //如果这样说还不理解的话，详见《关于 LiveData 本质，你看到了第几层》的铺垫和解析。
     //https://xiaozhuanlan.com/topic/6017825943
 
-    public ProtectedUnPeekLiveData<DataResult<String>> getTokenLiveData() {
+    public Event<DataResult<String>> getTokenEvent() {
 
         //TODO tip 3：与此同时，为了方便语义上的理解，故而直接将 DataResult 作为 LiveData value 回推给 UI 层，
         //而不是将 DataResult 的泛型实体拆下来单独回推，如此
@@ -74,7 +74,7 @@ public class AccountRequester extends ViewModel
         //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》中对 "只读数据" 和 "可变状态" 的区分的解析。
         //https://xiaozhuanlan.com/topic/8204519736
 
-        return tokenLiveData;
+        return tokenEvent;
     }
 
     public void requestLogin(User user) {
@@ -85,7 +85,7 @@ public class AccountRequester extends ViewModel
             tokenLiveData.postValue(dataResult);
         });*/
 
-        DataRepository.getInstance().login(user, tokenLiveData::postValue);
+        DataRepository.getInstance().login(user, tokenEvent::postValue);
     }
 
     private void cancelLogin() {

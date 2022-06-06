@@ -96,7 +96,7 @@ public class MainFragment extends BaseFragment {
         // 也即，在 fragment 的场景下，请使用 getViewLifeCycleOwner 来作为 liveData 的观察者。
         // Activity 则不用改变。
 
-        mMusicRequester.getFreeMusicsLiveData().observe(getViewLifecycleOwner(), dataResult -> {
+        mMusicRequester.getFreeMusicsEvent().observe(getViewLifecycleOwner(), dataResult -> {
             if (!dataResult.getResponseStatus().isSuccess()) return;
 
             TestAlbum musicAlbum = dataResult.getResult();

@@ -18,8 +18,8 @@ package com.kunminx.puremusic.domain.message;
 
 import androidx.lifecycle.ViewModel;
 
-import com.kunminx.architecture.ui.callback.ProtectedUnPeekLiveData;
-import com.kunminx.architecture.ui.callback.UnPeekLiveData;
+import com.kunminx.architecture.domain.message.Event;
+import com.kunminx.architecture.domain.message.MutableEvent;
 
 /**
  * TODO tip 1：event-ViewModel 的职责仅限于在 "跨页面通信" 的场景下，承担 "唯一可信源"，
@@ -44,33 +44,33 @@ public class SharedViewModel extends ViewModel {
     // 如果这么说还不理解的话，
     // 详见 https://xiaozhuanlan.com/topic/0168753249 和 https://xiaozhuanlan.com/topic/6257931840
 
-    private final UnPeekLiveData<Boolean> toCloseSlidePanelIfExpanded = new UnPeekLiveData<>();
+    private final MutableEvent<Boolean> toCloseSlidePanelIfExpanded = new MutableEvent<>();
 
-    private final UnPeekLiveData<Boolean> toCloseActivityIfAllowed = new UnPeekLiveData<>();
+    private final MutableEvent<Boolean> toCloseActivityIfAllowed = new MutableEvent<>();
 
-    private final UnPeekLiveData<Boolean> toOpenOrCloseDrawer = new UnPeekLiveData<>();
+    private final MutableEvent<Boolean> toOpenOrCloseDrawer = new MutableEvent<>();
 
     //TODO tip 4：可以通过构造器的方式来配置 UnPeekLiveData
 
     // 具体存在有缘和使用方式可详见《LiveData 数据倒灌 背景缘由全貌 独家解析》
     // https://xiaozhuanlan.com/topic/6719328450
 
-    private final UnPeekLiveData<Boolean> toAddSlideListener =
-        new UnPeekLiveData.Builder<Boolean>().setAllowNullValue(false).create();
+    private final MutableEvent<Boolean> toAddSlideListener =
+        new MutableEvent.Builder<Boolean>().setAllowNullValue(false).create();
 
-    public ProtectedUnPeekLiveData<Boolean> isToAddSlideListener() {
+    public Event<Boolean> isToAddSlideListener() {
         return toAddSlideListener;
     }
 
-    public ProtectedUnPeekLiveData<Boolean> isToCloseSlidePanelIfExpanded() {
+    public Event<Boolean> isToCloseSlidePanelIfExpanded() {
         return toCloseSlidePanelIfExpanded;
     }
 
-    public ProtectedUnPeekLiveData<Boolean> isToCloseActivityIfAllowed() {
+    public Event<Boolean> isToCloseActivityIfAllowed() {
         return toCloseActivityIfAllowed;
     }
 
-    public ProtectedUnPeekLiveData<Boolean> isToOpenOrCloseDrawer() {
+    public Event<Boolean> isToOpenOrCloseDrawer() {
         return toOpenOrCloseDrawer;
     }
 
