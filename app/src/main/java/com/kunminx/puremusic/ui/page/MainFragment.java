@@ -27,8 +27,9 @@ import com.kunminx.architecture.ui.page.DataBindingConfig;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.TestAlbum;
-import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.domain.message.SharedViewModel;
+import com.kunminx.puremusic.domain.request.MusicRequester;
+import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.page.adapter.PlaylistAdapter;
 import com.kunminx.puremusic.ui.state.MainViewModel;
 
@@ -44,12 +45,14 @@ public class MainFragment extends BaseFragment {
 
     private MainViewModel mState;
     private SharedViewModel mEvent;
+    private MusicRequester mMusicRequester;
     private PlaylistAdapter mAdapter;
 
     @Override
     protected void initViewModel() {
         mState = getFragmentScopeViewModel(MainViewModel.class);
         mEvent = getApplicationScopeViewModel(SharedViewModel.class);
+        mMusicRequester = getFragmentScopeViewModel(MusicRequester.class);
     }
 
     @Override
@@ -93,7 +96,7 @@ public class MainFragment extends BaseFragment {
         // 也即，在 fragment 的场景下，请使用 getViewLifeCycleOwner 来作为 liveData 的观察者。
         // Activity 则不用改变。
 
-        mState.musicRequest.getFreeMusicsLiveData().observe(getViewLifecycleOwner(), dataResult -> {
+        mMusicRequester.getFreeMusicsLiveData().observe(getViewLifecycleOwner(), dataResult -> {
             if (!dataResult.getResponseStatus().isSuccess()) return;
 
             TestAlbum musicAlbum = dataResult.getResult();
@@ -122,7 +125,7 @@ public class MainFragment extends BaseFragment {
             //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
             //https://xiaozhuanlan.com/topic/8204519736
 
-            mState.musicRequest.requestFreeMusics();
+            mMusicRequester.requestFreeMusics();
 
         } else {
 

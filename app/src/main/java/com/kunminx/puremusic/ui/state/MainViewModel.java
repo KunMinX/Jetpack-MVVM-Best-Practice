@@ -22,7 +22,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.kunminx.puremusic.data.bean.TestAlbum;
-import com.kunminx.puremusic.domain.request.MusicRequester;
 
 import java.util.List;
 
@@ -50,13 +49,5 @@ public class MainViewModel extends ViewModel {
     //如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
     public final MutableLiveData<List<TestAlbum.TestMusic>> list = new MutableLiveData<>();
-
-    //TODO tip 2：将 request 作为 ViewModel 的成员暴露给 Activity/Fragment，
-    // 如此便于语义的明确，以及实现多个 request 在 ViewModel 中的组合和复用。
-
-    //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
-    //https://xiaozhuanlan.com/topic/8204519736
-
-    public final MusicRequester musicRequest = new MusicRequester();
 
 }

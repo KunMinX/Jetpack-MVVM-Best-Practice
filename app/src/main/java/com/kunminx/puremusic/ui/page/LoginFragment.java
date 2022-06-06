@@ -32,6 +32,7 @@ import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.User;
 import com.kunminx.puremusic.data.config.Configs;
 import com.kunminx.puremusic.domain.message.DrawerCoordinateManager;
+import com.kunminx.puremusic.domain.request.AccountRequester;
 import com.kunminx.puremusic.ui.state.LoginViewModel;
 
 /**
@@ -45,10 +46,12 @@ public class LoginFragment extends BaseFragment {
     //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/8204519736
 
     private LoginViewModel mState;
+    private AccountRequester mAccountRequester;
 
     @Override
     protected void initViewModel() {
         mState = getFragmentScopeViewModel(LoginViewModel.class);
+        mAccountRequester = getFragmentScopeViewModel(AccountRequester.class);
     }
 
     @Override
@@ -75,7 +78,7 @@ public class LoginFragment extends BaseFragment {
         //TODO tip：让 accountRequest 可观察页面生命周期，
         // 从而在页面即将退出、且登录请求由于网络延迟尚未完成时，
         // 及时通知数据层取消本次请求，以避免资源浪费和一系列不可预期的问题。
-        getLifecycle().addObserver(mState.accountRequest);
+        getLifecycle().addObserver(mAccountRequester);
     }
 
     @Override
@@ -88,7 +91,7 @@ public class LoginFragment extends BaseFragment {
         //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
         //https://xiaozhuanlan.com/topic/8204519736
 
-        mState.accountRequest.getTokenLiveData().observe(getViewLifecycleOwner(), dataResult -> {
+        mAccountRequester.getTokenLiveData().observe(getViewLifecycleOwner(), dataResult -> {
             if (!dataResult.getResponseStatus().isSuccess()) {
                 mState.loadingVisible.set(false);
                 ToastUtils.showLongToast(getApplicationContext(), getString(R.string.network_state_retry));
@@ -124,7 +127,7 @@ public class LoginFragment extends BaseFragment {
                 return;
             }
             User user = new User(mState.name.get(), mState.password.get());
-            mState.accountRequest.requestLogin(user);
+            mAccountRequester.requestLogin(user);
             mState.loadingVisible.set(true);
         }
 
