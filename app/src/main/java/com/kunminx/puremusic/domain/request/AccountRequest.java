@@ -20,9 +20,9 @@ package com.kunminx.puremusic.domain.request;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModel;
 
 import com.kunminx.architecture.data.response.DataResult;
-import com.kunminx.architecture.domain.request.BaseRequest;
 import com.kunminx.architecture.ui.callback.ProtectedUnPeekLiveData;
 import com.kunminx.architecture.ui.callback.UnPeekLiveData;
 import com.kunminx.puremusic.data.bean.User;
@@ -46,7 +46,7 @@ import org.jetbrains.annotations.NotNull;
  * <p>
  * Create by KunMinX at 20/04/26
  */
-public class AccountRequest extends BaseRequest
+public class AccountRequest extends ViewModel
     implements DefaultLifecycleObserver {
 
     //TODO tip：👆👆👆 让 accountRequest 可观察页面生命周期，

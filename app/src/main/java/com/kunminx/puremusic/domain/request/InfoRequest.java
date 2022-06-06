@@ -17,8 +17,9 @@
 package com.kunminx.puremusic.domain.request;
 
 
+import androidx.lifecycle.ViewModel;
+
 import com.kunminx.architecture.data.response.DataResult;
-import com.kunminx.architecture.domain.request.BaseRequest;
 import com.kunminx.architecture.ui.callback.ProtectedUnPeekLiveData;
 import com.kunminx.architecture.ui.callback.UnPeekLiveData;
 import com.kunminx.puremusic.data.bean.LibraryInfo;
@@ -43,7 +44,7 @@ import java.util.List;
  * <p>
  * Create by KunMinX at 19/11/2
  */
-public class InfoRequest extends BaseRequest {
+public class InfoRequest extends ViewModel {
 
     private final UnPeekLiveData<DataResult<List<LibraryInfo>>> mLibraryLiveData = new UnPeekLiveData<>();
 

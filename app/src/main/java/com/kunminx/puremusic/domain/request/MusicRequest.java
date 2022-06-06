@@ -17,8 +17,9 @@
 package com.kunminx.puremusic.domain.request;
 
 
+import androidx.lifecycle.ViewModel;
+
 import com.kunminx.architecture.data.response.DataResult;
-import com.kunminx.architecture.domain.request.BaseRequest;
 import com.kunminx.architecture.ui.callback.ProtectedUnPeekLiveData;
 import com.kunminx.architecture.ui.callback.UnPeekLiveData;
 import com.kunminx.puremusic.data.bean.TestAlbum;
@@ -40,7 +41,7 @@ import com.kunminx.puremusic.data.repository.DataRepository;
  * <p>
  * Create by KunMinX at 19/10/29
  */
-public class MusicRequest extends BaseRequest {
+public class MusicRequest extends ViewModel {
 
     private final UnPeekLiveData<DataResult<TestAlbum>> mFreeMusicsLiveData = new UnPeekLiveData<>();
 

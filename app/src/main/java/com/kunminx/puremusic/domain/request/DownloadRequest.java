@@ -1,7 +1,8 @@
 package com.kunminx.puremusic.domain.request;
 
+import androidx.lifecycle.ViewModel;
+
 import com.kunminx.architecture.data.response.DataResult;
-import com.kunminx.architecture.domain.request.BaseRequest;
 import com.kunminx.architecture.domain.usecase.UseCaseHandler;
 import com.kunminx.architecture.ui.callback.ProtectedUnPeekLiveData;
 import com.kunminx.architecture.ui.callback.UnPeekLiveData;
@@ -25,7 +26,7 @@ import com.kunminx.puremusic.domain.usecase.CanBeStoppedUseCase;
  * <p>
  * Create by KunMinX at 20/03/18
  */
-public class DownloadRequest extends BaseRequest {
+public class DownloadRequest extends ViewModel {
 
     private final UnPeekLiveData<DataResult<CanBeStoppedUseCase.DownloadState>> mDownloadFileLiveData = new UnPeekLiveData<>();
 
