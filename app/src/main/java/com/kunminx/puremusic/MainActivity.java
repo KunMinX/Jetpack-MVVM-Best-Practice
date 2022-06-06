@@ -20,14 +20,15 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModel;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.kunminx.architecture.ui.page.BaseActivity;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
+import com.kunminx.architecture.ui.page.State;
 import com.kunminx.puremusic.domain.message.DrawerCoordinateManager;
 import com.kunminx.puremusic.domain.message.PageMessenger;
-import com.kunminx.puremusic.ui.state.MainActivityViewModel;
 
 /**
  * Create by KunMinX at 19/10/16
@@ -35,13 +36,13 @@ import com.kunminx.puremusic.ui.state.MainActivityViewModel;
 
 public class MainActivity extends BaseActivity {
 
-    private MainActivityViewModel mState;
+    private MainActivityViewModel mStates;
     private PageMessenger mMessenger;
     private boolean mIsListened = false;
 
     @Override
     protected void initViewModel() {
-        mState = getActivityScopeViewModel(MainActivityViewModel.class);
+        mStates = getActivityScopeViewModel(MainActivityViewModel.class);
         mMessenger = getApplicationScopeViewModel(PageMessenger.class);
     }
 
@@ -56,7 +57,7 @@ public class MainActivity extends BaseActivity {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.activity_main, BR.vm, mState)
+        return new DataBindingConfig(R.layout.activity_main, BR.vm, mStates)
             .addBindingParam(BR.listener, new ListenerHandler());
     }
 
@@ -73,7 +74,7 @@ public class MainActivity extends BaseActivity {
             if (nav.getCurrentDestination() != null && nav.getCurrentDestination().getId() != R.id.mainFragment) {
                 nav.navigateUp();
 
-            } else if (mState.isDrawerOpened.get()) {
+            } else if (mStates.isDrawerOpened.get()) {
 
                 //TODO 同 tip 2
 
@@ -94,7 +95,7 @@ public class MainActivity extends BaseActivity {
 
             //如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
-            mState.openDrawer.set(aBoolean);
+            mStates.openDrawer.set(aBoolean);
 
             //TODO do not:（容易因疏忽 而埋下视图实例 null 安全的一致性隐患）
 
@@ -111,7 +112,7 @@ public class MainActivity extends BaseActivity {
 
             //TODO yes: 同 tip 1
 
-            mState.allowDrawerOpen.set(aBoolean);
+            mStates.allowDrawerOpen.set(aBoolean);
 
             // TODO do not:（容易因疏忽 而埋下视图实例 null 安全的一致性隐患）
 
@@ -154,14 +155,41 @@ public class MainActivity extends BaseActivity {
         @Override
         public void onDrawerOpened(View drawerView) {
             super.onDrawerOpened(drawerView);
-            mState.isDrawerOpened.set(true);
+            mStates.isDrawerOpened.set(true);
         }
 
         @Override
         public void onDrawerClosed(View drawerView) {
             super.onDrawerClosed(drawerView);
-            mState.isDrawerOpened.set(false);
-            mState.openDrawer.set(false);
+            mStates.isDrawerOpened.set(false);
+            mStates.openDrawer.set(false);
         }
+    }
+
+    /**
+     * TODO tip：每个页面都要单独准备一个 state-ViewModel，
+     * 来托管 DataBinding 绑定的临时状态，以及视图控制器重建时状态的恢复。
+     * <p>
+     * 此外，state-ViewModel 的职责仅限于 状态托管，不建议在此处理 UI 逻辑，
+     * UI 逻辑只适合在 Activity/Fragment 等视图控制器中完成，是 “数据驱动” 的一部分，
+     * 将来升级到 Jetpack Compose 更是如此。
+     * <p>
+     * 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
+     * <p>
+     * Create by KunMinX at 19/10/29
+     */
+    public static class MainActivityViewModel extends ViewModel {
+
+        public final State<Boolean> isDrawerOpened = new State<>();
+
+        //TODO 此处用于绑定的状态，使用 LiveData 而不是 ObservableField，
+        // 主要是考虑到 ObservableField 具有防抖的特性，不适合该场景。
+
+        //如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
+
+        public final State<Boolean> openDrawer = new State<>();
+
+        public final State<Boolean> allowDrawerOpen = new State<>(true);
+
     }
 }

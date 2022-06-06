@@ -22,9 +22,11 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModel;
 
 import com.kunminx.architecture.ui.page.BaseFragment;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
+import com.kunminx.architecture.ui.page.State;
 import com.kunminx.architecture.utils.SPUtils;
 import com.kunminx.architecture.utils.ToastUtils;
 import com.kunminx.puremusic.BR;
@@ -33,7 +35,6 @@ import com.kunminx.puremusic.data.bean.User;
 import com.kunminx.puremusic.data.config.Configs;
 import com.kunminx.puremusic.domain.message.DrawerCoordinateManager;
 import com.kunminx.puremusic.domain.request.AccountRequester;
-import com.kunminx.puremusic.ui.state.LoginViewModel;
 
 /**
  * Create by KunMinX at 20/04/26
@@ -45,12 +46,12 @@ public class LoginFragment extends BaseFragment {
 
     //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/8204519736
 
-    private LoginViewModel mState;
+    private LoginViewModel mStates;
     private AccountRequester mAccountRequester;
 
     @Override
     protected void initViewModel() {
-        mState = getFragmentScopeViewModel(LoginViewModel.class);
+        mStates = getFragmentScopeViewModel(LoginViewModel.class);
         mAccountRequester = getFragmentScopeViewModel(AccountRequester.class);
     }
 
@@ -65,7 +66,7 @@ public class LoginFragment extends BaseFragment {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.fragment_login, BR.vm, mState)
+        return new DataBindingConfig(R.layout.fragment_login, BR.vm, mStates)
             .addBindingParam(BR.click, new ClickProxy());
     }
 
@@ -93,7 +94,7 @@ public class LoginFragment extends BaseFragment {
 
         mAccountRequester.getTokenEvent().observe(getViewLifecycleOwner(), dataResult -> {
             if (!dataResult.getResponseStatus().isSuccess()) {
-                mState.loadingVisible.set(false);
+                mStates.loadingVisible.set(false);
                 ToastUtils.showLongToast(getApplicationContext(), getString(R.string.network_state_retry));
                 return;
             }
@@ -102,7 +103,7 @@ public class LoginFragment extends BaseFragment {
             if (TextUtils.isEmpty(s)) return;
 
             SPUtils.getInstance().put(Configs.TOKEN, s);
-            mState.loadingVisible.set(false);
+            mStates.loadingVisible.set(false);
 
             //TODO 登录成功后进行的下一步操作...
             nav().navigateUp();
@@ -122,14 +123,35 @@ public class LoginFragment extends BaseFragment {
 
             //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
-            if (TextUtils.isEmpty(mState.name.get()) || TextUtils.isEmpty(mState.password.get())) {
+            if (TextUtils.isEmpty(mStates.name.get()) || TextUtils.isEmpty(mStates.password.get())) {
                 ToastUtils.showLongToast(getApplicationContext(), getString(R.string.username_or_pwd_incomplete));
                 return;
             }
-            User user = new User(mState.name.get(), mState.password.get());
+            User user = new User(mStates.name.get(), mStates.password.get());
             mAccountRequester.requestLogin(user);
-            mState.loadingVisible.set(true);
+            mStates.loadingVisible.set(true);
         }
+    }
+
+    /**
+     * TODO tip：每个页面都要单独准备一个 state-ViewModel，
+     * 来托管 DataBinding 绑定的临时状态，以及视图控制器重建时状态的恢复。
+     * <p>
+     * 此外，state-ViewModel 的职责仅限于 状态托管，不建议在此处理 UI 逻辑，
+     * UI 逻辑只适合在 Activity/Fragment 等视图控制器中完成，是 “数据驱动” 的一部分，
+     * 将来升级到 Jetpack Compose 更是如此。
+     * <p>
+     * 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
+     * <p>
+     * Create by KunMinX at 20/04/26
+     */
+    public static class LoginViewModel extends ViewModel {
+
+        public final State<String> name = new State<>();
+
+        public final State<String> password = new State<>();
+
+        public final State<Boolean> loadingVisible = new State<>();
 
     }
 

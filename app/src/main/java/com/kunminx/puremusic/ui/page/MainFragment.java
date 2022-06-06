@@ -21,9 +21,11 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModel;
 
 import com.kunminx.architecture.ui.page.BaseFragment;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
+import com.kunminx.architecture.ui.page.State;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.TestAlbum;
@@ -31,7 +33,8 @@ import com.kunminx.puremusic.domain.message.PageMessenger;
 import com.kunminx.puremusic.domain.request.MusicRequester;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.page.adapter.PlaylistAdapter;
-import com.kunminx.puremusic.ui.state.MainViewModel;
+
+import java.util.List;
 
 /**
  * Create by KunMinX at 19/10/29
@@ -43,14 +46,14 @@ public class MainFragment extends BaseFragment {
 
     //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/8204519736
 
-    private MainViewModel mState;
+    private MainViewModel mStates;
     private PageMessenger mMessenger;
     private MusicRequester mMusicRequester;
     private PlaylistAdapter mAdapter;
 
     @Override
     protected void initViewModel() {
-        mState = getFragmentScopeViewModel(MainViewModel.class);
+        mStates = getFragmentScopeViewModel(MainViewModel.class);
         mMessenger = getApplicationScopeViewModel(PageMessenger.class);
         mMusicRequester = getFragmentScopeViewModel(MusicRequester.class);
     }
@@ -71,7 +74,7 @@ public class MainFragment extends BaseFragment {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.fragment_main, BR.vm, mState)
+        return new DataBindingConfig(R.layout.fragment_main, BR.vm, mStates)
             .addBindingParam(BR.click, new ClickProxy())
             .addBindingParam(BR.adapter, mAdapter);
     }
@@ -108,7 +111,7 @@ public class MainFragment extends BaseFragment {
             // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/6719328450
 
             if (musicAlbum != null && musicAlbum.getMusics() != null) {
-                mState.list.set(musicAlbum.getMusics());
+                mStates.list.set(musicAlbum.getMusics());
 
                 if (PlayerManager.getInstance().getAlbum() == null ||
                     !PlayerManager.getInstance().getAlbum().getAlbumId().equals(musicAlbum.getAlbumId())) {
@@ -137,7 +140,7 @@ public class MainFragment extends BaseFragment {
             // 如果这样说还不理解的话，详见《LiveData》篇和《DataBinding》篇的解析
             // https://xiaozhuanlan.com/topic/0168753249、https://xiaozhuanlan.com/topic/9816742350
 
-            mState.list.set(PlayerManager.getInstance().getAlbum().getMusics());
+            mStates.list.set(PlayerManager.getInstance().getAlbum().getMusics());
         }
     }
 
@@ -169,6 +172,33 @@ public class MainFragment extends BaseFragment {
         public void search() {
             nav().navigate(R.id.action_mainFragment_to_searchFragment);
         }
+
+    }
+
+    /**
+     * TODO tip：每个页面都要单独准备一个 state-ViewModel，
+     * 来托管 DataBinding 绑定的临时状态，以及视图控制器重建时状态的恢复。
+     * <p>
+     * 此外，state-ViewModel 的职责仅限于 状态托管，不建议在此处理 UI 逻辑，
+     * UI 逻辑只适合在 Activity/Fragment 等视图控制器中完成，是 “数据驱动” 的一部分，
+     * 将来升级到 Jetpack Compose 更是如此。
+     * <p>
+     * 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
+     * <p>
+     * Create by KunMinX at 19/10/29
+     */
+    public static class MainViewModel extends ViewModel {
+
+        public final State<Boolean> initTabAndPage = new State<>(true);
+
+        public final State<String> pageAssetPath = new State<>("summary.html");
+
+        //TODO 此处用于绑定的状态，使用 LiveData 而不是 ObservableField，
+        // 主要是考虑到 ObservableField 具有防抖的特性，不适合该场景。
+
+        //如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
+
+        public final State<List<TestAlbum.TestMusic>> list = new State<>();
 
     }
 

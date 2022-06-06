@@ -8,7 +8,7 @@
 
         <variable
             name="vm"
-            type="com.kunminx.puremusic.ui.state.LoginViewModel" />
+            type="com.kunminx.puremusic.ui.page.LoginFragment.LoginViewModel" />
 
         <variable
             name="click"

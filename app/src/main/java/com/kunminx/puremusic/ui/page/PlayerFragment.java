@@ -16,16 +16,21 @@
 
 package com.kunminx.puremusic.ui.page;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModel;
 
 import com.kunminx.architecture.ui.page.BaseFragment;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
+import com.kunminx.architecture.ui.page.State;
 import com.kunminx.architecture.utils.ToastUtils;
+import com.kunminx.architecture.utils.Utils;
 import com.kunminx.player.PlayingInfoManager;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
@@ -34,7 +39,6 @@ import com.kunminx.puremusic.domain.message.DrawerCoordinateManager;
 import com.kunminx.puremusic.domain.message.PageMessenger;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.page.helper.DefaultInterface;
-import com.kunminx.puremusic.ui.state.PlayerViewModel;
 import com.kunminx.puremusic.ui.view.PlayerSlideListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -50,13 +54,13 @@ public class PlayerFragment extends BaseFragment {
 
     //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/8204519736
 
-    private PlayerViewModel mState;
+    private PlayerViewModel mStates;
     private PageMessenger mMessenger;
     private PlayerSlideListener mListener;
 
     @Override
     protected void initViewModel() {
-        mState = getFragmentScopeViewModel(PlayerViewModel.class);
+        mStates = getFragmentScopeViewModel(PlayerViewModel.class);
         mMessenger = getApplicationScopeViewModel(PageMessenger.class);
     }
 
@@ -71,7 +75,7 @@ public class PlayerFragment extends BaseFragment {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.fragment_player, BR.vm, mState)
+        return new DataBindingConfig(R.layout.fragment_player, BR.vm, mStates)
             .addBindingParam(BR.click, new ClickProxy())
             .addBindingParam(BR.listener, new ListenerHandler());
     }
@@ -107,9 +111,9 @@ public class PlayerFragment extends BaseFragment {
         PlayerManager.getInstance().getChangeMusicEvent().observe(getViewLifecycleOwner(), changeMusic -> {
 
             // 切歌时，音乐的标题、作者、封面 状态的改变
-            mState.title.set(changeMusic.getTitle());
-            mState.artist.set(changeMusic.getSummary());
-            mState.coverImg.set(changeMusic.getImg());
+            mStates.title.set(changeMusic.getTitle());
+            mStates.artist.set(changeMusic.getSummary());
+            mStates.coverImg.set(changeMusic.getImg());
 
             if (mListener != null) {
                 view.post(mListener::calculateTitleAndArtist);
@@ -119,26 +123,26 @@ public class PlayerFragment extends BaseFragment {
         PlayerManager.getInstance().getPlayingMusicEvent().observe(getViewLifecycleOwner(), playingMusic -> {
 
             // 播放进度 状态的改变
-            mState.maxSeekDuration.set(playingMusic.getDuration());
-            mState.currentSeekPosition.set(playingMusic.getPlayerPosition());
+            mStates.maxSeekDuration.set(playingMusic.getDuration());
+            mStates.currentSeekPosition.set(playingMusic.getPlayerPosition());
         });
 
         PlayerManager.getInstance().getPauseEvent().observe(getViewLifecycleOwner(), aBoolean -> {
 
             // 播放按钮 状态的改变
-            mState.isPlaying.set(!aBoolean);
+            mStates.isPlaying.set(!aBoolean);
         });
 
         PlayerManager.getInstance().getPlayModeEvent().observe(getViewLifecycleOwner(), anEnum -> {
             int tip;
             if (anEnum == PlayingInfoManager.RepeatMode.LIST_CYCLE) {
-                mState.playModeIcon.set(MaterialDrawableBuilder.IconValue.REPEAT);
+                mStates.playModeIcon.set(MaterialDrawableBuilder.IconValue.REPEAT);
                 tip = R.string.play_repeat;
             } else if (anEnum == PlayingInfoManager.RepeatMode.SINGLE_CYCLE) {
-                mState.playModeIcon.set(MaterialDrawableBuilder.IconValue.REPEAT_ONCE);
+                mStates.playModeIcon.set(MaterialDrawableBuilder.IconValue.REPEAT_ONCE);
                 tip = R.string.play_repeat_once;
             } else {
-                mState.playModeIcon.set(MaterialDrawableBuilder.IconValue.SHUFFLE);
+                mStates.playModeIcon.set(MaterialDrawableBuilder.IconValue.SHUFFLE);
                 tip = R.string.play_shuffle;
             }
             if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {
@@ -225,6 +229,47 @@ public class PlayerFragment extends BaseFragment {
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
             PlayerManager.getInstance().setSeek(seekBar.getProgress());
+        }
+    }
+
+    /**
+     * TODO tip：每个页面都要单独准备一个 state-ViewModel，
+     * 来托管 DataBinding 绑定的临时状态，以及视图控制器重建时状态的恢复。
+     * <p>
+     * 此外，state-ViewModel 的职责仅限于 状态托管，不建议在此处理 UI 逻辑，
+     * UI 逻辑只适合在 Activity/Fragment 等视图控制器中完成，是 “数据驱动” 的一部分，
+     * 将来升级到 Jetpack Compose 更是如此。
+     * <p>
+     * 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
+     * <p>
+     * Create by KunMinX at 19/10/29
+     */
+    public static class PlayerViewModel extends ViewModel {
+
+        public final State<String> title = new State<>(Utils.getApp().getString(R.string.app_name));
+
+        public final State<String> artist = new State<>(Utils.getApp().getString(R.string.app_name));
+
+        public final State<String> coverImg = new State<>();
+
+        public final State<Drawable> placeHolder = new State<>(ContextCompat.getDrawable(Utils.getApp(), R.drawable.bg_album_default));
+
+        public final State<Integer> maxSeekDuration = new State<>();
+
+        public final State<Integer> currentSeekPosition = new State<>();
+
+        public final State<Boolean> isPlaying = new State<>(null, false);
+
+        public final State<MaterialDrawableBuilder.IconValue> playModeIcon = new State<>();
+
+        {
+            if (PlayerManager.getInstance().getRepeatMode() == PlayingInfoManager.RepeatMode.LIST_CYCLE) {
+                playModeIcon.set(MaterialDrawableBuilder.IconValue.REPEAT);
+            } else if (PlayerManager.getInstance().getRepeatMode() == PlayingInfoManager.RepeatMode.SINGLE_CYCLE) {
+                playModeIcon.set(MaterialDrawableBuilder.IconValue.REPEAT_ONCE);
+            } else {
+                playModeIcon.set(MaterialDrawableBuilder.IconValue.SHUFFLE);
+            }
         }
     }
 

@@ -21,9 +21,11 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModel;
 
 import com.kunminx.architecture.ui.page.BaseFragment;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
+import com.kunminx.architecture.ui.page.State;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.domain.message.DrawerCoordinateManager;
@@ -40,13 +42,13 @@ public class SearchFragment extends BaseFragment {
 
     //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/8204519736
 
-    private SearchViewModel mState;
+    private SearchViewModel mStates;
     private DownloadRequester mDownloadRequester;
     private DownloadRequester mGlobalDownloadRequester;
 
     @Override
     protected void initViewModel() {
-        mState = getFragmentScopeViewModel(SearchViewModel.class);
+        mStates = getFragmentScopeViewModel(SearchViewModel.class);
         mDownloadRequester = getFragmentScopeViewModel(DownloadRequester.class);
         mGlobalDownloadRequester = getActivityScopeViewModel(DownloadRequester.class);
     }
@@ -62,7 +64,7 @@ public class SearchFragment extends BaseFragment {
 
         // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.fragment_search, BR.vm, mState)
+        return new DataBindingConfig(R.layout.fragment_search, BR.vm, mStates)
             .addBindingParam(BR.click, new ClickProxy());
     }
 
@@ -89,14 +91,14 @@ public class SearchFragment extends BaseFragment {
         mGlobalDownloadRequester.getDownloadFileEvent()
             .observe(getViewLifecycleOwner(), dataResult -> {
                 if (dataResult.getResponseStatus().isSuccess()) {
-                    mState.progress.set(dataResult.getResult().progress);
+                    mStates.progress.set(dataResult.getResult().progress);
                 }
             });
 
         mDownloadRequester.getDownloadFileCanBeStoppedEvent()
             .observe(getViewLifecycleOwner(), dataResult -> {
                 if (dataResult.getResponseStatus().isSuccess()) {
-                    mState.progress_cancelable.set(dataResult.getResult().progress);
+                    mStates.progress_cancelable.set(dataResult.getResult().progress);
                 }
             });
     }
@@ -124,5 +126,25 @@ public class SearchFragment extends BaseFragment {
         public void testLifecycleDownload() {
             mDownloadRequester.requestCanBeStoppedDownloadFile();
         }
+    }
+
+    /**
+     * TODO tip 1：每个页面都要单独准备一个 state-ViewModel，
+     * 来托管 DataBinding 绑定的临时状态，以及视图控制器重建时状态的恢复。
+     * <p>
+     * 此外，state-ViewModel 的职责仅限于 状态托管，不建议在此处理 UI 逻辑，
+     * UI 逻辑只适合在 Activity/Fragment 等视图控制器中完成，是 “数据驱动” 的一部分，
+     * 将来升级到 Jetpack Compose 更是如此。
+     * <p>
+     * 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
+     * <p>
+     * Create by KunMinX at 19/10/29
+     */
+    public static class SearchViewModel extends ViewModel {
+
+        public final State<Integer> progress = new State<>();
+
+        public final State<Integer> progress_cancelable = new State<>();
+
     }
 }
