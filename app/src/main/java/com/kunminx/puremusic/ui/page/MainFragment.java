@@ -27,7 +27,7 @@ import com.kunminx.architecture.ui.page.DataBindingConfig;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.TestAlbum;
-import com.kunminx.puremusic.domain.message.SharedViewModel;
+import com.kunminx.puremusic.domain.message.PageMessenger;
 import com.kunminx.puremusic.domain.request.MusicRequester;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.page.adapter.PlaylistAdapter;
@@ -44,14 +44,14 @@ public class MainFragment extends BaseFragment {
     //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/8204519736
 
     private MainViewModel mState;
-    private SharedViewModel mEvent;
+    private PageMessenger mMessenger;
     private MusicRequester mMusicRequester;
     private PlaylistAdapter mAdapter;
 
     @Override
     protected void initViewModel() {
         mState = getFragmentScopeViewModel(MainViewModel.class);
-        mEvent = getApplicationScopeViewModel(SharedViewModel.class);
+        mMessenger = getApplicationScopeViewModel(PageMessenger.class);
         mMusicRequester = getFragmentScopeViewModel(MusicRequester.class);
     }
 
@@ -108,7 +108,7 @@ public class MainFragment extends BaseFragment {
             // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/6719328450
 
             if (musicAlbum != null && musicAlbum.getMusics() != null) {
-                mState.list.setValue(musicAlbum.getMusics());
+                mState.list.set(musicAlbum.getMusics());
 
                 if (PlayerManager.getInstance().getAlbum() == null ||
                     !PlayerManager.getInstance().getAlbum().getAlbumId().equals(musicAlbum.getAlbumId())) {
@@ -137,7 +137,7 @@ public class MainFragment extends BaseFragment {
             // 如果这样说还不理解的话，详见《LiveData》篇和《DataBinding》篇的解析
             // https://xiaozhuanlan.com/topic/0168753249、https://xiaozhuanlan.com/topic/9816742350
 
-            mState.list.setValue(PlayerManager.getInstance().getAlbum().getMusics());
+            mState.list.set(PlayerManager.getInstance().getAlbum().getMusics());
         }
     }
 
@@ -159,7 +159,7 @@ public class MainFragment extends BaseFragment {
             // Activity 内部的事情在 Activity 内部消化，不要试图在 fragment 中调用和操纵 Activity 内部的东西。
             // 因为 Activity 端的处理后续可能会改变，并且可受用于更多的 fragment，而不单单是本 fragment。
 
-            mEvent.requestToOpenOrCloseDrawer(true);
+            mMessenger.requestToOpenOrCloseDrawer(true);
         }
 
         public void login() {

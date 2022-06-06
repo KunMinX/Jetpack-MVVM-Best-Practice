@@ -31,7 +31,7 @@ import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.databinding.FragmentPlayerBinding;
 import com.kunminx.puremusic.domain.message.DrawerCoordinateManager;
-import com.kunminx.puremusic.domain.message.SharedViewModel;
+import com.kunminx.puremusic.domain.message.PageMessenger;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.page.helper.DefaultInterface;
 import com.kunminx.puremusic.ui.state.PlayerViewModel;
@@ -51,13 +51,13 @@ public class PlayerFragment extends BaseFragment {
     //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/8204519736
 
     private PlayerViewModel mState;
-    private SharedViewModel mEvent;
+    private PageMessenger mMessenger;
     private PlayerSlideListener mListener;
 
     @Override
     protected void initViewModel() {
         mState = getFragmentScopeViewModel(PlayerViewModel.class);
-        mEvent = getApplicationScopeViewModel(SharedViewModel.class);
+        mMessenger = getApplicationScopeViewModel(PageMessenger.class);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class PlayerFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mEvent.isToAddSlideListener().observe(getViewLifecycleOwner(), aBoolean -> {
+        mMessenger.isToAddSlideListener().observe(getViewLifecycleOwner(), aBoolean -> {
             if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {
                 SlidingUpPanelLayout sliding = (SlidingUpPanelLayout) view.getParent().getParent();
                 sliding.addPanelSlideListener(mListener = new PlayerSlideListener((FragmentPlayerBinding) getBinding(), sliding));
@@ -149,7 +149,7 @@ public class PlayerFragment extends BaseFragment {
             }
         });
 
-        mEvent.isToCloseSlidePanelIfExpanded().observe(getViewLifecycleOwner(), aBoolean -> {
+        mMessenger.isToCloseSlidePanelIfExpanded().observe(getViewLifecycleOwner(), aBoolean -> {
 
             // 按下返回键，如果此时 slide 面板是展开的，那么只对面板进行 slide down
 
@@ -173,13 +173,13 @@ public class PlayerFragment extends BaseFragment {
 
                     // TODO: yes:
 
-                    mEvent.requestToCloseActivityIfAllowed(true);
+                    mMessenger.requestToCloseActivityIfAllowed(true);
 
                     // TODO: do not:
                     // mActivity.finish();
                 }
             } else {
-                mEvent.requestToCloseActivityIfAllowed(true);
+                mMessenger.requestToCloseActivityIfAllowed(true);
             }
         });
 
@@ -213,7 +213,7 @@ public class PlayerFragment extends BaseFragment {
         }
 
         public void slideDown() {
-            mEvent.requestToCloseSlidePanelIfExpanded(true);
+            mMessenger.requestToCloseSlidePanelIfExpanded(true);
         }
 
         public void more() {

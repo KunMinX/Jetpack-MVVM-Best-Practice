@@ -31,7 +31,7 @@ import com.kunminx.architecture.domain.message.MutableEvent;
  * <p>
  * Create by KunMinX at 19/10/16
  */
-public class SharedViewModel extends ViewModel {
+public class PageMessenger extends ViewModel {
 
     //TODO tip 2：此处演示通过 UnPeekLiveData 配合 SharedViewModel 来发送 生命周期安全的、
     // 确保消息同步一致性和可靠性的 "跨页面" 通知。

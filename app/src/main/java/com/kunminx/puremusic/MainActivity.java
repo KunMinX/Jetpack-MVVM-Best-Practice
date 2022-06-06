@@ -26,7 +26,7 @@ import androidx.navigation.Navigation;
 import com.kunminx.architecture.ui.page.BaseActivity;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
 import com.kunminx.puremusic.domain.message.DrawerCoordinateManager;
-import com.kunminx.puremusic.domain.message.SharedViewModel;
+import com.kunminx.puremusic.domain.message.PageMessenger;
 import com.kunminx.puremusic.ui.state.MainActivityViewModel;
 
 /**
@@ -36,13 +36,13 @@ import com.kunminx.puremusic.ui.state.MainActivityViewModel;
 public class MainActivity extends BaseActivity {
 
     private MainActivityViewModel mState;
-    private SharedViewModel mEvent;
+    private PageMessenger mMessenger;
     private boolean mIsListened = false;
 
     @Override
     protected void initViewModel() {
         mState = getActivityScopeViewModel(MainActivityViewModel.class);
-        mEvent = getApplicationScopeViewModel(SharedViewModel.class);
+        mMessenger = getApplicationScopeViewModel(PageMessenger.class);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void init() {
-        mEvent.isToCloseActivityIfAllowed().observe(this, aBoolean -> {
+        mMessenger.isToCloseActivityIfAllowed().observe(this, aBoolean -> {
             NavController nav = Navigation.findNavController(this, R.id.main_fragment_host);
             if (nav.getCurrentDestination() != null && nav.getCurrentDestination().getId() != R.id.mainFragment) {
                 nav.navigateUp();
@@ -77,14 +77,14 @@ public class MainActivity extends BaseActivity {
 
                 //TODO 同 tip 2
 
-                mEvent.requestToOpenOrCloseDrawer(false);
+                mMessenger.requestToOpenOrCloseDrawer(false);
 
             } else {
                 super.onBackPressed();
             }
         });
 
-        mEvent.isToOpenOrCloseDrawer().observe(this, aBoolean -> {
+        mMessenger.isToOpenOrCloseDrawer().observe(this, aBoolean -> {
 
             //TODO yes：同 tip 1: 此处将 drawer 的 open 和 close 都放在 drawerBindingAdapter 中操作，规避了视图实例 null 安全的一致性问题，
 
@@ -136,7 +136,7 @@ public class MainActivity extends BaseActivity {
             // fragment 内部的事情在 fragment 内部消化，不要试图在 Activity 中调用和操纵 Fragment 内部的东西。
             // 因为 fragment 端的处理后续可能会改变，并且可受用于更多的 Activity，而不单单是本 Activity。
 
-            mEvent.requestToAddSlideListener(true);
+            mMessenger.requestToAddSlideListener(true);
 
             mIsListened = true;
         }
@@ -147,7 +147,7 @@ public class MainActivity extends BaseActivity {
 
         // TODO 同 tip 2
 
-        mEvent.requestToCloseSlidePanelIfExpanded(true);
+        mMessenger.requestToCloseSlidePanelIfExpanded(true);
     }
 
     public class ListenerHandler extends DrawerLayout.SimpleDrawerListener {
