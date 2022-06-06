@@ -41,10 +41,11 @@ import java.util.List;
  */
 public class MainFragment extends BaseFragment {
 
-    //TODO tip 1：每个页面都要单独配备一个 state-ViewModel，职责仅限于 "状态托管和恢复"，
-    //event-ViewModel 则是用于在 "跨页面通信" 的场景下，承担 "唯一可信源"，
+    //TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 event-ViewModel，
+    // state-ViewModel 职责仅限于托管、保存和恢复本页面 state，
+    // event-ViewModel 职责仅限于 "消息分发" 场景承担 "唯一可信源"。
 
-    //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/8204519736
+    // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/8204519736
 
     private MainViewModel mStates;
     private PageMessenger mMessenger;
@@ -68,11 +69,11 @@ public class MainFragment extends BaseFragment {
 
         //TODO tip 2: DataBinding 严格模式：
         // 将 DataBinding 实例限制于 base 页面中，默认不向子类暴露，
-        // 通过这样的方式，来彻底解决 视图实例 null 安全的一致性问题，
-        // 如此，视图实例 null 安全的安全性将和基于函数式编程思想的 Jetpack Compose 持平。
-        // 而 DataBindingConfig 就是在这样的背景下，用于为 base 页面中的 DataBinding 提供绑定项。
+        // 通过这样方式，彻底解决 View 实例 Null 安全一致性问题，
+        // 如此，View 实例 Null 安全性将和基于函数式编程思想的 Jetpack Compose 持平。
+        // 而 DataBindingConfig 就是在这样背景下，用于为 base 页面 DataBinding 提供绑定项。
 
-        // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
+        // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
         return new DataBindingConfig(R.layout.fragment_main, BR.vm, mStates)
             .addBindingParam(BR.click, new ClickProxy())
@@ -83,20 +84,20 @@ public class MainFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // TODO tip 3：所有播放状态的改变，都要通过这个 作为 唯一可信源 的 PlayerManager 来统一分发，
+        // TODO tip 3：所有播放状态的改变，皆来自 "唯一可信源" PlayerManager 统一分发，
+        //  如此才能确保 "消息分发可靠一致"，避免不可预期的推送和错误。
 
-        // 如此才能确保 消息同步的一致性 和 可靠性，以及 避免 不可预期的 推送和错误。
-        // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/0168753249
+        // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/0168753249
 
         PlayerManager.getInstance().getChangeMusicEvent().observe(getViewLifecycleOwner(), changeMusic -> {
             mAdapter.notifyDataSetChanged();
         });
 
-        //TODO tip :
-        // getViewLifeCycleOwner 是 2020 年新增的特性，
-        // 主要是为了解决 getView() 的生命长度 比 fragment 短（仅存活于 onCreateView 之后和 onDestroyView 之前），
+        //TODO tip 4:
+        // getViewLifeCycleOwner 是 2020 年新增特性，
+        // 主要为了解决 getView() 生命长度 比 fragment 短（仅存活于 onCreateView 之后和 onDestroyView 之前），
         // 导致某些时候 fragment 其他成员还活着，但 getView() 为 null 的 生命周期安全问题，
-        // 也即，在 fragment 的场景下，请使用 getViewLifeCycleOwner 来作为 liveData 的观察者。
+        // 也即，在 fragment 场景下，请使用 getViewLifeCycleOwner 作为 liveData 观察者。
         // Activity 则不用改变。
 
         mMusicRequester.getFreeMusicsEvent().observe(getViewLifecycleOwner(), dataResult -> {
@@ -104,11 +105,11 @@ public class MainFragment extends BaseFragment {
 
             TestAlbum musicAlbum = dataResult.getResult();
 
-            // TODO tip 4：未作 UnPeek 处理的 用于 request 的 LiveData，在视图控制器重建时会自动倒灌数据
-            // 请记得这一点，因为如果没有妥善处理，这里就可能出现预期外的错误（例如收到旧数据的推送），
-            // 再一次地，请记得它在重建时 是一定会倒灌的。
+            // TODO tip 5：未作 UnPeek 处理的 LiveData，在视图控制器重建时会自动倒灌数据
+            // 请记得这一点，因为如果没有妥善处理，这里就可能出现预期外错误（例如收到旧数据推送），
+            // 所以，再一次，请记得它在重建时一定会倒灌。
 
-            // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/6719328450
+            // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/6719328450
 
             if (musicAlbum != null && musicAlbum.getMusics() != null) {
                 mStates.list.set(musicAlbum.getMusics());
@@ -121,46 +122,28 @@ public class MainFragment extends BaseFragment {
         });
 
         if (PlayerManager.getInstance().getAlbum() == null) {
-
-            //TODO tip 5：将 request 作为 state-ViewModel 的成员暴露给 Activity/Fragment，
-            // 如此便于语义的明确，以及实现多个 request 在 state-ViewModel 中的组合和复用。
-
-            //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
-            //https://xiaozhuanlan.com/topic/8204519736
-
             mMusicRequester.requestFreeMusics();
-
         } else {
-
-            //TODO tip 6："唯一可信源"的理念仅适用于"跨域通信"的场景，
-            // state-ViewModel 与"跨域通信"的场景无关，其所持有的 LiveData 仅用于"无防抖加持"的视图状态绑定用途
-            // （也即它是用于在不适合防抖加持的场景下替代"自带防抖特性的 ObservableField"），
-            // 因而此处 LiveData 可以直接在页面内 setValue：所通知的目标不包含其他页面的状态，而仅是当前页内部的状态。
-
-            // 如果这样说还不理解的话，详见《LiveData》篇和《DataBinding》篇的解析
-            // https://xiaozhuanlan.com/topic/0168753249、https://xiaozhuanlan.com/topic/9816742350
-
             mStates.list.set(PlayerManager.getInstance().getAlbum().getMusics());
         }
     }
 
+    // TODO tip 7：此处通过 DataBinding 规避 setOnClickListener 时存在的 View 实例 Null 安全一致性问题，
 
-    // TODO tip 7：此处通过 DataBinding 来规避 在 setOnClickListener 时存在的 视图实例 null 安全的一致性问题，
-
-    // 也即，有绑定就有绑定，没绑定也没什么大不了的，总之 不会因一致性问题造成 视图实例 null 安全的空指针。
-    // 如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
+    // 也即，有视图就绑定，无就无绑定，总之 不会因不一致性造成 View 实例 Null 安全问题。
+    // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350
 
     public class ClickProxy {
 
         public void openMenu() {
 
-            // TODO tip 8：此处演示通过 UnPeekLiveData 来发送 生命周期安全的、确保消息同步一致性和可靠性的 通知。
+            // TODO tip 8：此处演示向 "唯一可信源" 发送请求，以便实现 "生命周期安全、消息分发可靠一致" 的通知。
 
-            // 如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/0168753249
+            // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/0168753249
             // --------
-            // 与此同时，此处传达的另一个思想是 最少知道原则，
-            // Activity 内部的事情在 Activity 内部消化，不要试图在 fragment 中调用和操纵 Activity 内部的东西。
-            // 因为 Activity 端的处理后续可能会改变，并且可受用于更多的 fragment，而不单单是本 fragment。
+            // 与此同时，此处传达的另一思想是 "最少知道原则"，
+            // Activity 内部事情在 Activity 内部消化，不要试图在 fragment 中调用和操纵 Activity 内部东西。
+            // 因为 Activity 端的处理后续可能会改变，且可受用于更多 fragment，而不单单是本 fragment。
 
             mMessenger.requestToOpenOrCloseDrawer(true);
         }
@@ -175,28 +158,21 @@ public class MainFragment extends BaseFragment {
 
     }
 
-    /**
-     * TODO tip：每个页面都要单独准备一个 state-ViewModel，
-     * 来托管 DataBinding 绑定的临时状态，以及视图控制器重建时状态的恢复。
-     * <p>
-     * 此外，state-ViewModel 的职责仅限于 状态托管，不建议在此处理 UI 逻辑，
-     * UI 逻辑只适合在 Activity/Fragment 等视图控制器中完成，是 “数据驱动” 的一部分，
-     * 将来升级到 Jetpack Compose 更是如此。
-     * <p>
-     * 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
-     * <p>
-     * Create by KunMinX at 19/10/29
-     */
+    //TODO tip 9：每个页面都需单独准备一个 state-ViewModel，托管 DataBinding 绑定的 State，
+    // 此外，state-ViewModel 职责仅限于状态托管和保存恢复，不建议在此处理 UI 逻辑，
+    // UI 逻辑只适合在 Activity/Fragment 等视图控制器中完成，是 “数据驱动” 一部分，将来升级到 Jetpack Compose 更是如此。
+
+    //如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350
+
     public static class MainViewModel extends ViewModel {
+
+        //TODO tip 10：此处我们使用 "去除防抖特性" 的 ObservableField 子类 State，用以代替 MutableLiveData，
+
+        //如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350
 
         public final State<Boolean> initTabAndPage = new State<>(true);
 
         public final State<String> pageAssetPath = new State<>("summary.html");
-
-        //TODO 此处用于绑定的状态，使用 LiveData 而不是 ObservableField，
-        // 主要是考虑到 ObservableField 具有防抖的特性，不适合该场景。
-
-        //如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
 
         public final State<List<TestAlbum.TestMusic>> list = new State<>();
 
