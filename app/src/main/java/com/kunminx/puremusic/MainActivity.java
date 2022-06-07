@@ -20,14 +20,15 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModel;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.kunminx.architecture.ui.page.BaseActivity;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
+import com.kunminx.architecture.ui.page.State;
 import com.kunminx.puremusic.domain.message.DrawerCoordinateManager;
-import com.kunminx.puremusic.domain.message.SharedViewModel;
-import com.kunminx.puremusic.ui.state.MainActivityViewModel;
+import com.kunminx.puremusic.domain.message.PageMessenger;
 
 /**
  * Create by KunMinX at 19/10/16
@@ -35,28 +36,34 @@ import com.kunminx.puremusic.ui.state.MainActivityViewModel;
 
 public class MainActivity extends BaseActivity {
 
-    private MainActivityViewModel mState;
-    private SharedViewModel mEvent;
+    //TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 event-ViewModel，
+    // state-ViewModel 职责仅限于托管、保存和恢复本页面 state，
+    // event-ViewModel 职责仅限于 "消息分发" 场景承担 "唯一可信源"。
+
+    // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/8204519736
+
+    private MainActivityViewModel mStates;
+    private PageMessenger mMessenger;
     private boolean mIsListened = false;
 
     @Override
     protected void initViewModel() {
-        mState = getActivityScopeViewModel(MainActivityViewModel.class);
-        mEvent = getApplicationScopeViewModel(SharedViewModel.class);
+        mStates = getActivityScopeViewModel(MainActivityViewModel.class);
+        mMessenger = getApplicationScopeViewModel(PageMessenger.class);
     }
 
     @Override
     protected DataBindingConfig getDataBindingConfig() {
 
-        //TODO tip 1: DataBinding 严格模式：
+        //TODO tip 2: DataBinding 严格模式：
         // 将 DataBinding 实例限制于 base 页面中，默认不向子类暴露，
-        // 通过这样的方式，来彻底解决 视图实例 null 安全的一致性问题，
-        // 如此，视图实例 null 安全的安全性将和基于函数式编程思想的 Jetpack Compose 持平。
-        // 而 DataBindingConfig 就是在这样的背景下，用于为 base 页面中的 DataBinding 提供绑定项。
+        // 通过这样方式，彻底解决 View 实例 Null 安全一致性问题，
+        // 如此，View 实例 Null 安全性将和基于函数式编程思想的 Jetpack Compose 持平。
+        // 而 DataBindingConfig 就是在这样背景下，用于为 base 页面 DataBinding 提供绑定项。
 
-        // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
+        // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.activity_main, BR.vm, mState)
+        return new DataBindingConfig(R.layout.activity_main, BR.vm, mStates)
             .addBindingParam(BR.listener, new ListenerHandler());
     }
 
@@ -68,35 +75,34 @@ public class MainActivity extends BaseActivity {
     }
 
     private void init() {
-        mEvent.isToCloseActivityIfAllowed().observe(this, aBoolean -> {
+        mMessenger.isToCloseActivityIfAllowed().observe(this, aBoolean -> {
             NavController nav = Navigation.findNavController(this, R.id.main_fragment_host);
             if (nav.getCurrentDestination() != null && nav.getCurrentDestination().getId() != R.id.mainFragment) {
                 nav.navigateUp();
 
-            } else if (mState.isDrawerOpened.get()) {
+            } else if (mStates.isDrawerOpened.get()) {
 
-                //TODO 同 tip 2
+                //TODO 同 tip 3
 
-                mEvent.requestToOpenOrCloseDrawer(false);
+                mMessenger.requestToOpenOrCloseDrawer(false);
 
             } else {
                 super.onBackPressed();
             }
         });
 
-        mEvent.isToOpenOrCloseDrawer().observe(this, aBoolean -> {
+        mMessenger.isToOpenOrCloseDrawer().observe(this, aBoolean -> {
 
-            //TODO yes：同 tip 1: 此处将 drawer 的 open 和 close 都放在 drawerBindingAdapter 中操作，规避了视图实例 null 安全的一致性问题，
+            //TODO yes：同 tip 1: 此处将 drawer 的 open 和 close 都放在 drawerBindingAdapter 中操作，规避 View 实例 Null 安全一致性问题，
+            //因为横屏布局无 drawerLayout。此处如果用手动判空，很容易因疏忽而造成空引用。
 
-            //因为 横屏布局 根本就没有 drawerLayout。此处如果用传统的视图实例 null 安全方式，会很容易因疏忽而造成空引用。
+            //TODO 此外，此处为 drawerLayout 绑定状态 "openDrawer"，使用 "去防抖" ObservableField 子类，主要考虑到 ObservableField 具有 "防抖" 特性，不适合该场景。
 
-            //TODO 此外，此处为 drawerLayout 绑定的状态 "openDrawer"，使用 LiveData 而不是 ObservableField，主要是考虑到 ObservableField 具有 "防抖" 的特性，不适合该场景。
+            //如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350
 
-            //如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350
+            mStates.openDrawer.set(aBoolean);
 
-            mState.openDrawer.setValue(aBoolean);
-
-            //TODO do not:（容易因疏忽 而埋下视图实例 null 安全的一致性隐患）
+            //TODO do not:（容易因疏忽埋下 View 实例 Null 安全一致性隐患）
 
             /*if (mBinding.dl != null) {
                 if (aBoolean && !mBinding.dl.isDrawerOpen(GravityCompat.START)) {
@@ -111,9 +117,9 @@ public class MainActivity extends BaseActivity {
 
             //TODO yes: 同 tip 1
 
-            mState.allowDrawerOpen.setValue(aBoolean);
+            mStates.allowDrawerOpen.set(aBoolean);
 
-            // TODO do not:（容易因疏忽 而埋下视图实例 null 安全的一致性隐患）
+            // TODO do not:（容易因疏忽埋下 View 实例 Null 安全一致性隐患）
 
             /*if (mBinding.dl != null) {
                 mBinding.dl.setDrawerLockMode(aBoolean
@@ -128,15 +134,15 @@ public class MainActivity extends BaseActivity {
         super.onWindowFocusChanged(hasFocus);
         if (!mIsListened) {
 
-            // TODO tip 2：此处演示通过 UnPeekLiveData 来发送 生命周期安全的、确保消息同步一致性和可靠性的 通知。
+            // TODO tip 3：此处演示向 "唯一可信源" 发送请求，以便实现 "生命周期安全、消息分发可靠一致" 的通知。
 
-            // 如果这么说还不理解的话，详见 https://xiaozhuanlan.com/topic/0168753249
+            // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/0168753249
             // --------
-            // 与此同时，此处传达的另一个思想是 最少知道原则，
-            // fragment 内部的事情在 fragment 内部消化，不要试图在 Activity 中调用和操纵 Fragment 内部的东西。
-            // 因为 fragment 端的处理后续可能会改变，并且可受用于更多的 Activity，而不单单是本 Activity。
+            // 与此同时，此处传达的另一思想是 "最少知道原则"，
+            // Activity 内部事情在 Activity 内部消化，不要试图在 fragment 中调用和操纵 Activity 内部东西。
+            // 因为 Activity 端的处理后续可能会改变，且可受用于更多 fragment，而不单单是本 fragment。
 
-            mEvent.requestToAddSlideListener(true);
+            mMessenger.requestToAddSlideListener(true);
 
             mIsListened = true;
         }
@@ -145,23 +151,43 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
 
-        // TODO 同 tip 2
+        // TODO 同 tip 3
 
-        mEvent.requestToCloseSlidePanelIfExpanded(true);
+        mMessenger.requestToCloseSlidePanelIfExpanded(true);
     }
 
     public class ListenerHandler extends DrawerLayout.SimpleDrawerListener {
         @Override
         public void onDrawerOpened(View drawerView) {
             super.onDrawerOpened(drawerView);
-            mState.isDrawerOpened.set(true);
+            mStates.isDrawerOpened.set(true);
         }
 
         @Override
         public void onDrawerClosed(View drawerView) {
             super.onDrawerClosed(drawerView);
-            mState.isDrawerOpened.set(false);
-            mState.openDrawer.setValue(false);
+            mStates.isDrawerOpened.set(false);
+            mStates.openDrawer.set(false);
         }
+    }
+
+    //TODO tip 4：每个页面都需单独准备一个 state-ViewModel，托管 DataBinding 绑定的 State，
+    // 此外，state-ViewModel 职责仅限于状态托管和保存恢复，不建议在此处理 UI 逻辑，
+    // UI 逻辑只适合在 Activity/Fragment 等视图控制器中完成，是 “数据驱动” 一部分，将来升级到 Jetpack Compose 更是如此。
+
+    //如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350
+
+    public static class MainActivityViewModel extends ViewModel {
+
+        //TODO tip 5：此处我们使用 "去除防抖特性" 的 ObservableField 子类 State，用以代替 MutableLiveData，
+
+        //如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350
+
+        public final State<Boolean> isDrawerOpened = new State<>();
+
+        public final State<Boolean> openDrawer = new State<>();
+
+        public final State<Boolean> allowDrawerOpen = new State<>(true);
+
     }
 }

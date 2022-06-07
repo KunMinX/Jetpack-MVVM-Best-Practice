@@ -21,46 +21,50 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModel;
 
 import com.kunminx.architecture.ui.page.BaseFragment;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
+import com.kunminx.architecture.ui.page.State;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.domain.message.DrawerCoordinateManager;
-import com.kunminx.puremusic.ui.state.MainActivityViewModel;
-import com.kunminx.puremusic.ui.state.SearchViewModel;
+import com.kunminx.puremusic.domain.request.DownloadRequester;
 
 /**
  * Create by KunMinX at 19/10/29
  */
 public class SearchFragment extends BaseFragment {
 
-    //TODO tip 1：每个页面都要单独配备一个 state-ViewModel，职责仅限于 "状态托管和恢复"，
-    //event-ViewModel 则是用于在 "跨页面通信" 的场景下，承担 "唯一可信源"，
+    //TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 event-ViewModel，
+    // state-ViewModel 职责仅限于托管、保存和恢复本页面 state，
+    // event-ViewModel 职责仅限于 "消息分发" 场景承担 "唯一可信源"。
 
-    //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/8204519736
+    // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/8204519736
 
-    private SearchViewModel mState;
-    private MainActivityViewModel mActivityScopeState;
+    private SearchViewModel mStates;
+    private DownloadRequester mDownloadRequester;
+    private DownloadRequester mGlobalDownloadRequester;
 
     @Override
     protected void initViewModel() {
-        mState = getFragmentScopeViewModel(SearchViewModel.class);
-        mActivityScopeState = getActivityScopeViewModel(MainActivityViewModel.class);
+        mStates = getFragmentScopeViewModel(SearchViewModel.class);
+        mDownloadRequester = getFragmentScopeViewModel(DownloadRequester.class);
+        mGlobalDownloadRequester = getActivityScopeViewModel(DownloadRequester.class);
     }
 
     @Override
     protected DataBindingConfig getDataBindingConfig() {
 
-        //TODO tip 1: DataBinding 严格模式：
+        //TODO tip 2: DataBinding 严格模式：
         // 将 DataBinding 实例限制于 base 页面中，默认不向子类暴露，
-        // 通过这样的方式，来彻底解决 视图实例 null 安全的一致性问题，
-        // 如此，视图实例 null 安全的安全性将和基于函数式编程思想的 Jetpack Compose 持平。
-        // 而 DataBindingConfig 就是在这样的背景下，用于为 base 页面中的 DataBinding 提供绑定项。
+        // 通过这样方式，彻底解决 View 实例 Null 安全一致性问题，
+        // 如此，View 实例 Null 安全性将和基于函数式编程思想的 Jetpack Compose 持平。
+        // 而 DataBindingConfig 就是在这样背景下，用于为 base 页面 DataBinding 提供绑定项。
 
-        // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
+        // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.fragment_search, BR.vm, mState)
+        return new DataBindingConfig(R.layout.fragment_search, BR.vm, mStates)
             .addBindingParam(BR.click, new ClickProxy());
     }
 
@@ -70,34 +74,33 @@ public class SearchFragment extends BaseFragment {
 
         getLifecycle().addObserver(DrawerCoordinateManager.getInstance());
 
-        //TODO tip 2：绑定跟随视图控制器生命周期的、可叫停的、单独放在 UseCase 中处理的业务
-        getLifecycle().addObserver(mState.downloadRequest.getCanBeStoppedUseCase());
+        //TODO tip 3：绑定跟随视图控制器生命周期、可叫停、单独放在 UseCase 中处理的业务
+        getLifecycle().addObserver(mDownloadRequester.getCanBeStoppedUseCase());
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //TODO tip 3：将 request 作为 state-ViewModel 的成员暴露给 Activity/Fragment，
-        // 如此便于语义的明确，以及实现多个 request 在 state-ViewModel 中的组合和复用。
-
-        //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
-        //https://xiaozhuanlan.com/topic/8204519736
-
-        mActivityScopeState.downloadRequest.getDownloadFileLiveData()
+        mGlobalDownloadRequester.getDownloadFileEvent()
             .observe(getViewLifecycleOwner(), dataResult -> {
                 if (dataResult.getResponseStatus().isSuccess()) {
-                    mState.progress.set(dataResult.getResult().progress);
+                    mStates.progress.set(dataResult.getResult().progress);
                 }
             });
 
-        mState.downloadRequest.getDownloadFileCanBeStoppedLiveData()
+        mDownloadRequester.getDownloadFileCanBeStoppedEvent()
             .observe(getViewLifecycleOwner(), dataResult -> {
                 if (dataResult.getResponseStatus().isSuccess()) {
-                    mState.progress_cancelable.set(dataResult.getResult().progress);
+                    mStates.progress_cancelable.set(dataResult.getResult().progress);
                 }
             });
     }
+
+    // TODO tip 4：此处通过 DataBinding 规避 setOnClickListener 时存在的 View 实例 Null 安全一致性问题，
+
+    // 也即，有视图就绑定，无就无绑定，总之 不会因不一致性造成 View 实例 Null 安全问题。
+    // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350
 
     public class ClickProxy {
 
@@ -114,13 +117,31 @@ public class SearchFragment extends BaseFragment {
         }
 
         public void testDownload() {
-            mActivityScopeState.downloadRequest.requestDownloadFile();
+            mGlobalDownloadRequester.requestDownloadFile();
         }
 
-        //TODO tip 4: 在 UseCase 中 执行可跟随生命周期中止的下载任务
+        //TODO tip 5: 在 UseCase 中 执行可跟随生命周期中止的下载任务
 
         public void testLifecycleDownload() {
-            mState.downloadRequest.requestCanBeStoppedDownloadFile();
+            mDownloadRequester.requestCanBeStoppedDownloadFile();
         }
+    }
+
+    //TODO tip 6：每个页面都需单独准备一个 state-ViewModel，托管 DataBinding 绑定的 State，
+    // 此外，state-ViewModel 职责仅限于状态托管和保存恢复，不建议在此处理 UI 逻辑，
+    // UI 逻辑只适合在 Activity/Fragment 等视图控制器中完成，是 “数据驱动” 一部分，将来升级到 Jetpack Compose 更是如此。
+
+    //如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350
+
+    public static class SearchViewModel extends ViewModel {
+
+        //TODO tip 7：此处我们使用 "去除防抖特性" 的 ObservableField 子类 State，用以代替 MutableLiveData，
+
+        //如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350
+
+        public final State<Integer> progress = new State<>();
+
+        public final State<Integer> progress_cancelable = new State<>();
+
     }
 }

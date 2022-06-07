@@ -21,43 +21,51 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModel;
 
 import com.kunminx.architecture.ui.page.BaseFragment;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
+import com.kunminx.architecture.ui.page.State;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
+import com.kunminx.puremusic.data.bean.LibraryInfo;
+import com.kunminx.puremusic.domain.request.InfoRequester;
 import com.kunminx.puremusic.ui.page.adapter.DrawerAdapter;
-import com.kunminx.puremusic.ui.state.DrawerViewModel;
+
+import java.util.List;
 
 /**
  * Create by KunMinX at 19/10/29
  */
 public class DrawerFragment extends BaseFragment {
 
-    //TODO tip 1：每个页面都要单独配备一个 state-ViewModel，职责仅限于 "状态托管和恢复"，
-    //event-ViewModel 则是用于在 "跨页面通信" 的场景下，承担 "唯一可信源"，
+    //TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 event-ViewModel，
+    // state-ViewModel 职责仅限于托管、保存和恢复本页面 state，
+    // event-ViewModel 职责仅限于 "消息分发" 场景承担 "唯一可信源"。
 
-    //如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/8204519736
+    // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/8204519736
 
-    private DrawerViewModel mState;
+    private DrawerViewModel mStates;
+    private InfoRequester mInfoRequester;
 
     @Override
     protected void initViewModel() {
-        mState = getFragmentScopeViewModel(DrawerViewModel.class);
+        mStates = getFragmentScopeViewModel(DrawerViewModel.class);
+        mInfoRequester = getFragmentScopeViewModel(InfoRequester.class);
     }
 
     @Override
     protected DataBindingConfig getDataBindingConfig() {
 
-        //TODO tip 1: DataBinding 严格模式：
+        //TODO tip 2: DataBinding 严格模式：
         // 将 DataBinding 实例限制于 base 页面中，默认不向子类暴露，
-        // 通过这样的方式，来彻底解决 视图实例 null 安全的一致性问题，
-        // 如此，视图实例 null 安全的安全性将和基于函数式编程思想的 Jetpack Compose 持平。
-        // 而 DataBindingConfig 就是在这样的背景下，用于为 base 页面中的 DataBinding 提供绑定项。
+        // 通过这样方式，彻底解决 View 实例 Null 安全一致性问题，
+        // 如此，View 实例 Null 安全性将和基于函数式编程思想的 Jetpack Compose 持平。
+        // 而 DataBindingConfig 就是在这样背景下，用于为 base 页面 DataBinding 提供绑定项。
 
-        // 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
+        // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
 
-        return new DataBindingConfig(R.layout.fragment_drawer, BR.vm, mState)
+        return new DataBindingConfig(R.layout.fragment_drawer, BR.vm, mStates)
             .addBindingParam(BR.click, new ClickProxy())
             .addBindingParam(BR.adapter, new DrawerAdapter(getContext()));
     }
@@ -66,31 +74,27 @@ public class DrawerFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //TODO tip 2：将 request 作为 state-ViewModel 的成员暴露给 Activity/Fragment，
-        // 如此便于语义的明确，以及实现多个 request 在 state-ViewModel 中的组合和复用。
+        //TODO tip 3: 从唯一可信源 Requester 通过 immutable Event 获取请求结果的只读数据，set 给 mutable State，
+        //而非 Event、State 不分，直接在页面 set Event，
 
-        //如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
-        //https://xiaozhuanlan.com/topic/8204519736
+        //如这么说无体会，详见《吃透 LiveData 本质，享用可靠消息鉴权机制》解析。
+        //https://xiaozhuanlan.com/topic/6017825943
 
-        mState.infoRequest.getLibraryLiveData().observe(getViewLifecycleOwner(), dataResult -> {
+        mInfoRequester.getLibraryEvent().observe(getViewLifecycleOwner(), dataResult -> {
             if (!dataResult.getResponseStatus().isSuccess()) return;
 
             if (dataResult.getResult() != null) {
-
-                //TODO tip 3："唯一可信源"的理念仅适用于"跨域通信"的场景，
-                // state-ViewModel 与"跨域通信"的场景无关，其所持有的 LiveData 仅用于"无防抖加持"的视图状态绑定用途
-                // （也即它是用于在不适合防抖加持的场景下替代"自带防抖特性的 ObservableField"），
-                // 因而此处 LiveData 可以直接在页面内 setValue：所通知的目标不包含其他页面的状态，而是当前页内部的状态。
-
-                // 如果这样说还不理解的话，详见《LiveData》篇和《DataBinding》篇的解析
-                // https://xiaozhuanlan.com/topic/0168753249、https://xiaozhuanlan.com/topic/9816742350
-
-                mState.list.setValue(dataResult.getResult());
+                mStates.list.set(dataResult.getResult());
             }
         });
 
-        if (mState.infoRequest.getLibraryLiveData().getValue() == null) {
-            mState.infoRequest.requestLibraryInfo();
+        //TODO tip 4： 向唯一可信源 Requester 请求数据，由其内部统一决策，而非以消息总线 Bus 方式发送和接收，
+
+        //如这么说无体会，详见《吃透 LiveData 本质，享用可靠消息鉴权机制》解析。
+        //https://xiaozhuanlan.com/topic/6017825943
+
+        if (mInfoRequester.getLibraryEvent().getValue() == null) {
+            mInfoRequester.requestLibraryInfo();
         }
     }
 
@@ -99,6 +103,22 @@ public class DrawerFragment extends BaseFragment {
         public void logoClick() {
             openUrlInBrowser(getString(R.string.github_project));
         }
+    }
+
+    //TODO tip 5：每个页面都需单独准备一个 state-ViewModel，托管 DataBinding 绑定的 State，
+    // 此外，state-ViewModel 职责仅限于状态托管和保存恢复，不建议在此处理 UI 逻辑，
+    // UI 逻辑只适合在 Activity/Fragment 等视图控制器中完成，是 “数据驱动” 一部分，将来升级到 Jetpack Compose 更是如此。
+
+    //如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350
+
+    public static class DrawerViewModel extends ViewModel {
+
+        //TODO tip 6：此处我们使用 "去除防抖特性" 的 ObservableField 子类 State，用以代替 MutableLiveData，
+
+        //如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350
+
+        public final State<List<LibraryInfo>> list = new State<>();
+
     }
 
 }

@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="com.kunminx.puremusic.ui.state.MainActivityViewModel" />
+            type="com.kunminx.puremusic.MainActivity.MainActivityViewModel" />
 
         <variable
             name="listener"
