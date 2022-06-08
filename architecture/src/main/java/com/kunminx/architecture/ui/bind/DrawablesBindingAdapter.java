@@ -1,5 +1,5 @@
 
-package com.kunminx.architecture.ui.binding_adapter;
+package com.kunminx.architecture.ui.bind;
 
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
