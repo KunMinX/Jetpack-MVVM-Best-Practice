@@ -32,17 +32,6 @@ android {
 
 
 dependencies {
-
-    //纯 java 项目添加此
-    configurations {
-        all {
-            exclude group: 'androidx.lifecycle', module: 'lifecycle-viewmodel-ktx'
-        }
-    }
-
-    //kotlin 项目添加此
-    //implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
-
     api fileTree(dir: "libs", include: ["*.jar", "*.aar"])
 
     testImplementation "junit:junit:4.13.2"
@@ -50,14 +39,9 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:3.4.0"
 
     api "androidx.appcompat:appcompat:1.4.2"
-
-    api "androidx.lifecycle:lifecycle-runtime:$lifecycleVersion"
-    api "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
-    api "androidx.lifecycle:lifecycle-viewmodel:$lifecycleVersion"
-    api "androidx.lifecycle:lifecycle-livedata:$lifecycleVersion"
     api "androidx.navigation:navigation-runtime:$navigationVersion"
 
-    api 'com.kunminx.arch:unpeek-livedata:7.2.0-beta1'
+    api 'com.kunminx.arch:unpeek-livedata:7.4.0'
     api 'com.kunminx.arch:smooth-navigation:4.0.0-beta1'
     api 'com.kunminx.arch:strict-databinding:5.0.0-beta1'
 }
