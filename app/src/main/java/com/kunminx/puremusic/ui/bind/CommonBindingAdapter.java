@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kunminx.puremusic.ui.base.binding_adapter;
+package com.kunminx.puremusic.ui.bind;
 
 import android.graphics.drawable.Drawable;
 import android.view.View;
