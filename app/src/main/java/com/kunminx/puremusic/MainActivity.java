@@ -26,9 +26,9 @@ import androidx.navigation.Navigation;
 
 import com.kunminx.architecture.ui.page.BaseActivity;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
-import com.kunminx.architecture.ui.page.State;
 import com.kunminx.puremusic.domain.message.DrawerCoordinateManager;
 import com.kunminx.puremusic.domain.message.PageMessenger;
+import com.kunminx.puremusic.ui.bind.State;
 
 /**
  * Create by KunMinX at 19/10/16
@@ -80,7 +80,7 @@ public class MainActivity extends BaseActivity {
             if (nav.getCurrentDestination() != null && nav.getCurrentDestination().getId() != R.id.mainFragment) {
                 nav.navigateUp();
 
-            } else if (mStates.isDrawerOpened.get()) {
+            } else if (Boolean.TRUE.equals(mStates.isDrawerOpened.get())) {
 
                 //TODO 同 tip 3
 
