@@ -23,6 +23,7 @@ import androidx.lifecycle.LiveData;
 
 import com.danikula.videocache.HttpProxyCacheServer;
 import com.kunminx.player.PlayerController;
+import com.kunminx.player.PlayingInfoManager;
 import com.kunminx.player.bean.dto.ChangeMusic;
 import com.kunminx.player.bean.dto.PlayingMusic;
 import com.kunminx.player.contract.ICacheProxy;
@@ -38,11 +39,11 @@ import java.util.List;
 /**
  * Create by KunMinX at 19/10/31
  */
-public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestMusic> {
+public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestMusic, TestAlbum.TestArtist> {
 
     private static final PlayerManager sManager = new PlayerManager();
 
-    private final PlayerController<TestAlbum, TestAlbum.TestMusic> mController;
+    private final PlayerController<TestAlbum, TestAlbum.TestMusic, TestAlbum.TestArtist> mController;
 
     private PlayerManager() {
         mController = new PlayerController<>();
@@ -187,11 +188,11 @@ public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestM
         return mController.getAlbumIndex();
     }
 
-    public LiveData<ChangeMusic> getChangeMusicEvent() {
+    public LiveData<ChangeMusic<TestAlbum, TestAlbum.TestMusic, TestAlbum.TestArtist>> getChangeMusicEvent() {
         return mController.getChangeMusicEvent();
     }
 
-    public LiveData<PlayingMusic> getPlayingMusicEvent() {
+    public LiveData<PlayingMusic<TestAlbum, TestAlbum.TestMusic, TestAlbum.TestArtist>> getPlayingMusicEvent() {
         return mController.getPlayingMusicEvent();
     }
 
@@ -200,12 +201,12 @@ public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestM
     }
 
     @Override
-    public LiveData<Enum> getPlayModeEvent() {
+    public LiveData<Enum<PlayingInfoManager.RepeatMode>> getPlayModeEvent() {
         return mController.getPlayModeEvent();
     }
 
     @Override
-    public Enum getRepeatMode() {
+    public Enum<PlayingInfoManager.RepeatMode> getRepeatMode() {
         return mController.getRepeatMode();
     }
 
