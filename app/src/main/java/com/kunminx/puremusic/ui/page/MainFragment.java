@@ -16,6 +16,7 @@
 
 package com.kunminx.puremusic.ui.page;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 
@@ -80,6 +81,7 @@ public class MainFragment extends BaseFragment {
             .addBindingParam(BR.adapter, mAdapter);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

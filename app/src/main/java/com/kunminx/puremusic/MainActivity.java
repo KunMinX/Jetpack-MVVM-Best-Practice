@@ -93,7 +93,7 @@ public class MainActivity extends BaseActivity {
 
         mMessenger.isToOpenOrCloseDrawer().observe(this, aBoolean -> {
 
-            //TODO yes：同 tip 1: 此处将 drawer 的 open 和 close 都放在 drawerBindingAdapter 中操作，规避 View 实例 Null 安全一致性问题，
+            //TODO yes：同 tip 2: 此处将 drawer 的 open 和 close 都放在 drawerBindingAdapter 中操作，规避 View 实例 Null 安全一致性问题，
             //因为横屏布局无 drawerLayout。此处如果用手动判空，很容易因疏忽而造成空引用。
 
             //TODO 此外，此处为 drawerLayout 绑定状态 "openDrawer"，使用 "去防抖" ObservableField 子类，主要考虑到 ObservableField 具有 "防抖" 特性，不适合该场景。
@@ -115,7 +115,7 @@ public class MainActivity extends BaseActivity {
 
         DrawerCoordinateManager.getInstance().isEnableSwipeDrawer().observe(this, aBoolean -> {
 
-            //TODO yes: 同 tip 1
+            //TODO yes: 同 tip 2
 
             mStates.allowDrawerOpen.set(aBoolean);
 
