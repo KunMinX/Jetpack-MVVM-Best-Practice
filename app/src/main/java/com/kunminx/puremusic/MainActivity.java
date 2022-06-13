@@ -26,9 +26,9 @@ import androidx.navigation.Navigation;
 
 import com.kunminx.architecture.ui.page.BaseActivity;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
+import com.kunminx.architecture.ui.page.State;
 import com.kunminx.puremusic.domain.message.DrawerCoordinateManager;
 import com.kunminx.puremusic.domain.message.PageMessenger;
-import com.kunminx.puremusic.ui.bind.State;
 
 /**
  * Create by KunMinX at 19/10/16
@@ -183,9 +183,9 @@ public class MainActivity extends BaseActivity {
 
         //如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350
 
-        public final State<Boolean> isDrawerOpened = new State<>();
+        public final State<Boolean> isDrawerOpened = new State<>(false);
 
-        public final State<Boolean> openDrawer = new State<>();
+        public final State<Boolean> openDrawer = new State<>(false);
 
         public final State<Boolean> allowDrawerOpen = new State<>(true);
 

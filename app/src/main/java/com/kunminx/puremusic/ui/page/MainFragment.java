@@ -92,7 +92,7 @@ public class MainFragment extends BaseFragment {
 
         // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/0168753249
 
-        PlayerManager.getInstance().getChangeMusicEvent().observe(getViewLifecycleOwner(), changeMusic -> {
+        PlayerManager.getInstance().getChangeMusicResult().observe(getViewLifecycleOwner(), changeMusic -> {
             mAdapter.notifyDataSetChanged();
         });
 

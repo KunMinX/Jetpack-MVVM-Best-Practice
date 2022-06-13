@@ -188,21 +188,21 @@ public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestM
         return mController.getAlbumIndex();
     }
 
-    public LiveData<ChangeMusic<TestAlbum, TestAlbum.TestMusic, TestAlbum.TestArtist>> getChangeMusicEvent() {
-        return mController.getChangeMusicEvent();
+    public LiveData<ChangeMusic<TestAlbum, TestAlbum.TestMusic, TestAlbum.TestArtist>> getChangeMusicResult() {
+        return mController.getChangeMusicResult();
     }
 
-    public LiveData<PlayingMusic<TestAlbum, TestAlbum.TestMusic, TestAlbum.TestArtist>> getPlayingMusicEvent() {
-        return mController.getPlayingMusicEvent();
+    public LiveData<PlayingMusic<TestAlbum, TestAlbum.TestMusic, TestAlbum.TestArtist>> getPlayingMusicResult() {
+        return mController.getPlayingMusicResult();
     }
 
-    public LiveData<Boolean> getPauseEvent() {
-        return mController.getPauseEvent();
+    public LiveData<Boolean> getPauseResult() {
+        return mController.getPauseResult();
     }
 
     @Override
-    public LiveData<Enum<PlayingInfoManager.RepeatMode>> getPlayModeEvent() {
-        return mController.getPlayModeEvent();
+    public LiveData<Enum<PlayingInfoManager.RepeatMode>> getPlayModeResult() {
+        return mController.getPlayModeResult();
     }
 
     @Override

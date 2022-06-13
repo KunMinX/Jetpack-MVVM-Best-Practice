@@ -108,7 +108,7 @@ public class PlayerFragment extends BaseFragment {
 
         // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/0168753249
 
-        PlayerManager.getInstance().getChangeMusicEvent().observe(getViewLifecycleOwner(), changeMusic -> {
+        PlayerManager.getInstance().getChangeMusicResult().observe(getViewLifecycleOwner(), changeMusic -> {
 
             // 切歌时，音乐的标题、作者、封面 状态的改变
             mStates.title.set(changeMusic.getTitle());
@@ -120,20 +120,20 @@ public class PlayerFragment extends BaseFragment {
             }
         });
 
-        PlayerManager.getInstance().getPlayingMusicEvent().observe(getViewLifecycleOwner(), playingMusic -> {
+        PlayerManager.getInstance().getPlayingMusicResult().observe(getViewLifecycleOwner(), playingMusic -> {
 
             // 播放进度 状态的改变
             mStates.maxSeekDuration.set(playingMusic.getDuration());
             mStates.currentSeekPosition.set(playingMusic.getPlayerPosition());
         });
 
-        PlayerManager.getInstance().getPauseEvent().observe(getViewLifecycleOwner(), aBoolean -> {
+        PlayerManager.getInstance().getPauseResult().observe(getViewLifecycleOwner(), aBoolean -> {
 
             // 播放按钮 状态的改变
             mStates.isPlaying.set(!aBoolean);
         });
 
-        PlayerManager.getInstance().getPlayModeEvent().observe(getViewLifecycleOwner(), anEnum -> {
+        PlayerManager.getInstance().getPlayModeResult().observe(getViewLifecycleOwner(), anEnum -> {
             int tip;
             if (anEnum == PlayingInfoManager.RepeatMode.LIST_CYCLE) {
                 mStates.playModeIcon.set(MaterialDrawableBuilder.IconValue.REPEAT);
