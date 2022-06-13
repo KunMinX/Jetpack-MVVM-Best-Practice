@@ -20,8 +20,8 @@ package com.kunminx.puremusic.domain.request;
 import androidx.lifecycle.ViewModel;
 
 import com.kunminx.architecture.data.response.DataResult;
-import com.kunminx.architecture.domain.message.Event;
-import com.kunminx.architecture.domain.message.MutableEvent;
+import com.kunminx.architecture.domain.message.Result;
+import com.kunminx.architecture.domain.message.MutableResult;
 import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.data.repository.DataRepository;
 
@@ -30,8 +30,8 @@ import java.util.List;
 /**
  * 信息列表 Request
  * <p>
- * TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 event-ViewModel，
- * event-ViewModel 职责仅限于 "消息分发" 场景承担 "唯一可信源"。
+ * TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 Result-ViewModel，
+ * Result-ViewModel 职责仅限于 "消息分发" 场景承担 "唯一可信源"。
  * <p>
  * 常见消息分发场景包括：数据请求，页面间通信等，
  * 数据请求 Requester 负责，页面通信 Messenger 负责，
@@ -58,16 +58,16 @@ import java.util.List;
  */
 public class InfoRequester extends ViewModel {
 
-    private final MutableEvent<DataResult<List<LibraryInfo>>> mLibraryEvent = new MutableEvent<>();
+    private final MutableResult<DataResult<List<LibraryInfo>>> mLibraryResult = new MutableResult<>();
 
-    //TODO tip 3：MutableEvent 应仅限 "唯一可信源" 内部使用，且只暴露 immutable Event 给 UI 层，
+    //TODO tip 3：MutableResult 应仅限 "唯一可信源" 内部使用，且只暴露 immutable Result 给 UI 层，
     //如此达成 "唯一可信源" 设计，也即通过 "访问控制权限" 实现 "读写分离"，
 
     //如这么说无体会，详见《吃透 LiveData 本质，享用可靠消息鉴权机制》解析。
     //https://xiaozhuanlan.com/topic/6017825943
 
-    public Event<DataResult<List<LibraryInfo>>> getLibraryEvent() {
-        return mLibraryEvent;
+    public Result<DataResult<List<LibraryInfo>>> getLibraryResult() {
+        return mLibraryResult;
     }
 
     public void requestLibraryInfo() {
@@ -87,6 +87,6 @@ public class InfoRequester extends ViewModel {
             mLibraryLiveData.setValue(dataResult);
         });*/
 
-        DataRepository.getInstance().getLibraryInfo(mLibraryEvent::setValue);
+        DataRepository.getInstance().getLibraryInfo(mLibraryResult::setValue);
     }
 }

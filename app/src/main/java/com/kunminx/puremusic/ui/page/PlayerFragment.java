@@ -246,17 +246,17 @@ public class PlayerFragment extends BaseFragment {
 
         public final State<String> artist = new State<>(Utils.getApp().getString(R.string.app_name));
 
-        public final State<String> coverImg = new State<>();
+        public final State<String> coverImg = new State<>("");
 
         public final State<Drawable> placeHolder = new State<>(ContextCompat.getDrawable(Utils.getApp(), R.drawable.bg_album_default));
 
-        public final State<Integer> maxSeekDuration = new State<>();
+        public final State<Integer> maxSeekDuration = new State<>(0);
 
-        public final State<Integer> currentSeekPosition = new State<>();
+        public final State<Integer> currentSeekPosition = new State<>(0);
 
-        public final State<Boolean> isPlaying = new State<>(null, false);
+        public final State<Boolean> isPlaying = new State<>(false, false);
 
-        public final State<MaterialDrawableBuilder.IconValue> playModeIcon = new State<>();
+        public final State<MaterialDrawableBuilder.IconValue> playModeIcon = new State<>(MaterialDrawableBuilder.IconValue.REPEAT);
 
         {
             if (PlayerManager.getInstance().getRepeatMode() == PlayingInfoManager.RepeatMode.LIST_CYCLE) {

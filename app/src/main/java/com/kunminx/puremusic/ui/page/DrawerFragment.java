@@ -32,6 +32,7 @@ import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.domain.request.InfoRequester;
 import com.kunminx.puremusic.ui.page.adapter.DrawerAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -74,13 +75,13 @@ public class DrawerFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //TODO tip 3: 从唯一可信源 Requester 通过 immutable Event 获取请求结果的只读数据，set 给 mutable State，
-        //而非 Event、State 不分，直接在页面 set Event，
+        //TODO tip 3: 从唯一可信源 Requester 通过 immutable Result 获取请求结果的只读数据，set 给 mutable State，
+        //而非 Result、State 不分，直接在页面 set Result，
 
         //如这么说无体会，详见《吃透 LiveData 本质，享用可靠消息鉴权机制》解析。
         //https://xiaozhuanlan.com/topic/6017825943
 
-        mInfoRequester.getLibraryEvent().observe(getViewLifecycleOwner(), dataResult -> {
+        mInfoRequester.getLibraryResult().observe(getViewLifecycleOwner(), dataResult -> {
             if (!dataResult.getResponseStatus().isSuccess()) return;
 
             if (dataResult.getResult() != null) {
@@ -93,7 +94,7 @@ public class DrawerFragment extends BaseFragment {
         //如这么说无体会，详见《吃透 LiveData 本质，享用可靠消息鉴权机制》解析。
         //https://xiaozhuanlan.com/topic/6017825943
 
-        if (mInfoRequester.getLibraryEvent().getValue() == null) {
+        if (mInfoRequester.getLibraryResult().getValue() == null) {
             mInfoRequester.requestLibraryInfo();
         }
     }
@@ -117,7 +118,7 @@ public class DrawerFragment extends BaseFragment {
 
         //如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350
 
-        public final State<List<LibraryInfo>> list = new State<>();
+        public final State<List<LibraryInfo>> list = new State<>(new ArrayList<>());
 
     }
 

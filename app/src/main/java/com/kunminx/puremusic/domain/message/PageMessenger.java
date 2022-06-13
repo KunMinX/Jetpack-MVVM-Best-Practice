@@ -18,12 +18,12 @@ package com.kunminx.puremusic.domain.message;
 
 import androidx.lifecycle.ViewModel;
 
-import com.kunminx.architecture.domain.message.Event;
-import com.kunminx.architecture.domain.message.MutableEvent;
+import com.kunminx.architecture.domain.message.MutableResult;
+import com.kunminx.architecture.domain.message.Result;
 
 /**
- * TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 event-ViewModel，
- * event-ViewModel 职责仅限于 "消息分发" 场景承担 "唯一可信源"。
+ * TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 Result-ViewModel，
+ * Result-ViewModel 职责仅限于 "消息分发" 场景承担 "唯一可信源"。
  * <p>
  * 常见消息分发场景包括：数据请求，页面间通信等，
  * 数据请求 Requester 负责，页面通信 Messenger 负责，
@@ -40,34 +40,34 @@ public class PageMessenger extends ViewModel {
 
     //TODO tip 2：此处演示 UnPeekLiveData 配合 SharedViewModel 实现 "生命周期安全、可靠一致" 消息分发。
 
-    //TODO tip 3：为便于理解，原 UnPeekLiveData 已改名 MutableEvent；
-    // ProtectedUnPeekLiveData 改名 Event；
+    //TODO tip 3：为便于理解，原 UnPeekLiveData 已改名 MutableResult；
+    // ProtectedUnPeekLiveData 改名 Result；
     // SharedViewModel 改名 PageMessenger。
 
-    private final MutableEvent<Boolean> toCloseSlidePanelIfExpanded = new MutableEvent<>();
+    private final MutableResult<Boolean> toCloseSlidePanelIfExpanded = new MutableResult<>();
 
-    private final MutableEvent<Boolean> toCloseActivityIfAllowed = new MutableEvent<>();
+    private final MutableResult<Boolean> toCloseActivityIfAllowed = new MutableResult<>();
 
-    private final MutableEvent<Boolean> toOpenOrCloseDrawer = new MutableEvent<>();
+    private final MutableResult<Boolean> toOpenOrCloseDrawer = new MutableResult<>();
 
-    //TODO tip 4：可通过构造器方式配置 MutableEvent
+    //TODO tip 4：可通过构造器方式配置 MutableResult
 
-    private final MutableEvent<Boolean> toAddSlideListener =
-        new MutableEvent.Builder<Boolean>().setAllowNullValue(false).create();
+    private final MutableResult<Boolean> toAddSlideListener =
+        new MutableResult.Builder<Boolean>().setAllowNullValue(false).create();
 
-    public Event<Boolean> isToAddSlideListener() {
+    public Result<Boolean> isToAddSlideListener() {
         return toAddSlideListener;
     }
 
-    public Event<Boolean> isToCloseSlidePanelIfExpanded() {
+    public Result<Boolean> isToCloseSlidePanelIfExpanded() {
         return toCloseSlidePanelIfExpanded;
     }
 
-    public Event<Boolean> isToCloseActivityIfAllowed() {
+    public Result<Boolean> isToCloseActivityIfAllowed() {
         return toCloseActivityIfAllowed;
     }
 
-    public Event<Boolean> isToOpenOrCloseDrawer() {
+    public Result<Boolean> isToOpenOrCloseDrawer() {
         return toOpenOrCloseDrawer;
     }
 

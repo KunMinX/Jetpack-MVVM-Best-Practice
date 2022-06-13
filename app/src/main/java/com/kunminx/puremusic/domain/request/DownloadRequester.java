@@ -3,8 +3,8 @@ package com.kunminx.puremusic.domain.request;
 import androidx.lifecycle.ViewModel;
 
 import com.kunminx.architecture.data.response.DataResult;
-import com.kunminx.architecture.domain.message.Event;
-import com.kunminx.architecture.domain.message.MutableEvent;
+import com.kunminx.architecture.domain.message.Result;
+import com.kunminx.architecture.domain.message.MutableResult;
 import com.kunminx.architecture.domain.usecase.UseCaseHandler;
 import com.kunminx.puremusic.data.repository.DataRepository;
 import com.kunminx.puremusic.domain.usecase.CanBeStoppedUseCase;
@@ -12,8 +12,8 @@ import com.kunminx.puremusic.domain.usecase.CanBeStoppedUseCase;
 /**
  * 数据下载 Request
  * <p>
- * TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 event-ViewModel，
- * event-ViewModel 职责仅限于 "消息分发" 场景承担 "唯一可信源"。
+ * TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 Result-ViewModel，
+ * Result-ViewModel 职责仅限于 "消息分发" 场景承担 "唯一可信源"。
  * <p>
  * 常见消息分发场景包括：数据请求，页面间通信等，
  * 数据请求 Requester 负责，页面通信 Messenger 负责，
@@ -40,24 +40,24 @@ import com.kunminx.puremusic.domain.usecase.CanBeStoppedUseCase;
  */
 public class DownloadRequester extends ViewModel {
 
-    private final MutableEvent<DataResult<CanBeStoppedUseCase.DownloadState>> mDownloadFileEvent = new MutableEvent<>();
+    private final MutableResult<DataResult<CanBeStoppedUseCase.DownloadState>> mDownloadFileResult = new MutableResult<>();
 
-    private final MutableEvent<DataResult<CanBeStoppedUseCase.DownloadState>> mDownloadFileCanBeStoppedEvent = new MutableEvent<>();
+    private final MutableResult<DataResult<CanBeStoppedUseCase.DownloadState>> mDownloadFileCanBeStoppedResult = new MutableResult<>();
 
     private final CanBeStoppedUseCase mCanBeStoppedUseCase = new CanBeStoppedUseCase();
 
-    //TODO tip 3：MutableEvent 应仅限 "唯一可信源" 内部使用，且只暴露 immutable Event 给 UI 层，
+    //TODO tip 3：MutableResult 应仅限 "唯一可信源" 内部使用，且只暴露 immutable Result 给 UI 层，
     //如此达成 "唯一可信源" 设计，也即通过 "访问控制权限" 实现 "读写分离"，
 
     //如这么说无体会，详见《吃透 LiveData 本质，享用可靠消息鉴权机制》解析。
     //https://xiaozhuanlan.com/topic/6017825943
 
-    public Event<DataResult<CanBeStoppedUseCase.DownloadState>> getDownloadFileEvent() {
-        return mDownloadFileEvent;
+    public Result<DataResult<CanBeStoppedUseCase.DownloadState>> getDownloadFileResult() {
+        return mDownloadFileResult;
     }
 
-    public Event<DataResult<CanBeStoppedUseCase.DownloadState>> getDownloadFileCanBeStoppedEvent() {
-        return mDownloadFileCanBeStoppedEvent;
+    public Result<DataResult<CanBeStoppedUseCase.DownloadState>> getDownloadFileCanBeStoppedResult() {
+        return mDownloadFileCanBeStoppedResult;
     }
 
     public CanBeStoppedUseCase getCanBeStoppedUseCase() {
@@ -80,10 +80,10 @@ public class DownloadRequester extends ViewModel {
         //TODO Tip 5：lambda 语句只有一行时可简写，具体可结合实际情况选择和使用
 
         /*DataRepository.getInstance().downloadFile(downloadFile, dataResult -> {
-            mDownloadFileEvent.postValue(dataResult);
+            mDownloadFileResult.postValue(dataResult);
         });*/
 
-        DataRepository.getInstance().downloadFile(downloadState, mDownloadFileEvent::postValue);
+        DataRepository.getInstance().downloadFile(downloadState, mDownloadFileResult::postValue);
     }
 
     //TODO tip 6：
@@ -95,7 +95,7 @@ public class DownloadRequester extends ViewModel {
     public void requestCanBeStoppedDownloadFile() {
         UseCaseHandler.getInstance().execute(getCanBeStoppedUseCase(),
             new CanBeStoppedUseCase.RequestValues(), response -> {
-                mDownloadFileCanBeStoppedEvent.setValue(response.getDataResult());
+                mDownloadFileCanBeStoppedResult.setValue(response.getDataResult());
             });
     }
 }

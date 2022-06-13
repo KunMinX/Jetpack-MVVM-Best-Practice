@@ -87,13 +87,13 @@ public class LoginFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //TODO tip 4: 从唯一可信源 Requester 通过 immutable Event 获取请求结果的只读数据，set 给 mutable State，
-        //而非 Event、State 不分，直接在页面 set Event，
+        //TODO tip 4: 从唯一可信源 Requester 通过 immutable Result 获取请求结果的只读数据，set 给 mutable State，
+        //而非 Result、State 不分，直接在页面 set Result，
 
         //如这么说无体会，详见《吃透 LiveData 本质，享用可靠消息鉴权机制》解析。
         //https://xiaozhuanlan.com/topic/6017825943
 
-        mAccountRequester.getTokenEvent().observe(getViewLifecycleOwner(), dataResult -> {
+        mAccountRequester.getTokenResult().observe(getViewLifecycleOwner(), dataResult -> {
             if (!dataResult.getResponseStatus().isSuccess()) {
                 mStates.loadingVisible.set(false);
                 ToastUtils.showLongToast(getApplicationContext(), getString(R.string.network_state_retry));
@@ -146,11 +146,11 @@ public class LoginFragment extends BaseFragment {
 
         //如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350
 
-        public final State<String> name = new State<>();
+        public final State<String> name = new State<>("");
 
-        public final State<String> password = new State<>();
+        public final State<String> password = new State<>("");
 
-        public final State<Boolean> loadingVisible = new State<>();
+        public final State<Boolean> loadingVisible = new State<>(false);
 
     }
 

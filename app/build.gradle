@@ -38,6 +38,12 @@ android {
 }
 
 dependencies {
+    configurations {
+        all {
+            exclude group: 'androidx.lifecycle', module: 'lifecycle-viewmodel-ktx'
+        }
+    }
+
     implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
     implementation project(":architecture")
     implementation "org.jetbrains:annotations:23.0.0"
