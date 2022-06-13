@@ -20,7 +20,7 @@
 
 # 架构图一览
 
-![](https://images.xiaozhuanlan.com/photo/2022/c2ffaf9e07c3bf804580d38d36ebfff4.png)
+![](https://images.xiaozhuanlan.com/photo/2022/3254319c497bb39d638667cb589b48c7.png)
 
 &nbsp;
 
