@@ -26,6 +26,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.IBinder;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -86,8 +87,9 @@ public class PlayerService extends Service {
 
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.setAction("showPlayer");
-            PendingIntent contentIntent = PendingIntent.getActivity(
-                this, 0, intent, 0);
+
+            PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent,
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? PendingIntent.FLAG_MUTABLE : 0);
 
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 NotificationManager notificationManager = (NotificationManager)
@@ -155,26 +157,24 @@ public class PlayerService extends Service {
 
     @SuppressLint("UnspecifiedImmutableFlag")
     public void setListeners(RemoteViews view) {
+        int flags = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+            ? PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE
+            : PendingIntent.FLAG_UPDATE_CURRENT;
         try {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),
-                0, new Intent(NOTIFY_PREVIOUS).setPackage(getPackageName()),
-                PendingIntent.FLAG_UPDATE_CURRENT);
+                0, new Intent(NOTIFY_PREVIOUS).setPackage(getPackageName()), flags);
             view.setOnClickPendingIntent(R.id.player_previous, pendingIntent);
             pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),
-                0, new Intent(NOTIFY_CLOSE).setPackage(getPackageName()),
-                PendingIntent.FLAG_UPDATE_CURRENT);
+                0, new Intent(NOTIFY_CLOSE).setPackage(getPackageName()), flags);
             view.setOnClickPendingIntent(R.id.player_close, pendingIntent);
             pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),
-                0, new Intent(NOTIFY_PAUSE).setPackage(getPackageName()),
-                PendingIntent.FLAG_UPDATE_CURRENT);
+                0, new Intent(NOTIFY_PAUSE).setPackage(getPackageName()), flags);
             view.setOnClickPendingIntent(R.id.player_pause, pendingIntent);
             pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),
-                0, new Intent(NOTIFY_NEXT).setPackage(getPackageName()),
-                PendingIntent.FLAG_UPDATE_CURRENT);
+                0, new Intent(NOTIFY_NEXT).setPackage(getPackageName()), flags);
             view.setOnClickPendingIntent(R.id.player_next, pendingIntent);
             pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),
-                0, new Intent(NOTIFY_PLAY).setPackage(getPackageName()),
-                PendingIntent.FLAG_UPDATE_CURRENT);
+                0, new Intent(NOTIFY_PLAY).setPackage(getPackageName()), flags);
             view.setOnClickPendingIntent(R.id.player_play, pendingIntent);
         } catch (Exception e) {
             e.printStackTrace();
