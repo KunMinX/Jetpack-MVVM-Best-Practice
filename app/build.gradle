@@ -47,7 +47,7 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
     implementation project(":architecture")
     implementation "org.jetbrains:annotations:23.0.0"
-    implementation "com.kunminx.player:player:3.5.0"
+    implementation "com.kunminx.player:player:3.7.0"
 
     testImplementation "junit:junit:4.13.2"
     androidTestImplementation "androidx.test.ext:junit:1.1.3"

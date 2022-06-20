@@ -57,7 +57,7 @@ public class MainActivity extends BaseActivity {
 
         //TODO tip 2: DataBinding 严格模式：
         // 将 DataBinding 实例限制于 base 页面中，默认不向子类暴露，
-        // 通过这样方式，彻底解决 View 实例 Null 安全一致性问题，
+        // 通过这方式，彻底解决 View 实例 Null 安全一致性问题，
         // 如此，View 实例 Null 安全性将和基于函数式编程思想的 Jetpack Compose 持平。
         // 而 DataBindingConfig 就是在这样背景下，用于为 base 页面 DataBinding 提供绑定项。
 
