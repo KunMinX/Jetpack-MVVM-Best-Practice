@@ -44,4 +44,5 @@ dependencies {
     api 'com.kunminx.arch:unpeek-livedata:7.6.0'
     api 'com.kunminx.arch:smooth-navigation:4.0.0-beta1'
     api 'com.kunminx.arch:strict-databinding:5.1.0-beta1'
+    api 'com.kunminx.arch:mvi-dispatch:1.4.0-beta'
 }

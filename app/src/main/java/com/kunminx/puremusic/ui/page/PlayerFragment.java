@@ -36,6 +36,7 @@ import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.databinding.FragmentPlayerBinding;
 import com.kunminx.puremusic.domain.message.DrawerCoordinateManager;
+import com.kunminx.puremusic.domain.message.Messages;
 import com.kunminx.puremusic.domain.message.PageMessenger;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.page.helper.DefaultInterface;
@@ -85,21 +86,53 @@ public class PlayerFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mMessenger.isToAddSlideListener().observe(getViewLifecycleOwner(), aBoolean -> {
-            if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {
-                SlidingUpPanelLayout sliding = (SlidingUpPanelLayout) view.getParent().getParent();
-                sliding.addPanelSlideListener(mListener = new PlayerSlideListener((FragmentPlayerBinding) getBinding(), sliding));
-                sliding.addPanelSlideListener(new DefaultInterface.PanelSlideListener() {
-                    @Override
-                    public void onPanelStateChanged(
-                        View view, SlidingUpPanelLayout.PanelState panelState,
-                        SlidingUpPanelLayout.PanelState panelState1) {
-                        DrawerCoordinateManager.getInstance().requestToUpdateDrawerMode(
-                            panelState1 == SlidingUpPanelLayout.PanelState.EXPANDED,
-                            this.getClass().getSimpleName()
-                        );
+        mMessenger.output(this, messages -> {
+            switch (messages.eventId) {
+                case Messages.EVENT_ADD_SLIDE_LISTENER:
+                    if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {
+                        SlidingUpPanelLayout sliding = (SlidingUpPanelLayout) view.getParent().getParent();
+                        sliding.addPanelSlideListener(mListener = new PlayerSlideListener((FragmentPlayerBinding) getBinding(), sliding));
+                        sliding.addPanelSlideListener(new DefaultInterface.PanelSlideListener() {
+                            @Override
+                            public void onPanelStateChanged(
+                                View view, SlidingUpPanelLayout.PanelState panelState,
+                                SlidingUpPanelLayout.PanelState panelState1) {
+                                DrawerCoordinateManager.getInstance().requestToUpdateDrawerMode(
+                                    panelState1 == SlidingUpPanelLayout.PanelState.EXPANDED,
+                                    this.getClass().getSimpleName()
+                                );
+                            }
+                        });
                     }
-                });
+                    break;
+                case Messages.EVENT_CLOSE_SLIDE_PANEL_IF_EXPANDED:
+                    // 按下返回键，如果此时 slide 面板是展开的，那么只对面板进行 slide down
+
+                    if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {
+                        SlidingUpPanelLayout sliding = (SlidingUpPanelLayout) view.getParent().getParent();
+                        if (sliding.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
+                            sliding.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                        } else {
+
+                            // TODO tip 4：此处演示向 "唯一可信源" 发送请求，以便实现 "生命周期安全、消息分发可靠一致" 的通知。
+
+                            // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/0168753249
+                            // --------
+                            // 与此同时，此处传达的另一思想是 "最少知道原则"，
+                            // Activity 内部事情在 Activity 内部消化，不要试图在 fragment 中调用和操纵 Activity 内部东西。
+                            // 因为 Activity 端的处理后续可能会改变，且可受用于更多 fragment，而不单单是本 fragment。
+
+                            // TODO: yes:
+
+                            mMessenger.input(new Messages(Messages.EVENT_CLOSE_ACTIVITY_IF_ALLOWED));
+
+                            // TODO: do not:
+                            // mActivity.finish();
+                        }
+                    } else {
+                        mMessenger.input(new Messages(Messages.EVENT_CLOSE_ACTIVITY_IF_ALLOWED));
+                    }
+                    break;
             }
         });
 
@@ -152,39 +185,6 @@ public class PlayerFragment extends BaseFragment {
                 }
             }
         });
-
-        mMessenger.isToCloseSlidePanelIfExpanded().observe(getViewLifecycleOwner(), aBoolean -> {
-
-            // 按下返回键，如果此时 slide 面板是展开的，那么只对面板进行 slide down
-
-            if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {
-
-                SlidingUpPanelLayout sliding = (SlidingUpPanelLayout) view.getParent().getParent();
-
-                if (sliding.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
-                    sliding.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                } else {
-
-                    // TODO tip 4：此处演示向 "唯一可信源" 发送请求，以便实现 "生命周期安全、消息分发可靠一致" 的通知。
-
-                    // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/0168753249
-                    // --------
-                    // 与此同时，此处传达的另一思想是 "最少知道原则"，
-                    // Activity 内部事情在 Activity 内部消化，不要试图在 fragment 中调用和操纵 Activity 内部东西。
-                    // 因为 Activity 端的处理后续可能会改变，且可受用于更多 fragment，而不单单是本 fragment。
-
-                    // TODO: yes:
-
-                    mMessenger.requestToCloseActivityIfAllowed(true);
-
-                    // TODO: do not:
-                    // mActivity.finish();
-                }
-            } else {
-                mMessenger.requestToCloseActivityIfAllowed(true);
-            }
-        });
-
     }
 
     // TODO tip 5：此处通过 DataBinding 规避 setOnClickListener 时存在的 View 实例 Null 安全一致性问题，
@@ -215,7 +215,7 @@ public class PlayerFragment extends BaseFragment {
         }
 
         public void slideDown() {
-            mMessenger.requestToCloseSlidePanelIfExpanded(true);
+            mMessenger.input(new Messages(Messages.EVENT_CLOSE_SLIDE_PANEL_IF_EXPANDED));
         }
 
         public void more() {
