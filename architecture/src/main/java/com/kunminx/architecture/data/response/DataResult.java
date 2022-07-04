@@ -19,13 +19,13 @@
 package com.kunminx.architecture.data.response;
 
 /**
- * TODO: 专用于数据层返回结果给 domain 层或 ViewModel 用，原因如下：
+ * TODO: 专用于数据层返回结果至 domain 层或 ViewModel，原因如下：
  * <p>
- * liveData 是专用于页面开发的、用于解决生命周期安全问题的组件，
- * 有时候数据并非一定是通过 liveData 来分发给页面，也可能是通过别的组件去通知给非页面的东西，
- * 这时候 repo 方法中内定通过 liveData 分发就不太合适，不如一开始就规定不在数据层通过 liveData 返回结果。
+ * liveData 专用于页面开发、解决生命周期安全问题，
+ * 有时数据并非通过 liveData 分发给页面，也可是通过其他方式通知非页面组件，
+ * 这时 repo 方法中内定通过 liveData 分发便不合适，不如一开始就规定不在数据层通过 liveData 返回结果。
  * <p>
- * 如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》的解析
+ * 如这么说无体会，详见《如何让同事爱上架构模式、少写 bug 多注释》解析
  * https://xiaozhuanlan.com/topic/8204519736
  * <p>
  * Create by KunMinX at 2020/7/20
@@ -40,6 +40,11 @@ public class DataResult<T> {
         mResponseStatus = responseStatus;
     }
 
+    public DataResult(T entity){
+        mEntity=entity;
+        mResponseStatus=new ResponseStatus();
+    }
+
     public T getResult() {
         return mEntity;
     }
@@ -52,3 +57,4 @@ public class DataResult<T> {
         void onResult(DataResult<T> dataResult);
     }
 }
+

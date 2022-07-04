@@ -25,7 +25,7 @@ public class ResponseStatus {
 
     private String responseCode = "";
     private boolean success = true;
-    private Enum source = ResultSource.NETWORK;
+    private Enum<ResultSource> source = ResultSource.NETWORK;
 
     public ResponseStatus() {
     }
@@ -35,7 +35,7 @@ public class ResponseStatus {
         this.success = success;
     }
 
-    public ResponseStatus(String responseCode, boolean success, Enum source) {
+    public ResponseStatus(String responseCode, boolean success, Enum<ResultSource> source) {
         this(responseCode, success);
         this.source = source;
     }
@@ -48,7 +48,7 @@ public class ResponseStatus {
         return success;
     }
 
-    public Enum getSource() {
+    public Enum<ResultSource> getSource() {
         return source;
     }
 }
