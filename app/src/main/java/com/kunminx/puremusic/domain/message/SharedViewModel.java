@@ -46,9 +46,9 @@ import com.kunminx.architecture.domain.message.Result;
  * 鉴于本项目场景难发挥 MVI-Dispatcher 潜能，故目前仅以改造 SharedViewModel 为例，
  * 通过对比 SharedViewModel 和 PageMessenger 易得，后者可简洁优雅实现可靠一致消息分发，
  *
- * 具体可参见专为 MVI-Dispatcher 唯一可信源编写之 Jetpack MVI 最佳实践项目：
+ * 具体可参见专为 MVI-Dispatcher 唯一可信源编写之 MVI 绝佳使用案例：
  *
- * https://github.com/KunMinX/Jetpack-MVI-Best-Practice
+ * https://github.com/KunMinX/MVI-Dispatcher
  */
 @Deprecated
 public class SharedViewModel extends ViewModel {

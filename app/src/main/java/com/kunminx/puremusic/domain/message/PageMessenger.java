@@ -9,16 +9,15 @@ import com.kunminx.architecture.domain.dispatch.MviDispatcher;
  * 鉴于本项目场景难发挥 MVI-Dispatcher 潜能，故目前仅以改造 SharedViewModel 为例，
  * 通过对比 SharedViewModel 和 PageMessenger 易得，后者可简洁优雅实现可靠一致消息分发，
  *
- * 具体可参见专为 MVI-Dispatcher 唯一可信源编写之 Jetpack MVI 最佳实践项目：
+ * 具体可参见专为 MVI-Dispatcher 唯一可信源编写之 MVI 绝佳使用案例：
  *
- * https://github.com/KunMinX/Jetpack-MVI-Best-Practice
+ * https://github.com/KunMinX/MVI-Dispatcher
  *
  * Create by KunMinX at 2022/7/4
  */
 public class PageMessenger extends MviDispatcher<Messages> {
     @Override
     public void input(Messages event) {
-        super.input(event);
 
       /* TODO 于唯一可信源中统一鉴权处理业务逻辑，并通过 sendResult 回推结果至表现层
 
