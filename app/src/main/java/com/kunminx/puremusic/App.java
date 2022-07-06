@@ -16,7 +16,8 @@
 
 package com.kunminx.puremusic;
 
-import com.kunminx.architecture.BaseApplication;
+import android.app.Application;
+
 import com.kunminx.architecture.utils.Utils;
 import com.kunminx.puremusic.player.PlayerManager;
 
@@ -32,7 +33,7 @@ import com.kunminx.puremusic.player.PlayerManager;
  * <p>
  * Create by KunMinX at 19/10/29
  */
-public class App extends BaseApplication {
+public class App extends Application {
 
     @Override
     public void onCreate() {

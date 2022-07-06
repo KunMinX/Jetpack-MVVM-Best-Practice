@@ -24,11 +24,10 @@ import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.kunminx.architecture.BaseApplication;
+import com.kunminx.architecture.ui.scope.ViewModelScope;
 
 
 /**
@@ -36,9 +35,7 @@ import com.kunminx.architecture.BaseApplication;
  */
 public abstract class BaseFragment extends DataBindingFragment {
 
-    private ViewModelProvider mFragmentProvider;
-    private ViewModelProvider mActivityProvider;
-    private ViewModelProvider mApplicationProvider;
+    private final ViewModelScope mViewModelScope = new ViewModelScope();
 
     //TODO tip 1: DataBinding 严格模式（详见 DataBindingFragment - - - - - ）：
     // 将 DataBinding 实例限制于 base 页面中，默认不向子类暴露，
@@ -55,24 +52,15 @@ public abstract class BaseFragment extends DataBindingFragment {
     //如这么说无体会，详见 https://xiaozhuanlan.com/topic/6257931840
 
     protected <T extends ViewModel> T getFragmentScopeViewModel(@NonNull Class<T> modelClass) {
-        if (mFragmentProvider == null) {
-            mFragmentProvider = new ViewModelProvider(this);
-        }
-        return mFragmentProvider.get(modelClass);
+        return mViewModelScope.getFragmentScopeViewModel(this, modelClass);
     }
 
     protected <T extends ViewModel> T getActivityScopeViewModel(@NonNull Class<T> modelClass) {
-        if (mActivityProvider == null) {
-            mActivityProvider = new ViewModelProvider(mActivity);
-        }
-        return mActivityProvider.get(modelClass);
+        return mViewModelScope.getActivityScopeViewModel(mActivity, modelClass);
     }
 
     protected <T extends ViewModel> T getApplicationScopeViewModel(@NonNull Class<T> modelClass) {
-        if (mApplicationProvider == null) {
-            mApplicationProvider = new ViewModelProvider((BaseApplication) mActivity.getApplicationContext());
-        }
-        return mApplicationProvider.get(modelClass);
+        return mViewModelScope.getApplicationScopeViewModel(modelClass);
     }
 
     protected NavController nav() {
