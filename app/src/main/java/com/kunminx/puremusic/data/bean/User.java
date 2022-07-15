@@ -25,11 +25,8 @@ package com.kunminx.puremusic.data.bean;
  */
 public class User {
 
-    private String name;
-    private String password;
-
-    public User() {
-    }
+    public final String name;
+    public final String password;
 
     public User(String name, String password) {
         this.name = name;

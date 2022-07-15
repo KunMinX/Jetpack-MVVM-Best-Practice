@@ -16,6 +16,7 @@
 
 package com.kunminx.puremusic.data.repository;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -27,19 +28,20 @@ import com.kunminx.architecture.utils.Utils;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.api.APIs;
 import com.kunminx.puremusic.data.api.AccountService;
+import com.kunminx.puremusic.data.bean.DownloadState;
 import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.data.bean.User;
-import com.kunminx.puremusic.domain.usecase.CanBeStoppedUseCase;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -117,33 +119,25 @@ public class DataRepository {
      *
      * @param result 从 Request-ViewModel 或 UseCase 注入 LiveData，用于 控制流程、回传进度、回传文件
      */
-    public void downloadFile(CanBeStoppedUseCase.DownloadState downloadState,
-                             DataResult.Result<CanBeStoppedUseCase.DownloadState> result) {
-
-        Timer timer = new Timer();
-
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
+    @SuppressLint("CheckResult")
+    public void downloadFile(DownloadState downloadState, DataResult.Result<DownloadState> result) {
+        Observable.interval(100, TimeUnit.MILLISECONDS)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(aLong -> {
+                if (downloadState.isForgive || downloadState.progress == 100) {
+                    return;
+                }
 
                 //模拟下载，假设下载一个文件要 10秒、每 100 毫秒下载 1% 并通知 UI 层
                 if (downloadState.progress < 100) {
                     downloadState.progress = downloadState.progress + 1;
-                    Log.d("TAG", "下载进度 " + downloadState.progress + "%");
-                } else {
-                    timer.cancel();
+                    Log.d("---", "下载进度 " + downloadState.progress + "%");
                 }
-                if (downloadState.isForgive) {
-                    timer.cancel();
-                    downloadState.file = null;
-                    downloadState.isForgive = false;
-                    return;
-                }
-                result.onResult(new DataResult<>(downloadState, new ResponseStatus()));
-            }
-        };
 
-        timer.schedule(task, 100, 100);
+                result.onResult(new DataResult<>(downloadState, new ResponseStatus()));
+                Log.d("---", "回推状态");
+            });
     }
 
     //TODO tip：模拟可取消的登录请求：

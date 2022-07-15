@@ -22,9 +22,8 @@ import androidx.lifecycle.LifecycleOwner;
 
 import com.kunminx.architecture.data.response.DataResult;
 import com.kunminx.architecture.domain.usecase.UseCase;
+import com.kunminx.puremusic.data.bean.DownloadState;
 import com.kunminx.puremusic.data.repository.DataRepository;
-
-import java.io.File;
 
 
 /**
@@ -40,6 +39,7 @@ import java.io.File;
  * <p>
  * Create by KunMinX at 19/11/25
  */
+@Deprecated
 public class CanBeStoppedUseCase extends UseCase<CanBeStoppedUseCase.RequestValues,
     CanBeStoppedUseCase.ResponseValue> implements DefaultLifecycleObserver {
 
@@ -67,9 +67,9 @@ public class CanBeStoppedUseCase extends UseCase<CanBeStoppedUseCase.RequestValu
 
         //访问数据层资源，在 UseCase 中处理带叫停性质的业务
 
-        DataRepository.getInstance().downloadFile(downloadState, dataResult -> {
-            getUseCaseCallback().onSuccess(new ResponseValue(dataResult));
-        });
+//        DataRepository.getInstance().downloadFile(downloadState, dataResult -> {
+//            getUseCaseCallback().onSuccess(new ResponseValue(dataResult));
+//        });
     }
 
     public static final class RequestValues implements UseCase.RequestValues {
@@ -78,23 +78,14 @@ public class CanBeStoppedUseCase extends UseCase<CanBeStoppedUseCase.RequestValu
 
     public static final class ResponseValue implements UseCase.ResponseValue {
 
-        private final DataResult<CanBeStoppedUseCase.DownloadState> mDataResult;
+        private final DataResult<DownloadState> mDataResult;
 
-        public ResponseValue(DataResult<CanBeStoppedUseCase.DownloadState> dataResult) {
+        public ResponseValue(DataResult<DownloadState> dataResult) {
             mDataResult = dataResult;
         }
 
-        public DataResult<CanBeStoppedUseCase.DownloadState> getDataResult() {
+        public DataResult<DownloadState> getDataResult() {
             return mDataResult;
         }
-    }
-
-    public static final class DownloadState {
-
-        public boolean isForgive = false;
-
-        public int progress;
-
-        public File file;
     }
 }

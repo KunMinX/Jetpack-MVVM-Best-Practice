@@ -1,13 +1,11 @@
 package com.kunminx.puremusic.domain.request;
 
-import androidx.lifecycle.ViewModel;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
 
-import com.kunminx.architecture.data.response.DataResult;
-import com.kunminx.architecture.domain.message.Result;
-import com.kunminx.architecture.domain.message.MutableResult;
-import com.kunminx.architecture.domain.usecase.UseCaseHandler;
+import com.kunminx.architecture.domain.dispatch.MviDispatcher;
 import com.kunminx.puremusic.data.repository.DataRepository;
-import com.kunminx.puremusic.domain.usecase.CanBeStoppedUseCase;
+import com.kunminx.puremusic.domain.event.DownloadEvent;
 
 /**
  * 数据下载 Request
@@ -36,66 +34,53 @@ import com.kunminx.puremusic.domain.usecase.CanBeStoppedUseCase;
  * https://xiaozhuanlan.com/topic/8204519736
  * <p>
  * <p>
+ * TODO:Note 2022.07.04
+ * 可于领域层通过 MVI-Dispatcher 实现成熟形态 "唯一可信源"，
+ * 使支持 LiveData 连续发送多种类事件 + 彻底消除 mutable 样板代码 + 彻底杜绝团队新手 LiveData.setValue 误用滥用，
+ * 鉴于本项目场景难发挥 MVI-Dispatcher 潜能，故目前仅以改造 SharedViewModel 为例，
+ * 通过对比 SharedViewModel 和 PageMessenger 易得，后者可简洁优雅实现可靠一致消息分发，
+ * <p>
+ * 具体可参见专为 MVI-Dispatcher 唯一可信源编写之 MVI 绝佳使用案例：
+ * <p>
+ * https://github.com/KunMinX/MVI-Dispatcher
+ * <p>
+ * <p>
  * Create by KunMinX at 20/03/18
  */
-public class DownloadRequester extends ViewModel {
+public class DownloadRequester extends MviDispatcher<DownloadEvent> {
 
-    private final MutableResult<DataResult<CanBeStoppedUseCase.DownloadState>> mDownloadFileResult = new MutableResult<>();
+    private boolean pageStopped;
 
-    private final MutableResult<DataResult<CanBeStoppedUseCase.DownloadState>> mDownloadFileCanBeStoppedResult = new MutableResult<>();
-
-    private final CanBeStoppedUseCase mCanBeStoppedUseCase = new CanBeStoppedUseCase();
-
-    //TODO tip 3：MutableResult 应仅限 "唯一可信源" 内部使用，且只暴露 immutable Result 给 UI 层，
-    //如此达成 "唯一可信源" 设计，也即通过 "访问控制权限" 实现 "读写分离"，
-
-    //如这么说无体会，详见《吃透 LiveData 本质，享用可靠消息鉴权机制》解析。
-    //https://xiaozhuanlan.com/topic/6017825943
-
-    public Result<DataResult<CanBeStoppedUseCase.DownloadState>> getDownloadFileResult() {
-        return mDownloadFileResult;
+    @Override
+    public void input(DownloadEvent event) {
+        switch (event.eventId) {
+            case DownloadEvent.EVENT_DOWNLOAD:
+                DataRepository.getInstance().downloadFile(event.result.downloadState, dataResult -> {
+                    if (pageStopped) {
+                        event.result.downloadState.isForgive = true;
+                        event.result.downloadState.file = null;
+                        event.result.downloadState.progress = 0;
+                    }
+                    sendResult(event);
+                });
+                break;
+            case DownloadEvent.EVENT_DOWNLOAD_GLOBAL:
+                DataRepository.getInstance().downloadFile(event.result.downloadState, dataResult -> {
+                    sendResult(event);
+                });
+                break;
+        }
     }
 
-    public Result<DataResult<CanBeStoppedUseCase.DownloadState>> getDownloadFileCanBeStoppedResult() {
-        return mDownloadFileCanBeStoppedResult;
+    @Override
+    public void onCreate(@NonNull LifecycleOwner owner) {
+        super.onCreate(owner);
+        pageStopped = false;
     }
 
-    public CanBeStoppedUseCase getCanBeStoppedUseCase() {
-        return mCanBeStoppedUseCase;
-    }
-
-    public void requestDownloadFile() {
-
-        //TODO tip 4：为方便语义理解，此处直接将 DataResult 作为 LiveData value 回推给 UI 层，
-        //而非 DataResult 泛型实体拆下来单独回推，如此
-        //一方面使 UI 层有机会基于 DataResult 的 responseStatus 分别处理 "请求成功或失败" 情况下 UI 表现，
-        //另一方面从语义上强调了 该结果是请求得来的只读数据，与 "可变状态" 形成明确区分，
-        //从而方便团队开发人员自然而然遵循 "唯一可信源"/"单向数据流" 开发理念，规避消息同步一致性等不可预期错误。
-
-        //如这么说无体会，详见《如何让同事爱上架构模式、少写 bug 多注释》中对 "只读数据" 和 "可变状态" 区别的解析。
-        //https://xiaozhuanlan.com/topic/8204519736
-
-        CanBeStoppedUseCase.DownloadState downloadState = new CanBeStoppedUseCase.DownloadState();
-
-        //TODO Tip 5：lambda 语句只有一行时可简写，具体可结合实际情况选择和使用
-
-        /*DataRepository.getInstance().downloadFile(downloadFile, dataResult -> {
-            mDownloadFileResult.postValue(dataResult);
-        });*/
-
-        DataRepository.getInstance().downloadFile(downloadState, mDownloadFileResult::postValue);
-    }
-
-    //TODO tip 6：
-    // 同是“下载”，我们不是在数据层分别写两个方法，
-    // 而是遵循开闭原则，在 vm 和 数据层之间，插入一个 UseCase，来专门负责可叫停情况，
-    // 除了开闭原则，使用 UseCase 还有个考虑就是避免内存泄漏，
-    // 具体缘由可详见 https://xiaozhuanlan.com/topic/6257931840 评论区 15 楼
-
-    public void requestCanBeStoppedDownloadFile() {
-        UseCaseHandler.getInstance().execute(getCanBeStoppedUseCase(),
-            new CanBeStoppedUseCase.RequestValues(), response -> {
-                mDownloadFileCanBeStoppedResult.setValue(response.getDataResult());
-            });
+    @Override
+    public void onStop(@NonNull LifecycleOwner owner) {
+        super.onStop(owner);
+        pageStopped = true;
     }
 }

@@ -27,8 +27,8 @@
     <string name="project_title">本项目中用到的技术点包括：</string>
     <string name="Copyright">Product with love by KunMinX @2019</string>
     <string name="search_page_tip">本页面用于测试 Navigation 路由导航</string>
-    <string name="test_download">测试下载，返回页面仍有效</string>
-    <string name="test_lifecycle_download">测试下载，离开页面即中止</string>
+    <string name="test_download">点击测试下载，返回页面仍有效</string>
+    <string name="test_lifecycle_download">点击测试下载，离开页面即中止</string>
     <string name="search_back">右滑关闭本页面</string>
 
     <string name="relearn_android">《重学安卓》</string>

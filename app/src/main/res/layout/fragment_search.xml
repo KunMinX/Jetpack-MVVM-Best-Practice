@@ -122,11 +122,12 @@
 
         <TextView
             android:id="@+id/tv_test_download"
-            drawable_radius="@{25}"
-            drawable_solidColor="@{0xffFF7055}"
+            drawable_enabled="@{0xffFF7055}"
+            drawable_solidColor="@{0xffFFA07A}"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:background="?attr/selectableItemBackground"
+            android:enabled="@{vm.enableGlobalDownload}"
             android:gravity="center"
             android:onClick="@{()->click.testDownload()}"
             android:paddingLeft="12dp"
@@ -141,12 +142,13 @@
 
         <TextView
             android:id="@+id/tv_test_lifecycle_download"
-            drawable_radius="@{25}"
-            drawable_solidColor="@{0xffFF7055}"
+            drawable_enabled="@{0xffFF7055}"
+            drawable_solidColor="@{0xffFFA07A}"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:layout_marginTop="12dp"
             android:background="?attr/selectableItemBackground"
+            android:enabled="@{vm.enableDownload}"
             android:gravity="center"
             android:onClick="@{()->click.testLifecycleDownload()}"
             android:paddingLeft="12dp"

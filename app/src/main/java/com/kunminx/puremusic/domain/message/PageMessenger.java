@@ -1,6 +1,7 @@
 package com.kunminx.puremusic.domain.message;
 
 import com.kunminx.architecture.domain.dispatch.MviDispatcher;
+import com.kunminx.puremusic.domain.event.Messages;
 
 /**
  * TODO:Note 2022.07.04

@@ -1,4 +1,4 @@
-package com.kunminx.puremusic.domain.message;
+package com.kunminx.puremusic.domain.event;
 
 import com.kunminx.architecture.domain.event.Event;
 
