@@ -40,7 +40,7 @@ import com.kunminx.puremusic.domain.event.DownloadEvent;
  * 鉴于本项目场景难发挥 MVI-Dispatcher 潜能，故目前仅以改造 SharedViewModel 为例，
  * 通过对比 SharedViewModel 和 PageMessenger 易得，后者可简洁优雅实现可靠一致消息分发，
  * <p>
- * 具体可参见专为 MVI-Dispatcher 唯一可信源编写之 MVI 绝佳使用案例：
+ * 具体可参见专为 MVI-Dispatcher 唯一可信源编写 MVI 使用案例：
  * <p>
  * https://github.com/KunMinX/MVI-Dispatcher
  * <p>

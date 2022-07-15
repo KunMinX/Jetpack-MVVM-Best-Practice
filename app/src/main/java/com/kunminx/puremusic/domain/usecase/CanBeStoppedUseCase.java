@@ -37,6 +37,10 @@ import com.kunminx.puremusic.data.repository.DataRepository;
  * 以及《如何让同事爱上架构模式、少写 bug 多注释》的解析
  * https://xiaozhuanlan.com/topic/8204519736
  * <p>
+ *
+ * 现已更换为在 MVI-Dispatcher 中处理，具体可参见 DownloadRequest 实现
+ *
+ *
  * Create by KunMinX at 19/11/25
  */
 @Deprecated
