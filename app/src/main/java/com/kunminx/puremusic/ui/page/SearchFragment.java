@@ -84,6 +84,10 @@ public class SearchFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //TODO tip 8: 此处演示使用 "唯一可信源" MVI-Dispatcher input-output 接口完成数据请求响应
+
+        //如这么说无体会，详见《领域层设计》篇拆解 https://juejin.cn/post/7117498113983512589
+
         mDownloadRequester.output(this, downloadEvent -> {
             if (downloadEvent.eventId == DownloadEvent.EVENT_DOWNLOAD) {
                 DownloadState state = downloadEvent.result.downloadState;
@@ -119,6 +123,10 @@ public class SearchFragment extends BaseFragment {
         public void subscribe() {
             openUrlInBrowser(getString(R.string.article_navigation));
         }
+
+        //TODO tip 8: 此处演示使用 "唯一可信源" MVI-Dispatcher input-output 接口完成数据请求响应
+
+        //如这么说无体会，详见《领域层设计》篇拆解 https://juejin.cn/post/7117498113983512589
 
         public void testDownload() {
             mGlobalDownloadRequester.input(new DownloadEvent(DownloadEvent.EVENT_DOWNLOAD_GLOBAL));

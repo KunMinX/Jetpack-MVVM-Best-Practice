@@ -143,7 +143,7 @@ public class MainFragment extends BaseFragment {
 
             // TODO tip 8：此处演示向 "唯一可信源" 发送请求，以便实现 "生命周期安全、消息分发可靠一致" 的通知。
 
-            // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/0168753249
+            // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/6017825943 & https://juejin.cn/post/7117498113983512589
             // --------
             // 与此同时，此处传达的另一思想是 "最少知道原则"，
             // Activity 内部事情在 Activity 内部消化，不要试图在 fragment 中调用和操纵 Activity 内部东西。

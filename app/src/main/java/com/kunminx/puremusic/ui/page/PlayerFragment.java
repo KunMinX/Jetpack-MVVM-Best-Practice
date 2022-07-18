@@ -86,6 +86,10 @@ public class PlayerFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //TODO tip 8: 此处演示使用 "唯一可信源" MVI-Dispatcher input-output 接口完成消息收发
+
+        //如这么说无体会，详见《领域层设计》篇拆解 https://juejin.cn/post/7117498113983512589
+
         mMessenger.output(this, messages -> {
             switch (messages.eventId) {
                 case Messages.EVENT_ADD_SLIDE_LISTENER:
@@ -213,6 +217,10 @@ public class PlayerFragment extends BaseFragment {
         public void showPlayList() {
             ToastUtils.showShortToast(getApplicationContext(), getString(R.string.unfinished));
         }
+
+        //TODO tip 8: 此处演示使用 "唯一可信源" MVI-Dispatcher input-output 接口完成消息收发
+
+        //如这么说无体会，详见《领域层设计》篇拆解 https://juejin.cn/post/7117498113983512589
 
         public void slideDown() {
             mMessenger.input(new Messages(Messages.EVENT_CLOSE_SLIDE_PANEL_IF_EXPANDED));
