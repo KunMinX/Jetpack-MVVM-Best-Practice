@@ -52,7 +52,7 @@ public class DownloadRequester extends MviDispatcher<DownloadEvent> {
     private boolean pageStopped;
 
     @Override
-    public void input(DownloadEvent event) {
+    protected void onHandle(DownloadEvent event) {
         switch (event.eventId) {
             case DownloadEvent.EVENT_DOWNLOAD:
                 DataRepository.getInstance().downloadFile(event.result.downloadState, dataResult -> {

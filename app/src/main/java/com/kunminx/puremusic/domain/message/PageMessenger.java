@@ -18,7 +18,7 @@ import com.kunminx.puremusic.domain.event.Messages;
  */
 public class PageMessenger extends MviDispatcher<Messages> {
     @Override
-    public void input(Messages event) {
+    protected void onHandle(Messages event) {
 
       /* TODO 于唯一可信源中统一鉴权处理业务逻辑，并通过 sendResult 回推结果至表现层
 
