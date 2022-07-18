@@ -24,9 +24,6 @@ import com.kunminx.architecture.utils.Utils;
  * Create by KunMinX at 18/9/28
  */
 public class Configs {
-
     public static final String COVER_PATH = Utils.getApp().getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-
     public static final String TOKEN = "token";
-
 }
