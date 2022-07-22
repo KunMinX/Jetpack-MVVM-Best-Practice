@@ -47,7 +47,7 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
     implementation project(":architecture")
     implementation "org.jetbrains:annotations:23.0.0"
-    implementation "com.kunminx.player:player:3.7.0"
+    implementation 'com.github.KunMinX:Jetpack-MusicPlayer:v3.7.0'
 
     testImplementation "junit:junit:4.13.2"
     androidTestImplementation "androidx.test.ext:junit:1.1.3"
@@ -57,14 +57,12 @@ dependencies {
     implementation "com.google.android.material:material:1.6.1"
     implementation "androidx.recyclerview:recyclerview:1.2.1"
 
-    implementation "com.kunminx.arch:binding-recyclerview:3.9.0-beta1"
+    implementation 'com.github.KunMinX.Strict-DataBinding:binding_recyclerview:v5.2.0'
+    implementation 'com.github.KunMinX:KeyValueX:v2.1.0-beta'
 
     implementation "org.slf4j:slf4j-android:1.7.36"
-
     implementation "com.github.bumptech.glide:glide:4.13.2"
-
     implementation "com.google.code.gson:gson:2.9.0"
-
     implementation "com.sothree.slidinguppanel:library:3.4.0"
 
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
