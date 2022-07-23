@@ -58,7 +58,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:1.2.1"
 
     implementation 'com.github.KunMinX.Strict-DataBinding:binding_recyclerview:v5.2.0'
-    implementation 'com.github.KunMinX:KeyValueX:v2.1.0-beta'
+    implementation 'com.github.KunMinX.KeyValueX:keyvalue:2.2.4-beta'
 
     implementation "org.slf4j:slf4j-android:1.7.36"
     implementation "com.github.bumptech.glide:glide:4.13.2"
