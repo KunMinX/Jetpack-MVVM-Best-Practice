@@ -35,8 +35,8 @@ import com.kunminx.player.PlayingInfoManager;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.databinding.FragmentPlayerBinding;
-import com.kunminx.puremusic.domain.message.DrawerCoordinateManager;
 import com.kunminx.puremusic.domain.event.Messages;
+import com.kunminx.puremusic.domain.message.DrawerCoordinateManager;
 import com.kunminx.puremusic.domain.message.PageMessenger;
 import com.kunminx.puremusic.player.PlayerManager;
 import com.kunminx.puremusic.ui.page.helper.DefaultInterface;
@@ -44,6 +44,8 @@ import com.kunminx.puremusic.ui.view.PlayerSlideListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
+
+import java.util.Objects;
 
 /**
  * Create by KunMinX at 19/10/29
@@ -95,7 +97,8 @@ public class PlayerFragment extends BaseFragment {
                 case Messages.EVENT_ADD_SLIDE_LISTENER:
                     if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {
                         SlidingUpPanelLayout sliding = (SlidingUpPanelLayout) view.getParent().getParent();
-                        sliding.addPanelSlideListener(mListener = new PlayerSlideListener((FragmentPlayerBinding) getBinding(), sliding));
+                        mListener = new PlayerSlideListener((FragmentPlayerBinding) getBinding(), sliding);
+                        sliding.addPanelSlideListener(mListener);
                         sliding.addPanelSlideListener(new DefaultInterface.PanelSlideListener() {
                             @Override
                             public void onPanelStateChanged(
@@ -256,7 +259,7 @@ public class PlayerFragment extends BaseFragment {
 
         public final State<String> coverImg = new State<>("");
 
-        public final State<Drawable> placeHolder = new State<>(ContextCompat.getDrawable(Utils.getApp(), R.drawable.bg_album_default));
+        public final State<Drawable> placeHolder = new State<>(Objects.requireNonNull(ContextCompat.getDrawable(Utils.getApp(), R.drawable.bg_album_default)));
 
         public final State<Integer> maxSeekDuration = new State<>(0);
 
