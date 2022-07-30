@@ -97,6 +97,12 @@ public class PlayerFragment extends BaseFragment {
                 case Messages.EVENT_ADD_SLIDE_LISTENER:
                     if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {
                         SlidingUpPanelLayout sliding = (SlidingUpPanelLayout) view.getParent().getParent();
+
+                        //TODO tip 9: 警惕使用。非必要情况下，尽可能不在子类中拿到 binding 实例乃至获取 view 实例。使用即埋下隐患。
+                        // 目前方案是于 debug 模式，对获取实例情况给予提示。
+
+                        // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
+
                         mListener = new PlayerSlideListener((FragmentPlayerBinding) getBinding(), sliding);
                         sliding.addPanelSlideListener(mListener);
                         sliding.addPanelSlideListener(new DefaultInterface.PanelSlideListener() {
