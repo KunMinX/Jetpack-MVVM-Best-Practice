@@ -33,6 +33,10 @@
             name="vm"
             type="com.kunminx.puremusic.ui.page.PlayerFragment.PlayerViewModel" />
 
+        <variable
+            name="panelVm"
+            type="com.kunminx.puremusic.ui.view.PlayerSlideListener.SlideAnimatorStates" />
+
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -45,6 +49,7 @@
             android:id="@+id/album_art"
             imageUrl="@{vm.coverImg}"
             placeHolder="@{vm.placeHolder}"
+            size="@{panelVm.albumArtSize}"
             android:layout_width="@dimen/sliding_up_header"
             android:layout_height="@dimen/sliding_up_header"
             android:scaleType="centerCrop"
@@ -52,12 +57,12 @@
 
         <RelativeLayout
             android:id="@+id/custom_toolbar"
+            invisible="@{panelVm.customToolbarVisibility}"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_gravity="top"
             android:layout_marginTop="37dp"
-            android:orientation="horizontal"
-            android:visibility="invisible">
+            android:orientation="horizontal">
 
             <net.steamcrafted.materialiconlib.MaterialIconView
                 android:id="@+id/btn_close"
@@ -91,6 +96,7 @@
 
         <LinearLayout
             android:id="@+id/summary"
+            transY="@{panelVm.summaryTranslationY}"
             android:layout_width="match_parent"
             android:layout_height="@dimen/sliding_up_header"
             android:layout_gravity="top"
@@ -100,6 +106,7 @@
             <ProgressBar
                 android:id="@+id/song_progress_normal"
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                invisible="@{panelVm.songProgressNormalVisibility}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
@@ -112,6 +119,7 @@
             <TextView
                 android:id="@+id/title"
                 style="@style/TextAppearance.AppCompat.Body1"
+                transX="@{panelVm.titleTranslationX}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
@@ -125,6 +133,8 @@
             <TextView
                 android:id="@+id/artist"
                 style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle"
+                transX="@{panelVm.artistTranslationX}"
+                transY="@{panelVm.artistTranslationY}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
@@ -140,6 +150,7 @@
 
         <RelativeLayout
             android:id="@+id/icon_container"
+            y="@{panelVm.iconContainerY}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
@@ -147,6 +158,7 @@
 
             <net.steamcrafted.materialiconlib.MaterialIconView
                 android:id="@+id/next"
+                x="@{panelVm.nextX}"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_alignParentEnd="true"
@@ -162,6 +174,7 @@
                 android:id="@+id/play_pause"
                 isPlaying="@{vm.isPlaying}"
                 onClickWithDebouncing="@{()->click.togglePlay()}"
+                x="@{panelVm.playPauseX}"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_marginEnd="16dp"
@@ -169,11 +182,16 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
+                app:circleAlpha="@{panelVm.playCircleAlpha}"
+                app:drawableColor="@{panelVm.playPauseDrawableColor}"
                 playpauseview:circleAlpha="0"
                 playpauseview:isCircleDraw="true" />
 
             <net.steamcrafted.materialiconlib.MaterialIconView
                 android:id="@+id/previous"
+                alpha="@{panelVm.previousAlpha}"
+                visible="@{panelVm.previousVisibility}"
+                x="@{panelVm.previousX}"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_alignParentTop="true"
@@ -189,7 +207,10 @@
 
             <net.steamcrafted.materialiconlib.MaterialIconView
                 android:id="@+id/mode"
+                alpha="@{panelVm.modeAlpha}"
                 mdIcon="@{vm.playModeIcon}"
+                visible="@{panelVm.modeVisibility}"
+                x="@{panelVm.modeX}"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_marginEnd="16dp"
@@ -203,6 +224,7 @@
 
             <net.steamcrafted.materialiconlib.MaterialIconView
                 android:id="@+id/ic_play_list"
+                x="@{panelVm.icPlayListX}"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_marginStart="16dp"
