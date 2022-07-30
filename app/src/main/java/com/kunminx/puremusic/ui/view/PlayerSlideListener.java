@@ -172,6 +172,11 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
         return artistBounds.width();
     }
 
+    /**
+     * TODO tip：使用 ObservableField 视图绑定，尽可能减少 View 实例 Null 安全一致性问题
+     * <p>
+     *  如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
+     */
     public static class SlideAnimatorStates extends ViewModel {
         public State<Float> titleTranslationX = new State<>(0f);
         public State<Float> artistTranslationX = new State<>(0f);
