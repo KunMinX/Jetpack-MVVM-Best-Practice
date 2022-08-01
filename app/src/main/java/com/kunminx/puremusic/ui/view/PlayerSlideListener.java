@@ -173,7 +173,7 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
     }
 
     /**
-     * TODO tip：使用 ObservableField 视图绑定，尽可能减少 View 实例 Null 安全一致性问题
+     * TODO tip：使用 ObservableField 绑定，尽可能减少 View 实例 Null 安全一致性问题
      * <p>
      *  如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
      */
