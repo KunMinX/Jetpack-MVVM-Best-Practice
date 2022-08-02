@@ -44,7 +44,7 @@ dependencies {
     api 'com.github.KunMinX:UnPeek-LiveData:v7.6.0'
     api 'com.github.KunMinX:Smooth-Navigation:v4.0.0'
     api 'com.github.KunMinX.Strict-DataBinding:strict_databinding:5.3.0'
-    api('com.github.KunMinX:MVI-Dispatcher:v6.0.0-beta') {
+    api('com.github.KunMinX:MVI-Dispatcher:6.1.0-beta') {
         exclude group: 'com.kunminx.arch', module: 'unpeek-livedata'
     }
 }
