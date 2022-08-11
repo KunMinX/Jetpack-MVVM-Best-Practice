@@ -21,10 +21,10 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModel;
 
 import com.kunminx.architecture.ui.page.BaseFragment;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
+import com.kunminx.architecture.ui.page.StateHolder;
 import com.kunminx.architecture.ui.state.State;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
@@ -112,7 +112,7 @@ public class DrawerFragment extends BaseFragment {
 
     //如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350
 
-    public static class DrawerStates extends ViewModel {
+    public static class DrawerStates extends StateHolder {
 
         //TODO tip 6：此处我们使用 "去除防抖特性" 的 ObservableField 子类 State，用以代替 MutableLiveData，
 

@@ -25,8 +25,7 @@ import android.util.Pair;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.lifecycle.ViewModel;
-
+import com.kunminx.architecture.ui.page.StateHolder;
 import com.kunminx.architecture.ui.state.State;
 import com.kunminx.architecture.utils.DisplayUtils;
 import com.kunminx.architecture.utils.ScreenUtils;
@@ -178,7 +177,7 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
      * <p>
      *  如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
      */
-    public static class SlideAnimatorStates extends ViewModel {
+    public static class SlideAnimatorStates extends StateHolder {
         public State<Float> titleTranslationX = new State<>(0f);
         public State<Float> artistTranslationX = new State<>(0f);
         public State<Float> artistTranslationY = new State<>(0f);
