@@ -102,6 +102,7 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
         mStates.albumArtSize.set(new Pair<>(tempImgSize, tempImgSize));
         mIconContainerEndY = SCREEN_HEIGHT - 3 * binding.iconContainer.getHeight() - binding.seekBottom.getHeight();
         mStates.playPauseDrawableColor.set(PLAY_PAUSE_DRAWABLE_COLOR);
+        mStates.playCircleAlpha.set(INT_EVALUATOR.evaluate(0, 0, 255));
         mStates.nextX.set(mNextStartX);
         mStates.playPauseX.set(mPlayPauseStartX);
         mStates.iconContainerY.set(mIconContainerStartY);
