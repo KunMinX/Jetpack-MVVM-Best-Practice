@@ -44,13 +44,13 @@ public class SearchFragment extends BaseFragment {
 
     // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/8204519736
 
-    private SearchViewModel mStates;
+    private SearchStates mStates;
     private DownloadRequester mDownloadRequester;
     private DownloadRequester mGlobalDownloadRequester;
 
     @Override
     protected void initViewModel() {
-        mStates = getFragmentScopeViewModel(SearchViewModel.class);
+        mStates = getFragmentScopeViewModel(SearchStates.class);
         mDownloadRequester = getFragmentScopeViewModel(DownloadRequester.class);
         mGlobalDownloadRequester = getActivityScopeViewModel(DownloadRequester.class);
     }
@@ -145,7 +145,7 @@ public class SearchFragment extends BaseFragment {
 
     //如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350
 
-    public static class SearchViewModel extends ViewModel {
+    public static class SearchStates extends ViewModel {
 
         //TODO tip 7：此处我们使用 "去除防抖特性" 的 ObservableField 子类 State，用以代替 MutableLiveData，
 

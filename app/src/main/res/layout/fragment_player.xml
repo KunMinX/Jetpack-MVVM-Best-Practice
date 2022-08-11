@@ -31,7 +31,7 @@
 
         <variable
             name="vm"
-            type="com.kunminx.puremusic.ui.page.PlayerFragment.PlayerViewModel" />
+            type="com.kunminx.puremusic.ui.page.PlayerFragment.PlayerStates" />
 
         <variable
             name="panelVm"

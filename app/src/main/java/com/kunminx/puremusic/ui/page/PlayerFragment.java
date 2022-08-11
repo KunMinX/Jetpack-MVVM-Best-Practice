@@ -18,7 +18,6 @@ package com.kunminx.puremusic.ui.page;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.SeekBar;
 
@@ -59,14 +58,14 @@ public class PlayerFragment extends BaseFragment {
 
     // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/8204519736
 
-    private PlayerViewModel mStates;
+    private PlayerStates mStates;
     private PlayerSlideListener.SlideAnimatorStates mAnimatorStates;
     private PageMessenger mMessenger;
     private PlayerSlideListener mListener;
 
     @Override
     protected void initViewModel() {
-        mStates = getFragmentScopeViewModel(PlayerViewModel.class);
+        mStates = getFragmentScopeViewModel(PlayerStates.class);
         mAnimatorStates = getFragmentScopeViewModel(PlayerSlideListener.SlideAnimatorStates.class);
         mMessenger = getApplicationScopeViewModel(PageMessenger.class);
     }
@@ -257,7 +256,7 @@ public class PlayerFragment extends BaseFragment {
 
     //如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350
 
-    public static class PlayerViewModel extends ViewModel {
+    public static class PlayerStates extends ViewModel {
 
         //TODO tip 10：此处我们使用 "去除防抖特性" 的 ObservableField 子类 State，用以代替 MutableLiveData，
 
