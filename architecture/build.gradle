@@ -38,12 +38,12 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:1.1.3"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.4.0"
 
-    api "androidx.appcompat:appcompat:1.5.0"
+    api "androidx.appcompat:appcompat:1.4.2"
     api "androidx.navigation:navigation-runtime:$navigationVersion"
 
     api 'com.github.KunMinX:UnPeek-LiveData:v7.6.0'
     api 'com.github.KunMinX:Smooth-Navigation:v4.0.0'
-    api 'com.github.KunMinX.Strict-DataBinding:strict_databinding:5.3.0'
+    api 'com.github.KunMinX.Strict-DataBinding:strict_databinding:5.4.0'
     api('com.github.KunMinX:MVI-Dispatcher:6.1.0-beta') {
         exclude group: 'com.kunminx.arch', module: 'unpeek-livedata'
     }

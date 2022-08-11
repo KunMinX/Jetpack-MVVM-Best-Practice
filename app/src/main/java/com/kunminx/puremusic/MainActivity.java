@@ -26,9 +26,9 @@ import androidx.navigation.Navigation;
 
 import com.kunminx.architecture.ui.page.BaseActivity;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
-import com.kunminx.architecture.ui.page.State;
-import com.kunminx.puremusic.domain.message.DrawerCoordinateManager;
+import com.kunminx.architecture.ui.state.State;
 import com.kunminx.puremusic.domain.event.Messages;
+import com.kunminx.puremusic.domain.message.DrawerCoordinateManager;
 import com.kunminx.puremusic.domain.message.PageMessenger;
 
 /**

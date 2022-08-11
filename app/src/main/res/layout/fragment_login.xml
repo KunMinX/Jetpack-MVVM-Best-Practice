@@ -64,7 +64,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
-        <EditText
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et_name"
             drawable_radius="@{12}"
             drawable_strokeColor="@{0xffeeeeee}"
@@ -83,7 +83,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_content" />
 
-        <EditText
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et_pwd"
             drawable_radius="@{12}"
             drawable_strokeColor="@{0xffeeeeee}"

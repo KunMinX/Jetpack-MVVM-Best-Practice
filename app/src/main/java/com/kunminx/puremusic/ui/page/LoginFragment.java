@@ -26,7 +26,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.kunminx.architecture.ui.page.BaseFragment;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
-import com.kunminx.architecture.ui.page.State;
+import com.kunminx.architecture.ui.state.State;
 import com.kunminx.architecture.utils.SPUtils;
 import com.kunminx.architecture.utils.ToastUtils;
 import com.kunminx.puremusic.BR;
