@@ -1,5 +1,5 @@
 
-package com.kunminx.puremusic.ui.bind;
+package com.kunminx.architecture.ui.bind;
 
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;

@@ -57,9 +57,8 @@ dependencies {
     implementation "com.google.android.material:material:1.6.1"
     implementation "androidx.recyclerview:recyclerview:1.2.1"
 
-    implementation 'com.github.KunMinX.Strict-DataBinding:binding_recyclerview:5.4.0'
-    implementation 'com.github.KunMinX.Strict-DataBinding:binding_state:5.4.0'
-    compileOnly 'com.github.KunMinX.KeyValueX:keyvalue:2.2.5-beta'
+    implementation 'com.github.KunMinX.Strict-DataBinding:binding_recyclerview:5.6.0'
+    implementation 'com.github.KunMinX.KeyValueX:keyvalue:2.2.7-beta'
 
     implementation "org.slf4j:slf4j-android:1.7.36"
     implementation "com.github.bumptech.glide:glide:4.13.2"
