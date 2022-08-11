@@ -31,7 +31,6 @@ import com.kunminx.architecture.ui.page.DataBindingConfig;
 import com.kunminx.architecture.ui.state.State;
 import com.kunminx.architecture.utils.ToastUtils;
 import com.kunminx.architecture.utils.Utils;
-import com.kunminx.player.PlayingInfoManager;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.databinding.FragmentPlayerBinding;
@@ -182,24 +181,8 @@ public class PlayerFragment extends BaseFragment {
             mStates.isPlaying.set(!aBoolean);
         });
 
-        PlayerManager.getInstance().getPlayModeResult().observe(getViewLifecycleOwner(), anEnum -> {
-            int tip;
-            if (anEnum == PlayingInfoManager.RepeatMode.LIST_CYCLE) {
-                mStates.playModeIcon.set(MaterialDrawableBuilder.IconValue.REPEAT);
-                tip = R.string.play_repeat;
-            } else if (anEnum == PlayingInfoManager.RepeatMode.SINGLE_CYCLE) {
-                mStates.playModeIcon.set(MaterialDrawableBuilder.IconValue.REPEAT_ONCE);
-                tip = R.string.play_repeat_once;
-            } else {
-                mStates.playModeIcon.set(MaterialDrawableBuilder.IconValue.SHUFFLE);
-                tip = R.string.play_shuffle;
-            }
-            if (view.getParent().getParent() instanceof SlidingUpPanelLayout) {
-                SlidingUpPanelLayout sliding = (SlidingUpPanelLayout) view.getParent().getParent();
-                if (sliding.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
-                    ToastUtils.showShortToast(getApplicationContext(), getString(tip));
-                }
-            }
+        PlayerManager.getInstance().getPlayModeResult().observe(getViewLifecycleOwner(), mode -> {
+            mStates.playModeIcon.set(PlayerManager.getInstance().getModeIcon(mode));
         });
     }
 
@@ -243,7 +226,6 @@ public class PlayerFragment extends BaseFragment {
     }
 
     public static class ListenerHandler implements DefaultInterface.OnSeekBarChangeListener {
-
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
             PlayerManager.getInstance().setSeek(seekBar.getProgress());
@@ -276,17 +258,6 @@ public class PlayerFragment extends BaseFragment {
 
         public final State<Boolean> isPlaying = new State<>(false, true);
 
-        public final State<MaterialDrawableBuilder.IconValue> playModeIcon = new State<>(MaterialDrawableBuilder.IconValue.REPEAT);
-
-        {
-            if (PlayerManager.getInstance().getRepeatMode() == PlayingInfoManager.RepeatMode.LIST_CYCLE) {
-                playModeIcon.set(MaterialDrawableBuilder.IconValue.REPEAT);
-            } else if (PlayerManager.getInstance().getRepeatMode() == PlayingInfoManager.RepeatMode.SINGLE_CYCLE) {
-                playModeIcon.set(MaterialDrawableBuilder.IconValue.REPEAT_ONCE);
-            } else {
-                playModeIcon.set(MaterialDrawableBuilder.IconValue.SHUFFLE);
-            }
-        }
+        public final State<MaterialDrawableBuilder.IconValue> playModeIcon = new State<>(PlayerManager.getInstance().getModeIcon());
     }
-
 }

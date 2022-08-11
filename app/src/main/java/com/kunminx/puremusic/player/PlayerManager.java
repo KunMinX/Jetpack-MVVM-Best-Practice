@@ -33,6 +33,8 @@ import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.player.helper.PlayerFileNameGenerator;
 import com.kunminx.puremusic.player.notification.PlayerService;
 
+import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -218,5 +220,19 @@ public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestM
     @Override
     public TestAlbum.TestMusic getCurrentPlayingMusic() {
         return mController.getCurrentPlayingMusic();
+    }
+
+    public MaterialDrawableBuilder.IconValue getModeIcon(Enum<PlayingInfoManager.RepeatMode> mode) {
+        if (mode == PlayingInfoManager.RepeatMode.LIST_CYCLE) {
+            return MaterialDrawableBuilder.IconValue.REPEAT;
+        } else if (mode == PlayingInfoManager.RepeatMode.SINGLE_CYCLE) {
+            return MaterialDrawableBuilder.IconValue.REPEAT_ONCE;
+        } else {
+            return MaterialDrawableBuilder.IconValue.SHUFFLE;
+        }
+    }
+
+    public MaterialDrawableBuilder.IconValue getModeIcon() {
+        return getModeIcon(getRepeatMode());
     }
 }
