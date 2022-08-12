@@ -27,6 +27,7 @@ import com.kunminx.architecture.ui.page.BaseFragment;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
 import com.kunminx.architecture.ui.page.StateHolder;
 import com.kunminx.architecture.ui.state.State;
+import com.kunminx.player.domain.PlayerEvent;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.TestAlbum;
@@ -89,12 +90,14 @@ public class MainFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 
         // TODO tip 3：所有播放状态的改变，皆来自 "唯一可信源" PlayerManager 统一分发，
-        //  如此才能确保 "消息分发可靠一致"，避免不可预期的推送和错误。
+        //  确保 "消息分发可靠一致"，避免不可预期推送和错误。
 
-        // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/0168753249
+        // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/6017825943 & https://juejin.cn/post/7117498113983512589
 
-        PlayerManager.getInstance().getChangeMusicResult().observe(getViewLifecycleOwner(), changeMusic -> {
-            mAdapter.notifyDataSetChanged();
+        PlayerManager.getInstance().getDispatcher().output(this, playerEvent -> {
+            if (playerEvent.eventId == PlayerEvent.EVENT_CHANGE_MUSIC) {
+                mAdapter.notifyDataSetChanged();
+            }
         });
 
         //TODO tip 4:

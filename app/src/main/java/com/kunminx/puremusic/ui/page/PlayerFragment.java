@@ -31,6 +31,8 @@ import com.kunminx.architecture.ui.page.StateHolder;
 import com.kunminx.architecture.ui.state.State;
 import com.kunminx.architecture.utils.ToastUtils;
 import com.kunminx.architecture.utils.Utils;
+import com.kunminx.player.PlayingInfoManager;
+import com.kunminx.player.domain.PlayerEvent;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.databinding.FragmentPlayerBinding;
@@ -151,38 +153,31 @@ public class PlayerFragment extends BaseFragment {
             }
         });
 
-        // TODO tip 3：所有播放状态的改变，皆来自 "唯一可信源" PlayerManager 统一分发，
-        //  如此才能确保 "消息分发可靠一致"，避免不可预期的推送和错误。
+        // TODO tip 3：所有播放状态的改变，皆来自 "唯一可信源" PlayerInfoDispatcher 统一分发，
+        //  确保 "消息分发可靠一致"，避免不可预期推送和错误。
 
-        // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/0168753249
+        // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/6017825943 & https://juejin.cn/post/7117498113983512589
 
-        PlayerManager.getInstance().getChangeMusicResult().observe(getViewLifecycleOwner(), changeMusic -> {
-
-            // 切歌时，音乐的标题、作者、封面 状态的改变
-            mStates.title.set(changeMusic.getTitle());
-            mStates.artist.set(changeMusic.getSummary());
-            mStates.coverImg.set(changeMusic.getImg());
-
-            if (mListener != null) {
-                view.post(mListener::calculateTitleAndArtist);
+        PlayerManager.getInstance().getDispatcher().output(this, playerEvent -> {
+            switch (playerEvent.eventId) {
+                case PlayerEvent.EVENT_CHANGE_MUSIC:
+                    mStates.title.set(playerEvent.param.changeMusic.getTitle());
+                    mStates.artist.set(playerEvent.param.changeMusic.getSummary());
+                    mStates.coverImg.set(playerEvent.param.changeMusic.getImg());
+                    if (mListener != null) view.post(mListener::calculateTitleAndArtist);
+                    break;
+                case PlayerEvent.EVENT_PROGRESS:
+                    mStates.maxSeekDuration.set(playerEvent.param.playingMusic.getDuration());
+                    mStates.currentSeekPosition.set(playerEvent.param.playingMusic.getPlayerPosition());
+                    break;
+                case PlayerEvent.EVENT_PLAY_STATUS:
+                    mStates.isPlaying.set(!playerEvent.param.toPause);
+                    break;
+                case PlayerEvent.EVENT_REPEAT_MODE:
+                    Enum<PlayingInfoManager.RepeatMode> mode = playerEvent.param.repeatMode;
+                    mStates.playModeIcon.set(PlayerManager.getInstance().getModeIcon(mode));
+                    break;
             }
-        });
-
-        PlayerManager.getInstance().getPlayingMusicResult().observe(getViewLifecycleOwner(), playingMusic -> {
-
-            // 播放进度 状态的改变
-            mStates.maxSeekDuration.set(playingMusic.getDuration());
-            mStates.currentSeekPosition.set(playingMusic.getPlayerPosition());
-        });
-
-        PlayerManager.getInstance().getPauseResult().observe(getViewLifecycleOwner(), aBoolean -> {
-
-            // 播放按钮 状态的改变
-            mStates.isPlaying.set(!aBoolean);
-        });
-
-        PlayerManager.getInstance().getPlayModeResult().observe(getViewLifecycleOwner(), mode -> {
-            mStates.playModeIcon.set(PlayerManager.getInstance().getModeIcon(mode));
         });
     }
 
