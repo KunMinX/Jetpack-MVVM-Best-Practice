@@ -178,24 +178,24 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
      *  如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
      */
     public static class SlideAnimatorStates extends StateHolder {
-        public State<Float> titleTranslationX = new State<>(0f);
-        public State<Float> artistTranslationX = new State<>(0f);
-        public State<Float> artistTranslationY = new State<>(0f);
-        public State<Float> summaryTranslationY = new State<>(0f);
-        public State<Integer> playPauseX = new State<>(0);
-        public State<Integer> playCircleAlpha = new State<>(0);
-        public State<Integer> playPauseDrawableColor = new State<>(0);
-        public State<Integer> previousX = new State<>(0);
-        public State<Integer> modeX = new State<>(0);
-        public State<Integer> nextX = new State<>(0);
-        public State<Integer> icPlayListX = new State<>(0);
-        public State<Float> modeAlpha = new State<>(0f);
-        public State<Float> previousAlpha = new State<>(0f);
-        public State<Integer> iconContainerY = new State<>(0);
-        public State<Boolean> songProgressNormalVisibility = new State<>(false);
-        public State<Boolean> modeVisibility = new State<>(false);
-        public State<Boolean> previousVisibility = new State<>(false);
-        public State<Boolean> customToolbarVisibility = new State<>(false);
-        public State<Pair<Integer, Integer>> albumArtSize = new State<>(new Pair<>(0, 0));
+        public final State<Float> titleTranslationX = new State<>(0f);
+        public final State<Float> artistTranslationX = new State<>(0f);
+        public final State<Float> artistTranslationY = new State<>(0f);
+        public final State<Float> summaryTranslationY = new State<>(0f);
+        public final State<Integer> playPauseX = new State<>(0);
+        public final State<Integer> playCircleAlpha = new State<>(0);
+        public final State<Integer> playPauseDrawableColor = new State<>(0);
+        public final State<Integer> previousX = new State<>(0);
+        public final State<Integer> modeX = new State<>(0);
+        public final State<Integer> nextX = new State<>(0);
+        public final State<Integer> icPlayListX = new State<>(0);
+        public final State<Float> modeAlpha = new State<>(0f);
+        public final State<Float> previousAlpha = new State<>(0f);
+        public final State<Integer> iconContainerY = new State<>(0);
+        public final State<Boolean> songProgressNormalVisibility = new State<>(false);
+        public final State<Boolean> modeVisibility = new State<>(false);
+        public final State<Boolean> previousVisibility = new State<>(false);
+        public final State<Boolean> customToolbarVisibility = new State<>(false);
+        public final State<Pair<Integer, Integer>> albumArtSize = new State<>(new Pair<>(0, 0));
     }
 }
