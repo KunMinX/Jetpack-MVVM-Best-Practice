@@ -23,11 +23,11 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.kunminx.architecture.data.config.utils.KeyValueProvider;
 import com.kunminx.architecture.ui.page.BaseFragment;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
 import com.kunminx.architecture.ui.page.StateHolder;
 import com.kunminx.architecture.ui.state.State;
-import com.kunminx.architecture.utils.SPUtils;
 import com.kunminx.architecture.utils.ToastUtils;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
@@ -49,6 +49,7 @@ public class LoginFragment extends BaseFragment {
 
     private LoginStates mStates;
     private AccountRequester mAccountRequester;
+    private final Configs mConfigs = KeyValueProvider.get(Configs.class);
 
     @Override
     protected void initViewModel() {
@@ -103,7 +104,7 @@ public class LoginFragment extends BaseFragment {
             String s = dataResult.getResult();
             if (TextUtils.isEmpty(s)) return;
 
-            SPUtils.getInstance().put(Configs.TOKEN, s);
+            mConfigs.token().set(s);
             mStates.loadingVisible.set(false);
 
             //TODO 登录成功后进行的下一步操作...

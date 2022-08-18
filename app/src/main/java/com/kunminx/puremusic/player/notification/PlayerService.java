@@ -39,7 +39,7 @@ import com.kunminx.architecture.utils.ImageUtils;
 import com.kunminx.puremusic.MainActivity;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.TestAlbum;
-import com.kunminx.puremusic.data.config.Configs;
+import com.kunminx.puremusic.data.config.Const;
 import com.kunminx.puremusic.domain.usecase.DownloadUseCase;
 import com.kunminx.puremusic.player.PlayerManager;
 
@@ -58,7 +58,6 @@ public class PlayerService extends Service {
     private static final String GROUP_ID = "group_001";
     private static final String CHANNEL_ID = "channel_001";
     private DownloadUseCase mDownloadUseCase;
-
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -136,7 +135,7 @@ public class PlayerService extends Service {
             notification.bigContentView.setTextViewText(R.id.player_author_name, summary);
             notification.flags |= Notification.FLAG_ONGOING_EVENT;
 
-            String coverPath = Configs.COVER_PATH + File.separator + testMusic.getMusicId() + ".jpg";
+            String coverPath = Const.COVER_PATH + File.separator + testMusic.getMusicId() + ".jpg";
             Bitmap bitmap = ImageUtils.getBitmap(coverPath);
 
             if (bitmap != null) {
