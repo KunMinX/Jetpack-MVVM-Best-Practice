@@ -29,6 +29,7 @@ import com.kunminx.architecture.ui.state.State;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.LibraryInfo;
+import com.kunminx.puremusic.data.config.Const;
 import com.kunminx.puremusic.domain.request.InfoRequester;
 import com.kunminx.puremusic.ui.page.adapter.DrawerAdapter;
 
@@ -102,7 +103,7 @@ public class DrawerFragment extends BaseFragment {
     public class ClickProxy {
 
         public void logoClick() {
-            openUrlInBrowser(getString(R.string.github_project));
+            openUrlInBrowser(Const.PROJECT_LINK);
         }
     }
 

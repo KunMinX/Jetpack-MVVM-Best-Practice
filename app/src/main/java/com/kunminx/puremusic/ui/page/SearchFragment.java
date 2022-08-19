@@ -29,6 +29,7 @@ import com.kunminx.architecture.ui.state.State;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.DownloadState;
+import com.kunminx.puremusic.data.config.Const;
 import com.kunminx.puremusic.domain.event.DownloadEvent;
 import com.kunminx.puremusic.domain.message.DrawerCoordinateManager;
 import com.kunminx.puremusic.domain.request.DownloadRequester;
@@ -117,11 +118,11 @@ public class SearchFragment extends BaseFragment {
         }
 
         public void testNav() {
-            openUrlInBrowser(getString(R.string.article_navigation));
+            openUrlInBrowser(Const.COLUMN_LINK);
         }
 
         public void subscribe() {
-            openUrlInBrowser(getString(R.string.article_navigation));
+            openUrlInBrowser(Const.COLUMN_LINK);
         }
 
         //TODO tip 8: 此处演示使用 "唯一可信源" MVI-Dispatcher input-output 接口完成数据请求响应
