@@ -73,7 +73,10 @@ public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestM
 
     @Override
     public void loadAlbum(TestAlbum musicAlbum) {
-        mController.loadAlbum(musicAlbum);
+        TestAlbum album = mController.getAlbum();
+        if (album == null || !album.getAlbumId().equals(musicAlbum.getAlbumId())) {
+            mController.loadAlbum(musicAlbum);
+        }
     }
 
     @Override

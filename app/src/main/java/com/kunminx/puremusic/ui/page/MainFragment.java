@@ -120,19 +120,11 @@ public class MainFragment extends BaseFragment {
 
             if (musicAlbum != null && musicAlbum.getMusics() != null) {
                 mStates.list.set(musicAlbum.getMusics());
-
-                if (PlayerManager.getInstance().getAlbum() == null ||
-                    !PlayerManager.getInstance().getAlbum().getAlbumId().equals(musicAlbum.getAlbumId())) {
-                    PlayerManager.getInstance().loadAlbum(musicAlbum);
-                }
+                PlayerManager.getInstance().loadAlbum(musicAlbum);
             }
         });
 
-        if (PlayerManager.getInstance().getAlbum() == null) {
-            mMusicRequester.requestFreeMusics();
-        } else {
-            mStates.list.set(PlayerManager.getInstance().getAlbum().getMusics());
-        }
+        if (PlayerManager.getInstance().getAlbum() == null) mMusicRequester.requestFreeMusics();
     }
 
     // TODO tip 7：此处通过 DataBinding 规避 setOnClickListener 时存在的 View 实例 Null 安全一致性问题，
