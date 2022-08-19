@@ -3,8 +3,6 @@ package com.kunminx.puremusic.domain.event;
 import com.kunminx.architecture.domain.event.Event;
 import com.kunminx.puremusic.data.bean.DownloadState;
 
-import io.reactivex.disposables.Disposable;
-
 /**
  * Create by KunMinX at 2022/7/4
  */

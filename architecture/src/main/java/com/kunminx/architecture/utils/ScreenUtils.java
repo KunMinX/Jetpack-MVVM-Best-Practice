@@ -1,5 +1,7 @@
 package com.kunminx.architecture.utils;
 
+import static android.Manifest.permission.WRITE_SETTINGS;
+
 import android.annotation.SuppressLint;
 import android.app.KeyguardManager;
 import android.content.Context;
@@ -18,8 +20,6 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
-
-import static android.Manifest.permission.WRITE_SETTINGS;
 
 /**
  * <pre>
@@ -105,10 +105,10 @@ public final class ScreenUtils {
         Window window = activity.getWindow();
         if ((window.getAttributes().flags & fullScreenFlag) == fullScreenFlag) {
             window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN
-                    | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+                | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         } else {
             window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN
-                    | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+                | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
     }
 
@@ -130,7 +130,7 @@ public final class ScreenUtils {
      */
     public static boolean isLandscape() {
         return Utils.getApp().getResources().getConfiguration().orientation
-                == Configuration.ORIENTATION_LANDSCAPE;
+            == Configuration.ORIENTATION_LANDSCAPE;
     }
 
     /**
@@ -149,7 +149,7 @@ public final class ScreenUtils {
      */
     public static boolean isPortrait() {
         return Utils.getApp().getResources().getConfiguration().orientation
-                == Configuration.ORIENTATION_PORTRAIT;
+            == Configuration.ORIENTATION_PORTRAIT;
     }
 
     /**
@@ -214,11 +214,11 @@ public final class ScreenUtils {
             int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
             int statusBarHeight = resources.getDimensionPixelSize(resourceId);
             ret = Bitmap.createBitmap(
-                    bmp,
-                    0,
-                    statusBarHeight,
-                    dm.widthPixels,
-                    dm.heightPixels - statusBarHeight
+                bmp,
+                0,
+                statusBarHeight,
+                dm.widthPixels,
+                dm.heightPixels - statusBarHeight
             );
         } else {
             ret = Bitmap.createBitmap(bmp, 0, 0, dm.widthPixels, dm.heightPixels);
@@ -234,7 +234,7 @@ public final class ScreenUtils {
      */
     public static boolean isScreenLock() {
         KeyguardManager km =
-                (KeyguardManager) Utils.getApp().getSystemService(Context.KEYGUARD_SERVICE);
+            (KeyguardManager) Utils.getApp().getSystemService(Context.KEYGUARD_SERVICE);
         return km.inKeyguardRestrictedInputMode();
     }
 
@@ -246,8 +246,8 @@ public final class ScreenUtils {
     public static int getSleepDuration() {
         try {
             return Settings.System.getInt(
-                    Utils.getApp().getContentResolver(),
-                    Settings.System.SCREEN_OFF_TIMEOUT
+                Utils.getApp().getContentResolver(),
+                Settings.System.SCREEN_OFF_TIMEOUT
             );
         } catch (Settings.SettingNotFoundException e) {
             e.printStackTrace();
@@ -264,9 +264,9 @@ public final class ScreenUtils {
     @RequiresPermission(WRITE_SETTINGS)
     public static void setSleepDuration(final int duration) {
         Settings.System.putInt(
-                Utils.getApp().getContentResolver(),
-                Settings.System.SCREEN_OFF_TIMEOUT,
-                duration
+            Utils.getApp().getContentResolver(),
+            Settings.System.SCREEN_OFF_TIMEOUT,
+            duration
         );
     }
 
@@ -277,7 +277,7 @@ public final class ScreenUtils {
      */
     public static boolean isTablet() {
         return (Utils.getApp().getResources().getConfiguration().screenLayout
-                & Configuration.SCREENLAYOUT_SIZE_MASK)
-                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+            & Configuration.SCREENLAYOUT_SIZE_MASK)
+            >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 }

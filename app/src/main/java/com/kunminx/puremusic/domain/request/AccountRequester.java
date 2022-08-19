@@ -23,8 +23,8 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModel;
 
 import com.kunminx.architecture.data.response.DataResult;
-import com.kunminx.architecture.domain.message.Result;
 import com.kunminx.architecture.domain.message.MutableResult;
+import com.kunminx.architecture.domain.message.Result;
 import com.kunminx.puremusic.data.bean.User;
 import com.kunminx.puremusic.data.repository.DataRepository;
 
@@ -59,8 +59,7 @@ import org.jetbrains.annotations.NotNull;
  * <p>
  * Create by KunMinX at 20/04/26
  */
-public class AccountRequester extends ViewModel
-    implements DefaultLifecycleObserver {
+public class AccountRequester extends ViewModel implements DefaultLifecycleObserver {
 
     //TODO tip 3：👆👆👆 让 accountRequest 可观察页面生命周期，
     // 从而在页面即将退出、且登录请求由于网络延迟尚未完成时，

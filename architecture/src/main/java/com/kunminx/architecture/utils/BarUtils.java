@@ -1,5 +1,7 @@
 package com.kunminx.architecture.utils;
 
+import static android.Manifest.permission.EXPAND_STATUS_BAR;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -24,8 +26,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import java.lang.reflect.Method;
-
-import static android.Manifest.permission.EXPAND_STATUS_BAR;
 
 /**
  * <pre>
@@ -174,9 +174,9 @@ public final class BarUtils {
         }
         MarginLayoutParams layoutParams = (MarginLayoutParams) view.getLayoutParams();
         layoutParams.setMargins(layoutParams.leftMargin,
-                layoutParams.topMargin + getStatusBarHeight(),
-                layoutParams.rightMargin,
-                layoutParams.bottomMargin);
+            layoutParams.topMargin + getStatusBarHeight(),
+            layoutParams.rightMargin,
+            layoutParams.bottomMargin);
         view.setTag(KEY_OFFSET, true);
     }
 
@@ -192,9 +192,9 @@ public final class BarUtils {
         }
         MarginLayoutParams layoutParams = (MarginLayoutParams) view.getLayoutParams();
         layoutParams.setMargins(layoutParams.leftMargin,
-                layoutParams.topMargin - getStatusBarHeight(),
-                layoutParams.rightMargin,
-                layoutParams.bottomMargin);
+            layoutParams.topMargin - getStatusBarHeight(),
+            layoutParams.rightMargin,
+            layoutParams.bottomMargin);
         view.setTag(KEY_OFFSET, false);
     }
 
@@ -275,8 +275,8 @@ public final class BarUtils {
         ViewGroup.LayoutParams layoutParams = fakeStatusBar.getLayoutParams();
         if (layoutParams == null) {
             layoutParams = new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    getStatusBarHeight()
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                getStatusBarHeight()
             );
             fakeStatusBar.setLayoutParams(layoutParams);
         } else {
@@ -333,8 +333,8 @@ public final class BarUtils {
                                             final int color,
                                             boolean isDecor) {
         ViewGroup parent = isDecor ?
-                (ViewGroup) activity.getWindow().getDecorView() :
-                (ViewGroup) activity.findViewById(android.R.id.content);
+            (ViewGroup) activity.getWindow().getDecorView() :
+            (ViewGroup) activity.findViewById(android.R.id.content);
         View fakeStatusBarView = parent.findViewWithTag(TAG_STATUS_BAR);
         if (fakeStatusBarView != null) {
             if (fakeStatusBarView.getVisibility() == View.GONE) {
@@ -374,7 +374,7 @@ public final class BarUtils {
                                             final int color) {
         View statusBarView = new View(activity);
         statusBarView.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, getStatusBarHeight()));
+            ViewGroup.LayoutParams.MATCH_PARENT, getStatusBarHeight()));
         statusBarView.setBackgroundColor(color);
         statusBarView.setTag(TAG_STATUS_BAR);
         return statusBarView;
@@ -406,7 +406,7 @@ public final class BarUtils {
         TypedValue tv = new TypedValue();
         if (Utils.getApp().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
             return TypedValue.complexToDimensionPixelSize(
-                    tv.data, Utils.getApp().getResources().getDisplayMetrics()
+                tv.data, Utils.getApp().getResources().getDisplayMetrics()
             );
         }
         return 0;
@@ -488,16 +488,16 @@ public final class BarUtils {
             final int id = child.getId();
             if (id != View.NO_ID) {
                 String resourceEntryName = Utils.getApp()
-                        .getResources()
-                        .getResourceEntryName(id);
+                    .getResources()
+                    .getResourceEntryName(id);
                 if ("navigationBarBackground".equals(resourceEntryName)) {
                     child.setVisibility(isVisible ? View.VISIBLE : View.INVISIBLE);
                 }
             }
         }
         final int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         if (isVisible) {
             decorView.setSystemUiVisibility(decorView.getSystemUiVisibility() & ~uiOptions);
         } else {
@@ -531,10 +531,10 @@ public final class BarUtils {
             final int id = child.getId();
             if (id != View.NO_ID) {
                 String resourceEntryName = Utils.getApp()
-                        .getResources()
-                        .getResourceEntryName(id);
+                    .getResources()
+                    .getResourceEntryName(id);
                 if ("navigationBarBackground".equals(resourceEntryName)
-                        && child.getVisibility() == View.VISIBLE) {
+                    && child.getVisibility() == View.VISIBLE) {
                     isVisible = true;
                     break;
                 }

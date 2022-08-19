@@ -1,7 +1,6 @@
 package com.kunminx.puremusic.domain.usecase;
 
 import com.kunminx.architecture.domain.usecase.UseCase;
-import com.kunminx.puremusic.data.config.Configs;
 import com.kunminx.puremusic.data.config.Const;
 
 import java.io.File;

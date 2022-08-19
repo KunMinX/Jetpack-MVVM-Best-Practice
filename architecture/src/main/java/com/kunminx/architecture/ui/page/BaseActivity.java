@@ -34,7 +34,6 @@ import com.kunminx.architecture.utils.AdaptScreenUtils;
 import com.kunminx.architecture.utils.BarUtils;
 import com.kunminx.architecture.utils.ScreenUtils;
 
-
 /**
  * Create by KunMinX at 19/8/1
  */

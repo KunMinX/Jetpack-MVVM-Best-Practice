@@ -72,10 +72,6 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        init();
-    }
-
-    private void init() {
         mMessenger.output(this, messages -> {
             switch (messages.eventId) {
                 case Messages.EVENT_CLOSE_ACTIVITY_IF_ALLOWED:
@@ -128,6 +124,7 @@ public class MainActivity extends BaseActivity {
             }*/
         });
     }
+
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {

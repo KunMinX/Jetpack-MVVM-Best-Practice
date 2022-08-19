@@ -23,7 +23,6 @@ import androidx.lifecycle.LifecycleOwner;
 import com.kunminx.architecture.data.response.DataResult;
 import com.kunminx.architecture.domain.usecase.UseCase;
 import com.kunminx.puremusic.data.bean.DownloadState;
-import com.kunminx.puremusic.data.repository.DataRepository;
 
 
 /**

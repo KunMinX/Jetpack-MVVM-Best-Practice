@@ -1,6 +1,4 @@
-
 package com.kunminx.architecture.domain.usecase;
-
 
 /**
  * Runs {@link UseCase}s using a {@link UseCaseScheduler}.
@@ -23,7 +21,7 @@ public class UseCaseHandler {
     }
 
     public <T extends UseCase.RequestValues, R extends UseCase.ResponseValue> void execute(
-            final UseCase<T, R> useCase, T values, UseCase.UseCaseCallback<R> callback) {
+        final UseCase<T, R> useCase, T values, UseCase.UseCaseCallback<R> callback) {
         useCase.setRequestValues(values);
         //noinspection unchecked
         useCase.setUseCaseCallback(new UiCallbackWrapper(callback, this));
@@ -44,12 +42,12 @@ public class UseCaseHandler {
     }
 
     private <V extends UseCase.ResponseValue> void notifyError(
-            final UseCase.UseCaseCallback<V> useCaseCallback) {
+        final UseCase.UseCaseCallback<V> useCaseCallback) {
         mUseCaseScheduler.onError(useCaseCallback);
     }
 
     private static final class UiCallbackWrapper<V extends UseCase.ResponseValue> implements
-            UseCase.UseCaseCallback<V> {
+        UseCase.UseCaseCallback<V> {
         private final UseCase.UseCaseCallback<V> mCallback;
         private final UseCaseHandler mUseCaseHandler;
 

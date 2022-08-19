@@ -40,9 +40,9 @@ public class DataResult<T> {
         mResponseStatus = responseStatus;
     }
 
-    public DataResult(T entity){
-        mEntity=entity;
-        mResponseStatus=new ResponseStatus();
+    public DataResult(T entity) {
+        mEntity = entity;
+        mResponseStatus = new ResponseStatus();
     }
 
     public T getResult() {

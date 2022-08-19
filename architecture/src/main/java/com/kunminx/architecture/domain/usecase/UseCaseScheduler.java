@@ -1,4 +1,3 @@
-
 package com.kunminx.architecture.domain.usecase;
 
 /**
@@ -12,5 +11,5 @@ public interface UseCaseScheduler {
                                                           final UseCase.UseCaseCallback<V> useCaseCallback);
 
     <V extends UseCase.ResponseValue> void onError(
-            final UseCase.UseCaseCallback<V> useCaseCallback);
+        final UseCase.UseCaseCallback<V> useCaseCallback);
 }

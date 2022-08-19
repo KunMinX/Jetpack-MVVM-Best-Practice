@@ -29,7 +29,6 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.kunminx.architecture.ui.scope.ViewModelScope;
 
-
 /**
  * Create by KunMinX at 19/7/11
  */
@@ -66,7 +65,6 @@ public abstract class BaseFragment extends DataBindingFragment {
     protected NavController nav() {
         return NavHostFragment.findNavController(this);
     }
-
 
     protected void toggleSoftInput() {
         InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Activity.INPUT_METHOD_SERVICE);

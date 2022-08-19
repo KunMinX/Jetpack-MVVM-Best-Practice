@@ -51,30 +51,25 @@ public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestM
         return sManager;
     }
 
-    private HttpProxyCacheServer mProxy;
-
-    public void init(Context context) {
-        init(context, null, null);
-    }
+  public void init(Context context) {
+    init(context, null, null);
+  }
 
     @Override
     public void init(Context context, IServiceNotifier iServiceNotifier, ICacheProxy iCacheProxy) {
         Context context1 = context.getApplicationContext();
 
-        mProxy = new HttpProxyCacheServer.Builder(context1)
-            .fileNameGenerator(new PlayerFileNameGenerator())
-            .maxCacheSize(2147483648L) // 2GB
-            .build();
+    HttpProxyCacheServer proxy = new HttpProxyCacheServer.Builder(context1)
+      .fileNameGenerator(new PlayerFileNameGenerator())
+      .maxCacheSize(2147483648L)
+      .build();
 
-        mController.init(context1, startOrStop -> {
-            Intent intent = new Intent(context1, PlayerService.class);
-            if (startOrStop) {
-                context1.startService(intent);
-            } else {
-                context1.stopService(intent);
-            }
-        }, url -> mProxy.getProxyUrl(url));
-    }
+    mController.init(context1, startOrStop -> {
+      Intent intent = new Intent(context1, PlayerService.class);
+      if (startOrStop) context1.startService(intent);
+      else context1.stopService(intent);
+    }, proxy::getProxyUrl);
+  }
 
     @Override
     public void loadAlbum(TestAlbum musicAlbum) {

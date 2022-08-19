@@ -22,7 +22,6 @@ public class ClickUtils {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
-
     /**
      * Apply single debouncing for the view's click.
      *
@@ -32,7 +31,6 @@ public class ClickUtils {
     public static void applySingleDebouncing(final View view, final View.OnClickListener listener) {
         applySingleDebouncing(new View[]{view}, listener);
     }
-
 
     /**
      * Apply single debouncing for the views' click.
@@ -57,7 +55,6 @@ public class ClickUtils {
         applyDebouncing(views, false, duration, listener);
     }
 
-
     private static void applyDebouncing(final View[] views,
                                         final boolean isGlobal,
                                         @IntRange(from = 0) long duration,
@@ -77,7 +74,6 @@ public class ClickUtils {
             });
         }
     }
-
 
     public static abstract class OnDebouncingClickListener implements View.OnClickListener {
 
