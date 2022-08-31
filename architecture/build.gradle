@@ -45,5 +45,5 @@ dependencies {
     api 'com.github.KunMinX:Smooth-Navigation:v4.0.0'
     api 'com.github.KunMinX.Strict-DataBinding:strict_databinding:5.6.0'
     api 'com.github.KunMinX.Strict-DataBinding:binding_state:5.6.0'
-    api 'com.github.KunMinX:MVI-Dispatcher:7.0.4-beta'
+    api 'com.github.KunMinX:MVI-Dispatcher:7.4.0-beta'
 }
