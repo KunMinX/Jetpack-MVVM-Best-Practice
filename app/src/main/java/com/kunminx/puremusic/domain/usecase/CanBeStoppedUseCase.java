@@ -46,7 +46,7 @@ import com.kunminx.puremusic.data.bean.DownloadState;
 public class CanBeStoppedUseCase extends UseCase<CanBeStoppedUseCase.RequestValues,
     CanBeStoppedUseCase.ResponseValue> implements DefaultLifecycleObserver {
 
-    private final DownloadState downloadState = new DownloadState();
+//    private final DownloadState downloadState = new DownloadState();
 
     //TODO tip：让 CanBeStoppedUseCase 可观察页面生命周期，
     // 从而在页面即将退出、且下载请求尚未完成时，
@@ -58,10 +58,10 @@ public class CanBeStoppedUseCase extends UseCase<CanBeStoppedUseCase.RequestValu
     @Override
     public void onStop(@NonNull LifecycleOwner owner) {
         if (getRequestValues() != null) {
-            downloadState.isForgive = true;
-            downloadState.file = null;
-            downloadState.progress = 0;
-            getUseCaseCallback().onError();
+//            downloadState.isForgive = true;
+//            downloadState.file = null;
+//            downloadState.progress = 0;
+//            getUseCaseCallback().onError();
         }
     }
 

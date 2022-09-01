@@ -161,20 +161,20 @@ public class PlayerFragment extends BaseFragment {
         PlayerManager.getInstance().getDispatcher().output(this, playerEvent -> {
             switch (playerEvent.eventId) {
                 case PlayerEvent.EVENT_CHANGE_MUSIC:
-                    mStates.title.set(playerEvent.param.changeMusic.getTitle());
-                    mStates.artist.set(playerEvent.param.changeMusic.getSummary());
-                    mStates.coverImg.set(playerEvent.param.changeMusic.getImg());
+                    mStates.title.set(playerEvent.changeMusic.getTitle());
+                    mStates.artist.set(playerEvent.changeMusic.getSummary());
+                    mStates.coverImg.set(playerEvent.changeMusic.getImg());
                     if (mListener != null) view.post(mListener::calculateTitleAndArtist);
                     break;
                 case PlayerEvent.EVENT_PROGRESS:
-                    mStates.maxSeekDuration.set(playerEvent.param.playingMusic.getDuration());
-                    mStates.currentSeekPosition.set(playerEvent.param.playingMusic.getPlayerPosition());
+                    mStates.maxSeekDuration.set(playerEvent.playingMusic.getDuration());
+                    mStates.currentSeekPosition.set(playerEvent.playingMusic.getPlayerPosition());
                     break;
                 case PlayerEvent.EVENT_PLAY_STATUS:
-                    mStates.isPlaying.set(!playerEvent.param.toPause);
+                    mStates.isPlaying.set(!playerEvent.toPause);
                     break;
                 case PlayerEvent.EVENT_REPEAT_MODE:
-                    Enum<PlayingInfoManager.RepeatMode> mode = playerEvent.param.repeatMode;
+                    Enum<PlayingInfoManager.RepeatMode> mode = playerEvent.repeatMode;
                     mStates.playModeIcon.set(PlayerManager.getInstance().getModeIcon(mode));
                     break;
             }

@@ -120,22 +120,25 @@ public class DataRepository {
      * @param result 从 Request-ViewModel 或 UseCase 注入 LiveData，用于 控制流程、回传进度、回传文件
      */
     @SuppressLint("CheckResult")
-    public void downloadFile(DownloadState downloadState, DataResult.Result<DownloadState> result) {
+    public void downloadFile(DataResult.Result<DownloadState> result) {
+        final DownloadState[] originState = {new DownloadState()};
         Observable.interval(100, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(aLong -> {
-                if (downloadState.isForgive || downloadState.progress == 100) {
+                DownloadState newState = new DownloadState();
+                if (originState[0].isForgive || originState[0].progress == 100) {
                     return;
                 }
 
                 //模拟下载，假设下载一个文件要 10秒、每 100 毫秒下载 1% 并通知 UI 层
-                if (downloadState.progress < 100) {
-                    downloadState.progress = downloadState.progress + 1;
-                    Log.d("---", "下载进度 " + downloadState.progress + "%");
+                if (originState[0].progress < 100) {
+                    newState = new DownloadState(false, originState[0].progress + 1, null);
+                    originState[0] = newState;
+                    Log.d("---", "下载进度 " + originState[0].progress + "%");
                 }
 
-                result.onResult(new DataResult<>(downloadState, new ResponseStatus()));
+                result.onResult(new DataResult<>(newState, new ResponseStatus()));
                 Log.d("---", "回推状态");
             });
     }

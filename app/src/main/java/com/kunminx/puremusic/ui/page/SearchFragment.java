@@ -91,7 +91,7 @@ public class SearchFragment extends BaseFragment {
 
         mDownloadRequester.output(this, downloadEvent -> {
             if (downloadEvent.eventId == DownloadEvent.EVENT_DOWNLOAD) {
-                DownloadState state = downloadEvent.result.downloadState;
+                DownloadState state = downloadEvent.downloadState;
                 mStates.progress_cancelable.set(state.progress);
                 mStates.enableDownload.set(state.progress == 100 || state.progress == 0);
             }
@@ -99,7 +99,7 @@ public class SearchFragment extends BaseFragment {
 
         mGlobalDownloadRequester.output(this, downloadEvent -> {
             if (downloadEvent.eventId == DownloadEvent.EVENT_DOWNLOAD_GLOBAL) {
-                DownloadState state = downloadEvent.result.downloadState;
+                DownloadState state = downloadEvent.downloadState;
                 mStates.progress.set(state.progress);
                 mStates.enableGlobalDownload.set(state.progress == 100 || state.progress == 0);
             }

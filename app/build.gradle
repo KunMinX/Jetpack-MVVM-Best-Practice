@@ -47,7 +47,7 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
     implementation project(":architecture")
     implementation "org.jetbrains:annotations:23.0.0"
-    implementation 'com.github.KunMinX:Jetpack-MusicPlayer:4.0.4'
+    implementation 'com.github.KunMinX:Jetpack-MusicPlayer:4.1.0'
 
     testImplementation "junit:junit:4.13.2"
     androidTestImplementation "androidx.test.ext:junit:1.1.3"

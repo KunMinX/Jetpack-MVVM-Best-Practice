@@ -24,12 +24,9 @@ package com.kunminx.puremusic.data.bean;
  * kotlin 直接将字段设为 val 即可
  */
 public class LibraryInfo {
-    public String title;
-    public String summary;
-    public String url;
-
-    public LibraryInfo() {
-    }
+    private final String title;
+    private final String summary;
+    private final String url;
 
     public LibraryInfo(String title, String summary, String url) {
         this.title = title;
