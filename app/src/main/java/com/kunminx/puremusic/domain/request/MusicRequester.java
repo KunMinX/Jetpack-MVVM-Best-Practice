@@ -28,8 +28,8 @@ import com.kunminx.puremusic.data.repository.DataRepository;
 /**
  * 音乐资源  Request
  * <p>
- * TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 Result-ViewModel，
- * Result-ViewModel 职责仅限于 "消息分发" 场景承担 "唯一可信源"。
+ * TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 event-ViewModel，
+ * event-ViewModel 职责仅限于 "消息分发" 场景承担 "唯一可信源"。
  * <p>
  * 常见消息分发场景包括：数据请求，页面间通信等，
  * 数据请求 Requester 负责，页面通信 Messenger 负责，
