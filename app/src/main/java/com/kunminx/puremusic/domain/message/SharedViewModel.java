@@ -41,7 +41,7 @@ import com.kunminx.architecture.domain.message.Result;
  *
  *
  * TODO:Note 2022.07.04
- * 可于领域层通过 MVI-Dispatcher 实现成熟形态 "唯一可信源"，
+ * 可于领域层通过 MVI-Dispatcher 实现 "唯一可信源"，
  * 使支持 LiveData 连续发送多种类事件 + 彻底消除 mutable 样板代码 + 彻底杜绝团队新手 LiveData.setValue 误用滥用，
  * 鉴于本项目场景难发挥 MVI-Dispatcher 潜能，故目前仅以改造 SharedViewModel 为例，
  * 通过对比 SharedViewModel 和 PageMessenger 易得，后者可简洁优雅实现可靠一致消息分发，

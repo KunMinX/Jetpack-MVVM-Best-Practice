@@ -94,12 +94,10 @@ public class DataRepository {
      * @param result result
      */
     public void getFreeMusic(DataResult.Result<TestAlbum> result) {
-
         Gson gson = new Gson();
         Type type = new TypeToken<TestAlbum>() {
         }.getType();
         TestAlbum testAlbum = gson.fromJson(Utils.getApp().getString(R.string.free_music_json), type);
-
         result.onResult(new DataResult<>(testAlbum, new ResponseStatus()));
     }
 
@@ -108,7 +106,6 @@ public class DataRepository {
         Type type = new TypeToken<List<LibraryInfo>>() {
         }.getType();
         List<LibraryInfo> list = gson.fromJson(Utils.getApp().getString(R.string.library_json), type);
-
         result.onResult(new DataResult<>(list, new ResponseStatus()));
     }
 
