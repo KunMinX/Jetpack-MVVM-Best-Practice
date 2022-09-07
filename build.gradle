@@ -5,7 +5,7 @@ buildscript {
         appVersionCode = 50500
         appVersionName = "5.5.0"
         lifecycleVersion = "2.4.1"
-        navigationVersion = "2.5.1"
+        navigationVersion = "2.5.2"
         retrofitVersion = "2.9.0"
         okHttpVersion = "4.10.0"
     }
