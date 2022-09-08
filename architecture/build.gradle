@@ -41,7 +41,7 @@ dependencies {
     api "androidx.appcompat:appcompat:1.5.1"
     api "androidx.navigation:navigation-runtime:$navigationVersion"
 
-    api 'com.github.KunMinX:UnPeek-LiveData:7.7.0'
+    api 'com.github.KunMinX:UnPeek-LiveData:7.8.0'
     api 'com.github.KunMinX:Smooth-Navigation:v4.0.0'
     api 'com.github.KunMinX.Strict-DataBinding:strict_databinding:5.6.0'
     api 'com.github.KunMinX.Strict-DataBinding:binding_state:5.6.0'
