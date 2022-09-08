@@ -58,7 +58,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:1.2.1"
 
     implementation 'com.github.KunMinX.Strict-DataBinding:binding_recyclerview:5.6.0'
-    implementation 'com.github.KunMinX.KeyValueX:keyvalue:3.2.0-beta'
+    implementation 'com.github.KunMinX.KeyValueX:keyvalue:3.6.0-beta'
     annotationProcessor 'com.github.KunMinX.KeyValueX:keyvalue-compiler:3.6.0-beta'
 
     implementation "org.slf4j:slf4j-android:1.7.36"
