@@ -85,9 +85,7 @@ public class DrawerFragment extends BaseFragment {
         mInfoRequester.getLibraryResult().observe(getViewLifecycleOwner(), dataResult -> {
             if (!dataResult.getResponseStatus().isSuccess()) return;
 
-
-      if (dataResult.getResult() != null) mStates.list.set(dataResult.getResult());
-
+            if (dataResult.getResult() != null) mStates.list.set(dataResult.getResult());
         });
 
         //TODO tip 4： 向唯一可信源 Requester 请求数据，由其内部统一决策，而非以消息总线 Bus 方式发送和接收，
@@ -95,13 +93,10 @@ public class DrawerFragment extends BaseFragment {
         //如这么说无体会，详见《吃透 LiveData 本质，享用可靠消息鉴权机制》解析。
         //https://xiaozhuanlan.com/topic/6017825943
 
-
-    mInfoRequester.requestLibraryInfo();
-
+        mInfoRequester.requestLibraryInfo();
     }
 
     public class ClickProxy {
-
         public void logoClick() {
             openUrlInBrowser(Const.PROJECT_LINK);
         }
