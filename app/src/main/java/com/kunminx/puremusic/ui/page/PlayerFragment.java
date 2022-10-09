@@ -39,7 +39,7 @@ import com.kunminx.puremusic.databinding.FragmentPlayerBinding;
 import com.kunminx.puremusic.domain.event.Messages;
 import com.kunminx.puremusic.domain.message.DrawerCoordinateManager;
 import com.kunminx.puremusic.domain.message.PageMessenger;
-import com.kunminx.puremusic.player.PlayerManager;
+import com.kunminx.puremusic.domain.proxy.PlayerManager;
 import com.kunminx.puremusic.ui.page.helper.DefaultInterface;
 import com.kunminx.puremusic.ui.view.PlayerSlideListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;

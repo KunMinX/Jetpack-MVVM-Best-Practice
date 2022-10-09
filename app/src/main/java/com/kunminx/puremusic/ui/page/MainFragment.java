@@ -34,7 +34,7 @@ import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.domain.event.Messages;
 import com.kunminx.puremusic.domain.message.PageMessenger;
 import com.kunminx.puremusic.domain.request.MusicRequester;
-import com.kunminx.puremusic.player.PlayerManager;
+import com.kunminx.puremusic.domain.proxy.PlayerManager;
 import com.kunminx.puremusic.ui.page.adapter.PlaylistAdapter;
 
 import java.util.ArrayList;

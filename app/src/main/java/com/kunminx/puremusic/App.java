@@ -19,7 +19,7 @@ package com.kunminx.puremusic;
 import android.app.Application;
 
 import com.kunminx.architecture.utils.Utils;
-import com.kunminx.puremusic.player.PlayerManager;
+import com.kunminx.puremusic.domain.proxy.PlayerManager;
 
 /**
  * TODO tip 1：需要为项目准备一个 Application 来继承 BaseApplication，

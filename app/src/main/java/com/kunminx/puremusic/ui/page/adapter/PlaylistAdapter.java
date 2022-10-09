@@ -25,7 +25,7 @@ import com.kunminx.binding_recyclerview.adapter.SimpleDataBindingAdapter;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.databinding.AdapterPlayItemBinding;
-import com.kunminx.puremusic.player.PlayerManager;
+import com.kunminx.puremusic.domain.proxy.PlayerManager;
 
 /**
  * Create by KunMinX at 20/4/19

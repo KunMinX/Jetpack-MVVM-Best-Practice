@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package com.kunminx.puremusic.player.notification;
+package com.kunminx.puremusic.domain.message;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.view.KeyEvent;
 
-import com.kunminx.puremusic.player.PlayerManager;
+import com.kunminx.puremusic.domain.proxy.PlayerManager;
+import com.kunminx.puremusic.ui.widget.PlayerService;
 
 import java.util.Objects;
 

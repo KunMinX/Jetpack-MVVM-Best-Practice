@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kunminx.puremusic.player.notification;
+package com.kunminx.puremusic.ui.widget;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
@@ -41,7 +41,7 @@ import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.data.config.Const;
 import com.kunminx.puremusic.domain.usecase.DownloadUseCase;
-import com.kunminx.puremusic.player.PlayerManager;
+import com.kunminx.puremusic.domain.proxy.PlayerManager;
 
 import java.io.File;
 
