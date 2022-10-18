@@ -21,6 +21,7 @@
 #-renamesourcefileattribute SourceFile
 
 -keep class com.kunminx.puremusic.data.bean.** { *; }
+-keep class com.kunminx.puremusic.data.config.** { *; }
 -keep class com.kunminx.player.bean.** { *; }
 
 -keep class * implements android.os.Parcelable {
