@@ -49,9 +49,6 @@ dependencies {
     api 'com.github.KunMinX.Strict-DataBinding:binding_recyclerview:5.6.0'
     api 'com.github.KunMinX:MVI-Dispatcher:7.4.0-beta'
 
-    api 'com.github.KunMinX.KeyValueX:keyvalue:3.6.0-beta'
-    annotationProcessor 'com.github.KunMinX.KeyValueX:keyvalue-compiler:3.6.0-beta'
-
     api "com.github.bumptech.glide:glide:4.14.2"
     api "com.google.code.gson:gson:2.9.1"
 
