@@ -40,7 +40,7 @@ dependencies {
 
     api "androidx.appcompat:appcompat:1.5.1"
     api "org.jetbrains:annotations:23.0.0"
-    api "androidx.navigation:navigation-runtime:2.5.2"
+    api "androidx.navigation:navigation-runtime:2.5.3"
 
     api 'com.github.KunMinX:UnPeek-LiveData:7.8.0'
     api 'com.github.KunMinX:Smooth-Navigation:v4.0.0'
@@ -50,7 +50,7 @@ dependencies {
     api 'com.github.KunMinX:MVI-Dispatcher:7.4.0-beta'
 
     api "com.github.bumptech.glide:glide:4.14.2"
-    api "com.google.code.gson:gson:2.9.1"
+    api "com.google.code.gson:gson:2.10"
 
     api "com.squareup.retrofit2:retrofit:2.9.0"
     api "com.squareup.retrofit2:converter-gson:2.9.0"
