@@ -39,7 +39,7 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1"
 
     api "androidx.appcompat:appcompat:1.5.1"
-    api "org.jetbrains:annotations:23.1.0"
+    api "org.jetbrains:annotations:24.0.0"
     api "androidx.navigation:navigation-runtime:2.5.3"
 
     api 'com.github.KunMinX:UnPeek-LiveData:7.8.0'
