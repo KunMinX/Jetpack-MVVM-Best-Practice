@@ -38,7 +38,7 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:1.1.5"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1"
 
-    api "androidx.appcompat:appcompat:1.6.0"
+    api "androidx.appcompat:appcompat:1.6.1"
     api "org.jetbrains:annotations:24.0.0"
     api "androidx.navigation:navigation-runtime:2.5.3"
 
