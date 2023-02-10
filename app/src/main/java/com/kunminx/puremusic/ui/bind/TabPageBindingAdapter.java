@@ -13,7 +13,8 @@ import com.kunminx.puremusic.R;
 public class TabPageBindingAdapter {
 
     @BindingAdapter(value = {"initTabAndPage"}, requireAll = false)
-    public static void initTabAndPage(TabLayout tabLayout, boolean initTabAndPage) {
+    public static void initTabAndPage(ViewPager viewPager, boolean initTabAndPage) {
+        TabLayout tabLayout = (viewPager.getRootView()).findViewById(R.id.tab_layout);
         int count = tabLayout.getTabCount();
         String[] title = new String[count];
         for (int i = 0; i < count; i++) {
@@ -22,11 +23,8 @@ public class TabPageBindingAdapter {
                 title[i] = tab.getText().toString();
             }
         }
-        ViewPager viewPager = (tabLayout.getRootView()).findViewById(R.id.view_pager);
-        if (viewPager != null) {
-            viewPager.setAdapter(new CommonViewPagerAdapter(false, title));
-            tabLayout.setupWithViewPager(viewPager);
-        }
+        viewPager.setAdapter(new CommonViewPagerAdapter(false, title));
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @BindingAdapter(value = {"tabSelectedListener"}, requireAll = false)

@@ -131,9 +131,14 @@
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
+            <!-- TODO 建议不要使用如下 TabLayout 和 ViewPager 的嵌套式语法糖
+            此处只是为了便于展示 BindingAdapter 的业务能力，而使用的语法糖，
+            在实际开发中，BindingAdapter 的通知时机和 TabLayout 的某些
+            机制并不完美配合，导致可能出现 TabLayout 和 ViewPager 联动失效、
+            ViewPager child 不显示内容等问题 -->
+
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tab_layout"
-                initTabAndPage="@{vm.initTabAndPage}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:tabBackground="@color/white"
@@ -156,6 +161,12 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+        <!-- TODO 建议不要使用如下 TabLayout 和 ViewPager 的嵌套式语法糖
+           此处只是为了便于展示 BindingAdapter 的业务能力，而使用的语法糖，
+           在实际开发中，BindingAdapter 的通知时机和 TabLayout 的某些
+           机制并不完美配合，导致可能出现 TabLayout 和 ViewPager 联动失效、
+           ViewPager child 不显示内容等问题 -->
+
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
@@ -176,6 +187,7 @@
                 android:id="@+id/rv"
                 adapter="@{adapter}"
                 submitList="@{vm.list}"
+                android:background="@color/colorAccent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
