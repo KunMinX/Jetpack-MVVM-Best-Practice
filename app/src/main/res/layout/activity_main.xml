@@ -33,7 +33,7 @@
             sothree:umanoPanelHeight="@dimen/sliding_up_header"
             sothree:umanoShadowHeight="5dp">
 
-            <androidx.fragment.app.FragmentContainerView
+            <fragment
                 android:id="@+id/main_fragment_host"
                 android:name="androidx.navigation.fragment.NavHostFragment"
                 android:layout_width="match_parent"
@@ -42,7 +42,7 @@
                 app:defaultNavHost="true"
                 app:navGraph="@navigation/nav_main" />
 
-            <androidx.fragment.app.FragmentContainerView
+            <fragment
                 android:id="@+id/slide_fragment_host"
                 android:name="androidx.navigation.fragment.NavHostFragment"
                 android:layout_width="match_parent"
@@ -53,7 +53,7 @@
 
         </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
-        <androidx.fragment.app.FragmentContainerView
+        <fragment
             android:id="@+id/drawer_fragment_host"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="330dp"
