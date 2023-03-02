@@ -41,7 +41,7 @@ dependencies {
     //常用基础组件
 
     api "androidx.appcompat:appcompat:1.6.1"
-    api "org.jetbrains:annotations:24.0.0"
+    api "org.jetbrains:annotations:24.0.1"
     api "androidx.navigation:navigation-runtime:2.5.3"
 
     api "com.google.android.material:material:1.8.0"
