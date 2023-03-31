@@ -169,6 +169,7 @@
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/view_pager"
+            initTabAndPage="@{true}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never"
@@ -187,7 +188,6 @@
                 android:id="@+id/rv"
                 adapter="@{adapter}"
                 submitList="@{vm.list}"
-                android:background="@color/colorAccent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
