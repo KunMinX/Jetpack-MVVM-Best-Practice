@@ -37,9 +37,9 @@ import com.kunminx.puremusic.domain.message.PageMessenger;
 
 public class MainActivity extends BaseActivity {
 
-    //TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 event-ViewModel，
+    //TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 result-ViewModel，
     // state-ViewModel 职责仅限于托管、保存和恢复本页面 state，
-    // event-ViewModel 职责仅限于 "消息分发" 场景承担 "唯一可信源"。
+    // result-ViewModel 职责仅限于 "消息分发" 场景承担 "可信源"。
 
     // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/8204519736
 
@@ -131,7 +131,7 @@ public class MainActivity extends BaseActivity {
         super.onWindowFocusChanged(hasFocus);
         if (!mIsListened) {
 
-            // TODO tip 3：此处演示向 "唯一可信源" 发送请求，以便实现 "生命周期安全、消息分发可靠一致" 的通知。
+            // TODO tip 3：此处演示向 "可信源" 发送请求，以便实现 "生命周期安全、消息分发可靠一致" 的通知。
 
             // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/0168753249
             // --------

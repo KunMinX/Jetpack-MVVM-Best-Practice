@@ -25,7 +25,7 @@ package com.kunminx.architecture.data.response;
  * 有时数据并非通过 liveData 分发给页面，也可是通过其他方式通知非页面组件，
  * 这时 repo 方法中内定通过 liveData 分发便不合适，不如一开始就规定不在数据层通过 liveData 返回结果。
  * <p>
- * 如这么说无体会，详见《如何让同事爱上架构模式、少写 bug 多注释》解析
+ * 如这么说无体会，详见《这是一份 “架构模式” 自驾攻略》解析
  * https://xiaozhuanlan.com/topic/8204519736
  * <p>
  * Create by KunMinX at 2020/7/20

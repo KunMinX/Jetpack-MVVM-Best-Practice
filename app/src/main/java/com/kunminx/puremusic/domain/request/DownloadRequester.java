@@ -11,13 +11,13 @@ import com.kunminx.puremusic.domain.event.DownloadEvent;
 /**
  * 数据下载 Request
  * <p>
- * TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 event-ViewModel，
- * event-ViewModel 职责仅限于 "消息分发" 场景承担 "唯一可信源"。
+ * TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 result-ViewModel，
+ * result-ViewModel 职责仅限于 "消息分发" 场景承担 "可信源"。
  * <p>
  * 常见消息分发场景包括：数据请求，页面间通信等，
- * 数据请求 Requester 负责，页面通信 Messenger 负责，
+ * 数据请求由 Requester 负责，页面通信由 Messenger 负责，
  * <p>
- * 所有事件都可交由 "唯一可信源" 在内部决策和处理，并统一分发结果给所有订阅者页面。
+ * 所有事件都可交由 "可信源" 在内部决策和处理，并统一分发结果给所有订阅者页面。
  * <p>
  * 如这么说无体会，详见《吃透 LiveData 本质，享用可靠消息鉴权机制》解析。
  * https://xiaozhuanlan.com/topic/6017825943
@@ -31,17 +31,17 @@ import com.kunminx.puremusic.domain.event.DownloadEvent;
  * UI 逻辑只适合在 Activity/Fragment 等视图控制器中完成，是 “数据驱动” 一部分，
  * 将来升级到 Jetpack Compose 更是如此。
  * <p>
- * 如这么说无体会，详见《如何让同事爱上架构模式、少写 bug 多注释》解析
+ * 如这么说无体会，详见《这是一份 “架构模式” 自驾攻略》解析
  * https://xiaozhuanlan.com/topic/8204519736
  * <p>
  * <p>
  * TODO:Note 2022.07.04
- * 可于领域层通过 MVI-Dispatcher 实现 "唯一可信源"，
- * 使支持 LiveData 连续发送多种类事件 + 彻底消除 mutable 样板代码 + 彻底杜绝团队新手 LiveData.setValue 误用滥用，
+ * 可于领域层通过 MVI-Dispatcher 实现 "可信源"，
+ * 使支持连续发送多种类事件 + 彻底消除 mutable 样板代码 + 彻底杜绝团队新手 mutable.setValue 误用滥用，
  * 鉴于本项目场景难发挥 MVI-Dispatcher 潜能，故目前仅以改造 SharedViewModel 为例，
- * 通过对比 SharedViewModel 和 PageMessenger 易得，后者可简洁优雅实现可靠一致消息分发，
+ * 通过对比 SharedViewModel 和 PageMessenger 易得，后者可简洁优雅实现可靠一致的消息分发，
  * <p>
- * 具体可参见专为 MVI-Dispatcher 唯一可信源编写 MVI 使用案例：
+ * 具体可参见专为 MVI-Dispatcher 可信源编写 MVI 使用案例：
  * <p>
  * https://github.com/KunMinX/MVI-Dispatcher
  * <p>

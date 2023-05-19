@@ -38,7 +38,7 @@
 &nbsp;
 
 
-|                       爱不释手交互设计                       |                         连贯用户体验                         |                      唯一可信源统一分发                      |
+|                       爱不释手交互设计                       |                         连贯用户体验                         |                      可信源统一分发                      |
 | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
 | ![](https://upload-images.jianshu.io/upload_images/57036-0a5cdc68f003211a.gif) | ![](https://upload-images.jianshu.io/upload_images/57036-2b21db531e51ff03.gif) | ![](https://upload-images.jianshu.io/upload_images/57036-9a541148ce5bed2e.gif) |
 
@@ -68,7 +68,7 @@
 > 我们为 **横、竖屏** 场景安排两套 **截然不同布局**，且在 [生命周期](https://xiaozhuanlan.com/topic/0213584967)、[重建机制](https://xiaozhuanlan.com/topic/7692814530)、[状态管理](https://xiaozhuanlan.com/topic/7692814530)、[DataBinding](https://xiaozhuanlan.com/topic/9816742350)、[ViewModel](https://xiaozhuanlan.com/topic/6257931840)、[LiveData](https://xiaozhuanlan.com/topic/0168753249) 、[Navigation](https://xiaozhuanlan.com/topic/5860149732) 等知识点帮助下，通过寥寥几行代码，轻松做到 **在横竖屏两种布局间 无缝切换，且不产生任何 预期外错误**。
 
 
-> 我们在多个 Fragment 页面 分别安排 **播放状态指示器**（包括 播放暂停按钮状态、播放列表当前索引指示 等），并向你展示 “如何” 及 “为何” 通过 [LiveData](https://xiaozhuanlan.com/topic/0168753249) **配合** 唯一可信源 [ViewModel](https://xiaozhuanlan.com/topic/6257931840) 或单例，实现 **全应用范围内 “可追溯事件” 统一分发**。
+> 我们在多个 Fragment 页面 分别安排 **播放状态指示器**（包括 播放暂停按钮状态、播放列表当前索引指示 等），并向你展示 “如何” 及 “为何” 通过 [LiveData](https://xiaozhuanlan.com/topic/0168753249) **配合** 可信源 [ViewModel](https://xiaozhuanlan.com/topic/6257931840) 或单例，实现 **全应用范围内 “可追溯事件” 统一分发**。
 
 
 > 我们在 Fragment 和 Activity 之间分别安排 跨页面通信，从而向你展示 如何基于 **迪米特原则**（也称 最少知道原则）、通过 UnPeekLiveData 和 应用级 SharedViewModel 实现 **生命周期安全、确保消息同步可靠一致的 页面通信**。

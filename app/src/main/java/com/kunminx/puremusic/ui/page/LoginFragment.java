@@ -41,9 +41,9 @@ import com.kunminx.puremusic.domain.request.AccountRequester;
  */
 public class LoginFragment extends BaseFragment {
 
-    //TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 event-ViewModel，
-    // state-ViewModel 职责仅限于托管、保存和恢复本页面 state，
-    // event-ViewModel 职责仅限于 "消息分发" 场景承担 "唯一可信源"。
+    //TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 result-ViewModel，
+    // state-ViewModel 职责仅限于托管、保存和恢复本页面 state，作用域仅限于本页面
+    // result-ViewModel 职责仅限于 "消息分发" 场景承担 "可信源"，作用域依 "数据请求" 或 "跨页通信" 消息分发范围而定
 
     // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/8204519736
 
@@ -88,7 +88,7 @@ public class LoginFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //TODO tip 4: 从唯一可信源 Requester 通过 immutable Result 获取请求结果的只读数据，set 给 mutable State，
+        //TODO tip 4: 从可信源 Requester 通过 immutable Result 获取请求结果的只读数据，set 给 mutable State，
         //而非 Result、State 不分，直接在页面 set Result，
 
         //如这么说无体会，详见《吃透 LiveData 本质，享用可靠消息鉴权机制》解析。

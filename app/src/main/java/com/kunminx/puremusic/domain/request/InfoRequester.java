@@ -30,13 +30,13 @@ import java.util.List;
 /**
  * 信息列表 Request
  * <p>
- * TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 event-ViewModel，
- * event-ViewModel 职责仅限于 "消息分发" 场景承担 "唯一可信源"。
+ * TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 result-ViewModel，
+ * result-ViewModel 职责仅限于 "消息分发" 场景承担 "可信源"。
  * <p>
  * 常见消息分发场景包括：数据请求，页面间通信等，
- * 数据请求 Requester 负责，页面通信 Messenger 负责，
+ * 数据请求由 Requester 负责，页面通信由 Messenger 负责，
  * <p>
- * 所有事件都可交由 "唯一可信源" 在内部决策和处理，并统一分发结果给所有订阅者页面。
+ * 所有事件都可交由 "可信源" 在内部决策和处理，并统一分发结果给所有订阅者页面。
  * <p>
  * 如这么说无体会，详见《吃透 LiveData 本质，享用可靠消息鉴权机制》解析。
  * https://xiaozhuanlan.com/topic/6017825943
@@ -50,7 +50,7 @@ import java.util.List;
  * UI 逻辑只适合在 Activity/Fragment 等视图控制器中完成，是 “数据驱动” 一部分，
  * 将来升级到 Jetpack Compose 更是如此。
  * <p>
- * 如这么说无体会，详见《如何让同事爱上架构模式、少写 bug 多注释》解析
+ * 如这么说无体会，详见《这是一份 “架构模式” 自驾攻略》解析
  * https://xiaozhuanlan.com/topic/8204519736
  * <p>
  * <p>
@@ -60,8 +60,8 @@ public class InfoRequester extends ViewModel {
 
     private final MutableResult<DataResult<List<LibraryInfo>>> mLibraryResult = new MutableResult<>();
 
-    //TODO tip 3：MutableResult 应仅限 "唯一可信源" 内部使用，且只暴露 immutable Result 给 UI 层，
-    //如此达成 "唯一可信源" 设计，也即通过 "访问控制权限" 实现 "读写分离"，
+    //TODO tip 3：MutableResult 应仅限 "可信源" 内部使用，且只暴露 immutable Result 给 UI 层，
+    //如此达成 "可信源" 设计，也即通过 "访问控制权限" 实现 "读写分离"，
 
     //如这么说无体会，详见《吃透 LiveData 本质，享用可靠消息鉴权机制》解析。
     //https://xiaozhuanlan.com/topic/6017825943
@@ -76,9 +76,9 @@ public class InfoRequester extends ViewModel {
         //而非 DataResult 泛型实体拆下来单独回推，如此
         //一方面使 UI 层有机会基于 DataResult 的 responseStatus 分别处理 "请求成功或失败" 情况下 UI 表现，
         //另一方面从语义上强调了 该结果是请求得来的只读数据，与 "可变状态" 形成明确区分，
-        //从而方便团队开发人员自然而然遵循 "唯一可信源"/"单向数据流" 开发理念，规避消息同步一致性等不可预期错误。
+        //从而方便团队开发人员自然而然遵循 "可信源"/"单向数据流" 开发理念，规避消息同步一致性等不可预期错误。
 
-        //如这么说无体会，详见《如何让同事爱上架构模式、少写 bug 多注释》中对 "只读数据" 和 "可变状态" 区别的解析。
+        //如这么说无体会，详见《这是一份 “架构模式” 自驾攻略》中对 "只读数据" 和 "可变状态" 区别的解析。
         //https://xiaozhuanlan.com/topic/8204519736
 
         //TODO Tip 5：lambda 语句只有一行时可简写，具体可结合实际情况选择和使用

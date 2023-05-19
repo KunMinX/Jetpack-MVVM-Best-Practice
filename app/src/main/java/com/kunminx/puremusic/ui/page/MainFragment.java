@@ -45,9 +45,9 @@ import java.util.List;
  */
 public class MainFragment extends BaseFragment {
 
-    //TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 event-ViewModel，
-    // state-ViewModel 职责仅限于托管、保存和恢复本页面 state，
-    // event-ViewModel 职责仅限于 "消息分发" 场景承担 "唯一可信源"。
+    //TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 result-ViewModel，
+    // state-ViewModel 职责仅限于托管、保存和恢复本页面 state，作用域仅限于本页面
+    // result-ViewModel 职责仅限于 "消息分发" 场景承担 "可信源"，作用域依 "数据请求" 或 "跨页通信" 消息分发范围而定
 
     // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/8204519736
 
@@ -89,7 +89,7 @@ public class MainFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // TODO tip 3：所有播放状态的改变，皆来自 "唯一可信源" PlayerManager 统一分发，
+        // TODO tip 3：所有播放状态的改变，皆来自 "可信源" PlayerManager 统一分发，
         //  确保 "消息分发可靠一致"，避免不可预期推送和错误。
 
         // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/6017825943 & https://juejin.cn/post/7117498113983512589
@@ -136,7 +136,7 @@ public class MainFragment extends BaseFragment {
 
         public void openMenu() {
 
-            // TODO tip 8：此处演示向 "唯一可信源" 发送请求，以便实现 "生命周期安全、消息分发可靠一致" 的通知。
+            // TODO tip 8：此处演示向 "可信源" 发送请求，以便实现 "生命周期安全、消息分发可靠一致" 的通知。
 
             // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/6017825943 & https://juejin.cn/post/7117498113983512589
             // --------

@@ -39,9 +39,9 @@ import com.kunminx.puremusic.domain.request.DownloadRequester;
  */
 public class SearchFragment extends BaseFragment {
 
-    //TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 event-ViewModel，
-    // state-ViewModel 职责仅限于托管、保存和恢复本页面 state，
-    // event-ViewModel 职责仅限于 "消息分发" 场景承担 "唯一可信源"。
+    //TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 result-ViewModel，
+    // state-ViewModel 职责仅限于托管、保存和恢复本页面 state，作用域仅限于本页面
+    // result-ViewModel 职责仅限于 "消息分发" 场景承担 "可信源"，作用域依 "数据请求" 或 "跨页通信" 消息分发范围而定
 
     // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/8204519736
 
@@ -85,7 +85,7 @@ public class SearchFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //TODO tip 8: 此处演示使用 "唯一可信源" MVI-Dispatcher input-output 接口完成数据请求响应
+        //TODO tip 8: 此处演示使用 "可信源" MVI-Dispatcher input-output 接口完成数据请求响应
 
         //如这么说无体会，详见《领域层设计》篇拆解 https://juejin.cn/post/7117498113983512589
 
@@ -125,7 +125,7 @@ public class SearchFragment extends BaseFragment {
             openUrlInBrowser(Const.COLUMN_LINK);
         }
 
-        //TODO tip 8: 此处演示使用 "唯一可信源" MVI-Dispatcher input-output 接口完成数据请求响应
+        //TODO tip 8: 此处演示使用 "可信源" MVI-Dispatcher input-output 接口完成数据请求响应
 
         //如这么说无体会，详见《领域层设计》篇拆解 https://juejin.cn/post/7117498113983512589
 

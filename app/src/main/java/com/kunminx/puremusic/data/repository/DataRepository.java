@@ -85,10 +85,10 @@ public class DataRepository {
     /**
      * TODO: 建议在 DataRepository 使用 DataResult 而非 LiveData 来返回结果：
      * liveData 是专用于页面开发的、用于解决生命周期安全问题的组件，
-     * 有时候数据并非一定是通过 liveData 来分发给页面，也可能是通过别的组件去通知给非页面的东西，
-     * 这时候 repo 方法中内定通过 liveData 分发就不太合适，不如一开始就规定不在数据层通过 liveData 返回结果。
+     * 有时数据并非一定是通过 liveData 来分发给页面，也可能是通过别的组件去通知给非页面，
+     * 这时 repo 方法中内定通过 liveData 分发就不太合适，不如一开始就规定不在数据层通过 liveData 返回结果。
      * <p>
-     * 如果这样说还不理解的话，详见《如何让同事爱上架构模式、少写 bug 多注释》篇的解析
+     * 如这样说还不理解，详见《这是一份 “架构模式” 自驾攻略》篇的解析
      * https://xiaozhuanlan.com/topic/8204519736
      *
      * @param result result
@@ -112,9 +112,9 @@ public class DataRepository {
     /**
      * TODO：模拟下载任务:
      * 可分别用于 普通的请求，和可跟随页面生命周期叫停的请求，
-     * 具体可见 ViewModel 和 UseCase 中的使用。
+     * 具体可见 Result-ViewModel 和 UseCase 中的使用。
      *
-     * @param result 从 Request-ViewModel 或 UseCase 注入 LiveData，用于 控制流程、回传进度、回传文件
+     * @param result 从 Result-ViewModel 或 UseCase 注入 LiveData，用于 控制流程、回传进度、回传文件
      */
     @SuppressLint("CheckResult")
     public void downloadFile(DataResult.Result<DownloadState> result) {
