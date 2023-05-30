@@ -20,7 +20,7 @@
 
 # 架构图一览
 
-![](https://images.xiaozhuanlan.com/photo/2022/3254319c497bb39d638667cb589b48c7.png)
+![](https://images.xiaozhuanlan.com/photo/2023/6c3c5e44f18eb27650c5dcf33d6b4392.jpg)
 
 &nbsp;
 
@@ -74,7 +74,7 @@
 > 我们在 Fragment 和 Activity 之间分别安排 跨页面通信，从而向你展示 如何基于 **迪米特原则**（也称 最少知道原则）、通过 UnPeekLiveData 和 应用级 SharedViewModel 实现 **生命周期安全、确保消息同步可靠一致的 页面通信**。
 
 
-> 我们在 `ui.page` 、`data.repository`、`domain.request` 等目录下，分别安排 视图控制器、[ViewModel](https://xiaozhuanlan.com/topic/6257931840) 、DataRepository 等 内容，从而向你展示，**单向依赖** 架构设计，是如何通过分层 数据请求和响应，**规避 “内存泄漏”** 等问题。
+> 我们在 `ui.page` 、`domain.request` 、`data.repository` 等目录下，分别安排 视图控制器、[ViewModel](https://xiaozhuanlan.com/topic/6257931840) 、Dispatcher 、DataRepository 等 内容，从而向你展示，**单向依赖** 架构设计，是如何通过分层 数据请求和响应，**规避 “内存泄漏”** 等问题。
 
 
 > 本项目代码一律采用 经过 ISO 认证 标准化工业级语言 Java 来编写。且在上述类中，我们大都 **提供丰富注释**，助你理解 “骨架代码” 为何要如此设计、如此设计能 **在软件工程背景下** 避免哪些不可预期错误。
