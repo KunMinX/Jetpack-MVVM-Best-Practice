@@ -43,13 +43,16 @@ import io.reactivex.schedulers.Schedulers;
  *
  * TODO tip 1：基于 "单一职责原则"，应将 Jetpack ViewModel 框架划分为 state-ViewModel 和 result-ViewModel，
  * result-ViewModel 作为领域层组件，提取和继承 Jetpack ViewModel 框架中 "作用域管理" 的能力，
- * 使业务实例能根据需要，被单个页面独享，或多个页面共享，
+ * 使业务实例能根据需要，被单个页面独享，或多个页面共享，例如：
+ *
+ * mDownloadRequester = getFragmentScopeViewModel(DownloadRequester.class);
+ * mGlobalDownloadRequester = getActivityScopeViewModel(DownloadRequester.class);
  *
  * result-ViewModel 作为领域层组件，职责仅限于 "业务逻辑处理 和 消息分发"，
  * UI 逻辑和业务逻辑，本质区别在于，前者是数据的消费者，后者是数据的生产者，
  * 数据总是来自领域层业务逻辑的处理，并单向回推至 UI 层，在 UI 层中响应数据的变化，
  *
- * 故此应根据上述介绍明确区分 UI 逻辑和业务逻辑，不要将 UI 逻辑理解为业务逻辑的一部分，
+ * 故此应根据上述介绍明确区分 UI 逻辑和业务逻辑，勿将 UI 逻辑混为业务逻辑的一部分，
  * result-ViewModel 中应当只关注数据的生成，而不关注数据的使用，
  *
  * 如这么说无体会，详见《再回首 页面搭档 Jetpack ViewModel》解析。

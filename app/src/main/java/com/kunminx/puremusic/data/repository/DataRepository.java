@@ -17,7 +17,6 @@
 package com.kunminx.puremusic.data.repository;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -28,26 +27,21 @@ import com.kunminx.architecture.utils.Utils;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.api.APIs;
 import com.kunminx.puremusic.data.api.AccountService;
-import com.kunminx.puremusic.data.bean.DownloadState;
 import com.kunminx.puremusic.data.bean.LibraryInfo;
 import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.data.bean.User;
 
-import org.jetbrains.annotations.NotNull;
-
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.ObservableOnSubscribe;
 import okhttp3.OkHttpClient;
-import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -113,46 +107,37 @@ public class DataRepository {
 
     /**
      * TODO：模拟下载任务:
-     * 可分别用于 普通的请求，和可跟随页面生命周期叫停的请求，
-     * 具体可见 Result-ViewModel 和 UseCase 中的使用。
-     *
-     * @param result 从 Result-ViewModel 或 UseCase 注入 LiveData，用于 控制流程、回传进度、回传文件
      */
     @SuppressLint("CheckResult")
-    public void downloadFile(DataResult.Result<DownloadState> result) {
-        final DownloadState[] originState = {new DownloadState()};
-        Observable.interval(100, TimeUnit.MILLISECONDS)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(aLong -> {
-                DownloadState newState = new DownloadState();
-                if (originState[0].isForgive || originState[0].progress == 100) {
-                    return;
-                }
+    public ObservableOnSubscribe<Integer> downloadFile() {
+        return emitter -> {
+            //在内存中模拟 "数据读写"，假装是在 "文件 IO"，
 
-                //模拟下载，假设下载一个文件要 10秒、每 100 毫秒下载 1% 并通知 UI 层
-                if (originState[0].progress < 100) {
-                    newState = new DownloadState(false, originState[0].progress + 1, null);
-                    originState[0] = newState;
-                    Log.d("---", "下载进度 " + originState[0].progress + "%");
+            byte[] bytes = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
+            try (ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+                 ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+                int b;
+                while ((b = bis.read()) != -1) {
+                    Thread.sleep(100);
+                    emitter.onNext(b);
                 }
-
-                result.onResult(new DataResult<>(newState, new ResponseStatus()));
-                Log.d("---", "回推状态");
-            });
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        };
     }
 
     /**
      * TODO 模拟登录的网络请求
      *
-     * @param user   ui 层填写的用户信息
+     * @param user ui 层填写的用户信息
      */
     public DataResult<String> login(User user) {
 
         // 使用 retrofit 或任意你喜欢的库实现网络请求。此处以 retrofit 写个简单例子，
         // 并且如使用 rxjava，还可额外依赖 RxJavaCallAdapterFactory 来简化编写，具体自行网上查阅，此处不做累述，
 
-        Call<String> call= retrofit.create(AccountService.class).login(user.getName(), user.getPassword());
+        Call<String> call = retrofit.create(AccountService.class).login(user.getName(), user.getPassword());
         Response<String> response;
         try {
             response = call.execute();
