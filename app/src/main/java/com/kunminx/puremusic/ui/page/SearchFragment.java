@@ -154,9 +154,9 @@ public class SearchFragment extends BaseFragment {
 
         //如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350
 
-        public final State<Integer> progress = new State<>(0);
+        public final State<Integer> progress = new State<>(1);
 
-        public final State<Integer> progress_cancelable = new State<>(0);
+        public final State<Integer> progress_cancelable = new State<>(1);
 
         public final State<Boolean> enableDownload = new State<>(true);
 
