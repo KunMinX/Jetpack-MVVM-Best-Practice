@@ -90,8 +90,8 @@ public class AccountRequester extends ViewModel implements DefaultLifecycleObser
 
     private final MutableResult<DataResult<String>> tokenResult = new MutableResult<>();
 
-    //TODO tip 4：MutableResult 应仅限 "可信源" 内部使用，且只暴露 immutable Result 给 UI 层，
-    //如此达成 "可信源" 设计，也即通过 "访问控制权限" 实现 "读写分离"，
+    //TODO tip 4：MutableResult 应仅限 "鉴权中心" 内部使用，且只暴露 immutable Result 给 UI 层，
+    // 如此达成鉴权设计，也即通过 "访问控制权限" 实现 "读写分离"，
 
     //如这么说无体会，详见《吃透 LiveData 本质，享用可靠消息鉴权机制》解析。
     //https://xiaozhuanlan.com/topic/6017825943

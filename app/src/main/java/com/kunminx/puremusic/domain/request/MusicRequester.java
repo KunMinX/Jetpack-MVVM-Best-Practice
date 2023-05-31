@@ -25,6 +25,14 @@ import com.kunminx.architecture.domain.message.Result;
 import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.data.repository.DataRepository;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
 /**
  * 音乐资源  Request
  *
@@ -73,8 +81,8 @@ public class MusicRequester extends ViewModel {
 
     private final MutableResult<DataResult<TestAlbum>> mFreeMusicsResult = new MutableResult<>();
 
-    //TODO tip 3：MutableResult 应仅限 "可信源" 内部使用，且只暴露 immutable Result 给 UI 层，
-    //如此达成 "可信源" 设计，也即通过 "访问控制权限" 实现 "读写分离"，
+    //TODO tip 4：MutableResult 应仅限 "鉴权中心" 内部使用，且只暴露 immutable Result 给 UI 层，
+    //如此达成鉴权设计，也即通过 "访问控制权限" 实现 "读写分离"，
 
     //如这么说无体会，详见《吃透 LiveData 本质，享用可靠消息鉴权机制》解析。
     //https://xiaozhuanlan.com/topic/6017825943
@@ -83,23 +91,33 @@ public class MusicRequester extends ViewModel {
         return mFreeMusicsResult;
     }
 
+
+    //TODO tip 5: requester 职责仅限于 "业务逻辑处理" 和 "消息分发"，不建议在此处理 UI 逻辑，
+    // UI 逻辑和业务逻辑，本质区别在于，前者是数据的消费者，后者是数据的生产者，
+    // 数据总是来自领域层业务逻辑的处理，并单向回推至 UI 层，在 UI 层中响应数据的变化（也即处理 UI 逻辑），
+
     public void requestFreeMusics() {
+        Observable.create((ObservableOnSubscribe<DataResult<TestAlbum>>) emitter -> {
+                DataRepository.getInstance().getFreeMusic(emitter::onNext);
+            }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<DataResult<TestAlbum>>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
 
-        //TODO tip 4：为方便语义理解，此处直接将 DataResult 作为 LiveData value 回推给 UI 层，
-        //而非 DataResult 泛型实体拆下来单独回推，如此
-        //一方面使 UI 层有机会基于 DataResult 的 responseStatus 分别处理 "请求成功或失败" 情况下 UI 表现，
-        //另一方面从语义上强调了 该结果是请求得来的只读数据，与 "可变状态" 形成明确区分，
-        //从而方便团队开发人员自然而然遵循 "可信源"/"单向数据流" 开发理念，规避消息同步一致性等不可预期错误。
+                        }
+                        @Override
+                        public void onNext(DataResult<TestAlbum> testAlbumDataResult) {
+                            mFreeMusicsResult.setValue(testAlbumDataResult);
+                        }
+                        @Override
+                        public void onError(Throwable e) {
 
-        //如这么说无体会，详见《这是一份 “架构模式” 自驾攻略》中对 "只读数据" 和 "可变状态" 区别的解析。
-        //https://xiaozhuanlan.com/topic/8204519736
+                        }
+                        @Override
+                        public void onComplete() {
 
-        //TODO Tip 5：lambda 语句只有一行时可简写，具体可结合实际情况选择和使用
-
-        /*DataRepository.getInstance().getFreeMusic(dataResult -> {
-            mFreeMusicsLiveData.setValue(dataResult);
-        });*/
-
-        DataRepository.getInstance().getFreeMusic(mFreeMusicsResult::setValue);
+                        }
+                    });
     }
 }
