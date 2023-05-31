@@ -35,6 +35,7 @@ import com.kunminx.puremusic.data.bean.User;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -43,6 +44,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -140,45 +142,26 @@ public class DataRepository {
             });
     }
 
-    //TODO tip：模拟可取消的登录请求：
-    //
-    // Call 上升为成员实例，配合可观察页面生命周期的 accountRequest，
-    // 从而在页面即将退出、且登录请求由于网络延迟尚未完成时，
-    // 及时通知数据层取消本次请求，以避免资源浪费和一系列不可预期的问题。
-
-    private Call<String> mUserCall;
-
     /**
      * TODO 模拟登录的网络请求
      *
      * @param user   ui 层填写的用户信息
-     * @param result 模拟网络请求返回的 token
      */
-    public void login(User user, DataResult.Result<String> result) {
-        mUserCall = retrofit.create(AccountService.class).login(user.getName(), user.getPassword());
-        mUserCall.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(@NotNull Call<String> call, @NotNull Response<String> response) {
-                ResponseStatus responseStatus = new ResponseStatus(
-                    String.valueOf(response.code()), response.isSuccessful(), ResultSource.NETWORK);
-                result.onResult(new DataResult<>(response.body(), responseStatus));
-                mUserCall = null;
-            }
+    public DataResult<String> login(User user) {
 
-            @Override
-            public void onFailure(@NotNull Call<String> call, @NotNull Throwable t) {
-                result.onResult(new DataResult<>(null,
-                    new ResponseStatus(t.getMessage(), false, ResultSource.NETWORK)));
-                mUserCall = null;
-            }
-        });
-    }
+        // 使用 retrofit 或任意你喜欢的库实现网络请求。此处以 retrofit 写个简单例子，
+        // 并且如使用 rxjava，还可额外依赖 RxJavaCallAdapterFactory 来简化编写，具体自行网上查阅，此处不做累述，
 
-    public void cancelLogin() {
-        if (mUserCall != null && !mUserCall.isCanceled()) {
-            mUserCall.cancel();
-            mUserCall = null;
+        Call<String> call= retrofit.create(AccountService.class).login(user.getName(), user.getPassword());
+        Response<String> response;
+        try {
+            response = call.execute();
+            ResponseStatus responseStatus = new ResponseStatus(
+                String.valueOf(response.code()), response.isSuccessful(), ResultSource.NETWORK);
+            return new DataResult<>(response.body(), responseStatus);
+        } catch (IOException e) {
+            return new DataResult<>(null,
+                new ResponseStatus(e.getMessage(), false, ResultSource.NETWORK));
         }
     }
-
 }

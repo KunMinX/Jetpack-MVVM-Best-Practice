@@ -16,19 +16,27 @@
 
 package com.kunminx.puremusic.domain.request;
 
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModel;
 
 import com.kunminx.architecture.data.response.DataResult;
+import com.kunminx.architecture.data.response.ResponseStatus;
+import com.kunminx.architecture.data.response.ResultSource;
 import com.kunminx.architecture.domain.message.MutableResult;
 import com.kunminx.architecture.domain.message.Result;
 import com.kunminx.puremusic.data.bean.User;
 import com.kunminx.puremusic.data.repository.DataRepository;
 
 import org.jetbrains.annotations.NotNull;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * 用户账户 Request
@@ -92,30 +100,51 @@ public class AccountRequester extends ViewModel implements DefaultLifecycleObser
         return tokenResult;
     }
 
+    //TODO tip：模拟可取消的登录请求：
+    //
+    // 配合可观察页面生命周期的 accountRequest，
+    // 从而在页面即将退出、且登录请求由于网络延迟尚未完成时，
+    // 及时通知数据层取消本次请求，以避免资源浪费和一系列不可预期的问题。
+
+    private Disposable mDisposable;
+
+    //TODO tip: 业务逻辑处理
+    //
+    // 数据层仅限于提供数据的 IO 或计算，
+    // 业务逻辑，包括数据的定制和结果的回推，都是在领域层处理，
+
     public void requestLogin(User user) {
-
-        //TODO tip 5：为方便语义理解，此处直接将 DataResult 作为 LiveData value 回推给 UI 层，
-        //而非 DataResult 泛型实体拆下来单独回推，如此
-        //一方面使 UI 层有机会基于 DataResult 的 responseStatus 分别处理 "请求成功或失败" 情况下 UI 表现，
-        //另一方面从语义上强调了 该结果是请求得来的只读数据，与 "可变状态" 形成明确区分，
-        //从而方便团队开发人员自然而然遵循 "可信源"/"单向数据流" 开发理念，规避消息同步一致性等不可预期错误。
-
-        //如这么说无体会，详见《这是一份 “架构模式” 自驾攻略》中对 "只读数据" 和 "可变状态" 区别的解析。
-        //https://xiaozhuanlan.com/topic/8204519736
-
-        //TODO Tip 6：lambda 语句只有一行时可简写，具体可结合实际情况选择和使用
-
-        /*DataRepository.getInstance().login(user, dataResult -> {
-            tokenResult.postValue(dataResult);
-        });*/
-
-        DataRepository.getInstance().login(user, tokenResult::postValue);
+        Observable.create((ObservableOnSubscribe<DataResult<String>>) emitter -> {
+                emitter.onNext(DataRepository.getInstance().login(user));
+            }).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Observer<DataResult<String>>() {
+                @Override
+                public void onSubscribe(Disposable d) {
+                    mDisposable = d;
+                }
+                @Override
+                public void onNext(DataResult<String> dataResult) {
+                    tokenResult.postValue(dataResult);
+                }
+                @Override
+                public void onError(Throwable e) {
+                    tokenResult.postValue(new DataResult<>(null,
+                        new ResponseStatus(e.getMessage(), false, ResultSource.NETWORK)));
+                }
+                @Override
+                public void onComplete() {
+                    mDisposable = null;
+                }
+            });
     }
 
-    private void cancelLogin() {
-        DataRepository.getInstance().cancelLogin();
+    public void cancelLogin() {
+        if (mDisposable != null && !mDisposable.isDisposed()) {
+            mDisposable.dispose();
+            mDisposable = null;
+        }
     }
-
 
     //TODO tip 7：让 accountRequest 可观察页面生命周期，
     // 从而在页面即将退出、且登录请求由于网络延迟尚未完成时，
