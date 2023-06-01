@@ -85,7 +85,7 @@ public class SearchFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //TODO tip 8: 此处演示使用 "可信源" MVI-Dispatcher input-output 接口完成数据请求响应
+        //TODO tip 8: 此处演示使用 MVI-Dispatcher input-output 接口完成数据请求响应
 
         //如这么说无体会，详见《领域层设计》篇拆解 https://juejin.cn/post/7117498113983512589
 
@@ -96,6 +96,8 @@ public class SearchFragment extends BaseFragment {
                 mStates.enableDownload.set(state.progress == 100 || state.progress == 0);
             }
         });
+
+        //TODO tip 9: 此处演示 "同一 Result-ViewModel 类，在不同作用域下实例化，造成的不同结果"
 
         mGlobalDownloadRequester.output(this, downloadEvent -> {
             if (downloadEvent.eventId == DownloadEvent.EVENT_DOWNLOAD_GLOBAL) {
@@ -125,7 +127,7 @@ public class SearchFragment extends BaseFragment {
             openUrlInBrowser(Const.COLUMN_LINK);
         }
 
-        //TODO tip 8: 此处演示使用 "可信源" MVI-Dispatcher input-output 接口完成数据请求响应
+        //TODO tip 8: 此处演示使用 MVI-Dispatcher input-output 接口完成数据请求响应
 
         //如这么说无体会，详见《领域层设计》篇拆解 https://juejin.cn/post/7117498113983512589
 
