@@ -103,8 +103,8 @@ public class PlayerSlideListener implements SlidingUpPanelLayout.PanelSlideListe
         mStates.playPauseDrawableColor.set(PLAY_PAUSE_DRAWABLE_COLOR);
         mStates.playCircleAlpha.set(INT_EVALUATOR.evaluate(0, 0, 255));
         mStates.nextX.set(mNextStartX);
-    mStates.modeX.set(0);
-    mStates.previousX.set(0);
+        mStates.modeX.set(0);
+        mStates.previousX.set(0);
         mStates.playPauseX.set(mPlayPauseStartX);
         mStates.iconContainerY.set(mIconContainerStartY);
         mBinding.executePendingBindings();

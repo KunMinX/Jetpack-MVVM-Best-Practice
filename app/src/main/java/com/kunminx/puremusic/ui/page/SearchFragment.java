@@ -40,7 +40,7 @@ import com.kunminx.puremusic.domain.request.DownloadRequester;
 public class SearchFragment extends BaseFragment {
 
     //TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 result-ViewModel，
-    // state-ViewModel 职责仅限于托管、保存和恢复本页面 state，作用域仅限于本页面
+    // state-ViewModel 职责仅限于托管、保存和恢复本页面 state，作用域仅限于本页面，承担对本页面 "各控件属性" 来说的 "唯一可信源"，
     // result-ViewModel 职责仅限于 "消息分发" 场景承担 "可信源"，作用域依 "数据请求" 或 "跨页通信" 消息分发范围而定
 
     // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/8204519736
