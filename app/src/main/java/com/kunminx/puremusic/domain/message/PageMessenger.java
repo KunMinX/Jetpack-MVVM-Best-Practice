@@ -5,12 +5,14 @@ import com.kunminx.puremusic.domain.event.Messages;
 
 /**
  * TODO:Note 2022.07.04
- * 可于领域层通过 MVI-Dispatcher 实现 "可信源"，
- * 使支持连续发送多种类事件 + 彻底消除 mutable 样板代码 + 彻底杜绝团队新手 mutable.setValue 误用滥用，
- * 鉴于本项目场景难发挥 MVI-Dispatcher 潜能，故目前仅以改造 SharedViewModel 为例，
+ * 可于领域层通过 MVI-Dispatcher 实现可靠的消息回推，
+ * 通过消息队列、引用计数等设计，确保 "消息都能被消费，且只消费一次"，
+ * 通过内聚设计，彻底杜绝 mutable 滥用等问题，
+ *
+ * 鉴于本项目场景难发挥 MVI-Dispatcher 潜能，故目前仅以改造 DownloadRequester 和 SharedViewModel 为例，
  * 通过对比 SharedViewModel 和 PageMessenger 易得，后者可简洁优雅实现可靠一致的消息分发，
  *
- * /* TODO 于可信源中统一鉴权处理业务逻辑，并通过 sendResult 回推结果至表现层
+ * TODO tip: 于 PageMessenger 中统一鉴权和处理业务逻辑，并通过 sendResult 回推结果至表现层
  *
  * switch (event.eventId) {
  *    case Messages.EVENT_ADD_SLIDE_LISTENER:
