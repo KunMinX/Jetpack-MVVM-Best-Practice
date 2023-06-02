@@ -23,6 +23,9 @@ import android.widget.SeekBar;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+
 /**
  * Create by KunMinX at 2020/12/3
  */
@@ -51,6 +54,19 @@ public class DefaultInterface {
         default void onPanelStateChanged(View panel,
                                          SlidingUpPanelLayout.PanelState previousState,
                                          SlidingUpPanelLayout.PanelState newState) {
+        }
+    }
+
+    public interface Observer<T> extends io.reactivex.Observer<T> {
+        default void onSubscribe(@NonNull Disposable d) {
+        }
+
+        void onNext(@NonNull T t);
+
+        default void onError(@NonNull Throwable e) {
+        }
+
+        default void onComplete() {
         }
     }
 }

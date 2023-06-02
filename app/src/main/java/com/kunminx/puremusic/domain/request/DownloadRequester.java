@@ -7,9 +7,8 @@ import com.kunminx.architecture.domain.dispatch.MviDispatcher;
 import com.kunminx.puremusic.data.bean.DownloadState;
 import com.kunminx.puremusic.data.repository.DataRepository;
 import com.kunminx.puremusic.domain.event.DownloadEvent;
+import com.kunminx.puremusic.ui.page.helper.DefaultInterface;
 
-import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -91,10 +90,10 @@ public class DownloadRequester extends MviDispatcher<DownloadEvent> {
     protected void onHandle(DownloadEvent event) {
         switch (event.eventId) {
             case DownloadEvent.EVENT_DOWNLOAD:
-                Observable.create(DataRepository.getInstance().downloadFile())
+                DataRepository.getInstance().downloadFile()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<Integer>() {
+                    .subscribe(new DefaultInterface.Observer<Integer>() {
                         @Override
                         public void onSubscribe(Disposable d) {
                             mDisposable = d;
@@ -103,21 +102,13 @@ public class DownloadRequester extends MviDispatcher<DownloadEvent> {
                         public void onNext(Integer integer) {
                             sendResult(event.copy(new DownloadState(true, integer)));
                         }
-                        @Override
-                        public void onError(Throwable e) {
-
-                        }
-                        @Override
-                        public void onComplete() {
-
-                        }
                     });
                 break;
             case DownloadEvent.EVENT_DOWNLOAD_GLOBAL:
-                Observable.create(DataRepository.getInstance().downloadFile())
+                DataRepository.getInstance().downloadFile()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(integer -> {
+                    .subscribe((DefaultInterface.Observer<Integer>) integer -> {
                         sendResult(event.copy(new DownloadState(true, integer)));
                     });
                 break;

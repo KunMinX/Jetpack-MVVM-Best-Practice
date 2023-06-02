@@ -107,9 +107,8 @@ public class InfoRequester extends ViewModel {
     @SuppressLint("CheckResult")
     public void requestLibraryInfo() {
         if (mLibraryResult.getValue() == null)
-            Observable.create((ObservableOnSubscribe<DataResult<List<LibraryInfo>>>) emitter -> {
-                    DataRepository.getInstance().getLibraryInfo(emitter::onNext);
-                }).subscribeOn(Schedulers.io())
+            DataRepository.getInstance().getLibraryInfo()
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mLibraryResult::setValue);
     }

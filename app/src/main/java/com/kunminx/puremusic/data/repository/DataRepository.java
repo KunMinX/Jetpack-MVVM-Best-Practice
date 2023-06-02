@@ -38,6 +38,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -78,40 +79,36 @@ public class DataRepository {
             .build();
     }
 
-    /**
-     * TODO: 建议在 DataRepository 使用 DataResult 而非 LiveData 来返回结果：
-     * liveData 是专用于页面开发的、用于解决生命周期安全问题的组件，
-     * 有时数据并非一定是通过 liveData 来分发给页面，也可能是通过别的组件去通知给非页面，
-     * 这时 repo 方法中内定通过 liveData 分发就不太合适，不如一开始就规定不在数据层通过 liveData 返回结果。
-     * <p>
-     * 如这样说还不理解，详见《这是一份 “架构模式” 自驾攻略》篇的解析
-     * https://xiaozhuanlan.com/topic/8204519736
-     *
-     * @param result result
-     */
-    public void getFreeMusic(DataResult.Result<TestAlbum> result) {
-        Gson gson = new Gson();
-        Type type = new TypeToken<TestAlbum>() {
-        }.getType();
-        TestAlbum testAlbum = gson.fromJson(Utils.getApp().getString(R.string.free_music_json), type);
-        result.onResult(new DataResult<>(testAlbum, new ResponseStatus()));
+    //TODO tip: 通过 "响应式框架" 往领域层回推数据，
+    // 与此相对应，kotlin 下使用 flow{ ... emit(...) }.flowOn(Dispatchers.xx)
+
+    public Observable<DataResult<TestAlbum>> getFreeMusic() {
+        return Observable.create((ObservableOnSubscribe<DataResult<TestAlbum>>) emitter -> {
+            Gson gson = new Gson();
+            Type type = new TypeToken<TestAlbum>() {
+            }.getType();
+            TestAlbum testAlbum = gson.fromJson(Utils.getApp().getString(R.string.free_music_json), type);
+            emitter.onNext(new DataResult<>(testAlbum, new ResponseStatus()));
+        });
     }
 
-    public void getLibraryInfo(DataResult.Result<List<LibraryInfo>> result) {
-        Gson gson = new Gson();
-        Type type = new TypeToken<List<LibraryInfo>>() {
-        }.getType();
-        List<LibraryInfo> list = gson.fromJson(Utils.getApp().getString(R.string.library_json), type);
-        result.onResult(new DataResult<>(list, new ResponseStatus()));
+    public Observable<DataResult<List<LibraryInfo>>> getLibraryInfo() {
+        return Observable.create((ObservableOnSubscribe<DataResult<List<LibraryInfo>>>) emitter -> {
+            Gson gson = new Gson();
+            Type type = new TypeToken<List<LibraryInfo>>() {
+            }.getType();
+            List<LibraryInfo> list = gson.fromJson(Utils.getApp().getString(R.string.library_json), type);
+            emitter.onNext(new DataResult<>(list, new ResponseStatus()));
+        });
     }
 
     /**
      * TODO：模拟下载任务:
      */
     @SuppressLint("CheckResult")
-    public ObservableOnSubscribe<Integer> downloadFile() {
+    public Observable<Integer> downloadFile() {
         synchronized (this) {
-            return emitter -> {
+            return Observable.create(emitter -> {
                 //在内存中模拟 "数据读写"，假装是在 "文件 IO"，
 
                 byte[] bytes = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
@@ -125,7 +122,7 @@ public class DataRepository {
                 } catch (IOException | InterruptedException e) {
                     e.printStackTrace();
                 }
-            };
+            });
         }
     }
 
@@ -134,21 +131,23 @@ public class DataRepository {
      *
      * @param user ui 层填写的用户信息
      */
-    public DataResult<String> login(User user) {
+    public Observable<DataResult<String>> login(User user) {
 
         // 使用 retrofit 或任意你喜欢的库实现网络请求。此处以 retrofit 写个简单例子，
         // 并且如使用 rxjava，还可额外依赖 RxJavaCallAdapterFactory 来简化编写，具体自行网上查阅，此处不做累述，
 
-        Call<String> call = retrofit.create(AccountService.class).login(user.getName(), user.getPassword());
-        Response<String> response;
-        try {
-            response = call.execute();
-            ResponseStatus responseStatus = new ResponseStatus(
-                String.valueOf(response.code()), response.isSuccessful(), ResultSource.NETWORK);
-            return new DataResult<>(response.body(), responseStatus);
-        } catch (IOException e) {
-            return new DataResult<>(null,
-                new ResponseStatus(e.getMessage(), false, ResultSource.NETWORK));
-        }
+        return Observable.create((ObservableOnSubscribe<DataResult<String>>) emitter -> {
+            Call<String> call = retrofit.create(AccountService.class).login(user.getName(), user.getPassword());
+            Response<String> response;
+            try {
+                response = call.execute();
+                ResponseStatus responseStatus = new ResponseStatus(
+                    String.valueOf(response.code()), response.isSuccessful(), ResultSource.NETWORK);
+                emitter.onNext(new DataResult<>(response.body(), responseStatus));
+            } catch (IOException e) {
+                emitter.onNext(new DataResult<>(null,
+                    new ResponseStatus(e.getMessage(), false, ResultSource.NETWORK)));
+            }
+        });
     }
 }

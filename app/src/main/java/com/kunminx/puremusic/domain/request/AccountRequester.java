@@ -117,9 +117,8 @@ public class AccountRequester extends ViewModel implements DefaultLifecycleObser
     // 业务逻辑，包括数据的定制和结果的回推，都是在领域层处理，
 
     public void requestLogin(User user) {
-        Observable.create((ObservableOnSubscribe<DataResult<String>>) emitter -> {
-                emitter.onNext(DataRepository.getInstance().login(user));
-            }).subscribeOn(Schedulers.io())
+        DataRepository.getInstance().login(user)
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(new Observer<DataResult<String>>() {
                 @Override

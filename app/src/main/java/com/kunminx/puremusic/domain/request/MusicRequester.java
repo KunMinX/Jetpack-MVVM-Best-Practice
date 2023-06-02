@@ -98,9 +98,8 @@ public class MusicRequester extends ViewModel {
 
     @SuppressLint("CheckResult")
     public void requestFreeMusics() {
-        Observable.create((ObservableOnSubscribe<DataResult<TestAlbum>>) emitter -> {
-                DataRepository.getInstance().getFreeMusic(emitter::onNext);
-            }).subscribeOn(Schedulers.io())
+        DataRepository.getInstance().getFreeMusic()
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(mFreeMusicsResult::setValue);
     }
