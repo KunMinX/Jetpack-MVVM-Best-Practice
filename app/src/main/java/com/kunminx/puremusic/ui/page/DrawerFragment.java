@@ -76,22 +76,15 @@ public class DrawerFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //TODO tip 3: 从可信源 Requester 通过 immutable Result 获取请求结果的只读数据，set 给 mutable State，
-        //而非 Result、State 不分，直接在页面 set Result，
+        //TODO tip 3: 从 PublishSubject 接收回推的数据，并在回调中响应数据的变化，
+        // 也即通过 BehaviorSubject 通知控件属性重新渲染，并为其兜住最后一次状态，
 
-        //如这么说无体会，详见《吃透 LiveData 本质，享用可靠消息鉴权机制》解析。
-        //https://xiaozhuanlan.com/topic/6017825943
+        //如这么说无体会，详见 https://xiaozhuanlan.com/topic/6741932805
 
         mInfoRequester.getLibraryResult().observe(getViewLifecycleOwner(), dataResult -> {
             if (!dataResult.getResponseStatus().isSuccess()) return;
-
             if (dataResult.getResult() != null) mStates.list.set(dataResult.getResult());
         });
-
-        //TODO tip 4： 向可信源 Requester 请求数据，由其内部统一决策，而非以消息总线 Bus 方式发送和接收，
-
-        //如这么说无体会，详见《吃透 LiveData 本质，享用可靠消息鉴权机制》解析。
-        //https://xiaozhuanlan.com/topic/6017825943
 
         mInfoRequester.requestLibraryInfo();
     }
@@ -102,22 +95,13 @@ public class DrawerFragment extends BaseFragment {
         }
     }
 
-    //TODO tip 5：每个页面都需单独准备一个 state-ViewModel，托管 DataBinding 绑定的 State，
-    // 此外，state-ViewModel 职责仅限于状态托管和保存恢复，不建议在此处理 UI 逻辑，
-    // UI 逻辑和业务逻辑，本质区别在于，前者是数据的消费者，后者是数据的生产者，
-    // 数据总是来自领域层业务逻辑的处理，并单向回推至 UI 层，在 UI 层中响应数据的变化（也即处理 UI 逻辑），
-    // 换言之，UI 逻辑只适合在 Activity/Fragment 等视图控制器中编写，将来升级到 Jetpack Compose 更是如此。
+    //TODO tip 5：基于单一职责原则，抽取 Jetpack ViewModel "状态保存和恢复" 的能力作为 StateHolder，
+    // 并使用去除防抖设计的 ObservableField 子类 State 来承担 BehaviorSubject，作为所绑定控件的 "可信数据源"，
+    // 用于在收到来自 PublishSubject 的结果回推后，响应结果数据的变化，也即通知控件属性重新渲染，并为其兜住最后一次状态，
 
     //如这么说无体会，详见 https://xiaozhuanlan.com/topic/6741932805
 
     public static class DrawerStates extends StateHolder {
-
-        //TODO tip 6：此处我们使用 "去除防抖特性" 的 ObservableField 子类 State，用以代替 MutableLiveData，
-
-        //如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350
-
         public final State<List<LibraryInfo>> list = new State<>(new ArrayList<>());
-
     }
-
 }

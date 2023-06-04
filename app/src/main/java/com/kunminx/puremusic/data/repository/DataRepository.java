@@ -83,7 +83,7 @@ public class DataRepository {
     // 与此相对应，kotlin 下使用 flow{ ... emit(...) }.flowOn(Dispatchers.xx)
 
     public Observable<DataResult<TestAlbum>> getFreeMusic() {
-        return Observable.create((ObservableOnSubscribe<DataResult<TestAlbum>>) emitter -> {
+        return Observable.create(emitter -> {
             Gson gson = new Gson();
             Type type = new TypeToken<TestAlbum>() {
             }.getType();
@@ -93,7 +93,7 @@ public class DataRepository {
     }
 
     public Observable<DataResult<List<LibraryInfo>>> getLibraryInfo() {
-        return Observable.create((ObservableOnSubscribe<DataResult<List<LibraryInfo>>>) emitter -> {
+        return Observable.create(emitter -> {
             Gson gson = new Gson();
             Type type = new TypeToken<List<LibraryInfo>>() {
             }.getType();
@@ -136,7 +136,7 @@ public class DataRepository {
         // 使用 retrofit 或任意你喜欢的库实现网络请求。此处以 retrofit 写个简单例子，
         // 并且如使用 rxjava，还可额外依赖 RxJavaCallAdapterFactory 来简化编写，具体自行网上查阅，此处不做累述，
 
-        return Observable.create((ObservableOnSubscribe<DataResult<String>>) emitter -> {
+        return Observable.create(emitter -> {
             Call<String> call = retrofit.create(AccountService.class).login(user.getName(), user.getPassword());
             Response<String> response;
             try {
