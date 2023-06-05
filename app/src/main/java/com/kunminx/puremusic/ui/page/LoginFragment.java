@@ -105,10 +105,12 @@ public class LoginFragment extends BaseFragment {
             String s = dataResult.getResult();
             if (TextUtils.isEmpty(s)) return;
 
+            //TODO tip：成功获取 token 后，可通过 KeyValueX 框架存储配置，
+            // 以及通过作用域为 Application 的 PageMessenger 框架通知其他页面刷新状态，
+            // 具体详见 Configs 类和 PageMessenger 类说明
+
             mConfigs.token().set(s);
             mStates.loadingVisible.set(false);
-
-            //TODO 登录成功后进行的下一步操作...
             nav().navigateUp();
         });
     }
