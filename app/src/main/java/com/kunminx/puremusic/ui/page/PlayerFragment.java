@@ -23,12 +23,12 @@ import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 
 import com.kunminx.architecture.ui.page.BaseFragment;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
 import com.kunminx.architecture.ui.page.StateHolder;
 import com.kunminx.architecture.ui.state.State;
+import com.kunminx.architecture.utils.ResUtils;
 import com.kunminx.architecture.utils.ToastUtils;
 import com.kunminx.architecture.utils.Utils;
 import com.kunminx.player.PlayingInfoManager;
@@ -45,8 +45,6 @@ import com.kunminx.puremusic.ui.view.PlayerSlideListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
-
-import java.util.Objects;
 
 /**
  * Create by KunMinX at 19/10/29
@@ -205,7 +203,7 @@ public class PlayerFragment extends BaseFragment {
         }
 
         public void showPlayList() {
-            ToastUtils.showShortToast(getApplicationContext(), getString(R.string.unfinished));
+            ToastUtils.showShortToast(getString(R.string.unfinished));
         }
 
         //TODO tip 8: 此处演示使用 "可信源" MVI-Dispatcher input-output 接口完成消息收发
@@ -248,7 +246,7 @@ public class PlayerFragment extends BaseFragment {
 
         public final State<String> coverImg = new State<>("");
 
-        public final State<Drawable> placeHolder = new State<>(Objects.requireNonNull(ContextCompat.getDrawable(Utils.getApp(), R.drawable.bg_album_default)));
+        public final State<Drawable> placeHolder = new State<>(ResUtils.getDrawable(R.drawable.bg_album_default));
 
         public final State<Integer> maxSeekDuration = new State<>(0);
 
@@ -256,6 +254,7 @@ public class PlayerFragment extends BaseFragment {
 
         public final State<Boolean> isPlaying = new State<>(false, true);
 
-        public final State<MaterialDrawableBuilder.IconValue> playModeIcon = new State<>(PlayerManager.getInstance().getModeIcon());
+        public final State<MaterialDrawableBuilder.IconValue> playModeIcon
+            = new State<>(PlayerManager.getInstance().getModeIcon());
     }
 }
