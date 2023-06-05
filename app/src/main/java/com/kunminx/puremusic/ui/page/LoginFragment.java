@@ -81,6 +81,7 @@ public class LoginFragment extends BaseFragment {
         //TODO tip 3：让 accountRequest 可观察页面生命周期，
         // 从而在页面即将退出、且登录请求由于网络延迟尚未完成时，
         // 及时通知数据层取消本次请求，以避免资源浪费和一系列不可预期问题。
+
         getLifecycle().addObserver(mAccountRequester);
     }
 

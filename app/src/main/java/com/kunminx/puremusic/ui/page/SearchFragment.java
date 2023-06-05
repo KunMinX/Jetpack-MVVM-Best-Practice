@@ -127,9 +127,7 @@ public class SearchFragment extends BaseFragment {
             openUrlInBrowser(Const.COLUMN_LINK);
         }
 
-        //TODO tip 8: 此处演示使用 MVI-Dispatcher input-output 接口完成数据请求响应
-
-        //如这么说无体会，详见《领域层设计》篇拆解 https://juejin.cn/post/7117498113983512589
+        //TODO tip: 同 tip 8
 
         public void testDownload() {
             mGlobalDownloadRequester.input(new DownloadEvent(DownloadEvent.EVENT_DOWNLOAD_GLOBAL));
@@ -142,20 +140,13 @@ public class SearchFragment extends BaseFragment {
         }
     }
 
-    //TODO tip 6：每个页面都需单独准备一个 state-ViewModel，托管与 "控件属性" 发生绑定的 State，
-    // 此外，state-ViewModel 职责仅限于状态托管和保存恢复，不建议在此处理 UI 逻辑，
-
-    // UI 逻辑和业务逻辑，本质区别在于，前者是数据的消费者，后者是数据的生产者，
-    // 数据总是来自领域层业务逻辑的处理，并单向回推至 UI 层，在 UI 层中响应数据的变化（也即处理 UI 逻辑），
-    // 换言之，UI 逻辑只适合在 Activity/Fragment 等视图控制器中编写，将来升级到 Jetpack Compose 更是如此。
+    //TODO tip 6：基于单一职责原则，抽取 Jetpack ViewModel "状态保存和恢复" 的能力作为 StateHolder，
+    // 并使用 ObservableField 的改良版子类 State 来承担 BehaviorSubject，用作所绑定控件的 "可信数据源"，
+    // 从而在收到来自 PublishSubject 的结果回推后，响应结果数据的变化，也即通知控件属性重新渲染，并为其兜住最后一次状态，
 
     //如这么说无体会，详见 https://xiaozhuanlan.com/topic/6741932805
 
     public static class SearchStates extends StateHolder {
-
-        //TODO tip 7：此处我们使用 "去除防抖特性" 的 ObservableField 子类 State，用以代替 MutableLiveData，
-
-        //如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350
 
         public final State<Integer> progress = new State<>(1);
 

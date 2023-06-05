@@ -23,6 +23,7 @@ import androidx.lifecycle.ViewModel;
 import com.kunminx.architecture.data.response.DataResult;
 import com.kunminx.architecture.domain.message.MutableResult;
 import com.kunminx.architecture.domain.message.Result;
+import com.kunminx.architecture.domain.request.Requester;
 import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.data.repository.DataRepository;
 
@@ -37,9 +38,9 @@ import io.reactivex.schedulers.Schedulers;
  * TODO tip 1：让 UI 和业务分离，让数据总是从生产者流向消费者
  *
  * UI逻辑和业务逻辑，本质区别在于，前者是数据的消费者，后者是数据的生产者，
- * result-ViewModel 作为数据的生产者，职责应仅限于 "请求调度 和 结果分发"，
+ * "领域层组件" 作为数据的生产者，职责应仅限于 "请求调度 和 结果分发"，
  *
- * 换言之，result-ViewModel 中应当只关注数据的生成，而不关注数据的使用，
+ * 换言之，"领域层组件" 中应当只关注数据的生成，而不关注数据的使用，
  * 改变 UI 状态的逻辑代码，只应在表现层页面中编写、在 Observer 回调中响应数据的变化，
  * 将来升级到 Jetpack Compose 更是如此，
  *
@@ -54,10 +55,6 @@ import io.reactivex.schedulers.Schedulers;
  *     tvContent.setText(result.content)
  *   }
  * }
- *
- * 如这么说无体会，详见《Jetpack MVVM 分层设计》解析
- * https://xiaozhuanlan.com/topic/6741932805
- *
  *
  * TODO tip 2：Requester 通常按业务划分
  * 一个项目中通常可存在多个 Requester 类，
@@ -79,7 +76,7 @@ import io.reactivex.schedulers.Schedulers;
  *
  * Create by KunMinX at 19/10/29
  */
-public class MusicRequester extends ViewModel {
+public class MusicRequester extends Requester {
 
     private final MutableResult<DataResult<TestAlbum>> mFreeMusicsResult = new MutableResult<>();
 
