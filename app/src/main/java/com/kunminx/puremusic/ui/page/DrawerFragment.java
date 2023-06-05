@@ -42,7 +42,7 @@ import java.util.List;
 public class DrawerFragment extends BaseFragment {
 
     //TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 result-ViewModel，
-    // state-ViewModel 职责仅限于托管、保存和恢复本页面 state，作用域仅限于本页面，承担对本页面 "各控件属性" 来说的 "唯一可信源"，
+    // state-ViewModel 职责仅限于托管、保存和恢复本页面 state，作用域仅限于本页面，
     // result-ViewModel 职责仅限于 "消息分发" 场景承担 "可信源"，作用域依 "数据请求" 或 "跨页通信" 消息分发范围而定
 
     // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/8204519736
@@ -77,7 +77,7 @@ public class DrawerFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 
         //TODO tip 3: 从 PublishSubject 接收回推的数据，并在回调中响应数据的变化，
-        // 也即通过 BehaviorSubject 通知控件属性重新渲染，并为其兜住最后一次状态，
+        // 也即通过 BehaviorSubject（例如 ObservableField）通知控件属性重新渲染，并为其兜住最后一次状态，
 
         //如这么说无体会，详见 https://xiaozhuanlan.com/topic/6741932805
 
@@ -96,8 +96,8 @@ public class DrawerFragment extends BaseFragment {
     }
 
     //TODO tip 5：基于单一职责原则，抽取 Jetpack ViewModel "状态保存和恢复" 的能力作为 StateHolder，
-    // 并使用去除防抖设计的 ObservableField 子类 State 来承担 BehaviorSubject，作为所绑定控件的 "可信数据源"，
-    // 用于在收到来自 PublishSubject 的结果回推后，响应结果数据的变化，也即通知控件属性重新渲染，并为其兜住最后一次状态，
+    // 并使用 ObservableField 的改良版子类 State 来承担 BehaviorSubject，用作所绑定控件的 "可信数据源"，
+    // 从而在收到来自 PublishSubject 的结果回推后，响应结果数据的变化，也即通知控件属性重新渲染，并为其兜住最后一次状态，
 
     //如这么说无体会，详见 https://xiaozhuanlan.com/topic/6741932805
 

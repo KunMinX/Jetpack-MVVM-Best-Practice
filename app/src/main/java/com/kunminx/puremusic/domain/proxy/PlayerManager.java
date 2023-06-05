@@ -50,8 +50,13 @@ public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestM
         return sManager;
     }
 
+    private boolean mIsInit;
+
     public void init(Context context) {
-        init(context, null, null);
+        if (!mIsInit) {
+            init(context, null, null);
+            mIsInit = true;
+        }
     }
 
     @Override

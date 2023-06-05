@@ -30,6 +30,7 @@ import com.kunminx.architecture.ui.state.State;
 import com.kunminx.puremusic.domain.event.Messages;
 import com.kunminx.puremusic.domain.message.DrawerCoordinateManager;
 import com.kunminx.puremusic.domain.message.PageMessenger;
+import com.kunminx.puremusic.domain.proxy.PlayerManager;
 
 /**
  * Create by KunMinX at 19/10/16
@@ -38,7 +39,7 @@ import com.kunminx.puremusic.domain.message.PageMessenger;
 public class MainActivity extends BaseActivity {
 
     //TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 result-ViewModel，
-    // state-ViewModel 职责仅限于托管、保存和恢复本页面 state，作用域仅限于本页面，承担对本页面 "各控件属性" 来说的 "唯一可信源"，
+    // state-ViewModel 职责仅限于托管、保存和恢复本页面 state，作用域仅限于本页面，
     // result-ViewModel 职责仅限于 "消息分发" 场景承担 "可信源"，作用域依 "数据请求" 或 "跨页通信" 消息分发范围而定
 
     // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/8204519736
@@ -72,6 +73,14 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        PlayerManager.getInstance().init(this);
+
+
+        //TODO tip 3: 从 PublishSubject 接收回推的数据，并在回调中响应数据的变化，
+        // 也即通过 BehaviorSubject（例如 ObservableField）通知控件属性重新渲染，并为其兜住最后一次状态，
+
+        //如这么说无体会，详见 https://xiaozhuanlan.com/topic/6741932805
+
         mMessenger.output(this, messages -> {
             switch (messages.eventId) {
                 case Messages.EVENT_CLOSE_ACTIVITY_IF_ALLOWED:
@@ -87,10 +96,14 @@ public class MainActivity extends BaseActivity {
                     }
                     break;
                 case Messages.EVENT_OPEN_DRAWER:
-                    //TODO yes：同 tip 2: 此处将 drawer 的 open 和 close 都放在 drawerBindingAdapter 中操作，规避 View 实例 Null 安全一致性问题，
-                    //因为横屏布局无 drawerLayout。此处如果用手动判空，很容易因疏忽而造成空引用。
 
-                    //TODO 此外，此处为 drawerLayout 绑定状态 "openDrawer"，使用 "去防抖" ObservableField 子类，主要考虑到 ObservableField 具有 "防抖" 特性，不适合该场景。
+                    //TODO yes：同 tip 2:
+                    // 此处将 drawer 的 open 和 close 都放在 drawerBindingAdapter 中操作，
+                    // 规避 View 实例 Null 安全一致性问题，因为横屏布局无 drawerLayout。
+                    // 此处如果用手动判空，很容易因疏忽而造成空引用。
+
+                    //TODO 此外，此处为 drawerLayout 绑定状态 "openDrawer"，使用 "去防抖" ObservableField 子类，
+                    // 主要考虑到 ObservableField 具有 "防抖" 特性，不适合该场景。
 
                     //如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350
 
@@ -168,19 +181,13 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    //TODO tip 4：每个页面都需单独准备一个 state-ViewModel，托管 DataBinding 绑定的 State，
-    // 此外，state-ViewModel 职责仅限于状态托管和保存恢复，不建议在此处理 UI 逻辑，
-    // UI 逻辑和业务逻辑，本质区别在于，前者是数据的消费者，后者是数据的生产者，
-    // 数据总是来自领域层业务逻辑的处理，并单向回推至 UI 层，在 UI 层中响应数据的变化（也即处理 UI 逻辑），
-    // 换言之，UI 逻辑只适合在 Activity/Fragment 等视图控制器中编写，将来升级到 Jetpack Compose 更是如此。
+    //TODO tip 5：基于单一职责原则，抽取 Jetpack ViewModel "状态保存和恢复" 的能力作为 StateHolder，
+    // 并使用 ObservableField 的改良版子类 State 来承担 BehaviorSubject，用作所绑定控件的 "可信数据源"，
+    // 从而在收到来自 PublishSubject 的结果回推后，响应结果数据的变化，也即通知控件属性重新渲染，并为其兜住最后一次状态，
 
     //如这么说无体会，详见 https://xiaozhuanlan.com/topic/6741932805
 
     public static class MainActivityStates extends StateHolder {
-
-        //TODO tip 5：此处我们使用 "去除防抖特性" 的 ObservableField 子类 State，用以代替 MutableLiveData，
-
-        //如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350
 
         public final State<Boolean> isDrawerOpened = new State<>(false);
 

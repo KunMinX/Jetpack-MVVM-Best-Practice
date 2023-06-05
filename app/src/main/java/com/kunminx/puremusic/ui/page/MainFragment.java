@@ -46,7 +46,7 @@ import java.util.List;
 public class MainFragment extends BaseFragment {
 
     //TODO tip 1：基于 "单一职责原则"，应将 ViewModel 划分为 state-ViewModel 和 result-ViewModel，
-    // state-ViewModel 职责仅限于托管、保存和恢复本页面 state，作用域仅限于本页面，承担对本页面 "各控件属性" 来说的 "唯一可信源"，
+    // state-ViewModel 职责仅限于托管、保存和恢复本页面 state，作用域仅限于本页面，
     // result-ViewModel 职责仅限于 "消息分发" 场景承担 "可信源"，作用域依 "数据请求" 或 "跨页通信" 消息分发范围而定
 
     // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/8204519736
@@ -157,7 +157,7 @@ public class MainFragment extends BaseFragment {
 
     }
 
-    //TODO tip 9：每个页面都需单独准备一个 state-ViewModel，托管 DataBinding 绑定的 State，
+    //TODO tip 9：每个页面都需单独准备一个 state-ViewModel，托管与 "控件属性" 发生绑定的 State，
     // 此外，state-ViewModel 职责仅限于状态托管和保存恢复，不建议在此处理 UI 逻辑，
 
     // UI 逻辑和业务逻辑，本质区别在于，前者是数据的消费者，后者是数据的生产者，

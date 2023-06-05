@@ -1,6 +1,7 @@
 apply plugin: "com.android.application"
 
 android {
+    namespace "com.kunminx.puremusic"
     compileSdk appTargetSdk
     defaultConfig {
         applicationId "com.kunminx.puremusic"
