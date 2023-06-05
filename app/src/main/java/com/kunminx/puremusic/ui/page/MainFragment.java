@@ -33,8 +33,8 @@ import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.domain.event.Messages;
 import com.kunminx.puremusic.domain.message.PageMessenger;
-import com.kunminx.puremusic.domain.request.MusicRequester;
 import com.kunminx.puremusic.domain.proxy.PlayerManager;
+import com.kunminx.puremusic.domain.request.MusicRequester;
 import com.kunminx.puremusic.ui.page.adapter.PlaylistAdapter;
 
 import java.util.ArrayList;
@@ -121,6 +121,15 @@ public class MainFragment extends BaseFragment {
             if (musicAlbum != null && musicAlbum.getMusics() != null) {
                 mStates.list.set(musicAlbum.getMusics());
                 PlayerManager.getInstance().loadAlbum(musicAlbum);
+            }
+        });
+
+        mMessenger.output(this, messages -> {
+            switch (messages.eventId) {
+                case Messages.EVENT_LOGIN_SUCCESS:
+                    //TODO tip:
+                    //loginFragment 登录成功后的后续处理，例如刷新页面状态等
+                    break;
             }
         });
 

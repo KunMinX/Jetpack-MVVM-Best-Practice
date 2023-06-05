@@ -75,7 +75,6 @@ public class MainActivity extends BaseActivity {
 
         PlayerManager.getInstance().init(this);
 
-
         //TODO tip 6: 从 PublishSubject 接收回推的数据，并在回调中响应数据的变化，
         // 也即通过 BehaviorSubject（例如 ObservableField）通知控件属性重新渲染，并为其兜住最后一次状态，
 
@@ -137,7 +136,6 @@ public class MainActivity extends BaseActivity {
             }*/
         });
     }
-
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
