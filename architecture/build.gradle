@@ -42,7 +42,7 @@ dependencies {
 
     api "androidx.appcompat:appcompat:1.6.1"
     api "org.jetbrains:annotations:24.0.1"
-    api "androidx.navigation:navigation-runtime:2.5.3"
+    api "androidx.navigation:navigation-runtime:2.6.0"
 
     api "com.google.android.material:material:1.9.0"
     api "androidx.constraintlayout:constraintlayout:2.1.4"
