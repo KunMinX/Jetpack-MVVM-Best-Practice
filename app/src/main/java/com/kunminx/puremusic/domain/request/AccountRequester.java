@@ -54,10 +54,7 @@ import io.reactivex.schedulers.Schedulers;
  * Activity {
  *  onCreate(){
  *   vm.livedata.observe { result->
- *     if(result.show)
- *       panel.visible(VISIBLE)
- *     else
- *       panel.visible(GONE)
+ *     panel.visible(result.show ? VISIBLE : GONE)
  *     tvTitle.setText(result.title)
  *     tvContent.setText(result.content)
  *   }
