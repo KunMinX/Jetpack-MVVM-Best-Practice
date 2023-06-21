@@ -95,9 +95,6 @@ public class MusicRequester extends Requester {
 
     @SuppressLint("CheckResult")
     public void requestFreeMusics() {
-        DataRepository.getInstance().getFreeMusic()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(mFreeMusicsResult::setValue);
+        DataRepository.getInstance().getFreeMusic().subscribe(mFreeMusicsResult::setValue);
     }
 }

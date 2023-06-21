@@ -4,14 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.kunminx.architecture.domain.dispatch.MviDispatcher;
+import com.kunminx.architecture.domain.request.AsyncTask;
 import com.kunminx.puremusic.data.bean.DownloadState;
 import com.kunminx.puremusic.data.repository.DataRepository;
 import com.kunminx.puremusic.domain.event.DownloadEvent;
 import com.kunminx.puremusic.ui.page.helper.DefaultInterface;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 数据下载 Request
@@ -57,29 +56,24 @@ public class DownloadRequester extends MviDispatcher<DownloadEvent> {
 
     @Override
     protected void onHandle(DownloadEvent event) {
+        DataRepository repo = DataRepository.getInstance();
         switch (event.eventId) {
             case DownloadEvent.EVENT_DOWNLOAD:
-                DataRepository.getInstance().downloadFile()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DefaultInterface.Observer<Integer>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
-                            mDisposable = d;
-                        }
-                        @Override
-                        public void onNext(Integer integer) {
-                            sendResult(event.copy(new DownloadState(true, integer)));
-                        }
-                    });
+                repo.downloadFile().subscribe(new AsyncTask.Observer<Integer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable = d;
+                    }
+                    @Override
+                    public void onNext(Integer integer) {
+                        sendResult(event.copy(new DownloadState(true, integer)));
+                    }
+                });
                 break;
             case DownloadEvent.EVENT_DOWNLOAD_GLOBAL:
-                DataRepository.getInstance().downloadFile()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe((DefaultInterface.Observer<Integer>) integer -> {
-                        sendResult(event.copy(new DownloadState(true, integer)));
-                    });
+                repo.downloadFile().subscribe((AsyncTask.Observer<Integer>) integer -> {
+                    sendResult(event.copy(new DownloadState(true, integer)));
+                });
                 break;
         }
     }

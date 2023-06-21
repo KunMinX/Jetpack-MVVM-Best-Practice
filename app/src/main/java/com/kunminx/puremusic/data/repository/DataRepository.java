@@ -23,6 +23,7 @@ import com.google.gson.reflect.TypeToken;
 import com.kunminx.architecture.data.response.DataResult;
 import com.kunminx.architecture.data.response.ResponseStatus;
 import com.kunminx.architecture.data.response.ResultSource;
+import com.kunminx.architecture.domain.request.AsyncTask;
 import com.kunminx.architecture.utils.Utils;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.api.APIs;
@@ -39,7 +40,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableOnSubscribe;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -83,7 +83,7 @@ public class DataRepository {
     // 与此相对应，kotlin 下使用 flow{ ... emit(...) }.flowOn(Dispatchers.xx)
 
     public Observable<DataResult<TestAlbum>> getFreeMusic() {
-        return Observable.create(emitter -> {
+        return AsyncTask.doIO(emitter -> {
             Gson gson = new Gson();
             Type type = new TypeToken<TestAlbum>() {
             }.getType();
@@ -93,7 +93,7 @@ public class DataRepository {
     }
 
     public Observable<DataResult<List<LibraryInfo>>> getLibraryInfo() {
-        return Observable.create(emitter -> {
+        return AsyncTask.doIO(emitter -> {
             Gson gson = new Gson();
             Type type = new TypeToken<List<LibraryInfo>>() {
             }.getType();
@@ -107,23 +107,21 @@ public class DataRepository {
      */
     @SuppressLint("CheckResult")
     public Observable<Integer> downloadFile() {
-        synchronized (this) {
-            return Observable.create(emitter -> {
-                //在内存中模拟 "数据读写"，假装是在 "文件 IO"，
+        return AsyncTask.doIO(emitter -> {
+            //在内存中模拟 "数据读写"，假装是在 "文件 IO"，
 
-                byte[] bytes = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
-                try (ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-                     ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
-                    int b;
-                    while ((b = bis.read()) != -1) {
-                        Thread.sleep(500);
-                        emitter.onNext(b);
-                    }
-                } catch (IOException | InterruptedException e) {
-                    e.printStackTrace();
+            byte[] bytes = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
+            try (ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+                 ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+                int b;
+                while ((b = bis.read()) != -1) {
+                    Thread.sleep(500);
+                    emitter.onNext(b);
                 }
-            });
-        }
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     /**
@@ -136,7 +134,7 @@ public class DataRepository {
         // 使用 retrofit 或任意你喜欢的库实现网络请求。此处以 retrofit 写个简单例子，
         // 并且如使用 rxjava，还可额外依赖 RxJavaCallAdapterFactory 来简化编写，具体自行网上查阅，此处不做累述，
 
-        return Observable.create(emitter -> {
+        return AsyncTask.doIO(emitter -> {
             Call<String> call = retrofit.create(AccountService.class).login(user.getName(), user.getPassword());
             Response<String> response;
             try {

@@ -99,28 +99,25 @@ public class AccountRequester extends Requester implements DefaultLifecycleObser
     // 改变 UI 状态的逻辑代码，只应在表现层页面中编写，例如 Jetpack Compose 的使用，
 
     public void requestLogin(User user) {
-        DataRepository.getInstance().login(user)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new Observer<DataResult<String>>() {
-                @Override
-                public void onSubscribe(Disposable d) {
-                    mDisposable = d;
-                }
-                @Override
-                public void onNext(DataResult<String> dataResult) {
-                    tokenResult.postValue(dataResult);
-                }
-                @Override
-                public void onError(Throwable e) {
-                    tokenResult.postValue(new DataResult<>(null,
-                        new ResponseStatus(e.getMessage(), false, ResultSource.NETWORK)));
-                }
-                @Override
-                public void onComplete() {
-                    mDisposable = null;
-                }
-            });
+        DataRepository.getInstance().login(user).subscribe(new Observer<DataResult<String>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                mDisposable = d;
+            }
+            @Override
+            public void onNext(DataResult<String> dataResult) {
+                tokenResult.postValue(dataResult);
+            }
+            @Override
+            public void onError(Throwable e) {
+                tokenResult.postValue(new DataResult<>(null,
+                    new ResponseStatus(e.getMessage(), false, ResultSource.NETWORK)));
+            }
+            @Override
+            public void onComplete() {
+                mDisposable = null;
+            }
+        });
     }
 
     public void cancelLogin() {
