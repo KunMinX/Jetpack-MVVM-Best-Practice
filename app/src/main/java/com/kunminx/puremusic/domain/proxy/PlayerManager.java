@@ -167,7 +167,7 @@ public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestM
     }
 
     @Override
-    public PlayerInfoDispatcher getDispatcher() {
+    public PlayerInfoDispatcher<TestAlbum, TestAlbum.TestMusic, TestAlbum.TestArtist> getDispatcher() {
         return mController.getDispatcher();
     }
 
