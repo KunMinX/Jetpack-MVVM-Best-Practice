@@ -46,7 +46,7 @@ dependencies {
 
     api "com.google.android.material:material:1.9.0"
     api "androidx.constraintlayout:constraintlayout:2.1.4"
-    api "androidx.recyclerview:recyclerview:1.3.0"
+    api "androidx.recyclerview:recyclerview:1.3.1"
 
     //常用架构组件，已按功能提取分割为多个独立库，可按需选配
 
