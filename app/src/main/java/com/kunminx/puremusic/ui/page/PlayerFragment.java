@@ -82,6 +82,7 @@ public class PlayerFragment extends BaseFragment {
 
         return new DataBindingConfig(R.layout.fragment_player, BR.vm, mStates)
             .addBindingParam(BR.panelVm, mAnimatorStates)
+            .addBindingParam(BR.player, PlayerManager.getInstance())
             .addBindingParam(BR.click, new ClickProxy())
             .addBindingParam(BR.listener, new ListenerHandler());
     }
@@ -164,10 +165,6 @@ public class PlayerFragment extends BaseFragment {
                     mStates.coverImg.set(playerEvent.changeMusic.getImg());
                     if (mListener != null) view.post(mListener::calculateTitleAndArtist);
                     break;
-                case PlayerEvent.EVENT_PROGRESS:
-                    mStates.maxSeekDuration.set(playerEvent.playingMusic.getDuration());
-                    mStates.currentSeekPosition.set(playerEvent.playingMusic.getPlayerPosition());
-                    break;
                 case PlayerEvent.EVENT_PLAY_STATUS:
                     mStates.isPlaying.set(!playerEvent.toPause);
                     break;
@@ -238,10 +235,6 @@ public class PlayerFragment extends BaseFragment {
         public final State<String> coverImg = new State<>("");
 
         public final State<Drawable> placeHolder = new State<>(ResUtils.getDrawable(R.drawable.bg_album_default));
-
-        public final State<Integer> maxSeekDuration = new State<>(0);
-
-        public final State<Integer> currentSeekPosition = new State<>(0);
 
         public final State<Boolean> isPlaying = new State<>(false, true);
 

@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.danikula.videocache.HttpProxyCacheServer;
+import com.kunminx.architecture.ui.state.State;
 import com.kunminx.player.PlayerController;
 import com.kunminx.player.PlayingInfoManager;
 import com.kunminx.player.contract.ICacheProxy;
@@ -169,6 +170,16 @@ public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestM
     @Override
     public PlayerInfoDispatcher<TestAlbum, TestAlbum.TestMusic, TestAlbum.TestArtist> getDispatcher() {
         return mController.getDispatcher();
+    }
+
+    @Override
+    public State<Integer> getCurrentPositionState() {
+        return mController.mCurrentPositionState;
+    }
+
+    @Override
+    public State<Integer> getDurationState() {
+        return mController.mDurationState;
     }
 
     @Override
