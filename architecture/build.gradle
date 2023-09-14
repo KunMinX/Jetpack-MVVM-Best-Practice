@@ -50,7 +50,7 @@ dependencies {
 
     //常用架构组件，已按功能提取分割为多个独立库，可按需选配
 
-    api 'com.github.KunMinX:MVI-Dispatcher:7.5.0'
+    api 'com.github.KunMinX:MVI-Dispatcher:7.6.0'
     api 'com.github.KunMinX:UnPeek-LiveData:7.8.0'
     api 'com.github.KunMinX:Smooth-Navigation:v4.0.0'
     api 'com.github.KunMinX.Strict-DataBinding:binding_state:5.6.0'
