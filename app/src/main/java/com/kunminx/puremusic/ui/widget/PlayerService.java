@@ -40,8 +40,8 @@ import com.kunminx.puremusic.MainActivity;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.data.config.Const;
-import com.kunminx.puremusic.domain.usecase.DownloadUseCase;
 import com.kunminx.puremusic.domain.proxy.PlayerManager;
+import com.kunminx.puremusic.domain.usecase.DownloadUseCase;
 
 import java.io.File;
 
@@ -73,9 +73,9 @@ public class PlayerService extends Service {
 
     private void createNotification(TestAlbum.TestMusic testMusic) {
         try {
-            String title = testMusic.getTitle();
+            String title = testMusic.title;
             TestAlbum album = PlayerManager.getInstance().getAlbum();
-            String summary = album.getSummary();
+            String summary = album.summary;
 
             RemoteViews simpleContentView = new RemoteViews(
                 getApplicationContext().getPackageName(), R.layout.notify_player_small);
@@ -135,14 +135,14 @@ public class PlayerService extends Service {
             notification.bigContentView.setTextViewText(R.id.player_author_name, summary);
             notification.flags |= Notification.FLAG_ONGOING_EVENT;
 
-            String coverPath = Const.COVER_PATH + File.separator + testMusic.getMusicId() + ".jpg";
+            String coverPath = Const.COVER_PATH + File.separator + testMusic.musicId + ".jpg";
             Bitmap bitmap = ImageUtils.getBitmap(coverPath);
 
             if (bitmap != null) {
                 notification.contentView.setImageViewBitmap(R.id.player_album_art, bitmap);
                 notification.bigContentView.setImageViewBitmap(R.id.player_album_art, bitmap);
             } else {
-                requestAlbumCover(testMusic.getCoverImg(), testMusic.getMusicId());
+                requestAlbumCover(testMusic.coverImg, testMusic.musicId);
                 notification.contentView.setImageViewResource(R.id.player_album_art, R.drawable.bg_album_default);
                 notification.bigContentView.setImageViewResource(R.id.player_album_art, R.drawable.bg_album_default);
             }

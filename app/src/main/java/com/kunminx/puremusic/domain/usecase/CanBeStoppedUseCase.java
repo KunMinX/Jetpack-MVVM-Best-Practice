@@ -24,7 +24,6 @@ import com.kunminx.architecture.data.response.DataResult;
 import com.kunminx.architecture.domain.usecase.UseCase;
 import com.kunminx.puremusic.data.bean.DownloadState;
 
-
 /**
  * UseCase 示例，实现 LifeCycle 接口，单独服务于 有 “叫停” 需求 的业务
  * <p>
@@ -36,10 +35,10 @@ import com.kunminx.puremusic.data.bean.DownloadState;
  * 以及《这是一份 “架构模式” 自驾攻略》的解析
  * https://xiaozhuanlan.com/topic/8204519736
  * <p>
- *
+ * <p>
  * 现已更换为在 MVI-Dispatcher 中处理，具体可参见 DownloadRequest 实现
- *
- *
+ * <p>
+ * <p>
  * Create by KunMinX at 19/11/25
  */
 @Deprecated

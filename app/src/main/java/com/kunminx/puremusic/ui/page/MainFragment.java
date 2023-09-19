@@ -27,7 +27,6 @@ import com.kunminx.architecture.ui.page.BaseFragment;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
 import com.kunminx.architecture.ui.page.StateHolder;
 import com.kunminx.architecture.ui.state.State;
-import com.kunminx.player.domain.PlayerEvent;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.data.bean.TestAlbum;
@@ -94,10 +93,8 @@ public class MainFragment extends BaseFragment {
 
         // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/6017825943 & https://juejin.cn/post/7117498113983512589
 
-        PlayerManager.getInstance().getDispatcher().output(this, playerEvent -> {
-            if (playerEvent.eventId == PlayerEvent.EVENT_CHANGE_MUSIC) {
-                mAdapter.notifyDataSetChanged();
-            }
+        PlayerManager.getInstance().getUiStates().observe(getViewLifecycleOwner(), uiStates -> {
+            mStates.musicId.set(uiStates.getMusicId(), onDiff -> mAdapter.notifyDataSetChanged());
         });
 
         //TODO tip 4:
@@ -118,8 +115,8 @@ public class MainFragment extends BaseFragment {
 
             // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/6719328450
 
-            if (musicAlbum != null && musicAlbum.getMusics() != null) {
-                mStates.list.set(musicAlbum.getMusics());
+            if (musicAlbum != null && musicAlbum.musics != null) {
+                mStates.list.set(musicAlbum.musics);
                 PlayerManager.getInstance().loadAlbum(musicAlbum);
             }
         });
@@ -181,6 +178,7 @@ public class MainFragment extends BaseFragment {
 
         //如这么说无体会，详见 https://xiaozhuanlan.com/topic/9816742350
 
+        public final State<String> musicId = new State<>("", true);
         public final State<Boolean> initTabAndPage = new State<>(true);
 
         public final State<String> pageAssetPath = new State<>("summary.html");

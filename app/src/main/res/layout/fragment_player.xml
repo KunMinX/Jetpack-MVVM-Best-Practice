@@ -37,10 +37,7 @@
             name="panelVm"
             type="com.kunminx.puremusic.ui.view.PlayerSlideListener.SlideAnimatorStates" />
 
-        <variable
-            name="player"
-            type="com.kunminx.puremusic.domain.proxy.PlayerManager" />
-    </data>
+  </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/topContainer"
@@ -106,18 +103,18 @@
             android:layout_marginStart="@dimen/sliding_up_header"
             android:orientation="vertical">
 
-            <ProgressBar
-                android:id="@+id/song_progress_normal"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                invisible="@{panelVm.songProgressNormalVisibility}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:max="@{player.durationState}"
-                android:minHeight="4dp"
-                android:progress="@{player.currentPositionState}"
-                android:progressDrawable="@drawable/progressbar_color"
-                android:progressTint="@color/transparent" />
+      <ProgressBar
+        android:id="@+id/song_progress_normal"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        invisible="@{panelVm.songProgressNormalVisibility}"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:max="@{vm.maxSeekDuration}"
+        android:minHeight="4dp"
+        android:progress="@{vm.currentSeekPosition}"
+        android:progressDrawable="@drawable/progressbar_color"
+        android:progressTint="@color/transparent" />
 
             <TextView
                 android:id="@+id/title"
@@ -241,21 +238,21 @@
 
         </RelativeLayout>
 
-        <SeekBar
-            android:id="@+id/seek_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="@color/transparent"
-            android:clickable="true"
-            android:focusable="true"
-            android:max="@{player.durationState}"
-            android:minHeight="6dp"
-            android:paddingTop="24dp"
-            android:progress="@{player.currentPositionState}"
-            android:progressDrawable="@drawable/progressbar_color"
-            android:thumb="@null"
-            app:onSeekBarChangeListener="@{listener}" />
+    <SeekBar
+      android:id="@+id/seek_bottom"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom"
+      android:background="@color/transparent"
+      android:clickable="true"
+      android:focusable="true"
+      android:max="@{vm.maxSeekDuration}"
+      android:minHeight="6dp"
+      android:paddingTop="24dp"
+      android:progress="@{vm.currentSeekPosition}"
+      android:progressDrawable="@drawable/progressbar_color"
+      android:thumb="@null"
+      app:onSeekBarChangeListener="@{listener}" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

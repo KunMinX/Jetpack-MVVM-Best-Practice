@@ -20,7 +20,6 @@ import androidx.annotation.NonNull;
 
 import com.kunminx.puremusic.R;
 
-
 public class PlayPauseView extends FrameLayout {
 
     private static final long PLAY_PAUSE_ANIMATION_DURATION = 200;

@@ -20,6 +20,8 @@ import com.kunminx.player.bean.base.BaseAlbumItem;
 import com.kunminx.player.bean.base.BaseArtistItem;
 import com.kunminx.player.bean.base.BaseMusicItem;
 
+import java.util.List;
+
 /**
  * Create by KunMinX at 19/10/31
  * <p>
@@ -30,6 +32,9 @@ import com.kunminx.player.bean.base.BaseMusicItem;
 public class TestAlbum extends BaseAlbumItem<TestAlbum.TestMusic, TestAlbum.TestArtist> {
 
     private String albumMid;
+    public TestAlbum(String albumId, String title, String summary, TestArtist artist, String coverImg, List<TestMusic> musics) {
+        super(albumId, title, summary, artist, coverImg, musics);
+    }
 
     public String getAlbumMid() {
         return albumMid;
@@ -38,6 +43,9 @@ public class TestAlbum extends BaseAlbumItem<TestAlbum.TestMusic, TestAlbum.Test
     public static class TestMusic extends BaseMusicItem<TestArtist> {
 
         private String songMid;
+        public TestMusic(String musicId, String coverImg, String url, String title, TestArtist artist) {
+            super(musicId, coverImg, url, title, artist);
+        }
 
         public String getSongMid() {
             return songMid;
@@ -47,6 +55,9 @@ public class TestAlbum extends BaseAlbumItem<TestAlbum.TestMusic, TestAlbum.Test
     public static class TestArtist extends BaseArtistItem {
 
         private String birthday;
+        public TestArtist(String name) {
+            super(name);
+        }
 
         public String getBirthday() {
             return birthday;

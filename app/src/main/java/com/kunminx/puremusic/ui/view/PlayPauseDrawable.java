@@ -16,7 +16,6 @@ import android.util.Property;
 
 import androidx.annotation.ColorInt;
 
-
 public class PlayPauseDrawable extends Drawable {
 
     private static final Property<PlayPauseDrawable, Float> PROGRESS = new Property<PlayPauseDrawable, Float>(Float.class, "progress") {

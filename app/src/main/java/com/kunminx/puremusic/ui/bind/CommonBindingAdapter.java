@@ -99,7 +99,6 @@ public class CommonBindingAdapter {
         view.setSelected(select);
     }
 
-
     @BindingAdapter(value = {"onClickWithDebouncing"}, requireAll = false)
     public static void onClickWithDebouncing(View view, View.OnClickListener clickListener) {
         ClickUtils.applySingleDebouncing(view, clickListener);

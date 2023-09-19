@@ -24,7 +24,7 @@ import com.kunminx.architecture.domain.message.Result;
 /**
  * TODO tip：本类专用于跨页面通信，
  * 本类已被 PageMessenger 类代替，具体可参见 PageMessenger 类说明
- *
+ * <p>
  * Create by KunMinX at 19/10/16
  */
 @Deprecated

@@ -67,7 +67,7 @@ public class DiffUtils {
 
                 @Override
                 public boolean areContentsTheSame(@NonNull TestAlbum.TestMusic oldItem, @NonNull TestAlbum.TestMusic newItem) {
-                    return oldItem.getMusicId().equals(newItem.getMusicId());
+                    return oldItem.musicId.equals(newItem.musicId);
                 }
             };
         }

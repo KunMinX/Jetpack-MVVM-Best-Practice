@@ -19,14 +19,15 @@ package com.kunminx.puremusic.domain.proxy;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.lifecycle.LiveData;
+
 import com.danikula.videocache.HttpProxyCacheServer;
-import com.kunminx.architecture.ui.state.State;
-import com.kunminx.player.PlayerController;
-import com.kunminx.player.PlayingInfoManager;
 import com.kunminx.player.contract.ICacheProxy;
 import com.kunminx.player.contract.IPlayController;
 import com.kunminx.player.contract.IServiceNotifier;
-import com.kunminx.player.domain.PlayerInfoDispatcher;
+import com.kunminx.player.domain.MusicDTO;
+import com.kunminx.player.domain.PlayerController;
+import com.kunminx.player.domain.PlayingInfoManager;
 import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.ui.widget.PlayerService;
 
@@ -82,7 +83,7 @@ public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestM
     @Override
     public void loadAlbum(TestAlbum musicAlbum) {
         TestAlbum album = mController.getAlbum();
-        if (album == null || !album.getAlbumId().equals(musicAlbum.getAlbumId())) {
+        if (album == null || !album.albumId.equals(musicAlbum.albumId)) {
             mController.loadAlbum(musicAlbum);
         }
     }
@@ -153,11 +154,6 @@ public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestM
     }
 
     @Override
-    public void requestLastPlayingInfo() {
-        mController.requestLastPlayingInfo();
-    }
-
-    @Override
     public void setSeek(int progress) {
         mController.setSeek(progress);
     }
@@ -168,18 +164,8 @@ public class PlayerManager implements IPlayController<TestAlbum, TestAlbum.TestM
     }
 
     @Override
-    public PlayerInfoDispatcher<TestAlbum, TestAlbum.TestMusic, TestAlbum.TestArtist> getDispatcher() {
-        return mController.getDispatcher();
-    }
-
-    @Override
-    public State<Integer> getCurrentPositionState() {
-        return mController.mCurrentPositionState;
-    }
-
-    @Override
-    public State<Integer> getDurationState() {
-        return mController.mDurationState;
+    public LiveData<MusicDTO<TestAlbum, TestAlbum.TestMusic, TestAlbum.TestArtist>> getUiStates() {
+        return mController.getUiStates();
     }
 
     @Override

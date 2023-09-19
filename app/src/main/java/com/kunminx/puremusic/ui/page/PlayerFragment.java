@@ -28,11 +28,9 @@ import com.kunminx.architecture.ui.page.BaseFragment;
 import com.kunminx.architecture.ui.page.DataBindingConfig;
 import com.kunminx.architecture.ui.page.StateHolder;
 import com.kunminx.architecture.ui.state.State;
-import com.kunminx.architecture.utils.ResUtils;
+import com.kunminx.architecture.utils.Res;
 import com.kunminx.architecture.utils.ToastUtils;
 import com.kunminx.architecture.utils.Utils;
-import com.kunminx.player.PlayingInfoManager;
-import com.kunminx.player.domain.PlayerEvent;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.databinding.FragmentPlayerBinding;
@@ -82,7 +80,6 @@ public class PlayerFragment extends BaseFragment {
 
         return new DataBindingConfig(R.layout.fragment_player, BR.vm, mStates)
             .addBindingParam(BR.panelVm, mAnimatorStates)
-            .addBindingParam(BR.player, PlayerManager.getInstance())
             .addBindingParam(BR.click, new ClickProxy())
             .addBindingParam(BR.listener, new ListenerHandler());
     }
@@ -157,22 +154,16 @@ public class PlayerFragment extends BaseFragment {
 
         // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/6017825943 & https://juejin.cn/post/7117498113983512589
 
-        PlayerManager.getInstance().getDispatcher().output(this, playerEvent -> {
-            switch (playerEvent.eventId) {
-                case PlayerEvent.EVENT_CHANGE_MUSIC:
-                    mStates.title.set(playerEvent.changeMusic.getTitle());
-                    mStates.artist.set(playerEvent.changeMusic.getSummary());
-                    mStates.coverImg.set(playerEvent.changeMusic.getImg());
-                    if (mListener != null) view.post(mListener::calculateTitleAndArtist);
-                    break;
-                case PlayerEvent.EVENT_PLAY_STATUS:
-                    mStates.isPlaying.set(!playerEvent.toPause);
-                    break;
-                case PlayerEvent.EVENT_REPEAT_MODE:
-                    Enum<PlayingInfoManager.RepeatMode> mode = playerEvent.repeatMode;
-                    mStates.playModeIcon.set(PlayerManager.getInstance().getModeIcon(mode));
-                    break;
-            }
+        PlayerManager.getInstance().getUiStates().observe(getViewLifecycleOwner(), uiStates -> {
+            mStates.title.set(uiStates.getTitle());
+            mStates.artist.set(uiStates.getSummary());
+            mStates.coverImg.set(uiStates.getImg(), onDiff -> {
+                if (mListener != null) view.post(mListener::calculateTitleAndArtist);
+            });
+            mStates.isPlaying.set(!uiStates.isPaused());
+            mStates.playModeIcon.set(PlayerManager.getInstance().getModeIcon(uiStates.getRepeatMode()));
+            mStates.maxSeekDuration.set(uiStates.getDuration());
+            mStates.currentSeekPosition.set(uiStates.getProgress());
         });
     }
 
@@ -227,18 +218,14 @@ public class PlayerFragment extends BaseFragment {
     //如这么说无体会，详见 https://xiaozhuanlan.com/topic/6741932805
 
     public static class PlayerStates extends StateHolder {
-
-        public final State<String> title = new State<>(Utils.getApp().getString(R.string.app_name));
-
-        public final State<String> artist = new State<>(Utils.getApp().getString(R.string.app_name));
-
-        public final State<String> coverImg = new State<>("");
-
-        public final State<Drawable> placeHolder = new State<>(ResUtils.getDrawable(R.drawable.bg_album_default));
-
+        public final State<String> title = new State<>(Utils.getApp().getString(R.string.app_name), true);
+        public final State<String> artist = new State<>(Utils.getApp().getString(R.string.app_name), true);
+        public final State<String> coverImg = new State<>("", true);
+        public final State<Drawable> placeHolder = new State<>(Res.getDrawable(R.drawable.bg_album_default), true);
+        public final State<Integer> maxSeekDuration = new State<>(0, true);
+        public final State<Integer> currentSeekPosition = new State<>(0, true);
         public final State<Boolean> isPlaying = new State<>(false, true);
-
-        public final State<MaterialDrawableBuilder.IconValue> playModeIcon
-            = new State<>(PlayerManager.getInstance().getModeIcon());
+        public final State<MaterialDrawableBuilder.IconValue> playModeIcon = new State<>(PlayerManager.getInstance().getModeIcon(), true);
     }
+
 }

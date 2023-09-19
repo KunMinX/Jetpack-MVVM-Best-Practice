@@ -16,68 +16,56 @@
 
 package com.kunminx.puremusic.domain.request;
 
-
 import android.annotation.SuppressLint;
-
-import androidx.lifecycle.ViewModel;
 
 import com.kunminx.architecture.data.response.DataResult;
 import com.kunminx.architecture.domain.message.MutableResult;
 import com.kunminx.architecture.domain.message.Result;
 import com.kunminx.architecture.domain.request.Requester;
 import com.kunminx.puremusic.data.bean.LibraryInfo;
-import com.kunminx.puremusic.data.bean.TestAlbum;
 import com.kunminx.puremusic.data.repository.DataRepository;
 
 import java.util.List;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
-
 /**
  * 信息列表 Request
- *
+ * <p>
  * TODO tip 1：让 UI 和业务分离，让数据总是从生产者流向消费者
- *
+ * <p>
  * UI逻辑和业务逻辑，本质区别在于，前者是数据的消费者，后者是数据的生产者，
  * "领域层组件" 作为数据的生产者，职责应仅限于 "请求调度 和 结果分发"，
- *
+ * <p>
  * 换言之，"领域层组件" 中应当只关注数据的生成，而不关注数据的使用，
  * 改变 UI 状态的逻辑代码，只应在表现层页面中编写、在 Observer 回调中响应数据的变化，
  * 将来升级到 Jetpack Compose 更是如此，
- *
+ * <p>
  * Activity {
- *  onCreate(){
- *   vm.livedata.observe { result->
- *     panel.visible(result.show ? VISIBLE : GONE)
- *     tvTitle.setText(result.title)
- *     tvContent.setText(result.content)
- *   }
+ * onCreate(){
+ * vm.livedata.observe { result->
+ * panel.visible(result.show ? VISIBLE : GONE)
+ * tvTitle.setText(result.title)
+ * tvContent.setText(result.content)
  * }
- *
+ * }
+ * <p>
  * TODO tip 2：Requester 通常按业务划分
  * 一个项目中通常可存在多个 Requester 类，
  * 每个页面可根据业务需要，持有多个不同 Requester 实例，
  * 通过 PublishSubject 回推一次性消息，并在表现层 Observer 中分流，
  * 对于 Event，直接执行，对于 State，使用 BehaviorSubject 通知 View 渲染和兜着状态，
- *
+ * <p>
  * Activity {
- *  onCreate(){
- *   request.observe {result ->
- *     is Event ? -> execute one time
- *     is State ? -> BehaviorSubject setValue and notify
- *   }
+ * onCreate(){
+ * request.observe {result ->
+ * is Event ? -> execute one time
+ * is State ? -> BehaviorSubject setValue and notify
  * }
- *
+ * }
+ * <p>
  * 如这么说无体会，详见《Jetpack MVVM 分层设计解析》解析
  * https://xiaozhuanlan.com/topic/6741932805
- *
- *
+ * <p>
+ * <p>
  * Create by KunMinX at 19/11/2
  */
 public class InfoRequester extends Requester {
@@ -94,7 +82,6 @@ public class InfoRequester extends Requester {
     public Result<DataResult<List<LibraryInfo>>> getLibraryResult() {
         return mLibraryResult;
     }
-
 
     //TODO tip 5: requester 作为数据的生产者，职责应仅限于 "请求调度 和 结果分发"，
     //
