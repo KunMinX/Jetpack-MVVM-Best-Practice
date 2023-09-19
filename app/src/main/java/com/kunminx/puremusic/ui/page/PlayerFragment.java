@@ -157,7 +157,7 @@ public class PlayerFragment extends BaseFragment {
         PlayerManager.getInstance().getUiStates().observe(getViewLifecycleOwner(), uiStates -> {
             mStates.title.set(uiStates.getTitle());
             mStates.artist.set(uiStates.getSummary());
-            mStates.coverImg.set(uiStates.getImg(), onDiff -> {
+            mStates.coverImg.set(uiStates.getImg(), changed -> {
                 if (mListener != null) view.post(mListener::calculateTitleAndArtist);
             });
             mStates.isPlaying.set(!uiStates.isPaused());

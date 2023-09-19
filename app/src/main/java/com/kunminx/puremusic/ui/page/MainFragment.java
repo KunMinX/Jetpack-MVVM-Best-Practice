@@ -94,7 +94,7 @@ public class MainFragment extends BaseFragment {
         // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/6017825943 & https://juejin.cn/post/7117498113983512589
 
         PlayerManager.getInstance().getUiStates().observe(getViewLifecycleOwner(), uiStates -> {
-            mStates.musicId.set(uiStates.getMusicId(), onDiff -> mAdapter.notifyDataSetChanged());
+            mStates.musicId.set(uiStates.getMusicId(), changed -> mAdapter.notifyDataSetChanged());
         });
 
         //TODO tip 4:
