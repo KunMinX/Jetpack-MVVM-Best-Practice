@@ -31,6 +31,7 @@ import com.kunminx.architecture.ui.state.State;
 import com.kunminx.architecture.utils.Res;
 import com.kunminx.architecture.utils.ToastUtils;
 import com.kunminx.architecture.utils.Utils;
+import com.kunminx.player.domain.PlayingInfoManager;
 import com.kunminx.puremusic.BR;
 import com.kunminx.puremusic.R;
 import com.kunminx.puremusic.databinding.FragmentPlayerBinding;
@@ -149,21 +150,26 @@ public class PlayerFragment extends BaseFragment {
             }
         });
 
-        // TODO tip 6：所有播放状态的改变，皆来自 "可信源" PlayerInfoDispatcher 统一分发，
-        //  确保 "消息分发可靠一致"，避免不可预期推送和错误。
+        // TODO tip 6：所有播放状态的改变，皆来自 getUiStates() 统一分发，
+        //  确保 "消息分发可靠一致"，避免不可预期推送和错误，
 
-        // 如这么说无体会，详见 https://xiaozhuanlan.com/topic/6017825943 & https://juejin.cn/post/7117498113983512589
+        // 细节 1： uiStates 回调只读，此处只可通过 getter 获取只读数据，避免数据被篡改，
+        // 细节 2： uiStates 每次都是整个推送，progress 等属性会造成 uiStates 的高频回推，
+        //         故此宜对低频变化属性做防抖处理，仅当属性值变化时，通知相关控件完成一次重绘，
 
         PlayerManager.getInstance().getUiStates().observe(getViewLifecycleOwner(), uiStates -> {
-            mStates.title.set(uiStates.getTitle());
-            mStates.artist.set(uiStates.getSummary());
-            mStates.coverImg.set(uiStates.getImg(), changed -> {
+            mStates.musicId.set(uiStates.getMusicId(), changed -> {
+                mStates.title.set(uiStates.getTitle());
+                mStates.artist.set(uiStates.getSummary());
+                mStates.coverImg.set(uiStates.getImg());
                 if (mListener != null) view.post(mListener::calculateTitleAndArtist);
+                mStates.maxSeekDuration.set(uiStates.getDuration());
             });
-            mStates.isPlaying.set(!uiStates.isPaused());
-            mStates.playModeIcon.set(PlayerManager.getInstance().getModeIcon(uiStates.getRepeatMode()));
-            mStates.maxSeekDuration.set(uiStates.getDuration());
             mStates.currentSeekPosition.set(uiStates.getProgress());
+            mStates.isPlaying.set(!uiStates.isPaused());
+            mStates.repeatMode.set(uiStates.getRepeatMode(), changed -> {
+                mStates.playModeIcon.set(PlayerManager.getInstance().getModeIcon(uiStates.getRepeatMode()));
+            });
         });
     }
 
@@ -218,6 +224,8 @@ public class PlayerFragment extends BaseFragment {
     //如这么说无体会，详见 https://xiaozhuanlan.com/topic/6741932805
 
     public static class PlayerStates extends StateHolder {
+        public final State<String> musicId = new State<>("", true);
+        public final State<Enum<PlayingInfoManager.RepeatMode>> repeatMode = new State<>(PlayingInfoManager.RepeatMode.LIST_CYCLE, true);
         public final State<String> title = new State<>(Utils.getApp().getString(R.string.app_name), true);
         public final State<String> artist = new State<>(Utils.getApp().getString(R.string.app_name), true);
         public final State<String> coverImg = new State<>("", true);
