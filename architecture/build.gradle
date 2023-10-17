@@ -64,7 +64,7 @@ dependencies {
     api "com.google.code.gson:gson:2.10.1"
     api "com.squareup.retrofit2:retrofit:2.9.0"
     api "com.squareup.retrofit2:converter-gson:2.9.0"
-    api "com.squareup.okhttp3:logging-interceptor:4.11.0"
+    api "com.squareup.okhttp3:logging-interceptor:4.12.0"
     api "com.squareup.okhttp3:okhttp:4.11.0"
 
     api 'io.reactivex.rxjava2:rxandroid:2.1.1'
