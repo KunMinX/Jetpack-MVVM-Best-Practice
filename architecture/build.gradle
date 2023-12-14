@@ -44,7 +44,7 @@ dependencies {
     api "org.jetbrains:annotations:24.0.1"
     api "androidx.navigation:navigation-runtime:2.5.3"
 
-    api "com.google.android.material:material:1.9.0"
+    api "com.google.android.material:material:1.11.0"
     api "androidx.constraintlayout:constraintlayout:2.1.4"
     api "androidx.recyclerview:recyclerview:1.3.1"
 
